@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,7 @@ import { Mail, KeyRound, User } from "lucide-react";
 
 export default function SignupForm() {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -44,6 +46,9 @@ export default function SignupForm() {
         password: "",
         walletAddress: ""
       });
+      
+      // Redirect to dashboard
+      navigate("/dashboard");
     } catch (error) {
       toast({
         title: "Error creating account",
@@ -71,6 +76,9 @@ export default function SignupForm() {
         title: "Wallet connected!",
         description: "Your wallet has been successfully connected.",
       });
+      
+      // Redirect to dashboard after wallet connection
+      navigate("/dashboard");
     } catch (error) {
       toast({
         title: "Error connecting wallet",
