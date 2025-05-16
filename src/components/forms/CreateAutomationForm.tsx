@@ -364,7 +364,7 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                 <div className="bg-loteraa-gray/10 border border-loteraa-gray/30 rounded-lg p-4 space-y-2">
                   <h4 className="text-white font-medium">Summary</h4>
                   <div className="text-white/80 space-y-1 text-sm">
-                    <p>Trigger: temp > 40°C</p>
+                    <p>Trigger: temp {">"} 40°C</p>
                     <p>Action: send 10 Tera to wallet address</p>
                     <p>Device: Tempsenor001 on Loteraa blockchain</p>
                   </div>
