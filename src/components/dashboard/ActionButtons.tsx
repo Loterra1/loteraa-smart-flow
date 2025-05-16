@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import AddIoTDeviceForm from "@/components/forms/AddIoTDeviceForm";
 import CreateAutomationForm from "@/components/forms/CreateAutomationForm";
+import BindSmartContractForm from "@/components/forms/BindSmartContractForm";
 
 export default function ActionButtons() {
   const [isAddDeviceOpen, setIsAddDeviceOpen] = useState(false);
   const [isCreateAutomationOpen, setIsCreateAutomationOpen] = useState(false);
+  const [isBindContractOpen, setIsBindContractOpen] = useState(false);
   
   return (
     <>
@@ -26,7 +28,10 @@ export default function ActionButtons() {
           <Plus className="h-4 w-4 md:h-5 md:w-5" />
           Create Automation
         </Button>
-        <Button className="bg-loteraa-teal hover:bg-loteraa-teal/90 text-white gap-2 h-12 text-sm md:text-md">
+        <Button 
+          className="bg-loteraa-teal hover:bg-loteraa-teal/90 text-white gap-2 h-12 text-sm md:text-md"
+          onClick={() => setIsBindContractOpen(true)}
+        >
           <Plus className="h-4 w-4 md:h-5 md:w-5" />
           Bind Smart Contract
         </Button>
@@ -40,6 +45,11 @@ export default function ActionButtons() {
       <CreateAutomationForm
         open={isCreateAutomationOpen}
         onOpenChange={setIsCreateAutomationOpen}
+      />
+      
+      <BindSmartContractForm
+        open={isBindContractOpen}
+        onOpenChange={setIsBindContractOpen}
       />
     </>
   );
