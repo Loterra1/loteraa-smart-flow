@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import SignupPage from "./pages/SignupPage";
 import Dashboard from "./pages/Dashboard";
+import DevicesPage from "./pages/DevicesPage";
+import DeviceDetailPage from "./pages/DeviceDetailPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,7 +23,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/devices" element={<Dashboard />} />
+          <Route path="/devices" element={<DevicesPage />} />
+          <Route path="/devices/:deviceId" element={<DeviceDetailPage />} />
           <Route path="/automation" element={<Dashboard />} />
           <Route path="/smart-contracts" element={<Dashboard />} />
           <Route path="/earnings" element={<Dashboard />} />
