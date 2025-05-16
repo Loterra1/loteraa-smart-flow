@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,8 +12,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { PlusCircle, ChevronDown } from "lucide-react";
+import { PlusCircle, ChevronDown, Check } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface CreateAutomationFormProps {
   open: boolean;
@@ -25,11 +26,30 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
   const [step, setStep] = useState<string>("step-1");
   const [conditions, setConditions] = useState([{ field: "", operation: "", value: "", unit: "" }]);
   const [requiresAuth, setRequiresAuth] = useState(false);
-  const [actionType, setActionType] = useState("");
+  
+  // Replace single action type with multiple selected actions
+  const [selectedActions, setSelectedActions] = useState<string[]>([]);
+
+  // Available actions
+  const availableActions = [
+    { id: "send-token", label: "Send Token Payment" },
+    { id: "trigger-contract", label: "Trigger Contract Function" },
+    { id: "send-notification", label: "Send Notification/Webhook" },
+    { id: "grant-access", label: "Grant Access" }
+  ];
 
   // Handler to add more conditions
   const addCondition = () => {
     setConditions([...conditions, { field: "", operation: "", value: "", unit: "" }]);
+  };
+
+  // Handler for toggling action selection
+  const toggleAction = (actionId: string) => {
+    setSelectedActions(prev => 
+      prev.includes(actionId) 
+        ? prev.filter(id => id !== actionId) 
+        : [...prev, actionId]
+    );
   };
 
   // Example devices and APIs for selection
@@ -45,6 +65,9 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
       <DialogContent className="sm:max-w-[90%] md:max-w-[700px] max-h-[90vh] overflow-y-auto bg-loteraa-black border border-loteraa-gray/30">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-white">Create Automation Rule</DialogTitle>
+          <DialogDescription className="text-white/60">
+            Configure your blockchain automation with multiple actions.
+          </DialogDescription>
         </DialogHeader>
         
         <Accordion type="single" collapsible className="w-full" defaultValue="step-1">
@@ -241,30 +264,39 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
             </AccordionContent>
           </AccordionItem>
 
-          {/* Step 4: Set Blockchain Action */}
+          {/* Step 4: Set Blockchain Action - MODIFIED to allow multiple selections */}
           <AccordionItem value="step-4" className="border-loteraa-gray/30">
             <AccordionTrigger id="step-4-trigger" className="text-white hover:text-loteraa-purple">
               Step 4: Set Blockchain Action
             </AccordionTrigger>
             <AccordionContent className="text-white/80 space-y-4">
               <div className="space-y-2">
-                <Label className="text-white">Choose Action</Label>
-                <Select onValueChange={setActionType}>
-                  <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                    <SelectValue placeholder="Select action type" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                    <SelectItem value="send-token" className="text-white">Send Token Payment</SelectItem>
-                    <SelectItem value="trigger-contract" className="text-white">Trigger Contract Function</SelectItem>
-                    <SelectItem value="send-notification" className="text-white">Send Notification/Webhook</SelectItem>
-                    <SelectItem value="grant-access" className="text-white">Grant Access</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label className="text-white font-medium">Choose Actions (Select Multiple)</Label>
+                
+                <div className="space-y-3 bg-loteraa-gray/10 p-3 rounded-md border border-loteraa-gray/20">
+                  {availableActions.map((action) => (
+                    <div key={action.id} className="flex items-center space-x-2">
+                      <Checkbox 
+                        id={action.id}
+                        checked={selectedActions.includes(action.id)}
+                        onCheckedChange={() => toggleAction(action.id)}
+                        className="bg-loteraa-gray/20 border-loteraa-gray/40 data-[state=checked]:bg-loteraa-purple"
+                      />
+                      <Label 
+                        htmlFor={action.id}
+                        className="text-white cursor-pointer font-medium"
+                      >
+                        {action.label}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {actionType === "send-token" && (
-                <div className="space-y-4">
-                  <h4 className="text-white font-medium text-sm">Input for Action:</h4>
+              {/* Show configuration for send-token payment if selected */}
+              {selectedActions.includes("send-token") && (
+                <div className="space-y-4 border-t border-loteraa-gray/20 pt-4 mt-4">
+                  <h4 className="text-white font-medium">Send Token Payment Configuration</h4>
                   
                   <div className="space-y-2">
                     <Label htmlFor="recipient-wallet" className="text-white">Recipient Wallet</Label>
@@ -314,7 +346,123 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                 </div>
               )}
 
-              {/* Similar sections for other action types would go here */}
+              {/* Configuration for trigger-contract function */}
+              {selectedActions.includes("trigger-contract") && (
+                <div className="space-y-4 border-t border-loteraa-gray/20 pt-4 mt-4">
+                  <h4 className="text-white font-medium">Trigger Contract Function Configuration</h4>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="contract-address" className="text-white">Contract Address</Label>
+                    <Input 
+                      id="contract-address" 
+                      placeholder="0x..." 
+                      className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="function-name" className="text-white">Function Name</Label>
+                    <Input 
+                      id="function-name" 
+                      placeholder="transferOwnership" 
+                      className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="function-params" className="text-white">Function Parameters (JSON)</Label>
+                    <Textarea 
+                      id="function-params" 
+                      placeholder='{"param1": "value1", "param2": "value2"}' 
+                      className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white min-h-[80px]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Configuration for send-notification webhook */}
+              {selectedActions.includes("send-notification") && (
+                <div className="space-y-4 border-t border-loteraa-gray/20 pt-4 mt-4">
+                  <h4 className="text-white font-medium">Send Notification/Webhook Configuration</h4>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="webhook-url" className="text-white">Webhook URL</Label>
+                    <Input 
+                      id="webhook-url" 
+                      placeholder="https://api.example.com/webhook" 
+                      className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="notification-method" className="text-white">HTTP Method</Label>
+                    <Select>
+                      <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                        <SelectValue placeholder="Select method" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                        <SelectItem value="post" className="text-white">POST</SelectItem>
+                        <SelectItem value="get" className="text-white">GET</SelectItem>
+                        <SelectItem value="put" className="text-white">PUT</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="notify-payload" className="text-white">Payload Template</Label>
+                    <Textarea 
+                      id="notify-payload" 
+                      placeholder='{"event": "temperature_alert", "value": "${value}"}' 
+                      className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white min-h-[80px]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Configuration for grant-access */}
+              {selectedActions.includes("grant-access") && (
+                <div className="space-y-4 border-t border-loteraa-gray/20 pt-4 mt-4">
+                  <h4 className="text-white font-medium">Grant Access Configuration</h4>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="access-wallet" className="text-white">Wallet to Grant Access</Label>
+                    <Input 
+                      id="access-wallet" 
+                      placeholder="0x..." 
+                      className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="access-level" className="text-white">Access Level</Label>
+                    <Select>
+                      <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                        <SelectValue placeholder="Select access level" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                        <SelectItem value="read" className="text-white">Read</SelectItem>
+                        <SelectItem value="write" className="text-white">Write</SelectItem>
+                        <SelectItem value="admin" className="text-white">Admin</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="access-duration" className="text-white">Access Duration</Label>
+                    <Select>
+                      <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                        <SelectValue placeholder="Select duration" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                        <SelectItem value="1day" className="text-white">1 Day</SelectItem>
+                        <SelectItem value="1week" className="text-white">1 Week</SelectItem>
+                        <SelectItem value="1month" className="text-white">1 Month</SelectItem>
+                        <SelectItem value="permanent" className="text-white">Permanent</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              )}
               
               <div className="flex justify-between">
                 <Button 
@@ -365,7 +513,14 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                   <h4 className="text-white font-medium">Summary</h4>
                   <div className="text-white/80 space-y-1 text-sm">
                     <p>Trigger: temp {">"} 40°C</p>
-                    <p>Action: send 10 Tera to wallet address</p>
+                    <p>Actions: {selectedActions.length > 0 ? (
+                      <span>
+                        {selectedActions.map((action) => {
+                          const actionObj = availableActions.find(a => a.id === action);
+                          return actionObj?.label;
+                        }).join(", ")}
+                      </span>
+                    ) : "No actions selected"}</p>
                     <p>Device: Tempsenor001 on Loteraa blockchain</p>
                   </div>
                 </div>
