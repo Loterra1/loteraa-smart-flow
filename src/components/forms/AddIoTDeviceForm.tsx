@@ -102,7 +102,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-loteraa-gray/30 border-loteraa-gray/40">
+      <DialogContent className="sm:max-w-[500px] w-[95vw] max-h-[90vh] overflow-y-auto bg-loteraa-gray/30 border-loteraa-gray/40">
         <DialogHeader>
           <DialogTitle className="text-xl text-white">Add New IoT Device</DialogTitle>
           <DialogDescription>
@@ -110,14 +110,14 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
           </DialogDescription>
         </DialogHeader>
         
-        <div className="py-4 space-y-4">
+        <div className="py-2 space-y-4">
           <div className="space-y-2">
             <Label htmlFor="deviceType">Device Type</Label>
             <Select onValueChange={handleDeviceTypeChange}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Choose type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-50">
                 <SelectItem value="digital">Digital IoT Device</SelectItem>
                 <SelectItem value="physical">Physical IoT Device</SelectItem>
               </SelectContent>
@@ -126,7 +126,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
           
           {deviceType === "digital" && (
             <Form {...digitalForm}>
-              <form onSubmit={digitalForm.handleSubmit(submitDigitalDevice)} className="space-y-4">
+              <form onSubmit={digitalForm.handleSubmit(submitDigitalDevice)} className="space-y-3">
                 <FormField
                   control={digitalForm.control}
                   name="deviceName"
@@ -162,7 +162,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                     <FormItem>
                       <FormLabel>API Endpoint URL</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://api.example.com/endpoint" {...field} />
+                        <Input placeholder="https://api.example.com" className="text-xs md:text-sm" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -209,7 +209,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                             <SelectValue placeholder="Select format" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="z-50">
                           <SelectItem value="JSON">JSON</SelectItem>
                           <SelectItem value="XML">XML</SelectItem>
                           <SelectItem value="CSV">CSV</SelectItem>
@@ -232,7 +232,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                             <SelectValue placeholder="Choose contract" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="z-50">
                           {smartContractOptions.map(option => (
                             <SelectItem key={option.value} value={option.value}>
                               {option.label}
@@ -245,11 +245,11 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                   )}
                 />
                 
-                <DialogFooter className="mt-6">
-                  <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                <DialogFooter className="mt-4 flex flex-col sm:flex-row gap-2">
+                  <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
                     Cancel
                   </Button>
-                  <Button type="submit" className="bg-loteraa-purple">
+                  <Button type="submit" className="bg-loteraa-purple w-full sm:w-auto">
                     Register Digital Device
                   </Button>
                 </DialogFooter>
@@ -259,7 +259,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
           
           {deviceType === "physical" && (
             <Form {...physicalForm}>
-              <form onSubmit={physicalForm.handleSubmit(submitPhysicalDevice)} className="space-y-4">
+              <form onSubmit={physicalForm.handleSubmit(submitPhysicalDevice)} className="space-y-3">
                 <FormField
                   control={physicalForm.control}
                   name="deviceName"
@@ -342,7 +342,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                             <SelectValue placeholder="Select protocol" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="z-50">
                           <SelectItem value="mqtt">MQTT</SelectItem>
                           <SelectItem value="http">HTTP/REST</SelectItem>
                           <SelectItem value="coap">CoAP</SelectItem>
@@ -381,7 +381,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                             <SelectValue placeholder="Choose contract" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="z-50">
                           {smartContractOptions.map(option => (
                             <SelectItem key={option.value} value={option.value}>
                               {option.label}
@@ -406,7 +406,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="z-50">
                           <SelectItem value="yes">Yes</SelectItem>
                           <SelectItem value="no">No</SelectItem>
                         </SelectContent>
@@ -416,7 +416,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                   )}
                 />
                 
-                <div className="border border-loteraa-blue/30 rounded-md p-4 mt-4 bg-loteraa-blue/5">
+                <div className="border border-loteraa-blue/30 rounded-md p-3 mt-3 bg-loteraa-blue/5">
                   <h4 className="text-sm font-medium mb-2 flex items-center">
                     <Check className="w-4 h-4 mr-2 text-loteraa-blue" />
                     Connection Verification
@@ -427,11 +427,11 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                   </p>
                 </div>
                 
-                <DialogFooter className="mt-6">
-                  <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                <DialogFooter className="mt-4 flex flex-col sm:flex-row gap-2">
+                  <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
                     Cancel
                   </Button>
-                  <Button type="submit" className="bg-loteraa-purple">
+                  <Button type="submit" className="bg-loteraa-purple w-full sm:w-auto">
                     Register & Save Device
                   </Button>
                 </DialogFooter>
