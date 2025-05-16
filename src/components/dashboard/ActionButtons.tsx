@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import AddIoTDeviceForm from "@/components/forms/AddIoTDeviceForm";
+import CreateAutomationForm from "@/components/forms/CreateAutomationForm";
 
 export default function ActionButtons() {
   const [isAddDeviceOpen, setIsAddDeviceOpen] = useState(false);
+  const [isCreateAutomationOpen, setIsCreateAutomationOpen] = useState(false);
   
   return (
     <>
@@ -17,7 +19,10 @@ export default function ActionButtons() {
           <Plus className="h-4 w-4 md:h-5 md:w-5" />
           Add New IoT Device
         </Button>
-        <Button className="bg-loteraa-blue hover:bg-loteraa-blue/90 text-white gap-2 h-12 text-sm md:text-md">
+        <Button 
+          className="bg-loteraa-blue hover:bg-loteraa-blue/90 text-white gap-2 h-12 text-sm md:text-md"
+          onClick={() => setIsCreateAutomationOpen(true)}
+        >
           <Plus className="h-4 w-4 md:h-5 md:w-5" />
           Create Automation
         </Button>
@@ -30,6 +35,11 @@ export default function ActionButtons() {
       <AddIoTDeviceForm 
         open={isAddDeviceOpen} 
         onOpenChange={setIsAddDeviceOpen} 
+      />
+
+      <CreateAutomationForm
+        open={isCreateAutomationOpen}
+        onOpenChange={setIsCreateAutomationOpen}
       />
     </>
   );
