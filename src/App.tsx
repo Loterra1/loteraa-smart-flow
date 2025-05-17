@@ -9,6 +9,7 @@ import SignupPage from "./pages/SignupPage";
 import Dashboard from "./pages/Dashboard";
 import DevicesPage from "./pages/DevicesPage";
 import DeviceDetailPage from "./pages/DeviceDetailPage";
+import AutomationPage from "./pages/AutomationPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,7 +26,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/devices" element={<DevicesPage />} />
           <Route path="/devices/:deviceId" element={<DeviceDetailPage />} />
-          <Route path="/automation" element={<Dashboard />} />
+          <Route path="/automation" element={<AutomationPage />} />
           <Route path="/smart-contracts" element={<Dashboard />} />
           <Route path="/earnings" element={<Dashboard />} />
           <Route path="/notifications" element={<Dashboard />} />
