@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -11,7 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { PlusCircle, ChevronDown, Check } from "lucide-react";
+import { PlusCircle, ChevronDown, Check, Database, Cloud, FileText, ExternalLink, Search, Devices } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -34,11 +35,15 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
   const [selectedActions, setSelectedActions] = useState<string[]>(["smartContract"]);
   const [contractActionType, setContractActionType] = useState<string>("bind");
   const [notificationDestination, setNotificationDestination] = useState<string>("email");
+  
+  // Data source type selection
+  const [dataSourceType, setDataSourceType] = useState<string[]>(["iotDevice"]);
 
   // Form data state to collect all inputs
   const [formData, setFormData] = useState({
     name: "Heat Alert Automation",
     description: "",
+    dataSourceType: ["iotDevice"],
     device: "device1",
     dataFeed: "temperature",
     conditions: [{ field: "temperature", operation: ">", value: "30", unit: "°C" }],
@@ -62,6 +67,30 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
     paymentRecipient: "Device owner",
     paymentReason: "Compensation for data usage"
   });
+
+  // Helper to check if a data source is selected
+  const isDataSourceSelected = (sourceType: string) => {
+    return dataSourceType.includes(sourceType);
+  };
+
+  // Handler to toggle data source selection
+  const toggleDataSource = (sourceType: string) => {
+    setDataSourceType(prev => {
+      if (prev.includes(sourceType)) {
+        return prev.filter(s => s !== sourceType);
+      } else {
+        return [...prev, sourceType];
+      }
+    });
+    
+    // Update form data
+    setFormData(prev => ({
+      ...prev,
+      dataSourceType: prev.dataSourceType.includes(sourceType) 
+        ? prev.dataSourceType.filter(s => s !== sourceType)
+        : [...prev.dataSourceType, sourceType]
+    }));
+  };
 
   // Helper to check if an action is selected
   const isActionSelected = (actionType: string) => {
@@ -160,6 +189,65 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                   onChange={(e) => handleInputChange("description", e.target.value)}
                 />
               </div>
+              
+              {/* Data Source Type Selection */}
+              <div className="space-y-2">
+                <Label className="text-white">Choose Data Source Type</Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <div className="flex items-center space-x-2 p-3 border border-loteraa-gray/30 rounded-md bg-loteraa-gray/10">
+                    <Checkbox 
+                      id="iotDevice" 
+                      checked={isDataSourceSelected("iotDevice")} 
+                      onCheckedChange={() => toggleDataSource("iotDevice")}
+                      className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
+                    />
+                    <Label htmlFor="iotDevice" className="flex items-center cursor-pointer">
+                      <Devices className="h-4 w-4 mr-2" />
+                      <span>My IoT Device</span>
+                    </Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2 p-3 border border-loteraa-gray/30 rounded-md bg-loteraa-gray/10">
+                    <Checkbox 
+                      id="openSourceAPI" 
+                      checked={isDataSourceSelected("openSourceAPI")} 
+                      onCheckedChange={() => toggleDataSource("openSourceAPI")}
+                      className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
+                    />
+                    <Label htmlFor="openSourceAPI" className="flex items-center cursor-pointer">
+                      <Cloud className="h-4 w-4 mr-2" />
+                      <span>Public Open Source API</span>
+                    </Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2 p-3 border border-loteraa-gray/30 rounded-md bg-loteraa-gray/10">
+                    <Checkbox 
+                      id="researchData" 
+                      checked={isDataSourceSelected("researchData")} 
+                      onCheckedChange={() => toggleDataSource("researchData")}
+                      className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
+                    />
+                    <Label htmlFor="researchData" className="flex items-center cursor-pointer">
+                      <FileText className="h-4 w-4 mr-2" />
+                      <span>Research Data</span>
+                    </Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2 p-3 border border-loteraa-gray/30 rounded-md bg-loteraa-gray/10">
+                    <Checkbox 
+                      id="externalPlatform" 
+                      checked={isDataSourceSelected("externalPlatform")} 
+                      onCheckedChange={() => toggleDataSource("externalPlatform")}
+                      className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
+                    />
+                    <Label htmlFor="externalPlatform" className="flex items-center cursor-pointer">
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      <span>External Platform API</span>
+                    </Label>
+                  </div>
+                </div>
+              </div>
+              
               <div className="space-y-2">
                 <Label htmlFor="select-device" className="text-white">Select IoT Device</Label>
                 <Select 
