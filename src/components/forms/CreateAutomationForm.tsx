@@ -16,6 +16,8 @@ import { PlusCircle, ChevronDown, Check } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 
 interface CreateAutomationFormProps {
   open: boolean;
@@ -28,10 +30,32 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
   const [conditions, setConditions] = useState([{ field: "temperature", operation: ">", value: "30", unit: "°C" }]);
   const [triggerMethod, setTriggerMethod] = useState<string>("onChange");
   const [selectedActionType, setSelectedActionType] = useState<string>("smartContract");
+  const [contractActionType, setContractActionType] = useState<string>("bind");
+  const [notificationDestination, setNotificationDestination] = useState<string>("email");
+
+  // Form data state to collect all inputs
+  const [formData, setFormData] = useState({
+    name: "Heat Alert Automation",
+    description: "",
+    device: "device1",
+    dataFeed: "temperature",
+    conditions: [{ field: "temperature", operation: ">", value: "30", unit: "°C" }],
+    frequency: "10min",
+    triggerMethod: "onChange",
+    actionType: "smartContract",
+    contractMethod: "transfer(address, uint256)",
+    authToken: "",
+    parameters: "",
+    notificationMessage: "Temperature exceed 30°C",
+    notificationDestination: "email",
+    paymentAmount: "",
+    paymentRecipient: "Device owner",
+    paymentReason: "Compensation for data usage"
+  });
 
   // Mock data for dropdowns
   const connectedDevices = [
-    { id: "device1", name: "Temperature Sensor" },
+    { id: "device1", name: "Greenhouse sensor #12" },
     { id: "device2", name: "Humidity Sensor" },
     { id: "device3", name: "Power Meter" },
   ];
@@ -46,6 +70,22 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
     "device1": ["temperature"],
     "device2": ["humidity"],
     "device3": ["voltage", "current", "power"]
+  };
+
+  // Handler to update the form data
+  const handleInputChange = (field: string, value: string) => {
+    setFormData({
+      ...formData,
+      [field]: value
+    });
+  };
+
+  // Handler to save the automation
+  const handleSaveAutomation = () => {
+    // Here you would typically send the formData to your API
+    console.log("Saving automation:", formData);
+    // Close the dialog
+    onOpenChange(false);
   };
 
   return (
@@ -71,6 +111,8 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                   id="automation-name" 
                   placeholder="Enter automation name" 
                   className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
                 />
               </div>
               <div className="space-y-2">
@@ -79,11 +121,16 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                   id="automation-description" 
                   placeholder="Describe what this automation does" 
                   className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white min-h-[80px]"
+                  value={formData.description}
+                  onChange={(e) => handleInputChange("description", e.target.value)}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="select-device" className="text-white">Select IoT Device</Label>
-                <Select>
+                <Select 
+                  value={formData.device}
+                  onValueChange={(value) => handleInputChange("device", value)}
+                >
                   <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
                     <SelectValue placeholder="Choose from connected devices" />
                   </SelectTrigger>
@@ -98,7 +145,10 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
               </div>
               <div className="space-y-2">
                 <Label htmlFor="select-data-feed" className="text-white">Select Data Feed</Label>
-                <Select>
+                <Select
+                  value={formData.dataFeed}
+                  onValueChange={(value) => handleInputChange("dataFeed", value)}
+                >
                   <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
                     <SelectValue placeholder="Temperature" />
                   </SelectTrigger>
@@ -195,7 +245,10 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                 
                 <div className="space-y-2 mt-4">
                   <Label className="text-white">Frequency/Interval</Label>
-                  <Select>
+                  <Select
+                    value={formData.frequency}
+                    onValueChange={(value) => handleInputChange("frequency", value)}
+                  >
                     <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
                       <SelectValue placeholder="Every 10 mins" />
                     </SelectTrigger>
@@ -213,7 +266,10 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                   <Label className="text-white">Trigger Method</Label>
                   <RadioGroup 
                     defaultValue={triggerMethod}
-                    onValueChange={setTriggerMethod}
+                    onValueChange={(value) => {
+                      setTriggerMethod(value);
+                      handleInputChange("triggerMethod", value);
+                    }}
                     className="flex space-x-4"
                   >
                     <div className="flex items-center space-x-2">
@@ -259,59 +315,185 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                   <Label htmlFor="action-type" className="text-white">Action Type</Label>
                   <Select 
                     value={selectedActionType}
-                    onValueChange={setSelectedActionType}
+                    onValueChange={(value) => {
+                      setSelectedActionType(value);
+                      handleInputChange("actionType", value);
+                    }}
                   >
                     <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
                       <SelectValue placeholder="Smart Contract" />
                     </SelectTrigger>
                     <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
                       <SelectItem value="smartContract" className="text-white">Smart Contract</SelectItem>
-                      <SelectItem value="payment" className="text-white">Payment Transfer</SelectItem>
+                      <SelectItem value="payment" className="text-white">Token Payment</SelectItem>
                       <SelectItem value="notification" className="text-white">Send Notification</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 {selectedActionType === "smartContract" && (
-                  <div className="space-y-2">
-                    <Label htmlFor="select-contract" className="text-white">Select Smart Contract</Label>
-                    <Select>
-                      <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                        <SelectValue placeholder="Bind Existing" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                        <SelectItem value="bind" className="text-white">Bind Existing</SelectItem>
-                        <SelectItem value="create" className="text-white">Create New</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="select-contract" className="text-white">Select Smart Contract</Label>
+                      <Select
+                        value={contractActionType}
+                        onValueChange={setContractActionType}
+                      >
+                        <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                          <SelectValue placeholder="Bind Existing" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                          <SelectItem value="bind" className="text-white">Bind Existing</SelectItem>
+                          <SelectItem value="create" className="text-white">Create New</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    {contractActionType === "bind" && (
+                      <>
+                        <div className="space-y-2">
+                          <Label htmlFor="contract-method" className="text-white">Contract Method to Call</Label>
+                          <Select
+                            value={formData.contractMethod}
+                            onValueChange={(value) => handleInputChange("contractMethod", value)}
+                          >
+                            <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                              <SelectValue placeholder="transfer(address, uint256)" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                              <SelectItem value="transfer(address, uint256)" className="text-white">transfer(address, uint256)</SelectItem>
+                              <SelectItem value="approve(address, uint256)" className="text-white">approve(address, uint256)</SelectItem>
+                              <SelectItem value="mint(address, uint256)" className="text-white">mint(address, uint256)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="auth-token" className="text-white">Authorization Token (if required)</Label>
+                          <Input 
+                            id="auth-token" 
+                            placeholder="Enter authorization token" 
+                            className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                            value={formData.authToken}
+                            onChange={(e) => handleInputChange("authToken", e.target.value)}
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="parameters" className="text-white">Parameters (if required)</Label>
+                          <Input 
+                            id="parameters" 
+                            placeholder="Enter wallet address or dynamic variable" 
+                            className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                            value={formData.parameters}
+                            onChange={(e) => handleInputChange("parameters", e.target.value)}
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {selectedActionType === "notification" && (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="notification-message" className="text-white">Message</Label>
+                      <Input 
+                        id="notification-message" 
+                        placeholder="Temperature exceed 30°C" 
+                        className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                        value={formData.notificationMessage}
+                        onChange={(e) => handleInputChange("notificationMessage", e.target.value)}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="notification-destination" className="text-white">Send to</Label>
+                      <Select
+                        value={notificationDestination}
+                        onValueChange={(value) => {
+                          setNotificationDestination(value);
+                          handleInputChange("notificationDestination", value);
+                        }}
+                      >
+                        <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                          <SelectValue placeholder="Your email" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                          <SelectItem value="email" className="text-white">Your email</SelectItem>
+                          <SelectItem value="dashboard" className="text-white">Dashboard</SelectItem>
+                          <SelectItem value="webhook" className="text-white">Webhook</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    {notificationDestination === "webhook" && (
+                      <div className="space-y-2">
+                        <Label htmlFor="webhook-url" className="text-white">Webhook URL</Label>
+                        <Input 
+                          id="webhook-url" 
+                          placeholder="https://" 
+                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
 
                 {selectedActionType === "payment" && (
-                  <div className="space-y-2">
-                    <Label htmlFor="recipient" className="text-white">Recipient Address</Label>
-                    <Input 
-                      id="recipient" 
-                      placeholder="0x..." 
-                      className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                    />
-                    <Label htmlFor="amount" className="text-white mt-4">Amount</Label>
-                    <Input 
-                      id="amount" 
-                      placeholder="0.01" 
-                      className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                    />
-                  </div>
-                )}
-                
-                {selectedActionType === "notification" && (
-                  <div className="space-y-2">
-                    <Label htmlFor="webhook" className="text-white">Webhook URL</Label>
-                    <Input 
-                      id="webhook" 
-                      placeholder="https://" 
-                      className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                    />
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="payment-amount" className="text-white">Send</Label>
+                      <div className="flex space-x-2">
+                        <Input 
+                          id="payment-amount" 
+                          placeholder="Amount" 
+                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                          value={formData.paymentAmount}
+                          onChange={(e) => handleInputChange("paymentAmount", e.target.value)}
+                        />
+                        <span className="flex items-center text-white">sensor token</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="payment-recipient" className="text-white">To</Label>
+                      <Select
+                        value={formData.paymentRecipient}
+                        onValueChange={(value) => handleInputChange("paymentRecipient", value)}
+                      >
+                        <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                          <SelectValue placeholder="Device owner" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                          <SelectItem value="Device owner" className="text-white">Device owner</SelectItem>
+                          <SelectItem value="Developer" className="text-white">Developer</SelectItem>
+                          <SelectItem value="Custom" className="text-white">Custom address</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    {formData.paymentRecipient === "Custom" && (
+                      <div className="space-y-2">
+                        <Label htmlFor="custom-address" className="text-white">Custom Address</Label>
+                        <Input 
+                          id="custom-address" 
+                          placeholder="0x..." 
+                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                        />
+                      </div>
+                    )}
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="payment-reason" className="text-white">Reason</Label>
+                      <Input 
+                        id="payment-reason" 
+                        placeholder="Compensation for data usage" 
+                        className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                        value={formData.paymentReason}
+                        onChange={(e) => handleInputChange("paymentReason", e.target.value)}
+                      />
+                    </div>
                   </div>
                 )}
                 
@@ -327,11 +509,80 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                   <Button 
                     type="button" 
                     className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white"
-                    onClick={() => onOpenChange(false)}
+                    onClick={() => document.getElementById('step-4-trigger')?.click()}
                   >
-                    Create Automation
+                    Next
                   </Button>
                 </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* Step 4: Review & Save */}
+          <AccordionItem value="step-4" className="border-loteraa-gray/30">
+            <AccordionTrigger id="step-4-trigger" className="text-white hover:text-loteraa-purple">
+              Step 4: Review & Save
+            </AccordionTrigger>
+            <AccordionContent className="text-white/80 space-y-6">
+              <div className="rounded-md border border-loteraa-gray/30 p-4 bg-loteraa-gray/5">
+                <h3 className="font-medium text-lg text-white mb-4">Summary</h3>
+                
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div className="text-white/60">Name:</div>
+                    <div className="text-white sm:col-span-2">{formData.name}</div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div className="text-white/60">Device:</div>
+                    <div className="text-white sm:col-span-2">
+                      {connectedDevices.find(d => d.id === formData.device)?.name || formData.device}
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div className="text-white/60">Trigger:</div>
+                    <div className="text-white sm:col-span-2">
+                      Temperature &gt; 30°C every 10 mins
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div className="text-white/60">Action:</div>
+                    <div className="text-white sm:col-span-2">
+                      {formData.actionType === "smartContract" 
+                        ? "Trigger Smart Contract " + (selectedActionType === "notification" ? "+ notify" : "")
+                        : formData.actionType === "payment" 
+                          ? "Send payment" + (selectedActionType === "notification" ? " + notify" : "")
+                          : "Send notification"}
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div className="text-white/60">Status:</div>
+                    <div className="text-white sm:col-span-2">
+                      <span className="text-yellow-400">Will be active after saving</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="border-loteraa-gray/30 text-white"
+                  onClick={() => onOpenChange(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="button" 
+                  className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white"
+                  onClick={handleSaveAutomation}
+                >
+                  Save & Activate
+                </Button>
               </div>
             </AccordionContent>
           </AccordionItem>
