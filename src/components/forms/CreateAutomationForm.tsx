@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -31,6 +32,7 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
   const [selectedActionType, setSelectedActionType] = useState<string>("smartContract");
   const [contractActionType, setContractActionType] = useState<string>("bind");
   const [notificationDestination, setNotificationDestination] = useState<string>("email");
+  const [sendNotificationAfterAction, setSendNotificationAfterAction] = useState<boolean>(false);
 
   // Form data state to collect all inputs
   const [formData, setFormData] = useState({
@@ -394,30 +396,37 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                     {/* Add notification option after smart contract parameters */}
                     <div className="space-y-2 pt-4 border-t border-loteraa-gray/30">
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="send-notification" className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple" />
+                        <Checkbox 
+                          id="send-notification" 
+                          className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
+                          checked={sendNotificationAfterAction}
+                          onCheckedChange={(checked) => setSendNotificationAfterAction(!!checked)}
+                        />
                         <Label htmlFor="send-notification" className="text-white">Also send notification</Label>
                       </div>
                       
-                      <div className="pl-6 space-y-2 mt-2">
-                        <Label htmlFor="notification-message-sc" className="text-white">Message</Label>
-                        <Input 
-                          id="notification-message-sc" 
-                          placeholder="Temperature exceed 30°C" 
-                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                        />
-                        
-                        <Label htmlFor="notification-destination-sc" className="text-white">Send to</Label>
-                        <Select>
-                          <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                            <SelectValue placeholder="Your email" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                            <SelectItem value="email" className="text-white">Your email</SelectItem>
-                            <SelectItem value="dashboard" className="text-white">Dashboard</SelectItem>
-                            <SelectItem value="webhook" className="text-white">Webhook</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                      {sendNotificationAfterAction && (
+                        <div className="pl-6 space-y-2 mt-2">
+                          <Label htmlFor="notification-message-sc" className="text-white">Message</Label>
+                          <Input 
+                            id="notification-message-sc" 
+                            placeholder="Temperature exceed 30°C" 
+                            className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                          />
+                          
+                          <Label htmlFor="notification-destination-sc" className="text-white">Send to</Label>
+                          <Select>
+                            <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                              <SelectValue placeholder="Your email" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                              <SelectItem value="email" className="text-white">Your email</SelectItem>
+                              <SelectItem value="dashboard" className="text-white">Dashboard</SelectItem>
+                              <SelectItem value="webhook" className="text-white">Webhook</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -526,7 +535,10 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                     {/* Add notification option after payment configuration */}
                     <div className="space-y-2 pt-4 border-t border-loteraa-gray/30">
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="send-notification-payment" className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple" />
+                        <Checkbox 
+                          id="send-notification-payment" 
+                          className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
+                        />
                         <Label htmlFor="send-notification-payment" className="text-white">Also send notification</Label>
                       </div>
                       
@@ -608,9 +620,9 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                     <div className="text-white/60">Action:</div>
                     <div className="text-white sm:col-span-2">
                       {formData.actionType === "smartContract" 
-                        ? "Trigger Smart Contract " + (selectedActionType === "notification" ? "+ notify" : "")
+                        ? "Trigger Smart Contract " + (sendNotificationAfterAction ? "+ notify" : "")
                         : formData.actionType === "payment" 
-                          ? "Send payment" + (selectedActionType === "notification" ? " + notify" : "")
+                          ? "Send payment" + (sendNotificationAfterAction ? " + notify" : "")
                           : "Send notification"}
                     </div>
                   </div>
