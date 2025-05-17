@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -325,8 +324,8 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                     </SelectTrigger>
                     <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
                       <SelectItem value="smartContract" className="text-white">Smart Contract</SelectItem>
-                      <SelectItem value="payment" className="text-white">Token Payment</SelectItem>
                       <SelectItem value="notification" className="text-white">Send Notification</SelectItem>
+                      <SelectItem value="payment" className="text-white">Token Payment</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
