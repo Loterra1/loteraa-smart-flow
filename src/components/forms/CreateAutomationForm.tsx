@@ -391,6 +391,35 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                         </div>
                       </>
                     )}
+
+                    {/* Add notification option after smart contract parameters */}
+                    <div className="space-y-2 pt-4 border-t border-loteraa-gray/30">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="send-notification" className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple" />
+                        <Label htmlFor="send-notification" className="text-white">Also send notification</Label>
+                      </div>
+                      
+                      <div className="pl-6 space-y-2 mt-2">
+                        <Label htmlFor="notification-message-sc" className="text-white">Message</Label>
+                        <Input 
+                          id="notification-message-sc" 
+                          placeholder="Temperature exceed 30°C" 
+                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                        />
+                        
+                        <Label htmlFor="notification-destination-sc" className="text-white">Send to</Label>
+                        <Select>
+                          <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                            <SelectValue placeholder="Your email" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                            <SelectItem value="email" className="text-white">Your email</SelectItem>
+                            <SelectItem value="dashboard" className="text-white">Dashboard</SelectItem>
+                            <SelectItem value="webhook" className="text-white">Webhook</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
                   </div>
                 )}
 
@@ -493,6 +522,35 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                         value={formData.paymentReason}
                         onChange={(e) => handleInputChange("paymentReason", e.target.value)}
                       />
+                    </div>
+                    
+                    {/* Add notification option after payment configuration */}
+                    <div className="space-y-2 pt-4 border-t border-loteraa-gray/30">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="send-notification-payment" className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple" />
+                        <Label htmlFor="send-notification-payment" className="text-white">Also send notification</Label>
+                      </div>
+                      
+                      <div className="pl-6 space-y-2 mt-2">
+                        <Label htmlFor="notification-message-payment" className="text-white">Message</Label>
+                        <Input 
+                          id="notification-message-payment" 
+                          placeholder="Payment of sensor tokens sent" 
+                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                        />
+                        
+                        <Label htmlFor="notification-destination-payment" className="text-white">Send to</Label>
+                        <Select>
+                          <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                            <SelectValue placeholder="Your email" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                            <SelectItem value="email" className="text-white">Your email</SelectItem>
+                            <SelectItem value="dashboard" className="text-white">Dashboard</SelectItem>
+                            <SelectItem value="webhook" className="text-white">Webhook</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </div>
                 )}
