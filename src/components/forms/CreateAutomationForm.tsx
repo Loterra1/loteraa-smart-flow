@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -18,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface CreateAutomationFormProps {
   open: boolean;
@@ -29,10 +29,11 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
   const [step, setStep] = useState<string>("step-1");
   const [conditions, setConditions] = useState([{ field: "temperature", operation: ">", value: "30", unit: "°C" }]);
   const [triggerMethod, setTriggerMethod] = useState<string>("onChange");
-  const [selectedActionType, setSelectedActionType] = useState<string>("smartContract");
+  
+  // Replace single selection with multiple selections
+  const [selectedActions, setSelectedActions] = useState<string[]>(["smartContract"]);
   const [contractActionType, setContractActionType] = useState<string>("bind");
   const [notificationDestination, setNotificationDestination] = useState<string>("email");
-  const [sendNotificationAfterAction, setSendNotificationAfterAction] = useState<boolean>(false);
 
   // Form data state to collect all inputs
   const [formData, setFormData] = useState({
@@ -43,16 +44,49 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
     conditions: [{ field: "temperature", operation: ">", value: "30", unit: "°C" }],
     frequency: "10min",
     triggerMethod: "onChange",
-    actionType: "smartContract",
+    // Action types
+    actions: {
+      smartContract: true,
+      notification: false,
+      payment: false
+    },
+    // Smart Contract settings
     contractMethod: "transfer(address, uint256)",
     authToken: "",
     parameters: "",
+    // Notification settings
     notificationMessage: "Temperature exceed 30°C",
     notificationDestination: "email",
+    // Payment settings
     paymentAmount: "",
     paymentRecipient: "Device owner",
     paymentReason: "Compensation for data usage"
   });
+
+  // Helper to check if an action is selected
+  const isActionSelected = (actionType: string) => {
+    return selectedActions.includes(actionType);
+  };
+
+  // Handler to toggle action selection
+  const toggleAction = (actionType: string) => {
+    setSelectedActions(prev => {
+      if (prev.includes(actionType)) {
+        return prev.filter(a => a !== actionType);
+      } else {
+        return [...prev, actionType];
+      }
+    });
+    
+    // Update form data
+    setFormData(prev => ({
+      ...prev,
+      actions: {
+        ...prev.actions,
+        [actionType]: !prev.actions[actionType as keyof typeof prev.actions]
+      }
+    }));
+  };
 
   // Mock data for dropdowns
   const connectedDevices = [
@@ -305,266 +339,231 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
             </AccordionContent>
           </AccordionItem>
 
-          {/* Step 3: Choose Action */}
+          {/* Step 3: Choose Actions */}
           <AccordionItem value="step-3" className="border-loteraa-gray/30">
             <AccordionTrigger id="step-3-trigger" className="text-white hover:text-loteraa-purple">
-              Step 3: Choose Action
+              Step 3: Choose Actions
             </AccordionTrigger>
             <AccordionContent className="text-white/80 space-y-4">
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="action-type" className="text-white">Action Type</Label>
-                  <Select 
-                    value={selectedActionType}
-                    onValueChange={(value) => {
-                      setSelectedActionType(value);
-                      handleInputChange("actionType", value);
-                    }}
-                  >
-                    <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                      <SelectValue placeholder="Smart Contract" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                      <SelectItem value="smartContract" className="text-white">Smart Contract</SelectItem>
-                      <SelectItem value="notification" className="text-white">Send Notification</SelectItem>
-                      <SelectItem value="payment" className="text-white">Token Payment</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {selectedActionType === "smartContract" && (
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="select-contract" className="text-white">Select Smart Contract</Label>
-                      <Select
-                        value={contractActionType}
-                        onValueChange={setContractActionType}
-                      >
-                        <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                          <SelectValue placeholder="Bind Existing" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                          <SelectItem value="bind" className="text-white">Bind Existing</SelectItem>
-                          <SelectItem value="create" className="text-white">Create New</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    {contractActionType === "bind" && (
-                      <>
-                        <div className="space-y-2">
-                          <Label htmlFor="contract-method" className="text-white">Contract Method to Call</Label>
-                          <Select
-                            value={formData.contractMethod}
-                            onValueChange={(value) => handleInputChange("contractMethod", value)}
-                          >
-                            <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                              <SelectValue placeholder="transfer(address, uint256)" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                              <SelectItem value="transfer(address, uint256)" className="text-white">transfer(address, uint256)</SelectItem>
-                              <SelectItem value="approve(address, uint256)" className="text-white">approve(address, uint256)</SelectItem>
-                              <SelectItem value="mint(address, uint256)" className="text-white">mint(address, uint256)</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="auth-token" className="text-white">Authorization Token (if required)</Label>
-                          <Input 
-                            id="auth-token" 
-                            placeholder="Enter authorization token" 
-                            className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                            value={formData.authToken}
-                            onChange={(e) => handleInputChange("authToken", e.target.value)}
+                  <Label className="text-white text-lg">Select Actions</Label>
+                  <p className="text-white/60 text-sm">Select one or more actions to execute when conditions are met.</p>
+                  
+                  {/* Action type selection using toggle group */}
+                  <div className="flex flex-col space-y-4 mt-4">
+                    {/* Smart Contract Action */}
+                    <div className="border border-loteraa-gray/30 rounded-md p-4 bg-loteraa-gray/10">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="smartContract-action" 
+                            className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
+                            checked={isActionSelected("smartContract")}
+                            onCheckedChange={() => toggleAction("smartContract")}
                           />
+                          <Label htmlFor="smartContract-action" className="text-white font-medium">Smart Contract</Label>
                         </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="parameters" className="text-white">Parameters (if required)</Label>
-                          <Input 
-                            id="parameters" 
-                            placeholder="Enter wallet address or dynamic variable" 
-                            className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                            value={formData.parameters}
-                            onChange={(e) => handleInputChange("parameters", e.target.value)}
-                          />
-                        </div>
-                      </>
-                    )}
-
-                    {/* Add notification option after smart contract parameters */}
-                    <div className="space-y-2 pt-4 border-t border-loteraa-gray/30">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox 
-                          id="send-notification" 
-                          className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
-                          checked={sendNotificationAfterAction}
-                          onCheckedChange={(checked) => setSendNotificationAfterAction(!!checked)}
-                        />
-                        <Label htmlFor="send-notification" className="text-white">Also send notification</Label>
                       </div>
                       
-                      {sendNotificationAfterAction && (
-                        <div className="pl-6 space-y-2 mt-2">
-                          <Label htmlFor="notification-message-sc" className="text-white">Message</Label>
-                          <Input 
-                            id="notification-message-sc" 
-                            placeholder="Temperature exceed 30°C" 
-                            className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                          />
+                      {isActionSelected("smartContract") && (
+                        <div className="space-y-4 pl-6 border-l-2 border-loteraa-gray/20 ml-1">
+                          <div className="space-y-2">
+                            <Label htmlFor="select-contract" className="text-white">Select Smart Contract</Label>
+                            <Select
+                              value={contractActionType}
+                              onValueChange={setContractActionType}
+                            >
+                              <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                                <SelectValue placeholder="Bind Existing" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                                <SelectItem value="bind" className="text-white">Bind Existing</SelectItem>
+                                <SelectItem value="create" className="text-white">Create New</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
                           
-                          <Label htmlFor="notification-destination-sc" className="text-white">Send to</Label>
-                          <Select>
-                            <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                              <SelectValue placeholder="Your email" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                              <SelectItem value="email" className="text-white">Your email</SelectItem>
-                              <SelectItem value="dashboard" className="text-white">Dashboard</SelectItem>
-                              <SelectItem value="webhook" className="text-white">Webhook</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          {contractActionType === "bind" && (
+                            <>
+                              <div className="space-y-2">
+                                <Label htmlFor="contract-method" className="text-white">Contract Method to Call</Label>
+                                <Select
+                                  value={formData.contractMethod}
+                                  onValueChange={(value) => handleInputChange("contractMethod", value)}
+                                >
+                                  <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                                    <SelectValue placeholder="transfer(address, uint256)" />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                                    <SelectItem value="transfer(address, uint256)" className="text-white">transfer(address, uint256)</SelectItem>
+                                    <SelectItem value="approve(address, uint256)" className="text-white">approve(address, uint256)</SelectItem>
+                                    <SelectItem value="mint(address, uint256)" className="text-white">mint(address, uint256)</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              
+                              <div className="space-y-2">
+                                <Label htmlFor="auth-token" className="text-white">Authorization Token (if required)</Label>
+                                <Input 
+                                  id="auth-token" 
+                                  placeholder="Enter authorization token" 
+                                  className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                                  value={formData.authToken}
+                                  onChange={(e) => handleInputChange("authToken", e.target.value)}
+                                />
+                              </div>
+                              
+                              <div className="space-y-2">
+                                <Label htmlFor="parameters" className="text-white">Parameters (if required)</Label>
+                                <Input 
+                                  id="parameters" 
+                                  placeholder="Enter wallet address or dynamic variable" 
+                                  className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                                  value={formData.parameters}
+                                  onChange={(e) => handleInputChange("parameters", e.target.value)}
+                                />
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Notification Action */}
+                    <div className="border border-loteraa-gray/30 rounded-md p-4 bg-loteraa-gray/10">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="notification-action" 
+                            className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
+                            checked={isActionSelected("notification")}
+                            onCheckedChange={() => toggleAction("notification")}
+                          />
+                          <Label htmlFor="notification-action" className="text-white font-medium">Send Notification</Label>
+                        </div>
+                      </div>
+                      
+                      {isActionSelected("notification") && (
+                        <div className="space-y-4 pl-6 border-l-2 border-loteraa-gray/20 ml-1">
+                          <div className="space-y-2">
+                            <Label htmlFor="notification-message" className="text-white">Message</Label>
+                            <Input 
+                              id="notification-message" 
+                              placeholder="Temperature exceed 30°C" 
+                              className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                              value={formData.notificationMessage}
+                              onChange={(e) => handleInputChange("notificationMessage", e.target.value)}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="notification-destination" className="text-white">Send to</Label>
+                            <Select
+                              value={notificationDestination}
+                              onValueChange={(value) => {
+                                setNotificationDestination(value);
+                                handleInputChange("notificationDestination", value);
+                              }}
+                            >
+                              <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                                <SelectValue placeholder="Your email" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                                <SelectItem value="email" className="text-white">Your email</SelectItem>
+                                <SelectItem value="dashboard" className="text-white">Dashboard</SelectItem>
+                                <SelectItem value="webhook" className="text-white">Webhook</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          {notificationDestination === "webhook" && (
+                            <div className="space-y-2">
+                              <Label htmlFor="webhook-url" className="text-white">Webhook URL</Label>
+                              <Input 
+                                id="webhook-url" 
+                                placeholder="https://" 
+                                className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Token Payment Action */}
+                    <div className="border border-loteraa-gray/30 rounded-md p-4 bg-loteraa-gray/10">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="payment-action" 
+                            className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
+                            checked={isActionSelected("payment")}
+                            onCheckedChange={() => toggleAction("payment")}
+                          />
+                          <Label htmlFor="payment-action" className="text-white font-medium">Token Payment</Label>
+                        </div>
+                      </div>
+                      
+                      {isActionSelected("payment") && (
+                        <div className="space-y-4 pl-6 border-l-2 border-loteraa-gray/20 ml-1">
+                          <div className="space-y-2">
+                            <Label htmlFor="payment-amount" className="text-white">Send</Label>
+                            <div className="flex space-x-2">
+                              <Input 
+                                id="payment-amount" 
+                                placeholder="Amount" 
+                                className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                                value={formData.paymentAmount}
+                                onChange={(e) => handleInputChange("paymentAmount", e.target.value)}
+                              />
+                              <span className="flex items-center text-white">sensor token</span>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="payment-recipient" className="text-white">To</Label>
+                            <Select
+                              value={formData.paymentRecipient}
+                              onValueChange={(value) => handleInputChange("paymentRecipient", value)}
+                            >
+                              <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                                <SelectValue placeholder="Device owner" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
+                                <SelectItem value="Device owner" className="text-white">Device owner</SelectItem>
+                                <SelectItem value="Developer" className="text-white">Developer</SelectItem>
+                                <SelectItem value="Custom" className="text-white">Custom address</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          
+                          {formData.paymentRecipient === "Custom" && (
+                            <div className="space-y-2">
+                              <Label htmlFor="custom-address" className="text-white">Custom Address</Label>
+                              <Input 
+                                id="custom-address" 
+                                placeholder="0x..." 
+                                className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                              />
+                            </div>
+                          )}
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="payment-reason" className="text-white">Reason</Label>
+                            <Input 
+                              id="payment-reason" 
+                              placeholder="Compensation for data usage" 
+                              className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                              value={formData.paymentReason}
+                              onChange={(e) => handleInputChange("paymentReason", e.target.value)}
+                            />
+                          </div>
                         </div>
                       )}
                     </div>
                   </div>
-                )}
-
-                {selectedActionType === "notification" && (
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="notification-message" className="text-white">Message</Label>
-                      <Input 
-                        id="notification-message" 
-                        placeholder="Temperature exceed 30°C" 
-                        className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                        value={formData.notificationMessage}
-                        onChange={(e) => handleInputChange("notificationMessage", e.target.value)}
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="notification-destination" className="text-white">Send to</Label>
-                      <Select
-                        value={notificationDestination}
-                        onValueChange={(value) => {
-                          setNotificationDestination(value);
-                          handleInputChange("notificationDestination", value);
-                        }}
-                      >
-                        <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                          <SelectValue placeholder="Your email" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                          <SelectItem value="email" className="text-white">Your email</SelectItem>
-                          <SelectItem value="dashboard" className="text-white">Dashboard</SelectItem>
-                          <SelectItem value="webhook" className="text-white">Webhook</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    {notificationDestination === "webhook" && (
-                      <div className="space-y-2">
-                        <Label htmlFor="webhook-url" className="text-white">Webhook URL</Label>
-                        <Input 
-                          id="webhook-url" 
-                          placeholder="https://" 
-                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                        />
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {selectedActionType === "payment" && (
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="payment-amount" className="text-white">Send</Label>
-                      <div className="flex space-x-2">
-                        <Input 
-                          id="payment-amount" 
-                          placeholder="Amount" 
-                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                          value={formData.paymentAmount}
-                          onChange={(e) => handleInputChange("paymentAmount", e.target.value)}
-                        />
-                        <span className="flex items-center text-white">sensor token</span>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="payment-recipient" className="text-white">To</Label>
-                      <Select
-                        value={formData.paymentRecipient}
-                        onValueChange={(value) => handleInputChange("paymentRecipient", value)}
-                      >
-                        <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                          <SelectValue placeholder="Device owner" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                          <SelectItem value="Device owner" className="text-white">Device owner</SelectItem>
-                          <SelectItem value="Developer" className="text-white">Developer</SelectItem>
-                          <SelectItem value="Custom" className="text-white">Custom address</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    {formData.paymentRecipient === "Custom" && (
-                      <div className="space-y-2">
-                        <Label htmlFor="custom-address" className="text-white">Custom Address</Label>
-                        <Input 
-                          id="custom-address" 
-                          placeholder="0x..." 
-                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                        />
-                      </div>
-                    )}
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="payment-reason" className="text-white">Reason</Label>
-                      <Input 
-                        id="payment-reason" 
-                        placeholder="Compensation for data usage" 
-                        className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                        value={formData.paymentReason}
-                        onChange={(e) => handleInputChange("paymentReason", e.target.value)}
-                      />
-                    </div>
-                    
-                    {/* Add notification option after payment configuration */}
-                    <div className="space-y-2 pt-4 border-t border-loteraa-gray/30">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox 
-                          id="send-notification-payment" 
-                          className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
-                        />
-                        <Label htmlFor="send-notification-payment" className="text-white">Also send notification</Label>
-                      </div>
-                      
-                      <div className="pl-6 space-y-2 mt-2">
-                        <Label htmlFor="notification-message-payment" className="text-white">Message</Label>
-                        <Input 
-                          id="notification-message-payment" 
-                          placeholder="Payment of sensor tokens sent" 
-                          className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
-                        />
-                        
-                        <Label htmlFor="notification-destination-payment" className="text-white">Send to</Label>
-                        <Select>
-                          <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
-                            <SelectValue placeholder="Your email" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-loteraa-black border-loteraa-gray/30">
-                            <SelectItem value="email" className="text-white">Your email</SelectItem>
-                            <SelectItem value="dashboard" className="text-white">Dashboard</SelectItem>
-                            <SelectItem value="webhook" className="text-white">Webhook</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                </div>
                 
                 <div className="flex justify-between pt-4">
                   <Button 
@@ -617,13 +616,17 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                   </div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <div className="text-white/60">Action:</div>
+                    <div className="text-white/60">Actions:</div>
                     <div className="text-white sm:col-span-2">
-                      {formData.actionType === "smartContract" 
-                        ? "Trigger Smart Contract " + (sendNotificationAfterAction ? "+ notify" : "")
-                        : formData.actionType === "payment" 
-                          ? "Send payment" + (sendNotificationAfterAction ? " + notify" : "")
-                          : "Send notification"}
+                      {selectedActions.length > 0 ? (
+                        <ul className="list-disc pl-5">
+                          {isActionSelected("smartContract") && <li>Trigger Smart Contract</li>}
+                          {isActionSelected("notification") && <li>Send Notification</li>}
+                          {isActionSelected("payment") && <li>Send Token Payment</li>}
+                        </ul>
+                      ) : (
+                        <span className="text-red-400">No actions selected</span>
+                      )}
                     </div>
                   </div>
                   
@@ -649,6 +652,7 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                   type="button" 
                   className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white"
                   onClick={handleSaveAutomation}
+                  disabled={selectedActions.length === 0}
                 >
                   Save & Activate
                 </Button>
