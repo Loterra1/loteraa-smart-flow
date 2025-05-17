@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { DashboardNavbar } from "@/components/DashboardNavbar";
+import DashboardNavbar from "@/components/DashboardNavbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
