@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -12,7 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { PlusCircle, ChevronDown, Check, Database, Cloud, FileText, ExternalLink, Search, Devices } from "lucide-react";
+import { PlusCircle, ChevronDown, Check, Database, Cloud, FileText, ExternalLink, Search, Dices } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -202,7 +201,7 @@ export default function CreateAutomationForm({ open, onOpenChange }: CreateAutom
                       className="border-loteraa-gray/30 data-[state=checked]:bg-loteraa-purple"
                     />
                     <Label htmlFor="iotDevice" className="flex items-center cursor-pointer">
-                      <Devices className="h-4 w-4 mr-2" />
+                      <Dices className="h-4 w-4 mr-2" />
                       <span>My IoT Device</span>
                     </Label>
                   </div>
