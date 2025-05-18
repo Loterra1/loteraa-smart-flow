@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { ChevronRight, PlusCircle, Check, Upload, Coins, Database, Code } from "lucide-react";
+import { ChevronRight, PlusCircle, Check, Upload, Coins, Database, Code, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface CreateSmartContractDialogProps {
