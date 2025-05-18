@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   DialogContent, 
   DialogHeader, 
@@ -26,21 +26,69 @@ import { Label } from "@/components/ui/label";
 import { ChevronRight, PlusCircle, Check, Upload, Coins, Database, Code, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-interface CreateSmartContractDialogProps {
-  onClose: () => void;
+interface IoTDevice {
+  id: string;
+  name: string;
+  type: string;
 }
 
-const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) => {
+interface AutomationRule {
+  id: string;
+  name: string;
+  description: string;
+}
+
+interface SmartContract {
+  id?: string;
+  name: string;
+  type: string;
+  status: 'Active' | 'Inactive';
+  trigger: string;
+  lastModified?: string;
+  file?: File;
+  code?: string;
+}
+
+interface CreateSmartContractDialogProps {
+  onClose: () => void;
+  onContractCreated?: (contract: SmartContract) => void;
+  initialContractType?: 'template' | 'upload';
+}
+
+const CreateSmartContractDialog = ({ 
+  onClose, 
+  onContractCreated, 
+  initialContractType = 'template' 
+}: CreateSmartContractDialogProps) => {
   const [step, setStep] = useState(1);
-  const [contractType, setContractType] = useState<'template' | 'upload'>('template');
+  const [contractType, setContractType] = useState<'template' | 'upload'>(initialContractType);
   const [templateType, setTemplateType] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [linkedDevices, setLinkedDevices] = useState<string[]>([]);
-  const [linkedRules, setLinkedRules] = useState<string[]>([]);
+  const [linkedDevices, setLinkedDevices] = useState<IoTDevice[]>([]);
+  const [linkedRules, setLinkedRules] = useState<AutomationRule[]>([]);
   const [tokenPrice, setTokenPrice] = useState('0.10');
   const [tokenFrequency, setTokenFrequency] = useState('Motion detected');
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [contractCode, setContractCode] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  // Sample device and automation data
+  const availableDevices: IoTDevice[] = [
+    { id: '1', name: 'Temperature Sensor (TB-103)', type: 'Temperature' },
+    { id: '2', name: 'Motion Detector (MD-201)', type: 'Motion' },
+    { id: '3', name: 'Light Sensor (LS-105)', type: 'Light' },
+    { id: '4', name: 'Humidity Sensor (HS-102)', type: 'Humidity' },
+    { id: '5', name: 'Door Sensor (DS-301)', type: 'Contact' }
+  ];
+
+  const availableRules: AutomationRule[] = [
+    { id: '1', name: 'Temperature Alert', description: 'Trigger when temperature exceeds threshold' },
+    { id: '2', name: 'Motion Detection', description: 'Trigger when motion is detected' },
+    { id: '3', name: 'Time-based Trigger', description: 'Trigger at specific times' },
+    { id: '4', name: 'Condition-based Alert', description: 'Trigger when multiple conditions are met' }
+  ];
 
   const handleNextStep = () => {
     if (step < 5) {
@@ -57,12 +105,88 @@ const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) 
   const handleDeploy = () => {
     // Simulating a successful deployment
     setTimeout(() => {
+      if (onContractCreated) {
+        onContractCreated({
+          name: contractType === 'upload' && uploadedFile ? uploadedFile.name : name || 'New Contract',
+          type: contractType === 'template' ? 
+            (templateType === 'iot-payment' ? 'IoT Payment' : 
+             templateType === 'iot-data' ? 'Data Access' :
+             templateType === 'custom-logic' ? 'Custom Logic' : 'Token Access') : 
+            'Custom Upload',
+          status: 'Active',
+          trigger: linkedRules.length > 0 ? linkedRules[0].name : 'None',
+          file: uploadedFile || undefined,
+          code: contractCode || undefined
+        });
+      }
+      
       toast({
         title: "Contract Deployed Successfully",
         description: "Your smart contract has been deployed to the Loteraa network.",
       });
       setStep(4);
     }, 1500);
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setUploadedFile(file);
+      setName(file.name);
+      
+      // Read file content
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target?.result as string;
+        setContractCode(content);
+      };
+      reader.readAsText(file);
+
+      toast({
+        title: "File Uploaded",
+        description: `${file.name} has been uploaded successfully.`,
+      });
+    }
+  };
+
+  const handleDeviceSelect = () => {
+    // Simulate selecting a device
+    const randomDevice = availableDevices.find(device => !linkedDevices.some(d => d.id === device.id));
+    if (randomDevice) {
+      setLinkedDevices([...linkedDevices, randomDevice]);
+      toast({
+        title: "Device Linked",
+        description: `${randomDevice.name} has been linked to your contract.`,
+      });
+    }
+  };
+
+  const removeDevice = (deviceId: string) => {
+    setLinkedDevices(linkedDevices.filter(device => device.id !== deviceId));
+  };
+
+  const handleRuleSelect = () => {
+    // Simulate selecting a rule
+    const randomRule = availableRules.find(rule => !linkedRules.some(r => r.id === rule.id));
+    if (randomRule) {
+      setLinkedRules([...linkedRules, randomRule]);
+      toast({
+        title: "Rule Linked",
+        description: `${randomRule.name} has been linked to your contract.`,
+      });
+    }
+  };
+
+  const removeRule = (ruleId: string) => {
+    setLinkedRules(linkedRules.filter(rule => rule.id !== ruleId));
+  };
+
+  const configureTokenSettings = () => {
+    // Open token configuration modal (simplified for this implementation)
+    toast({
+      title: "Token Settings Updated",
+      description: `Payment set to $${tokenPrice} TERAA per ${tokenFrequency}.`,
+    });
   };
 
   const renderStepIndicator = () => {
@@ -238,9 +362,21 @@ const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) 
           <>
             <div className="mb-4">
               <Label className="text-white mb-2 block">Upload .sol or ABI File</Label>
-              <div className="border-dashed border-2 border-loteraa-gray/40 rounded-md p-6 text-center">
+              <div 
+                className="border-dashed border-2 border-loteraa-gray/40 rounded-md p-6 text-center cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <input 
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  accept=".sol,.json,.abi"
+                  onChange={handleFileUpload}
+                />
                 <Upload className="mx-auto h-10 w-10 text-white/50 mb-2" />
-                <p className="text-white/70 mb-2">Drag and drop or click to upload</p>
+                <p className="text-white/70 mb-2">
+                  {uploadedFile ? `Selected: ${uploadedFile.name}` : "Drag and drop or click to upload"}
+                </p>
                 <Button variant="outline" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
                   Upload File
                 </Button>
@@ -268,6 +404,17 @@ const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) 
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
+            
+            {uploadedFile && contractCode && (
+              <div className="mb-4">
+                <Label className="text-white mb-2 block">Preview Code</Label>
+                <div className="bg-loteraa-gray/30 p-3 rounded-md overflow-x-auto max-h-60">
+                  <pre className="text-white/90 text-xs font-mono">
+                    {contractCode}
+                  </pre>
+                </div>
+              </div>
+            )}
           </>
         )}
       </>
@@ -281,49 +428,63 @@ const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) 
           <Label className="text-white mb-2 block">Link with IoT Device(s)</Label>
           <div className="flex items-center justify-between p-3 rounded-md bg-loteraa-gray/20 border border-loteraa-gray/30 mb-2">
             <span className="text-white">Select devices to connect</span>
-            <Button variant="ghost" className="h-8 text-loteraa-purple">
+            <Button variant="ghost" className="h-8 text-loteraa-purple" onClick={handleDeviceSelect}>
               <PlusCircle className="h-4 w-4 mr-1" />
               Select from list
             </Button>
           </div>
-          {linkedDevices.length > 0 ? (
+          {linkedDevices.length > 0 && (
             <div className="space-y-2">
-              {linkedDevices.map((device, index) => (
-                <div key={index} className="p-2 bg-loteraa-purple/10 border border-loteraa-purple/30 rounded-md flex justify-between">
-                  <span className="text-white">{device}</span>
-                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">×</Button>
+              {linkedDevices.map((device) => (
+                <div key={device.id} className="p-2 bg-loteraa-purple/10 border border-loteraa-purple/30 rounded-md flex justify-between">
+                  <span className="text-white">{device.name}</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-6 w-6 p-0"
+                    onClick={() => removeDevice(device.id)}
+                  >×</Button>
                 </div>
               ))}
             </div>
-          ) : null}
+          )}
         </div>
 
         <div className="mb-4">
           <Label className="text-white mb-2 block">Link with Automation Rule(s)</Label>
           <div className="flex items-center justify-between p-3 rounded-md bg-loteraa-gray/20 border border-loteraa-gray/30 mb-2">
             <span className="text-white">Select automation rules</span>
-            <Button variant="ghost" className="h-8 text-loteraa-purple">
+            <Button variant="ghost" className="h-8 text-loteraa-purple" onClick={handleRuleSelect}>
               <PlusCircle className="h-4 w-4 mr-1" />
               Select rule logic
             </Button>
           </div>
-          {linkedRules.length > 0 ? (
+          {linkedRules.length > 0 && (
             <div className="space-y-2">
-              {linkedRules.map((rule, index) => (
-                <div key={index} className="p-2 bg-loteraa-purple/10 border border-loteraa-purple/30 rounded-md flex justify-between">
-                  <span className="text-white">{rule}</span>
-                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">×</Button>
+              {linkedRules.map((rule) => (
+                <div key={rule.id} className="p-2 bg-loteraa-purple/10 border border-loteraa-purple/30 rounded-md flex justify-between">
+                  <span className="text-white">{rule.name}</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-6 w-6 p-0"
+                    onClick={() => removeRule(rule.id)}
+                  >×</Button>
                 </div>
               ))}
             </div>
-          ) : null}
+          )}
         </div>
 
         <div className="mb-4">
           <Label className="text-white mb-2 block">Payment Triggers</Label>
           <div className="flex items-center justify-between p-3 rounded-md bg-loteraa-gray/20 border border-loteraa-gray/30 mb-2">
             <span className="text-white">Configure payment rules</span>
-            <Button variant="ghost" className="h-8 text-loteraa-purple">
+            <Button 
+              variant="ghost" 
+              className="h-8 text-loteraa-purple"
+              onClick={configureTokenSettings}
+            >
               <PlusCircle className="h-4 w-4 mr-1" />
               Configure token settings
             </Button>
@@ -333,7 +494,7 @@ const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) 
               <Label className="text-white mr-2">Token: </Label>
               <span className="font-medium text-white">TERAA</span>
             </div>
-            <div className="flex items-center mb-2">
+            <div className="flex flex-wrap items-center mb-2">
               <Label className="text-white mr-2">Price: </Label>
               <div className="flex items-center">
                 <span className="text-white">$</span>
@@ -345,7 +506,7 @@ const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) 
                 <span className="text-white">TERAA</span>
               </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex flex-wrap items-center">
               <Label className="text-white mr-2">Frequency: </Label>
               <div className="flex items-center">
                 <span className="text-white">Every time</span>
@@ -358,7 +519,7 @@ const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) 
             </div>
           </div>
           <div className="text-xs text-white/60 mt-1">
-            Example: $0.10 TERAA every time motion is detected
+            Example: ${tokenPrice} TERAA every time {tokenFrequency}
           </div>
         </div>
       </>
@@ -373,13 +534,17 @@ const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) 
           <div className="bg-loteraa-gray/20 border border-loteraa-gray/30 rounded-md p-4 space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-white/70">Contract Name:</span>
-              <span className="text-white font-medium">{name || 'IoT Payment Contract'}</span>
+              <span className="text-white font-medium break-all">
+                {contractType === 'upload' && uploadedFile ? uploadedFile.name : name || 'IoT Payment Contract'}
+              </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-white/70">Type:</span>
               <span className="text-white font-medium">
                 {contractType === 'template' ? 
-                  (templateType === 'iot-payment' ? 'IoT Payment Trigger' : 'IoT Data Access') : 
+                  (templateType === 'iot-payment' ? 'IoT Payment Trigger' : 
+                   templateType === 'iot-data' ? 'IoT Data Access' :
+                   templateType === 'custom-logic' ? 'Custom Logic' : 'Token Access') : 
                   'Custom Upload'}
               </span>
             </div>
@@ -423,10 +588,10 @@ const CreateSmartContractDialog = ({ onClose }: CreateSmartContractDialogProps) 
         <div className="bg-loteraa-gray/20 border border-loteraa-gray/30 rounded-md p-4 mb-6 text-left">
           <div className="flex justify-between items-center mb-3">
             <span className="text-white/70">Contract Address:</span>
-            <span className="text-white font-mono">0x7F4e7630f8742e7Db0606a55E3d45...</span>
+            <span className="text-white font-mono text-sm break-all">0x7F4e7630f8742e7Db0606a55E3d45...</span>
           </div>
-          <div className="flex justify-center">
-            <Button variant="outline" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 mr-2">
+          <div className="flex justify-center flex-wrap gap-2">
+            <Button variant="outline" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
               <ExternalLink className="h-4 w-4 mr-2" />
               View Explorer
             </Button>

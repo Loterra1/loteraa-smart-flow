@@ -15,6 +15,7 @@ import {
   Copy, 
   Check
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface SmartContract {
   id: string;
@@ -23,24 +24,90 @@ interface SmartContract {
   status: 'Active' | 'Inactive';
   trigger: string;
   lastModified: string;
+  code?: string;
 }
 
 interface ViewSmartContractDialogProps {
   isOpen: boolean;
   onClose: () => void;
   contract: SmartContract | null;
+  onExportContract?: (contractId: string) => void;
 }
 
-const ViewSmartContractDialog = ({ isOpen, onClose, contract }: ViewSmartContractDialogProps) => {
+const ViewSmartContractDialog = ({ isOpen, onClose, contract, onExportContract }: ViewSmartContractDialogProps) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [copied, setCopied] = useState(false);
+  const [sensorId, setSensorId] = useState('');
+  const [sensorValue, setSensorValue] = useState('');
+  const [executingCall, setExecutingCall] = useState(false);
+  const { toast } = useToast();
 
   if (!contract) return null;
 
   const handleCopyAddress = () => {
     // Simulating copying to clipboard
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    navigator.clipboard.writeText(contractAddress)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        toast({
+          title: "Address Copied",
+          description: "Contract address copied to clipboard.",
+        });
+      })
+      .catch(() => {
+        toast({
+          title: "Copy Failed",
+          description: "Failed to copy address to clipboard.",
+          variant: "destructive"
+        });
+      });
+  };
+  
+  const handleExportContract = () => {
+    if (onExportContract && contract) {
+      onExportContract(contract.id);
+    }
+    
+    // Create a file blob with contract code
+    const blob = new Blob([contract.code || ''], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    
+    // Create a download link and trigger it
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = contract.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "Contract Exported",
+      description: `${contract.name} has been exported successfully.`,
+    });
+  };
+
+  const handleExecuteCall = () => {
+    if (!sensorId || !sensorValue) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setExecutingCall(true);
+    
+    // Simulate contract execution
+    setTimeout(() => {
+      setExecutingCall(false);
+      toast({
+        title: "Function Executed",
+        description: `Successfully logged data: ${sensorId} = ${sensorValue}`,
+      });
+    }, 1500);
   };
 
   const contractAddress = '0x7F4e7630f8742e7Db0606a55E3d45970E3F3dC25';
@@ -86,9 +153,9 @@ const ViewSmartContractDialog = ({ isOpen, onClose, contract }: ViewSmartContrac
               {contract.status}
             </div>
           </DialogTitle>
-          <div className="text-white/70 flex items-center text-sm mt-1">
+          <div className="text-white/70 flex flex-wrap items-center text-sm mt-1">
             <span>Contract Address:</span>
-            <code className="bg-loteraa-gray/30 px-2 py-0.5 rounded mx-2 font-mono text-xs">
+            <code className="bg-loteraa-gray/30 px-2 py-0.5 rounded mx-2 font-mono text-xs break-all">
               {contractAddress}
             </code>
             <Button 
@@ -174,13 +241,20 @@ const ViewSmartContractDialog = ({ isOpen, onClose, contract }: ViewSmartContrac
                   variant="outline"
                   size="sm" 
                   className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
+                  onClick={() => {
+                    navigator.clipboard.writeText(contract.code || '');
+                    toast({
+                      title: "Code Copied",
+                      description: "Contract code has been copied to clipboard.",
+                    });
+                  }}
                 >
                   <Copy className="h-3 w-3 mr-1" /> Copy Code
                 </Button>
               </div>
               <div className="bg-loteraa-gray/30 p-3 rounded-md overflow-x-auto">
                 <pre className="text-white/90 text-xs font-mono">
-{`// SPDX-License-Identifier: MIT
+{contract.code || `// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract ${contract.name.split('.')[0]} {
@@ -232,6 +306,8 @@ contract ${contract.name.split('.')[0]} {
                       id="sensorId" 
                       placeholder="e.g., temp-sensor-1"
                       className="bg-loteraa-gray/30 border-loteraa-gray/40 text-white"
+                      value={sensorId}
+                      onChange={(e) => setSensorId(e.target.value)}
                     />
                   </div>
                   <div>
@@ -240,13 +316,23 @@ contract ${contract.name.split('.')[0]} {
                       id="value" 
                       placeholder="e.g., 25.5"
                       className="bg-loteraa-gray/30 border-loteraa-gray/40 text-white"
+                      value={sensorValue}
+                      onChange={(e) => setSensorValue(e.target.value)}
                     />
                   </div>
                   <Button 
                     className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+                    onClick={handleExecuteCall}
+                    disabled={executingCall}
                   >
-                    <Play className="h-4 w-4 mr-2" />
-                    Execute Call
+                    {executingCall ? (
+                      <>Processing...</>
+                    ) : (
+                      <>
+                        <Play className="h-4 w-4 mr-2" />
+                        Execute Call
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>
@@ -274,11 +360,11 @@ contract ${contract.name.split('.')[0]} {
               </div>
               <div>
                 <Label htmlFor="address" className="text-white mb-1 block text-sm">Address</Label>
-                <div className="flex">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Input 
                     id="address" 
                     placeholder="Enter wallet address"
-                    className="bg-loteraa-gray/30 border-loteraa-gray/40 text-white flex-1 mr-2"
+                    className="bg-loteraa-gray/30 border-loteraa-gray/40 text-white flex-1"
                   />
                   <Button className="bg-loteraa-purple hover:bg-loteraa-purple/90">
                     Assign Role
@@ -296,6 +382,12 @@ contract ${contract.name.split('.')[0]} {
                   variant="outline" 
                   size="sm" 
                   className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
+                  onClick={() => {
+                    toast({
+                      title: "Logs Refreshed",
+                      description: "Event logs have been updated.",
+                    });
+                  }}
                 >
                   <History className="h-3 w-3 mr-1" /> Refresh
                 </Button>
@@ -344,7 +436,7 @@ contract ${contract.name.split('.')[0]} {
           </TabsContent>
         </Tabs>
 
-        <div className="flex justify-between pt-4">
+        <div className="flex flex-wrap justify-between pt-4 gap-2">
           <Button 
             variant="outline" 
             className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
@@ -356,11 +448,22 @@ contract ${contract.name.split('.')[0]} {
             <Button 
               variant="outline" 
               className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
+              onClick={handleExportContract}
             >
               <FileText className="h-4 w-4 mr-1" />
               Export
             </Button>
-            <Button className="bg-loteraa-purple hover:bg-loteraa-purple/90">
+            <Button 
+              className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+              onClick={() => {
+                onClose();
+                // Simulate opening the edit dialog
+                toast({
+                  title: "Opening Editor",
+                  description: "Edit contract dialog opened.",
+                });
+              }}
+            >
               <Settings className="h-4 w-4 mr-1" />
               Edit Contract
             </Button>

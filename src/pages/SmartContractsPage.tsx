@@ -9,6 +9,7 @@ import CreateSmartContractDialog from '@/components/smartcontracts/CreateSmartCo
 import DeleteSmartContractDialog from '@/components/smartcontracts/DeleteSmartContractDialog';
 import ViewSmartContractDialog from '@/components/smartcontracts/ViewSmartContractDialog';
 import EditSmartContractDialog from '@/components/smartcontracts/EditSmartContractDialog';
+import { useToast } from "@/hooks/use-toast";
 
 interface SmartContract {
   id: string;
@@ -17,6 +18,8 @@ interface SmartContract {
   status: 'Active' | 'Inactive';
   trigger: string;
   lastModified: string;
+  file?: File;
+  code?: string;
 }
 
 export default function SmartContractsPage() {
@@ -25,8 +28,10 @@ export default function SmartContractsPage() {
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedContract, setSelectedContract] = useState<SmartContract | null>(null);
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const { toast } = useToast();
 
-  const contracts: SmartContract[] = [
+  const [contracts, setContracts] = useState<SmartContract[]>([
     {
       id: '1',
       name: 'TempAutomation.sol',
@@ -34,6 +39,29 @@ export default function SmartContractsPage() {
       status: 'Active',
       trigger: 'Automation rule',
       lastModified: 'May 17, 2025',
+      code: `// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract TempAutomation {
+    address public owner;
+    mapping(string => string) public sensorData;
+    
+    event DataLogged(string indexed sensorId, string value, uint timestamp);
+    
+    constructor(address _owner) {
+        owner = _owner;
+    }
+    
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not authorized");
+        _;
+    }
+    
+    function logSensorData(string memory sensorId, string memory value) public {
+        sensorData[sensorId] = value;
+        emit DataLogged(sensorId, value, block.timestamp);
+    }
+}`
     },
     {
       id: '2',
@@ -42,8 +70,26 @@ export default function SmartContractsPage() {
       status: 'Inactive',
       trigger: 'None',
       lastModified: 'May 1, 2025',
+      code: `// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MotionData {
+    address public owner;
+    mapping(string => bool) public motionDetected;
+    
+    event MotionEvent(string indexed deviceId, bool detected, uint timestamp);
+    
+    constructor(address _owner) {
+        owner = _owner;
+    }
+    
+    function logMotion(string memory deviceId, bool detected) public {
+        motionDetected[deviceId] = detected;
+        emit MotionEvent(deviceId, detected, block.timestamp);
+    }
+}`
     },
-  ];
+  ]);
 
   const handleViewContract = (contract: SmartContract) => {
     setSelectedContract(contract);
@@ -58,6 +104,36 @@ export default function SmartContractsPage() {
   const handleDeleteContract = (contract: SmartContract) => {
     setSelectedContract(contract);
     setIsDeleteDialogOpen(true);
+  };
+
+  const handleContractCreated = (newContract: SmartContract) => {
+    setContracts([...contracts, {
+      ...newContract,
+      id: (contracts.length + 1).toString(),
+      lastModified: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    }]);
+    toast({
+      title: "Contract Created",
+      description: `${newContract.name} has been successfully created.`,
+    });
+  };
+
+  const handleContractUpdated = (updatedContract: SmartContract) => {
+    setContracts(contracts.map(c => 
+      c.id === updatedContract.id ? updatedContract : c
+    ));
+    toast({
+      title: "Contract Updated",
+      description: `${updatedContract.name} has been successfully updated.`,
+    });
+  };
+
+  const handleContractDeleted = (contractId: string) => {
+    setContracts(contracts.filter(c => c.id !== contractId));
+    toast({
+      title: "Contract Deleted",
+      description: "The smart contract has been successfully deleted.",
+    });
   };
 
   return (
@@ -76,7 +152,10 @@ export default function SmartContractsPage() {
                 Create Smart Contract
               </Button>
             </DialogTrigger>
-            <CreateSmartContractDialog onClose={() => setIsCreateDialogOpen(false)} />
+            <CreateSmartContractDialog 
+              onClose={() => setIsCreateDialogOpen(false)} 
+              onContractCreated={handleContractCreated}
+            />
           </Dialog>
         </div>
 
@@ -147,13 +226,18 @@ export default function SmartContractsPage() {
         </div>
 
         <div className="flex justify-center">
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 Upload Existing Contract
               </Button>
             </DialogTrigger>
+            <CreateSmartContractDialog 
+              onClose={() => setUploadDialogOpen(false)} 
+              onContractCreated={handleContractCreated}
+              initialContractType="upload"
+            />
           </Dialog>
         </div>
 
@@ -162,6 +246,12 @@ export default function SmartContractsPage() {
           isOpen={isViewDialogOpen}
           onClose={() => setIsViewDialogOpen(false)}
           contract={selectedContract}
+          onExportContract={(contractId) => {
+            toast({
+              title: "Contract Exported",
+              description: "Contract has been exported successfully.",
+            });
+          }}
         />
 
         {/* Edit Contract Dialog */}
@@ -169,6 +259,7 @@ export default function SmartContractsPage() {
           isOpen={isEditDialogOpen}
           onClose={() => setIsEditDialogOpen(false)}
           contract={selectedContract}
+          onSave={handleContractUpdated}
         />
 
         {/* Delete Contract Dialog */}
@@ -176,6 +267,7 @@ export default function SmartContractsPage() {
           isOpen={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
           contract={selectedContract}
+          onDelete={handleContractDeleted}
         />
       </div>
     </div>
