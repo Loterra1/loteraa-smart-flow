@@ -20,6 +20,7 @@ interface SmartContract {
   lastModified: string;
   file?: File;
   code?: string;
+  abi?: string;
 }
 
 export default function SmartContractsPage() {
@@ -134,6 +135,24 @@ contract MotionData {
       title: "Contract Deleted",
       description: "The smart contract has been successfully deleted.",
     });
+  };
+
+  const handleSaveContractCode = (contract: SmartContract, code: string, abi: string) => {
+    const updatedContract = {
+      ...contract,
+      code: code,
+      abi: abi,
+      lastModified: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    };
+    
+    setContracts(contracts.map(c => 
+      c.id === contract.id ? updatedContract : c
+    ));
+    
+    // Update selected contract if it's currently selected
+    if (selectedContract && selectedContract.id === contract.id) {
+      setSelectedContract(updatedContract);
+    }
   };
 
   return (
@@ -252,6 +271,7 @@ contract MotionData {
               description: "Contract has been exported successfully.",
             });
           }}
+          onSaveContractCode={handleSaveContractCode}
         />
 
         {/* Edit Contract Dialog */}

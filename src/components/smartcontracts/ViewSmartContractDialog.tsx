@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   Code, 
   ExternalLink, 
@@ -13,7 +13,8 @@ import {
   History, 
   Settings,
   Copy, 
-  Check
+  Check,
+  Save
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -25,6 +26,7 @@ interface SmartContract {
   trigger: string;
   lastModified: string;
   code?: string;
+  abi?: string;
 }
 
 interface ViewSmartContractDialogProps {
@@ -32,14 +34,25 @@ interface ViewSmartContractDialogProps {
   onClose: () => void;
   contract: SmartContract | null;
   onExportContract?: (contractId: string) => void;
+  onSaveContractCode?: (contract: SmartContract, code: string, abi: string) => void;
 }
 
-const ViewSmartContractDialog = ({ isOpen, onClose, contract, onExportContract }: ViewSmartContractDialogProps) => {
+const ViewSmartContractDialog = ({ 
+  isOpen, 
+  onClose, 
+  contract, 
+  onExportContract,
+  onSaveContractCode
+}: ViewSmartContractDialogProps) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [copied, setCopied] = useState(false);
   const [sensorId, setSensorId] = useState('');
   const [sensorValue, setSensorValue] = useState('');
   const [executingCall, setExecutingCall] = useState(false);
+  const [isEditingCode, setIsEditingCode] = useState(false);
+  const [isEditingAbi, setIsEditingAbi] = useState(false);
+  const [editableCode, setEditableCode] = useState('');
+  const [editableAbi, setEditableAbi] = useState('');
   const { toast } = useToast();
 
   if (!contract) return null;
@@ -110,8 +123,48 @@ const ViewSmartContractDialog = ({ isOpen, onClose, contract, onExportContract }
     }, 1500);
   };
 
+  const startEditingCode = () => {
+    setEditableCode(contract.code || '');
+    setIsEditingCode(true);
+  };
+
+  const startEditingAbi = () => {
+    setEditableAbi(contract.abi || defaultContractABI);
+    setIsEditingAbi(true);
+  };
+
+  const saveCodeChanges = () => {
+    toast({
+      title: "Code Updated",
+      description: "Contract code has been updated successfully.",
+    });
+    setIsEditingCode(false);
+    if (onSaveContractCode) {
+      onSaveContractCode(contract, editableCode, editableAbi);
+    }
+  };
+
+  const saveAbiChanges = () => {
+    toast({
+      title: "ABI Updated",
+      description: "Contract ABI has been updated successfully.",
+    });
+    setIsEditingAbi(false);
+    if (onSaveContractCode) {
+      onSaveContractCode(contract, editableCode, editableAbi);
+    }
+  };
+
+  const cancelCodeEditing = () => {
+    setIsEditingCode(false);
+  };
+
+  const cancelAbiEditing = () => {
+    setIsEditingAbi(false);
+  };
+
   const contractAddress = '0x7F4e7630f8742e7Db0606a55E3d45970E3F3dC25';
-  const contractABI = `[
+  const defaultContractABI = `[
     {
       "inputs": [
         {
@@ -237,23 +290,63 @@ const ViewSmartContractDialog = ({ isOpen, onClose, contract, onExportContract }
             <div className="bg-loteraa-gray/20 border border-loteraa-gray/30 rounded-md p-4">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-medium text-white">Contract Code</h3>
-                <Button 
-                  variant="outline"
-                  size="sm" 
-                  className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
-                  onClick={() => {
-                    navigator.clipboard.writeText(contract.code || '');
-                    toast({
-                      title: "Code Copied",
-                      description: "Contract code has been copied to clipboard.",
-                    });
-                  }}
-                >
-                  <Copy className="h-3 w-3 mr-1" /> Copy Code
-                </Button>
+                <div className="flex gap-2">
+                  {isEditingCode ? (
+                    <>
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="bg-transparent border-red-500/70 text-white hover:bg-red-500/20"
+                        onClick={cancelCodeEditing}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="bg-transparent border-green-500/70 text-white hover:bg-green-500/20"
+                        onClick={saveCodeChanges}
+                      >
+                        <Save className="h-3 w-3 mr-1" /> Save Changes
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
+                        onClick={() => {
+                          navigator.clipboard.writeText(contract.code || '');
+                          toast({
+                            title: "Code Copied",
+                            description: "Contract code has been copied to clipboard.",
+                          });
+                        }}
+                      >
+                        <Copy className="h-3 w-3 mr-1" /> Copy Code
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
+                        onClick={startEditingCode}
+                      >
+                        <Code className="h-3 w-3 mr-1" /> Edit Code
+                      </Button>
+                    </>
+                  )}
+                </div>
               </div>
               <div className="bg-loteraa-gray/30 p-3 rounded-md overflow-x-auto">
-                <pre className="text-white/90 text-xs font-mono">
+                {isEditingCode ? (
+                  <Textarea 
+                    className="bg-loteraa-gray/40 border-loteraa-gray/30 text-white font-mono h-60 w-full"
+                    value={editableCode}
+                    onChange={(e) => setEditableCode(e.target.value)}
+                  />
+                ) : (
+                  <pre className="text-white/90 text-xs font-mono">
 {contract.code || `// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -277,16 +370,74 @@ contract ${contract.name.split('.')[0]} {
         emit DataLogged(sensorId, value, block.timestamp);
     }
 }`}
-                </pre>
+                  </pre>
+                )}
               </div>
             </div>
             
             <div className="bg-loteraa-gray/20 border border-loteraa-gray/30 rounded-md p-4 mt-4">
-              <h3 className="font-medium text-white mb-3">Contract ABI</h3>
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-medium text-white">Contract ABI</h3>
+                <div className="flex gap-2">
+                  {isEditingAbi ? (
+                    <>
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="bg-transparent border-red-500/70 text-white hover:bg-red-500/20"
+                        onClick={cancelAbiEditing}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="bg-transparent border-green-500/70 text-white hover:bg-green-500/20"
+                        onClick={saveAbiChanges}
+                      >
+                        <Save className="h-3 w-3 mr-1" /> Save Changes
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
+                        onClick={() => {
+                          navigator.clipboard.writeText(contract.abi || defaultContractABI);
+                          toast({
+                            title: "ABI Copied",
+                            description: "Contract ABI has been copied to clipboard.",
+                          });
+                        }}
+                      >
+                        <Copy className="h-3 w-3 mr-1" /> Copy ABI
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
+                        onClick={startEditingAbi}
+                      >
+                        <Code className="h-3 w-3 mr-1" /> Edit ABI
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
               <div className="bg-loteraa-gray/30 p-3 rounded-md overflow-x-auto">
-                <pre className="text-white/90 text-xs font-mono">
-                  {contractABI}
-                </pre>
+                {isEditingAbi ? (
+                  <Textarea 
+                    className="bg-loteraa-gray/40 border-loteraa-gray/30 text-white font-mono h-40 w-full"
+                    value={editableAbi}
+                    onChange={(e) => setEditableAbi(e.target.value)}
+                  />
+                ) : (
+                  <pre className="text-white/90 text-xs font-mono">
+                    {contract.abi || defaultContractABI}
+                  </pre>
+                )}
               </div>
             </div>
           </TabsContent>
