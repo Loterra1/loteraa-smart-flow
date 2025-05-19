@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DashboardNavbar from '@/components/DashboardNavbar';
 import { Button } from "@/components/ui/button";
@@ -8,8 +7,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Download, Plus, BarChart, ExternalLink } from "lucide-react";
+import { Download, Plus, BarChart, TrendingUp, Wallet, Database, Smartphone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface EarningsData {
   totalEarnings: string;
@@ -75,7 +78,19 @@ const EarningsPage: React.FC = () => {
   const [isDevicePerformanceOpen, setIsDevicePerformanceOpen] = useState(false);
   const [isAddDeviceOpen, setIsAddDeviceOpen] = useState(false);
   const [isUsageAnalyticsOpen, setIsUsageAnalyticsOpen] = useState(false);
+  const [isAddDatasetOpen, setIsAddDatasetOpen] = useState(false);
+  const [isOptimizeEarningsOpen, setIsOptimizeEarningsOpen] = useState(false);
+  const [isWithdrawFundsOpen, setIsWithdrawFundsOpen] = useState(false);
   const [selectedDeviceForPerformance, setSelectedDeviceForPerformance] = useState<DeviceData | null>(null);
+  
+  // Form states
+  const [deviceName, setDeviceName] = useState("");
+  const [deviceType, setDeviceType] = useState("");
+  const [datasetTitle, setDatasetTitle] = useState("");
+  const [datasetType, setDatasetType] = useState("");
+  const [datasetDescription, setDatasetDescription] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [withdrawAddress, setWithdrawAddress] = useState("");
 
   // Sample data
   const earningsData: EarningsData = {
@@ -142,6 +157,83 @@ const EarningsPage: React.FC = () => {
   const handleViewDevicePerformance = (device: DeviceData) => {
     setSelectedDeviceForPerformance(device);
     setIsDevicePerformanceOpen(true);
+  };
+
+  const handleAddDevice = () => {
+    if (!deviceName || !deviceType) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Device added",
+      description: `${deviceName} has been successfully added to your devices`,
+    });
+
+    setDeviceName("");
+    setDeviceType("");
+    setIsAddDeviceOpen(false);
+  };
+
+  const handleAddDataset = () => {
+    if (!datasetTitle || !datasetType) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Dataset added",
+      description: "Your dataset has been submitted for research",
+    });
+
+    setDatasetTitle("");
+    setDatasetType("");
+    setDatasetDescription("");
+    setIsAddDatasetOpen(false);
+  };
+
+  const handleWithdrawFunds = () => {
+    if (!withdrawAmount || !withdrawAddress) {
+      toast({
+        title: "Error",
+        description: "Please provide both amount and destination address",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Withdrawal initiated",
+      description: `${withdrawAmount} Terra will be sent to your wallet shortly`,
+    });
+
+    setWithdrawAmount("");
+    setWithdrawAddress("");
+    setIsWithdrawFundsOpen(false);
+  };
+
+  const handleOptimizeEarnings = () => {
+    toast({
+      title: "Optimization initiated",
+      description: "Your earnings are being analyzed for optimization opportunities",
+    });
+    
+    setTimeout(() => {
+      toast({
+        title: "Optimization complete",
+        description: "We've identified 3 opportunities to increase your earnings",
+      });
+    }, 2000);
+    
+    setIsOptimizeEarningsOpen(false);
   };
 
   return (
@@ -260,14 +352,23 @@ const EarningsPage: React.FC = () => {
                 <h2 className="text-xl font-medium text-white">Quick Actions</h2>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                 <Button 
                   variant="outline" 
                   className="h-auto py-4 bg-loteraa-gray/20 border-loteraa-gray/30 hover:bg-loteraa-gray/30 flex flex-col items-center justify-center gap-2"
                   onClick={() => setIsAddDeviceOpen(true)}
                 >
-                  <Plus className="h-6 w-6 text-loteraa-purple" />
+                  <Smartphone className="h-6 w-6 text-loteraa-purple" />
                   <span>Add Device/DApp</span>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  className="h-auto py-4 bg-loteraa-gray/20 border-loteraa-gray/30 hover:bg-loteraa-gray/30 flex flex-col items-center justify-center gap-2"
+                  onClick={() => setIsAddDatasetOpen(true)}
+                >
+                  <Database className="h-6 w-6 text-loteraa-purple" />
+                  <span>Add Dataset for Research</span>
                 </Button>
                 
                 <Button 
@@ -282,16 +383,18 @@ const EarningsPage: React.FC = () => {
                 <Button 
                   variant="outline" 
                   className="h-auto py-4 bg-loteraa-gray/20 border-loteraa-gray/30 hover:bg-loteraa-gray/30 flex flex-col items-center justify-center gap-2"
+                  onClick={() => setIsOptimizeEarningsOpen(true)}
                 >
-                  <Plus className="h-6 w-6 text-loteraa-purple" />
+                  <TrendingUp className="h-6 w-6 text-loteraa-purple" />
                   <span>Optimize Earnings</span>
                 </Button>
                 
                 <Button 
                   variant="outline" 
                   className="h-auto py-4 bg-loteraa-gray/20 border-loteraa-gray/30 hover:bg-loteraa-gray/30 flex flex-col items-center justify-center gap-2"
+                  onClick={() => setIsWithdrawFundsOpen(true)}
                 >
-                  <Plus className="h-6 w-6 text-loteraa-purple" />
+                  <Wallet className="h-6 w-6 text-loteraa-purple" />
                   <span>Withdraw Funds</span>
                 </Button>
               </div>
@@ -629,7 +732,7 @@ const EarningsPage: React.FC = () => {
                     <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-1">
                       <span className="text-white/70">TX Hash:</span>
                       <Button variant="ghost" size="sm" className="text-loteraa-purple hover:bg-loteraa-gray/30 p-0 h-auto flex items-center gap-1 justify-start sm:justify-center w-fit text-xs">
-                        {verifiedDataset.verificationData.txHash} <ExternalLink className="h-3 w-3" />
+                        {verifiedDataset.verificationData.txHash}
                       </Button>
                     </div>
                   </div>
