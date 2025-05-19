@@ -286,7 +286,7 @@ contract MotionData {
           isOpen={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
           contract={selectedContract}
-          onDelete={handleContractDeleted}
+          onContractDeleted={handleContractDeleted}
         />
       </div>
     </div>
