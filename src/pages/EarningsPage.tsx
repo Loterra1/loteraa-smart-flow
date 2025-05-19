@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Download, Plus, BarChart, TrendingUp, Wallet, Database, Smartphone } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -840,6 +840,340 @@ const EarningsPage: React.FC = () => {
                   Close
                 </Button>
               </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Add Device Dialog */}
+        <Dialog open={isAddDeviceOpen} onOpenChange={setIsAddDeviceOpen}>
+          <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[500px] max-h-[90vh] w-[95vw] overflow-hidden p-4 sm:p-6">
+            <DialogHeader className="space-y-1">
+              <DialogTitle className="text-lg sm:text-2xl">Add Device/DApp</DialogTitle>
+              <DialogDescription className="text-white/70 text-xs sm:text-sm">
+                Connect a new IoT device or decentralized application
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-2">
+              <div className="space-y-2">
+                <Label htmlFor="device-name">Device Name</Label>
+                <Input 
+                  id="device-name" 
+                  placeholder="Enter device name" 
+                  value={deviceName} 
+                  onChange={(e) => setDeviceName(e.target.value)} 
+                  className="bg-loteraa-gray/40 border-loteraa-gray/50 text-white" 
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="device-type">Device Type</Label>
+                <Select value={deviceType} onValueChange={setDeviceType}>
+                  <SelectTrigger className="bg-loteraa-gray/40 border-loteraa-gray/50 text-white">
+                    <SelectValue placeholder="Select device type" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-loteraa-gray/90 border-loteraa-gray/50 text-white">
+                    <SelectItem value="environmental">Environmental Sensor</SelectItem>
+                    <SelectItem value="utility">Utility Monitor</SelectItem>
+                    <SelectItem value="transportation">Transportation</SelectItem>
+                    <SelectItem value="smart-home">Smart Home</SelectItem>
+                    <SelectItem value="healthcare">Healthcare</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between">
+              <DialogClose asChild>
+                <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button onClick={handleAddDevice} size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90">
+                Add Device
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Add Dataset for Research Dialog */}
+        <Dialog open={isAddDatasetOpen} onOpenChange={setIsAddDatasetOpen}>
+          <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[500px] max-h-[90vh] w-[95vw] overflow-hidden p-4 sm:p-6">
+            <DialogHeader className="space-y-1">
+              <DialogTitle className="text-lg sm:text-2xl">Add Dataset for Research</DialogTitle>
+              <DialogDescription className="text-white/70 text-xs sm:text-sm">
+                Submit your IoT data for research and earn rewards
+              </DialogDescription>
+            </DialogHeader>
+            <ScrollArea className="max-h-[60vh] overflow-y-auto pr-2 sm:pr-4">
+              <div className="space-y-4 py-2">
+                <div className="space-y-2">
+                  <Label htmlFor="dataset-title">Dataset Title</Label>
+                  <Input 
+                    id="dataset-title" 
+                    placeholder="Enter dataset title" 
+                    value={datasetTitle} 
+                    onChange={(e) => setDatasetTitle(e.target.value)} 
+                    className="bg-loteraa-gray/40 border-loteraa-gray/50 text-white" 
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="dataset-type">Dataset Type</Label>
+                  <Select value={datasetType} onValueChange={setDatasetType}>
+                    <SelectTrigger className="bg-loteraa-gray/40 border-loteraa-gray/50 text-white">
+                      <SelectValue placeholder="Select dataset type" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-loteraa-gray/90 border-loteraa-gray/50 text-white">
+                      <SelectItem value="environmental">Environmental Data</SelectItem>
+                      <SelectItem value="utility">Utility Usage</SelectItem>
+                      <SelectItem value="transportation">Transportation</SelectItem>
+                      <SelectItem value="healthcare">Healthcare</SelectItem>
+                      <SelectItem value="smart-city">Smart City</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="dataset-description">Description</Label>
+                  <Textarea 
+                    id="dataset-description" 
+                    placeholder="Describe your dataset" 
+                    value={datasetDescription} 
+                    onChange={(e) => setDatasetDescription(e.target.value)} 
+                    className="bg-loteraa-gray/40 border-loteraa-gray/50 text-white min-h-[100px]" 
+                  />
+                </div>
+                
+                <div className="p-3 bg-loteraa-gray/30 rounded-lg text-xs sm:text-sm">
+                  <p className="font-medium mb-2">Dataset Guidelines:</p>
+                  <ul className="list-disc pl-5 space-y-1 text-white/80">
+                    <li>Data must be anonymized and comply with privacy regulations</li>
+                    <li>Minimum of 10,000 data points required</li>
+                    <li>Include timestamp and location metadata when applicable</li>
+                    <li>CSV, JSON, or Parquet formats preferred</li>
+                  </ul>
+                </div>
+              </div>
+            </ScrollArea>
+            <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between mt-4">
+              <DialogClose asChild>
+                <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button onClick={handleAddDataset} size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90">
+                Submit Dataset
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Usage Analytics Dialog */}
+        <Dialog open={isUsageAnalyticsOpen} onOpenChange={setIsUsageAnalyticsOpen}>
+          <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[700px] max-h-[90vh] w-[95vw] overflow-hidden p-4 sm:p-6">
+            <DialogHeader className="space-y-1">
+              <DialogTitle className="text-lg sm:text-2xl">Usage Analytics</DialogTitle>
+              <DialogDescription className="text-white/70 text-xs sm:text-sm">
+                Detailed analytics on how your data is being used
+              </DialogDescription>
+            </DialogHeader>
+            <ScrollArea className="max-h-[60vh] overflow-y-auto pr-2 sm:pr-4">
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-base sm:text-lg font-medium mb-3">Data Usage Overview</h3>
+                  <div className="h-40 sm:h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
+                    <p className="text-white/50 text-xs sm:text-sm">Usage overview chart visualization</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <h3 className="text-base sm:text-lg font-medium">Usage by Sector</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
+                      <h4 className="text-xs text-white/70">Research</h4>
+                      <p className="text-sm sm:text-base font-medium">42%</p>
+                    </div>
+                    <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
+                      <h4 className="text-xs text-white/70">Commercial</h4>
+                      <p className="text-sm sm:text-base font-medium">28%</p>
+                    </div>
+                    <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
+                      <h4 className="text-xs text-white/70">Government</h4>
+                      <p className="text-sm sm:text-base font-medium">18%</p>
+                    </div>
+                    <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
+                      <h4 className="text-xs text-white/70">Other</h4>
+                      <p className="text-sm sm:text-base font-medium">12%</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <h3 className="text-base sm:text-lg font-medium">Consumer Applications</h3>
+                  <div className="space-y-2">
+                    {[
+                      { name: "Smart City Planning", usagePercentage: 35 },
+                      { name: "Environmental Research", usagePercentage: 28 },
+                      { name: "Traffic Optimization", usagePercentage: 21 }
+                    ].map((app, i) => (
+                      <div key={i} className="bg-loteraa-gray/30 p-3 rounded-lg">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm font-medium">{app.name}</span>
+                          <span className="text-xs text-white/80">{app.usagePercentage}%</span>
+                        </div>
+                        <div className="w-full bg-loteraa-gray/60 rounded-full h-1.5">
+                          <div 
+                            className="bg-loteraa-purple h-1.5 rounded-full" 
+                            style={{ width: `${app.usagePercentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ScrollArea>
+            <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between mt-4">
+              <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 text-xs sm:text-sm">
+                <Download className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Download Report
+              </Button>
+              <DialogClose asChild>
+                <Button size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-xs sm:text-sm">
+                  Close
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Optimize Earnings Dialog */}
+        <Dialog open={isOptimizeEarningsOpen} onOpenChange={setIsOptimizeEarningsOpen}>
+          <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[600px] max-h-[90vh] w-[95vw] overflow-hidden p-4 sm:p-6">
+            <DialogHeader className="space-y-1">
+              <DialogTitle className="text-lg sm:text-2xl">Optimize Earnings</DialogTitle>
+              <DialogDescription className="text-white/70 text-xs sm:text-sm">
+                AI-powered suggestions to maximize your earnings
+              </DialogDescription>
+            </DialogHeader>
+            <ScrollArea className="max-h-[60vh] overflow-y-auto pr-2 sm:pr-4">
+              <div className="space-y-4">
+                <div className="p-3 bg-loteraa-purple/20 border border-loteraa-purple/40 rounded-lg">
+                  <p className="text-sm text-white/90 mb-1">Our AI has analyzed your data and identified the following opportunities:</p>
+                </div>
+                
+                <div className="space-y-3">
+                  {[
+                    {
+                      title: "Add Environmental Context Data",
+                      description: "Adding weather correlation data to your environmental sensors could increase data value by up to 24%.",
+                      impact: "High",
+                      effort: "Medium",
+                      incrementalEarnings: "$540/month"
+                    },
+                    {
+                      title: "Increase Sampling Frequency",
+                      description: "Increasing data collection frequency from 5 min to 1 min intervals would make your data more valuable for real-time applications.",
+                      impact: "Medium",
+                      effort: "Low",
+                      incrementalEarnings: "$320/month"
+                    },
+                    {
+                      title: "Add New Sensor Types",
+                      description: "Adding PM2.5 particulate sensors to your existing air quality nodes would significantly enhance dataset value.",
+                      impact: "High",
+                      effort: "High",
+                      incrementalEarnings: "$780/month"
+                    }
+                  ].map((item, i) => (
+                    <div key={i} className="p-3 bg-loteraa-gray/30 rounded-lg space-y-2">
+                      <div className="flex justify-between items-start">
+                        <h4 className="text-sm font-medium">{item.title}</h4>
+                        <Badge className="bg-green-600 hover:bg-green-700 text-xs">
+                          +{item.incrementalEarnings}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-white/80">{item.description}</p>
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        <span className="text-xs px-2 py-0.5 bg-loteraa-gray/40 rounded">
+                          Impact: {item.impact}
+                        </span>
+                        <span className="text-xs px-2 py-0.5 bg-loteraa-gray/40 rounded">
+                          Effort: {item.effort}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollArea>
+            <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between mt-4">
+              <DialogClose asChild>
+                <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
+                  Review Later
+                </Button>
+              </DialogClose>
+              <Button onClick={handleOptimizeEarnings} size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90">
+                Apply Optimizations
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Withdraw Funds Dialog */}
+        <Dialog open={isWithdrawFundsOpen} onOpenChange={setIsWithdrawFundsOpen}>
+          <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[500px] max-h-[90vh] w-[95vw] overflow-hidden p-4 sm:p-6">
+            <DialogHeader className="space-y-1">
+              <DialogTitle className="text-lg sm:text-2xl">Withdraw Funds</DialogTitle>
+              <DialogDescription className="text-white/70 text-xs sm:text-sm">
+                Transfer your earnings to your wallet
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-2">
+              <div className="flex justify-between items-center p-3 bg-loteraa-gray/30 rounded-lg">
+                <span className="text-sm">Available Balance:</span>
+                <span className="text-lg font-medium text-loteraa-purple">12,500.00 Terra</span>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="withdraw-amount">Amount (Terra)</Label>
+                <Input 
+                  id="withdraw-amount" 
+                  placeholder="Enter amount to withdraw" 
+                  value={withdrawAmount} 
+                  onChange={(e) => setWithdrawAmount(e.target.value)} 
+                  className="bg-loteraa-gray/40 border-loteraa-gray/50 text-white" 
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="wallet-address">Destination Address</Label>
+                <Input 
+                  id="wallet-address" 
+                  placeholder="Enter wallet address" 
+                  value={withdrawAddress} 
+                  onChange={(e) => setWithdrawAddress(e.target.value)} 
+                  className="bg-loteraa-gray/40 border-loteraa-gray/50 text-white" 
+                />
+              </div>
+              
+              <div className="p-3 bg-loteraa-gray/30 rounded-lg">
+                <p className="text-xs text-white/80 mb-2">Transaction Details:</p>
+                <div className="grid grid-cols-2 gap-1 text-xs">
+                  <span className="text-white/70">Network Fee:</span>
+                  <span className="text-right">0.25 Terra</span>
+                  <span className="text-white/70">Estimated Time:</span>
+                  <span className="text-right">~2 minutes</span>
+                </div>
+              </div>
+            </div>
+            <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between mt-4">
+              <DialogClose asChild>
+                <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button onClick={handleWithdrawFunds} size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90">
+                Withdraw Funds
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
