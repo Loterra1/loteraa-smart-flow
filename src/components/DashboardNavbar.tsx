@@ -14,6 +14,7 @@ export default function DashboardNavbar() {
     { path: "/devices", label: "Devices" },
     { path: "/automation", label: "Automation" },
     { path: "/smart-contracts", label: "Smart Contracts" },
+    { path: "/dataset-entry", label: "Dataset Entry" },
     { path: "/earnings", label: "Earnings" },
     { path: "/notifications", label: "Notifications" },
   ];

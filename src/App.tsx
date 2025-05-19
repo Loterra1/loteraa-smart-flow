@@ -11,6 +11,7 @@ import DevicesPage from "./pages/DevicesPage";
 import DeviceDetailPage from "./pages/DeviceDetailPage";
 import AutomationPage from "./pages/AutomationPage";
 import SmartContractsPage from "./pages/SmartContractsPage";
+import DatasetEntryPage from "./pages/DatasetEntryPage";
 import EarningsPage from "./pages/EarningsPage";
 import NotFound from "./pages/NotFound";
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/devices/:deviceId" element={<DeviceDetailPage />} />
           <Route path="/automation" element={<AutomationPage />} />
           <Route path="/smart-contracts" element={<SmartContractsPage />} />
+          <Route path="/dataset-entry" element={<DatasetEntryPage />} />
           <Route path="/earnings" element={<EarningsPage />} />
           <Route path="/notifications" element={<Dashboard />} />
           <Route path="/profile" element={<Dashboard />} />
