@@ -11,6 +11,7 @@ import DevicesPage from "./pages/DevicesPage";
 import DeviceDetailPage from "./pages/DeviceDetailPage";
 import AutomationPage from "./pages/AutomationPage";
 import SmartContractsPage from "./pages/SmartContractsPage";
+import EarningsPage from "./pages/EarningsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,7 +30,7 @@ const App = () => (
           <Route path="/devices/:deviceId" element={<DeviceDetailPage />} />
           <Route path="/automation" element={<AutomationPage />} />
           <Route path="/smart-contracts" element={<SmartContractsPage />} />
-          <Route path="/earnings" element={<Dashboard />} />
+          <Route path="/earnings" element={<EarningsPage />} />
           <Route path="/notifications" element={<Dashboard />} />
           <Route path="/profile" element={<Dashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

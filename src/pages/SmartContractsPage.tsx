@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Eye, Edit, Trash2, ExternalLink } from "lucide-react";
@@ -287,7 +286,7 @@ contract MotionData {
           isOpen={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
           contract={selectedContract}
-          onDelete={handleContractDeleted}
+          onDeleteContract={handleContractDeleted}
         />
       </div>
     </div>
