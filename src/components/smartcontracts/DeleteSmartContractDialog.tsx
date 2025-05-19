@@ -18,19 +18,25 @@ interface DeleteSmartContractDialogProps {
   isOpen: boolean;
   onClose: () => void;
   contract: SmartContract | null;
+  onDelete?: (contractId: string) => void;
 }
 
-const DeleteSmartContractDialog = ({ isOpen, onClose, contract }: DeleteSmartContractDialogProps) => {
+const DeleteSmartContractDialog = ({ isOpen, onClose, contract, onDelete }: DeleteSmartContractDialogProps) => {
   const { toast } = useToast();
 
   if (!contract) return null;
 
   const handleDelete = () => {
-    // Simulating delete action
-    toast({
-      title: "Contract Deleted",
-      description: `${contract.name} has been deleted successfully.`,
-    });
+    // Call the onDelete function if provided
+    if (onDelete) {
+      onDelete(contract.id);
+    } else {
+      // Fallback to just showing a toast if no onDelete handler is provided
+      toast({
+        title: "Contract Deleted",
+        description: `${contract.name} has been deleted successfully.`,
+      });
+    }
     onClose();
   };
 
