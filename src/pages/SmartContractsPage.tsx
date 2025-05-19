@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Eye, Edit, Trash2, ExternalLink } from "lucide-react";
@@ -23,73 +24,49 @@ interface SmartContract {
 }
 
 export default function SmartContractsPage() {
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedContract, setSelectedContract] = useState<SmartContract | null>(null);
-  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
-  const { toast } = useToast();
-
   const [contracts, setContracts] = useState<SmartContract[]>([
     {
       id: '1',
-      name: 'TempAutomation.sol',
-      type: 'IoT Payment',
+      name: 'Environmental Data Access',
+      type: 'Access Control',
       status: 'Active',
-      trigger: 'Automation rule',
-      lastModified: 'May 17, 2025',
-      code: `// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-contract TempAutomation {
-    address public owner;
-    mapping(string => string) public sensorData;
-    
-    event DataLogged(string indexed sensorId, string value, uint timestamp);
-    
-    constructor(address _owner) {
-        owner = _owner;
-    }
-    
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not authorized");
-        _;
-    }
-    
-    function logSensorData(string memory sensorId, string memory value) public {
-        sensorData[sensorId] = value;
-        emit DataLogged(sensorId, value, block.timestamp);
-    }
-}`
+      trigger: 'Automated',
+      lastModified: 'May 15, 2025',
     },
     {
       id: '2',
-      name: 'MotionData.sol',
-      type: 'Device Log',
+      name: 'Payment Distribution',
+      type: 'Financial',
+      status: 'Active',
+      trigger: 'Manual',
+      lastModified: 'May 10, 2025',
+    },
+    {
+      id: '3',
+      name: 'Data Verification Contract',
+      type: 'Validation',
+      status: 'Active',
+      trigger: 'Event-driven',
+      lastModified: 'May 5, 2025',
+    },
+    {
+      id: '4',
+      name: 'Device Authorization',
+      type: 'Security',
       status: 'Inactive',
-      trigger: 'None',
-      lastModified: 'May 1, 2025',
-      code: `// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-contract MotionData {
-    address public owner;
-    mapping(string => bool) public motionDetected;
-    
-    event MotionEvent(string indexed deviceId, bool detected, uint timestamp);
-    
-    constructor(address _owner) {
-        owner = _owner;
-    }
-    
-    function logMotion(string memory deviceId, bool detected) public {
-        motionDetected[deviceId] = detected;
-        emit MotionEvent(deviceId, detected, block.timestamp);
-    }
-}`
+      trigger: 'On-demand',
+      lastModified: 'Apr 28, 2025',
     },
   ]);
+  
+  const [selectedContract, setSelectedContract] = useState<SmartContract | null>(null);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  
+  const { toast } = useToast();
 
   const handleViewContract = (contract: SmartContract) => {
     setSelectedContract(contract);
@@ -107,24 +84,18 @@ contract MotionData {
   };
 
   const handleContractCreated = (newContract: SmartContract) => {
-    setContracts([...contracts, {
-      ...newContract,
-      id: (contracts.length + 1).toString(),
-      lastModified: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    }]);
+    setContracts([newContract, ...contracts]);
     toast({
       title: "Contract Created",
-      description: `${newContract.name} has been successfully created.`,
+      description: "The smart contract has been successfully created.",
     });
   };
 
   const handleContractUpdated = (updatedContract: SmartContract) => {
-    setContracts(contracts.map(c => 
-      c.id === updatedContract.id ? updatedContract : c
-    ));
+    setContracts(contracts.map(c => c.id === updatedContract.id ? updatedContract : c));
     toast({
       title: "Contract Updated",
-      description: `${updatedContract.name} has been successfully updated.`,
+      description: "The smart contract has been successfully updated.",
     });
   };
 
@@ -137,21 +108,12 @@ contract MotionData {
   };
 
   const handleSaveContractCode = (contract: SmartContract, code: string, abi: string) => {
-    const updatedContract = {
-      ...contract,
-      code: code,
-      abi: abi,
-      lastModified: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    };
-    
-    setContracts(contracts.map(c => 
-      c.id === contract.id ? updatedContract : c
-    ));
-    
-    // Update selected contract if it's currently selected
-    if (selectedContract && selectedContract.id === contract.id) {
-      setSelectedContract(updatedContract);
-    }
+    const updatedContract = { ...contract, code, abi };
+    setContracts(contracts.map(c => c.id === contract.id ? updatedContract : c));
+    toast({
+      title: "Code Saved",
+      description: "The contract code has been successfully saved.",
+    });
   };
 
   return (
@@ -286,7 +248,7 @@ contract MotionData {
           isOpen={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
           contract={selectedContract}
-          onContractDeleted={handleContractDeleted}
+          onDelete={handleContractDeleted}
         />
       </div>
     </div>

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import DashboardNavbar from '@/components/DashboardNavbar';
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Download, ExternalLink, Plus, BarChart3, Zap, ArrowUpRight } from "lucide-react";
-import DashboardNavbar from '@/components/DashboardNavbar';
+import { useToast } from "@/hooks/use-toast";
 
 interface EarningsData {
   totalEarnings: string;
@@ -272,7 +272,7 @@ const EarningsPage: React.FC = () => {
                   className="h-auto py-4 bg-loteraa-gray/20 border-loteraa-gray/30 hover:bg-loteraa-gray/30 flex flex-col items-center justify-center gap-2"
                   onClick={() => setIsUsageAnalyticsOpen(true)}
                 >
-                  <BarChart3 className="h-6 w-6 text-loteraa-purple" />
+                  <BarChart className="h-6 w-6 text-loteraa-purple" />
                   <span>Usage Analytics</span>
                 </Button>
                 
@@ -280,7 +280,7 @@ const EarningsPage: React.FC = () => {
                   variant="outline" 
                   className="h-auto py-4 bg-loteraa-gray/20 border-loteraa-gray/30 hover:bg-loteraa-gray/30 flex flex-col items-center justify-center gap-2"
                 >
-                  <Zap className="h-6 w-6 text-loteraa-purple" />
+                  <Plus className="h-6 w-6 text-loteraa-purple" />
                   <span>Optimize Earnings</span>
                 </Button>
                 
@@ -288,7 +288,7 @@ const EarningsPage: React.FC = () => {
                   variant="outline" 
                   className="h-auto py-4 bg-loteraa-gray/20 border-loteraa-gray/30 hover:bg-loteraa-gray/30 flex flex-col items-center justify-center gap-2"
                 >
-                  <ArrowUpRight className="h-6 w-6 text-loteraa-purple" />
+                  <Plus className="h-6 w-6 text-loteraa-purple" />
                   <span>Withdraw Funds</span>
                 </Button>
               </div>
@@ -532,45 +532,45 @@ const EarningsPage: React.FC = () => {
           </TabsContent>
         </Tabs>
 
-      {/* Earnings Breakdown Dialog - Now more mobile friendly */}
+      {/* Earnings Breakdown Dialog - Enhanced mobile responsiveness */}
       <Dialog open={isEarningsBreakdownOpen} onOpenChange={setIsEarningsBreakdownOpen}>
         <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[700px] max-h-[95vh] w-[95vw] overflow-hidden p-4 sm:p-6">
-          <DialogHeader>
-            <DialogTitle className="text-xl sm:text-2xl">Earnings Breakdown</DialogTitle>
-            <DialogDescription className="text-white/70 text-sm sm:text-base">
+          <DialogHeader className="space-y-1">
+            <DialogTitle className="text-lg sm:text-2xl">Earnings Breakdown</DialogTitle>
+            <DialogDescription className="text-white/70 text-xs sm:text-sm">
               Detailed analysis of your platform earnings
             </DialogDescription>
           </DialogHeader>
           <ScrollArea className="max-h-[calc(80vh-120px)] overflow-y-auto pr-2 sm:pr-4">
-            <div className="space-y-6 sm:space-y-8">
+            <div className="space-y-4 sm:space-y-8 text-sm sm:text-base">
               <div>
                 <h3 className="text-base sm:text-lg font-medium mb-2 sm:mb-3">Monthly Earnings (2025)</h3>
-                <div className="h-48 sm:h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
-                  <p className="text-white/50 text-sm sm:text-base">Monthly earnings chart visualization</p>
+                <div className="h-40 sm:h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
+                  <p className="text-white/50 text-xs sm:text-sm">Monthly earnings chart visualization</p>
                 </div>
               </div>
 
               <div>
                 <h3 className="text-base sm:text-lg font-medium mb-2 sm:mb-3">Earnings by Category</h3>
                 <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 sm:gap-4">
-                  <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg">
+                  <div className="bg-loteraa-gray/30 p-2 sm:p-4 rounded-lg">
                     <h4 className="text-xs sm:text-sm text-white/70 mb-1">IoT Data</h4>
-                    <p className="text-lg sm:text-xl font-medium">$4,600 Terra</p>
+                    <p className="text-base sm:text-xl font-medium">$4,600 Terra</p>
                     <p className="text-xs text-white/50">36% of total</p>
                   </div>
-                  <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg">
+                  <div className="bg-loteraa-gray/30 p-2 sm:p-4 rounded-lg">
                     <h4 className="text-xs sm:text-sm text-white/70 mb-1">Devices</h4>
-                    <p className="text-lg sm:text-xl font-medium">$2,900 Terra</p>
+                    <p className="text-base sm:text-xl font-medium">$2,900 Terra</p>
                     <p className="text-xs text-white/50">23% of total</p>
                   </div>
-                  <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg">
+                  <div className="bg-loteraa-gray/30 p-2 sm:p-4 rounded-lg">
                     <h4 className="text-xs sm:text-sm text-white/70 mb-1">DApps</h4>
-                    <p className="text-lg sm:text-xl font-medium">$3,400 Terra</p>
+                    <p className="text-base sm:text-xl font-medium">$3,400 Terra</p>
                     <p className="text-xs text-white/50">27% of total</p>
                   </div>
-                  <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg">
+                  <div className="bg-loteraa-gray/30 p-2 sm:p-4 rounded-lg">
                     <h4 className="text-xs sm:text-sm text-white/70 mb-1">Smart Contracts</h4>
-                    <p className="text-lg sm:text-xl font-medium">$1,600 Terra</p>
+                    <p className="text-base sm:text-xl font-medium">$1,600 Terra</p>
                     <p className="text-xs text-white/50">14% of total</p>
                   </div>
                 </div>
@@ -625,16 +625,16 @@ const EarningsPage: React.FC = () => {
 
               <div>
                 <h3 className="text-base sm:text-lg font-medium mb-2 sm:mb-3">Projected Earnings</h3>
-                <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg">
-                  <div className="flex justify-between items-center mb-2 text-sm">
+                <div className="bg-loteraa-gray/30 p-2 sm:p-4 rounded-lg">
+                  <div className="flex justify-between items-center mb-2 text-xs sm:text-sm">
                     <p>Next Month (Estimated)</p>
                     <p className="text-loteraa-purple">$13,800 Terra</p>
                   </div>
-                  <div className="flex justify-between items-center mb-2 text-sm">
+                  <div className="flex justify-between items-center mb-2 text-xs sm:text-sm">
                     <p>Quarter Projection</p>
                     <p className="text-loteraa-purple">$42,500 Terra</p>
                   </div>
-                  <div className="flex justify-between items-center text-sm">
+                  <div className="flex justify-between items-center text-xs sm:text-sm">
                     <p>Annual Projection</p>
                     <p className="text-loteraa-purple">$175,000 Terra</p>
                   </div>
@@ -643,142 +643,67 @@ const EarningsPage: React.FC = () => {
             </div>
           </ScrollArea>
           <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:justify-between sm:items-center mt-4">
-            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
-              Download Full Report
+            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 text-xs sm:text-sm">
+              <Download className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Download Full Report
             </Button>
             <DialogClose asChild>
-              <Button size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90">Close</Button>
+              <Button size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-xs sm:text-sm">Close</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isAddDeviceOpen} onOpenChange={setIsAddDeviceOpen}>
-        <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle className="text-xl">Add New Device or DApp</DialogTitle>
-            <DialogDescription className="text-white/70">
-              Connect a new IoT device or deploy a DApp to start earning
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="h-auto py-6 bg-loteraa-gray/20 border-loteraa-gray/30 hover:bg-loteraa-gray/30 flex flex-col items-center justify-center gap-2">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-loteraa-purple">
-                  <path d="M10.5 3.75H13.5V8.25H18V11.25H13.5V15.75H10.5V11.25H6V8.25H10.5V3.75Z" fill="currentColor"/>
-                  <path d="M18.75 21H5.25C4.85218 21 4.47064 20.842 4.18934 20.5607C3.90804 20.2794 3.75 19.8978 3.75 19.5V4.5C3.75 4.10218 3.90804 3.72064 4.18934 3.43934C4.47064 3.15804 4.85218 3 5.25 3H18.75C19.1478 3 19.5294 3.15804 19.8107 3.43934C20.092 3.72064 20.25 4.10218 20.25 4.5V19.5C20.25 19.8978 20.092 20.2794 19.8107 20.5607C19.5294 20.842 19.1478 21 18.75 21Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span>Add IoT Device</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-6 bg-loteraa-gray/20 border-loteraa-gray/30 hover:bg-loteraa-gray/30 flex flex-col items-center justify-center gap-2">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-loteraa-purple">
-                  <path d="M21 16V8.00002C20.9996 7.6493 20.9071 7.30483 20.7315 7.00119C20.556 6.69754 20.3037 6.44539 20 6.27002L13 2.27002C12.696 2.09449 12.3511 2.00208 12 2.00208C11.6489 2.00208 11.304 2.09449 11 2.27002L4 6.27002C3.69626 6.44539 3.44398 6.69754 3.26846 7.00119C3.09294 7.30483 3.00036 7.6493 3 8.00002V16C3.00036 16.3508 3.09294 16.6952 3.26846 16.9989C3.44398 17.3025 3.69626 17.5547 4 17.73L11 21.73C11.304 21.9056 11.6489 21.998 12 21.998C12.3511 21.998 12.696 21.9056 13 21.73L20 17.73C20.3037 17.5547 20.556 17.3025 20.7315 16.9989C20.9071 16.6952 20.9996 16.3508 21 16Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M3.27002 6.96002L12 12.01L20.73 6.96002" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M12 22.08V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span>Deploy DApp</span>
-              </Button>
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">Quick Connect Options</h3>
-              <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" size="sm" className="justify-start bg-transparent border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-loteraa-purple">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    <path d="M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                  Smart Home Hub
-                </Button>
-                <Button variant="outline" size="sm" className="justify-start bg-transparent border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-loteraa-purple">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    <path d="M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                  Weather Station
-                </Button>
-                <Button variant="outline" size="sm" className="justify-start bg-transparent border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-loteraa-purple">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    <path d="M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                  Air Quality Sensor
-                </Button>
-                <Button variant="outline" size="sm" className="justify-start bg-transparent border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-loteraa-purple">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    <path d="M8 12H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                  Smart Meter
-                </Button>
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
-              Browse Device Catalog
-            </Button>
-            <DialogClose asChild>
-              <Button className="bg-loteraa-purple hover:bg-loteraa-purple/90">Close</Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Dataset Verified Dialog - Now more mobile friendly */}
+      {/* Dataset Verified Dialog - Enhanced mobile responsiveness */}
       <Dialog open={isDatasetVerifiedOpen} onOpenChange={setIsDatasetVerifiedOpen}>
         <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[700px] max-h-[95vh] w-[95vw] overflow-hidden p-4 sm:p-6">
-          <DialogHeader>
-            <DialogTitle className="text-xl sm:text-2xl text-green-500 flex items-center gap-2">
+          <DialogHeader className="space-y-1">
+            <DialogTitle className="text-lg sm:text-2xl text-green-500 flex items-center gap-1 sm:gap-2">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-6 sm:h-6">
                 <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               <span className="text-base sm:text-2xl">Dataset Verified</span>
             </DialogTitle>
-            <DialogDescription className="text-white/70 text-sm sm:text-base">
+            <DialogDescription className="text-white/70 text-xs sm:text-sm">
               Your uploaded IoT Data has been successfully verified
             </DialogDescription>
           </DialogHeader>
-          <ScrollArea className="max-h-[calc(80vh-120px)] pr-2 sm:pr-4">
-            <div className="space-y-4 sm:space-y-6">
-              <div className="space-y-2 sm:space-y-4 text-sm">
+          <ScrollArea className="max-h-[calc(80vh-120px)] overflow-y-auto pr-2 sm:pr-4">
+            <div className="space-y-4 sm:space-y-6 text-xs sm:text-sm">
+              <div className="space-y-2 sm:space-y-4">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-loteraa-gray/30 pb-2 gap-1">
                   <span className="text-white/70">Dataset Title:</span>
-                  <span>{verifiedDataset.title}</span>
+                  <span className="text-right">Lagos Air Quality Metrics</span>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-loteraa-gray/30 pb-2 gap-1">
                   <span className="text-white/70">Smart Contract:</span>
-                  <span>{verifiedDataset.verificationData.contractId}</span>
+                  <span className="text-right">SC-AirData-4098</span>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-loteraa-gray/30 pb-2 gap-1">
                   <span className="text-white/70">Status:</span>
-                  <Badge className="bg-green-600 text-xs w-fit">
-                    {verifiedDataset.verificationData.status}
+                  <Badge className="bg-green-600 text-xs w-fit sm:w-auto">
+                    Verified
                   </Badge>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-loteraa-gray/30 pb-2 gap-1">
                   <span className="text-white/70">Time of Verification:</span>
-                  <span>{verifiedDataset.verificationData.timestamp}</span>
+                  <span className="text-right">2025-06-03 12:25 UTC</span>
                 </div>
               </div>
 
-              <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg space-y-3 sm:space-y-4">
+              <div className="bg-loteraa-gray/30 p-3 rounded-lg space-y-3 sm:space-y-4">
                 <h3 className="text-base sm:text-lg font-medium">Verification Results</h3>
                 <div className="grid grid-cols-1 xs:grid-cols-3 gap-2 sm:gap-4">
                   <div className="flex flex-col items-center p-2 bg-loteraa-gray/20 rounded-lg">
-                    <span className="text-xs sm:text-sm text-white/70 mb-1">Data Hash Match</span>
+                    <span className="text-xs text-white/70 mb-1">Data Hash Match</span>
                     <Badge className="bg-green-600 text-xs">✓ Matched</Badge>
                   </div>
                   <div className="flex flex-col items-center p-2 bg-loteraa-gray/20 rounded-lg">
-                    <span className="text-xs sm:text-sm text-white/70 mb-1">Timestamp Match</span>
+                    <span className="text-xs text-white/70 mb-1">Timestamp Match</span>
                     <Badge className="bg-green-600 text-xs">✓ Matched</Badge>
                   </div>
                   <div className="flex flex-col items-center p-2 bg-loteraa-gray/20 rounded-lg">
-                    <span className="text-xs sm:text-sm text-white/70 mb-1">Region Match</span>
+                    <span className="text-xs text-white/70 mb-1">Region Match</span>
                     <Badge className="bg-green-600 text-xs">✓ Matched</Badge>
                   </div>
                 </div>
@@ -787,44 +712,44 @@ const EarningsPage: React.FC = () => {
               <div className="space-y-2">
                 <h3 className="text-base sm:text-lg font-medium">Dataset Stats</h3>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-4">
-                  <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
-                    <p className="text-xs sm:text-sm text-white/70">File Size</p>
-                    <p className="text-sm sm:font-medium">{verifiedDataset.verificationData.fileSize}</p>
+                  <div className="bg-loteraa-gray/30 p-2 rounded-lg">
+                    <p className="text-xs text-white/70">File Size</p>
+                    <p className="text-sm sm:font-medium">3.2MB</p>
                   </div>
-                  <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
-                    <p className="text-xs sm:text-sm text-white/70">Total Records</p>
-                    <p className="text-sm sm:font-medium">{verifiedDataset.verificationData.totalRecords}</p>
+                  <div className="bg-loteraa-gray/30 p-2 rounded-lg">
+                    <p className="text-xs text-white/70">Total Records</p>
+                    <p className="text-sm sm:font-medium">12,500</p>
                   </div>
-                  <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
-                    <p className="text-xs sm:text-sm text-white/70">Coverage</p>
-                    <p className="text-sm sm:font-medium">{verifiedDataset.verificationData.coverage}</p>
+                  <div className="bg-loteraa-gray/30 p-2 rounded-lg">
+                    <p className="text-xs text-white/70">Coverage</p>
+                    <p className="text-sm sm:font-medium">Jan-Mar 2025</p>
                   </div>
-                  <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
-                    <p className="text-xs sm:text-sm text-white/70">Access Set</p>
-                    <p className="text-sm sm:font-medium">{verifiedDataset.verificationData.accessType} ({verifiedDataset.verificationData.accessPrice} per query)</p>
+                  <div className="bg-loteraa-gray/30 p-2 rounded-lg">
+                    <p className="text-xs text-white/70">Access Set</p>
+                    <p className="text-sm sm:font-medium">Paid (0.75$/query)</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg space-y-3 sm:space-y-4">
+              <div className="bg-loteraa-gray/30 p-3 rounded-lg space-y-3 sm:space-y-4">
                 <h3 className="text-base sm:text-lg font-medium">Payment Released Automatically</h3>
-                <div className="space-y-2 text-sm">
+                <div className="space-y-2 text-xs sm:text-sm">
                   <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-1">
                     <span className="text-white/70">Payment Status:</span>
                     <Badge className="bg-green-600 text-xs w-fit">Paid</Badge>
                   </div>
                   <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-1">
                     <span className="text-white/70">Amount:</span>
-                    <span className="text-loteraa-purple font-medium">{verifiedDataset.verificationData.paymentAmount}</span>
+                    <span className="text-loteraa-purple font-medium">1,243$Terra</span>
                   </div>
                   <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-1">
                     <span className="text-white/70">Wallet Address:</span>
-                    <span>{verifiedDataset.verificationData.walletAddress}</span>
+                    <span>0xabc...</span>
                   </div>
                   <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-1">
                     <span className="text-white/70">TX Hash:</span>
-                    <Button variant="ghost" size="sm" className="text-loteraa-purple hover:bg-loteraa-gray/30 p-0 h-auto flex items-center gap-1 justify-start sm:justify-center w-fit">
-                      {verifiedDataset.verificationData.txHash} <ExternalLink className="h-3 w-3" />
+                    <Button variant="ghost" size="sm" className="text-loteraa-purple hover:bg-loteraa-gray/30 p-0 h-auto flex items-center gap-1 justify-start sm:justify-center w-fit text-xs">
+                      0xf5a1... <ExternalLink className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
@@ -832,93 +757,89 @@ const EarningsPage: React.FC = () => {
             </div>
           </ScrollArea>
           <DialogFooter className="flex-col gap-2 mt-4">
-            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 w-full sm:w-auto">
+            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 w-full sm:w-auto text-xs sm:text-sm">
               <Download className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Download Payment Report
             </Button>
-            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 w-full sm:w-auto">
+            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 w-full sm:w-auto text-xs sm:text-sm">
               View Access Analytics
             </Button>
-            <Button size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto">
-              View Dataset Page
-            </Button>
+            <DialogClose asChild>
+              <Button size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto text-xs sm:text-sm">
+                Close
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Device Performance Dialog - Now more mobile friendly */}
+      {/* Device Performance Dialog - Enhanced mobile responsiveness */}
       <Dialog open={isDevicePerformanceOpen} onOpenChange={setIsDevicePerformanceOpen}>
         <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[700px] max-h-[95vh] w-[95vw] overflow-hidden p-4 sm:p-6">
-          <DialogHeader>
-            <DialogTitle className="text-xl sm:text-2xl">Device Performance</DialogTitle>
-            <DialogDescription className="text-white/70 text-sm sm:text-base">
+          <DialogHeader className="space-y-1">
+            <DialogTitle className="text-lg sm:text-2xl">Device Performance</DialogTitle>
+            <DialogDescription className="text-white/70 text-xs sm:text-sm">
               {selectedDeviceForPerformance?.name || 'Device'} performance metrics and diagnostics
             </DialogDescription>
           </DialogHeader>
-          <ScrollArea className="max-h-[calc(80vh-120px)] pr-2 sm:pr-4">
-            <div className="space-y-4 sm:space-y-6">
-              <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between p-3 sm:p-4 bg-loteraa-gray/30 rounded-lg gap-2">
+          <ScrollArea className="max-h-[calc(80vh-120px)] overflow-y-auto pr-2 sm:pr-4">
+            <div className="space-y-4 sm:space-y-6 text-xs sm:text-sm">
+              <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between p-3 bg-loteraa-gray/30 rounded-lg gap-2">
                 <div>
-                  <h3 className="text-base sm:text-lg font-medium">{devicePerformance.deviceName}</h3>
-                  <p className="text-xs sm:text-sm text-white/70">ID: {devicePerformance.deviceId}</p>
+                  <h3 className="text-sm sm:text-lg font-medium">Urban Air Quality Sensor Node #142</h3>
+                  <p className="text-xs text-white/70">ID: DEV-AQ-2025-01</p>
                 </div>
-                <Badge className={`${
-                  devicePerformance.status === 'online' 
-                    ? 'bg-green-600' 
-                    : devicePerformance.status === 'warning'
-                    ? 'bg-yellow-600' 
-                    : 'bg-red-600'
-                } text-xs w-fit`}>
-                  {devicePerformance.status.charAt(0).toUpperCase() + devicePerformance.status.slice(1)}
+                <Badge className="bg-green-600 text-xs w-fit">
+                  Online
                 </Badge>
               </div>
 
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-4">
-                <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
+                <div className="bg-loteraa-gray/30 p-2 rounded-lg">
                   <p className="text-xs text-white/70">Uptime</p>
-                  <p className="text-sm sm:font-medium">{devicePerformance.uptime}</p>
+                  <p className="text-sm sm:font-medium">99.7%</p>
                 </div>
-                <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
+                <div className="bg-loteraa-gray/30 p-2 rounded-lg">
                   <p className="text-xs text-white/70">Last Sync</p>
-                  <p className="text-sm sm:font-medium">{devicePerformance.lastSync}</p>
+                  <p className="text-sm sm:font-medium">10 min ago</p>
                 </div>
-                <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
+                <div className="bg-loteraa-gray/30 p-2 rounded-lg">
                   <p className="text-xs text-white/70">Battery</p>
-                  <p className="text-sm sm:font-medium">{devicePerformance.batteryLevel}%</p>
+                  <p className="text-sm sm:font-medium">82%</p>
                 </div>
-                <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg">
+                <div className="bg-loteraa-gray/30 p-2 rounded-lg">
                   <p className="text-xs text-white/70">Data Points</p>
-                  <p className="text-sm sm:font-medium">{devicePerformance.dataPoints.toLocaleString()}</p>
+                  <p className="text-sm sm:font-medium">142,500</p>
                 </div>
               </div>
 
-              <div className="space-y-3 sm:space-y-4">
+              <div className="space-y-3">
                 <h3 className="text-base sm:text-lg font-medium">Resource Usage</h3>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
-                  <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg space-y-2">
-                    <div className="flex justify-between text-sm">
+                  <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg space-y-2">
+                    <div className="flex justify-between text-xs sm:text-sm">
                       <span>Storage</span>
-                      <span>{devicePerformance.storageUsed}</span>
+                      <span>450MB / 2GB</span>
                     </div>
-                    <div className="w-full bg-loteraa-gray/60 rounded-full h-2">
-                      <div className="bg-loteraa-purple h-2 rounded-full" style={{ width: '22.5%' }}></div>
+                    <div className="w-full bg-loteraa-gray/60 rounded-full h-1.5 sm:h-2">
+                      <div className="bg-loteraa-purple h-1.5 sm:h-2 rounded-full" style={{ width: '22.5%' }}></div>
                     </div>
                   </div>
-                  <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg space-y-2">
-                    <div className="flex justify-between text-sm">
+                  <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg space-y-2">
+                    <div className="flex justify-between text-xs sm:text-sm">
                       <span>CPU</span>
-                      <span>{devicePerformance.cpuUsage}%</span>
+                      <span>12%</span>
                     </div>
-                    <div className="w-full bg-loteraa-gray/60 rounded-full h-2">
-                      <div className="bg-loteraa-purple h-2 rounded-full" style={{ width: `${devicePerformance.cpuUsage}%` }}></div>
+                    <div className="w-full bg-loteraa-gray/60 rounded-full h-1.5 sm:h-2">
+                      <div className="bg-loteraa-purple h-1.5 sm:h-2 rounded-full" style={{ width: '12%' }}></div>
                     </div>
                   </div>
-                  <div className="bg-loteraa-gray/30 p-3 sm:p-4 rounded-lg space-y-2">
-                    <div className="flex justify-between text-sm">
+                  <div className="bg-loteraa-gray/30 p-2 sm:p-3 rounded-lg space-y-2">
+                    <div className="flex justify-between text-xs sm:text-sm">
                       <span>Memory</span>
-                      <span>{devicePerformance.memoryUsage}%</span>
+                      <span>32%</span>
                     </div>
-                    <div className="w-full bg-loteraa-gray/60 rounded-full h-2">
-                      <div className="bg-loteraa-purple h-2 rounded-full" style={{ width: `${devicePerformance.memoryUsage}%` }}></div>
+                    <div className="w-full bg-loteraa-gray/60 rounded-full h-1.5 sm:h-2">
+                      <div className="bg-loteraa-purple h-1.5 sm:h-2 rounded-full" style={{ width: '32%' }}></div>
                     </div>
                   </div>
                 </div>
@@ -927,21 +848,21 @@ const EarningsPage: React.FC = () => {
               <div className="space-y-6">
                 <div className="space-y-2">
                   <h3 className="text-base sm:text-lg font-medium">Daily Uptime (Last 30 Days)</h3>
-                  <div className="h-40 sm:h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
+                  <div className="h-32 sm:h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
                     <p className="text-xs sm:text-sm text-white/50">Uptime chart visualization</p>
                   </div>
                 </div>
                 
                 <div className="space-y-2">
                   <h3 className="text-base sm:text-lg font-medium">Data Collection Rate</h3>
-                  <div className="h-40 sm:h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
+                  <div className="h-32 sm:h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
                     <p className="text-xs sm:text-sm text-white/50">Data collection rate chart</p>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="text-base sm:text-lg font-medium mb-2 sm:mb-3">Error Log</h3>
+                <h3 className="text-base sm:text-lg font-medium mb-2">Error Log</h3>
                 <div className="space-y-2">
                   {Array.from({ length: 3 }).map((_, i) => (
                     <div key={i} className="p-2 sm:p-3 bg-loteraa-gray/30 rounded-lg">
@@ -961,95 +882,21 @@ const EarningsPage: React.FC = () => {
             </div>
           </ScrollArea>
           <DialogFooter className="flex-col gap-2 mt-4">
-            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 w-full sm:w-auto">
+            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 w-full sm:w-auto text-xs sm:text-sm">
               <Download className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Download Diagnostics
             </Button>
-            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 w-full sm:w-auto">
+            <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 w-full sm:w-auto text-xs sm:text-sm">
               Configure Alerts
             </Button>
             <DialogClose asChild>
-              <Button size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto">
+              <Button size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto text-xs sm:text-sm">
                 Close
               </Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <Dialog open={isUsageAnalyticsOpen} onOpenChange={setIsUsageAnalyticsOpen}>
-        <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[700px]">
-          <DialogHeader>
-            <DialogTitle className="text-xl">Usage Analytics</DialogTitle>
-            <DialogDescription className="text-white/70">
-              Detailed analytics on how your IoT data is being used
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-6 py-4">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-loteraa-gray/30 p-3 rounded-lg">
-                <p className="text-xs text-white/70">Total Queries</p>
-                <p className="text-xl font-semibold">24,567</p>
-                <p className="text-xs text-green-500">+12.3% from last month</p>
-              </div>
-              <div className="bg-loteraa-gray/30 p-3 rounded-lg">
-                <p className="text-xs text-white/70">Active Users</p>
-                <p className="text-xl font-semibold">1,245</p>
-                <p className="text-xs text-green-500">+8.7% from last month</p>
-              </div>
-              <div className="bg-loteraa-gray/30 p-3 rounded-lg">
-                <p className="text-xs text-white/70">Revenue per Query</p>
-                <p className="text-xl font-semibold">$0.51</p>
-                <p className="text-xs text-green-500">+2.1% from last month</p>
-              </div>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-medium mb-3">Query Volume (Last 30 Days)</h3>
-              <div className="h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
-                <p className="text-white/50">Query volume chart visualization</p>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-lg font-medium mb-3">Top Data Consumers</h3>
-                <div className="space-y-2">
-                  {[
-                    { name: 'Urban Planning DApp', queries: '5,234', revenue: '$2,670' },
-                    { name: 'Climate Research API', queries: '3,876', revenue: '$1,976' },
-                    { name: 'Smart City Dashboard', queries: '2,543', revenue: '$1,297' }
-                  ].map((consumer, i) => (
-                    <div key={i} className="flex justify-between items-center p-2 bg-loteraa-gray/30 rounded-lg">
-                      <div>
-                        <p className="text-sm font-medium">{consumer.name}</p>
-                        <p className="text-xs text-white/70">{consumer.queries} queries</p>
-                      </div>
-                      <p className="text-sm text-loteraa-purple">{consumer.revenue}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-medium mb-3">Query Types</h3>
-                <div className="h-48 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
-                  <p className="text-white/50">Query types chart visualization</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20">
-              <Download className="mr-2 h-4 w-4" /> Export Report
-            </Button>
-            <DialogClose asChild>
-              <Button className="bg-loteraa-purple hover:bg-loteraa-purple/90">Close</Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
-  </div>
   );
 };
 
