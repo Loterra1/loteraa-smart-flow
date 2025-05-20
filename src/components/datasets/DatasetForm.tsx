@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -303,11 +302,11 @@ export default function DatasetForm({ onSubmit, onCancel, availableContracts }: 
             </div>
           </div>
           
-          <div className="flex justify-end gap-4 pt-2">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 pt-2">
             <Button 
               type="button"
               variant="outline" 
-              className="bg-transparent border-loteraa-gray/50 text-white hover:bg-loteraa-gray/20"
+              className="bg-transparent border-loteraa-gray/50 text-white hover:bg-loteraa-gray/20 order-1"
               onClick={onCancel}
             >
               Cancel
@@ -315,20 +314,20 @@ export default function DatasetForm({ onSubmit, onCancel, availableContracts }: 
             <Button 
               type="button"
               variant="outline" 
-              className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
-            >
-              View Data Preview
-            </Button>
-            <Button 
-              type="button"
-              variant="outline" 
-              className="bg-transparent border-loteraa-gray/50 text-white hover:bg-loteraa-gray/20"
+              className="bg-transparent border-loteraa-gray/50 text-white hover:bg-loteraa-gray/20 order-3 sm:order-3"
             >
               Save as Draft
             </Button>
             <Button 
+              type="button"
+              variant="outline" 
+              className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 order-2 sm:order-2"
+            >
+              View Data Preview
+            </Button>
+            <Button 
               type="submit"
-              className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+              className="bg-loteraa-purple hover:bg-loteraa-purple/90 order-4"
             >
               Publish Dataset
             </Button>
