@@ -16,7 +16,6 @@ export default function ProfileHeader() {
   const [user, setUser] = useState({
     name: "Alex Johnson",
     role: "Researcher",
-    walletAddress: "",
     avatarUrl: "",
   });
   
@@ -25,7 +24,10 @@ export default function ProfileHeader() {
   const connectWallet = () => {
     // This would connect to a wallet in a real implementation
     console.log("Connecting wallet...");
-    setUser({...user, walletAddress: "0x1234...5678"});
+    toast({
+      title: "Connect Wallet",
+      description: "This would connect to a wallet in a real implementation."
+    });
   };
   
   const handleRoleChange = (value: string) => {
@@ -100,20 +102,15 @@ export default function ProfileHeader() {
         </div>
         
         <div className="flex items-center gap-2 mt-1 text-sm">
-          <span className="text-white/70">Wallet:</span>
-          {user.walletAddress ? (
-            <span className="font-mono text-white/90">{user.walletAddress}</span>
-          ) : (
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 flex items-center gap-1"
-              onClick={connectWallet}
-            >
-              <Link className="h-4 w-4" />
-              Connect Wallet
-            </Button>
-          )}
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 flex items-center gap-1"
+            onClick={connectWallet}
+          >
+            <Link className="h-4 w-4" />
+            Connect Wallet
+          </Button>
         </div>
       </div>
     </div>
