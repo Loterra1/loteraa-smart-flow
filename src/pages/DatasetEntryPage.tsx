@@ -6,7 +6,7 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PlusCircle, Download, Upload, AlertCircle } from "lucide-react";
+import { PlusCircle, Upload, AlertCircle } from "lucide-react";
 import DashboardNavbar from '@/components/DashboardNavbar';
 import { useToast } from "@/hooks/use-toast";
 
@@ -105,7 +105,7 @@ export default function DatasetEntryPage() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold gradient-text mb-2">Dataset Entry</h1>
-            <p className="text-white/70">Submit and manage your datasets for research and development</p>
+            <p className="text-white/70">Submit and manage your datasets for Smart contract verification and onchain to earn rewards</p>
           </div>
           <Button 
             className="bg-loteraa-purple hover:bg-loteraa-purple/90"
@@ -256,7 +256,7 @@ export default function DatasetEntryPage() {
           </div>
         </div>
         
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mt-8">
           <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
             <CardHeader>
               <CardTitle className="text-lg font-medium text-white">Dataset Guidelines</CardTitle>
@@ -280,66 +280,6 @@ export default function DatasetEntryPage() {
                   <span>Verify data integrity before submission</span>
                 </li>
               </ul>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
-            <CardHeader>
-              <CardTitle className="text-lg font-medium text-white">Rewards & Credits</CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-white/80">
-              <p className="mb-4">Earn tokens by contributing valuable datasets to our research pool.</p>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Your contributions:</span>
-                  <span className="text-white font-semibold">4 datasets</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Data used in research:</span>
-                  <span className="text-white font-semibold">2 datasets</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Total earnings:</span>
-                  <span className="text-white font-semibold">250 LOT</span>
-                </div>
-                <Button className="w-full mt-2 bg-loteraa-purple hover:bg-loteraa-purple/90">
-                  View Earnings Details
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
-            <CardHeader>
-              <CardTitle className="text-lg font-medium text-white">Download Templates</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-white/80 mb-4">
-                Download standard templates for common dataset types to ensure your data is compatible with our systems.
-              </p>
-              <div className="space-y-2">
-                <Button 
-                  variant="outline" 
-                  className="w-full bg-transparent border-loteraa-purple/30 text-white hover:bg-loteraa-purple/10 justify-start"
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  IoT Sensor Template
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full bg-transparent border-loteraa-purple/30 text-white hover:bg-loteraa-purple/10 justify-start"
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  Environmental Data Template
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full bg-transparent border-loteraa-purple/30 text-white hover:bg-loteraa-purple/10 justify-start"
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  Smart Grid Data Template
-                </Button>
-              </div>
             </CardContent>
           </Card>
         </div>
