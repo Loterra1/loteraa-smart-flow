@@ -30,6 +30,10 @@ export interface Dataset {
     walletAddress?: string;
     txHash?: string;
   };
+  paymentReport?: {
+    downloadUrl?: string;
+    generatedAt?: string;
+  };
 }
 
 export interface NewDatasetFormData {
