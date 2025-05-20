@@ -7,7 +7,8 @@ import {
   ScrollText, 
   Zap, 
   Tv,
-  Bell
+  Bell,
+  ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +52,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   return (
     <Card 
       className={cn(
-        "flex items-start p-4 mb-2 space-x-3 transition-colors border-loteraa-gray/30 cursor-pointer hover:bg-loteraa-gray/30", 
+        "flex items-start p-4 mb-2 space-x-3 transition-colors border-loteraa-gray/30 cursor-pointer hover:bg-loteraa-gray/30 group", 
         isNew ? "bg-loteraa-purple/10" : "bg-loteraa-gray/20"
       )}
       onClick={onClick}
@@ -64,9 +65,12 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         )}
         <p className="text-xs text-white/50 mt-1">{timestamp}</p>
       </div>
-      {isNew && (
-        <div className="h-2 w-2 rounded-full bg-loteraa-purple"></div>
-      )}
+      <div className="flex items-center">
+        {isNew && (
+          <div className="h-2 w-2 rounded-full bg-loteraa-purple mr-2"></div>
+        )}
+        <ChevronRight className="h-4 w-4 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity" />
+      </div>
     </Card>
   );
 };
