@@ -20,7 +20,7 @@ export const useNotifications = () => {
       message: 'New reward of 25 Terra tokens credited',
       timestamp: '10 minutes ago',
       isNew: true,
-      details: 'Wallet transaction: 0x8f2e...3d4f'
+      details: 'Wallet transaction: 0x8f2e73a1d456b90c3214fd9e3d4f'
     },
     {
       id: '2',
@@ -28,7 +28,7 @@ export const useNotifications = () => {
       message: 'Dataset "Weather_Data_Accra" has been verified',
       timestamp: '25 minutes ago',
       isNew: true,
-      details: 'Smart contract verification: 0x7a1c...9e2b'
+      details: 'Smart contract verification: 0x7a1c98e2b'
     },
     {
       id: '3',
@@ -57,7 +57,7 @@ export const useNotifications = () => {
       message: 'Earned 15 Terra tokens from data contributions',
       timestamp: 'Yesterday',
       isNew: false,
-      details: 'From 3 active sensors'
+      details: 'From 3 active sensors - Transaction: 0x94b7c2a56f1e89d3b7a5'
     },
     {
       id: '7',
@@ -66,6 +66,14 @@ export const useNotifications = () => {
       timestamp: 'Yesterday',
       isNew: false,
     },
+    {
+      id: '8',
+      type: 'reward',
+      message: 'Earned 50 Terra tokens for community contributions',
+      timestamp: '2 days ago',
+      isNew: false,
+      details: 'Smart contract audit participation - Transaction: 0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c'
+    }
   ]);
 
   const { toast } = useToast();

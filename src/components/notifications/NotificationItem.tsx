@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { 
@@ -19,6 +20,7 @@ export interface NotificationItemProps {
   timestamp: string;
   isNew?: boolean;
   details?: string;
+  onClick?: () => void;
 }
 
 const getIcon = (type: NotificationType) => {
@@ -43,14 +45,16 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   message,
   timestamp,
   isNew = false,
-  details
+  details,
+  onClick
 }) => {
   return (
     <Card 
       className={cn(
-        "flex items-start p-4 mb-2 space-x-3 transition-colors border-loteraa-gray/30", 
+        "flex items-start p-4 mb-2 space-x-3 transition-colors border-loteraa-gray/30 cursor-pointer hover:bg-loteraa-gray/30", 
         isNew ? "bg-loteraa-purple/10" : "bg-loteraa-gray/20"
       )}
+      onClick={onClick}
     >
       <div className="mt-1">{getIcon(type)}</div>
       <div className="flex-1">

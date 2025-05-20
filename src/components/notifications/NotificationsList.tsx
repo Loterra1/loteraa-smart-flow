@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import NotificationItem, { NotificationType } from './NotificationItem';
 import { Notification } from '@/hooks/useNotifications';
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import RewardDetailsDialog from './RewardDetailsDialog';
 
 interface NotificationsListProps {
   notifications: Notification[];
@@ -16,11 +17,64 @@ const NotificationsList: React.FC<NotificationsListProps> = ({
   activeTab,
   onMarkAllAsRead
 }) => {
+  const [selectedReward, setSelectedReward] = useState<{
+    isOpen: boolean;
+    data: {
+      amount: number;
+      source: string;
+      timestamp: string;
+      transactionId: string;
+      details?: string;
+    };
+  }>({
+    isOpen: false,
+    data: {
+      amount: 0,
+      source: '',
+      timestamp: '',
+      transactionId: ''
+    }
+  });
+
   const filteredNotifications = activeTab === 'all' 
     ? notifications 
     : notifications.filter(n => n.type === activeTab);
 
   const hasUnread = notifications.some(n => n.isNew);
+  
+  const handleNotificationClick = (notification: Notification) => {
+    // Only handle reward type notifications
+    if (notification.type === 'reward') {
+      // Parse the reward amount from the message
+      const amountMatch = notification.message.match(/(\d+) Terra tokens/);
+      const amount = amountMatch ? parseInt(amountMatch[1], 10) : 0;
+      
+      // Get transaction ID from details if available
+      const transactionId = notification.details?.match(/0x[a-f0-9]+/) 
+        ? notification.details.match(/0x[a-f0-9]+/)?.[0] || ''
+        : '0x' + Math.random().toString(16).slice(2, 10) + '...' + Math.random().toString(16).slice(2, 6);
+      
+      setSelectedReward({
+        isOpen: true,
+        data: {
+          amount,
+          source: notification.message.includes('data contributions') 
+            ? 'Data Contribution Rewards' 
+            : 'Platform Activity Bonus',
+          timestamp: notification.timestamp,
+          transactionId,
+          details: notification.details
+        }
+      });
+    }
+  };
+
+  const closeRewardDialog = () => {
+    setSelectedReward(prev => ({
+      ...prev,
+      isOpen: false
+    }));
+  };
   
   if (filteredNotifications.length === 0) {
     return (
@@ -58,9 +112,17 @@ const NotificationsList: React.FC<NotificationsListProps> = ({
             timestamp={notification.timestamp}
             isNew={notification.isNew}
             details={notification.details}
+            onClick={() => handleNotificationClick(notification)}
           />
         ))}
       </div>
+
+      {/* Reward Details Dialog */}
+      <RewardDetailsDialog 
+        isOpen={selectedReward.isOpen}
+        onClose={closeRewardDialog}
+        rewardData={selectedReward.data}
+      />
     </div>
   );
 };
