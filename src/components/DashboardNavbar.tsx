@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Bell, Menu, X, User, LogOut } from "lucide-react";
+import { useNotifications } from '@/hooks/useNotifications';
 
 export default function DashboardNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const location = useLocation();
+  const { getUnreadCount } = useNotifications();
+  
+  const unreadCount = getUnreadCount();
 
   const navItems = [
     { path: "/dashboard", label: "Dashboard" },
@@ -55,9 +59,16 @@ export default function DashboardNavbar() {
           </nav>
           
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="text-white/80 hover:text-white hover:bg-loteraa-gray/20">
-              <Bell className="h-5 w-5" />
-            </Button>
+            <Link to="/notifications" className="relative">
+              <Button variant="ghost" size="icon" className="text-white/80 hover:text-white hover:bg-loteraa-gray/20">
+                <Bell className="h-5 w-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-0 right-0 -mt-1 -mr-1 bg-loteraa-purple text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
             <div className="relative">
               <Button 
                 variant="ghost" 
@@ -122,6 +133,11 @@ export default function DashboardNavbar() {
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}
+                {item.path === "/notifications" && unreadCount > 0 && (
+                  <span className="ml-2 bg-loteraa-purple text-white text-xs rounded-full h-5 w-5 inline-flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
               </Link>
             ))}
             <div className="pt-4 pb-2 border-t border-loteraa-gray/30">

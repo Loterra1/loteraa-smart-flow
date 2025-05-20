@@ -14,6 +14,7 @@ import SmartContractsPage from "./pages/SmartContractsPage";
 import DatasetEntryPage from "./pages/DatasetEntryPage";
 import EarningsPage from "./pages/EarningsPage";
 import ProfilePage from "./pages/ProfilePage";
+import NotificationsPage from "./pages/NotificationsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,7 +36,7 @@ const App = () => (
           <Route path="/dataset-entry" element={<DatasetEntryPage />} />
           <Route path="/earnings" element={<EarningsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/notifications" element={<Dashboard />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
