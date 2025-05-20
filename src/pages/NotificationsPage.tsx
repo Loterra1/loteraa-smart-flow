@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import DashboardNavbar from '@/components/DashboardNavbar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -81,7 +82,7 @@ export default function NotificationsPage() {
                 Datasets
               </TabsTrigger>
               <TabsTrigger value="contract">
-                <Contract className="h-4 w-4 mr-2" />
+                <ScrollText className="h-4 w-4 mr-2" />
                 Contracts
               </TabsTrigger>
               <TabsTrigger value="automation">
