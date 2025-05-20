@@ -1,13 +1,11 @@
-
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { 
   Award, 
   FileCheck, 
-  Contract, 
+  ScrollText, 
   Zap, 
-  Coins,
-  Devices,
+  Tv,
   Bell
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,11 +28,11 @@ const getIcon = (type: NotificationType) => {
     case 'dataset':
       return <FileCheck className="h-5 w-5 text-green-500" />;
     case 'contract':
-      return <Contract className="h-5 w-5 text-loteraa-purple" />;
+      return <ScrollText className="h-5 w-5 text-loteraa-purple" />;
     case 'automation':
       return <Zap className="h-5 w-5 text-blue-500" />;
     case 'device':
-      return <Devices className="h-5 w-5 text-orange-500" />;
+      return <Tv className="h-5 w-5 text-orange-500" />;
     default:
       return <Bell className="h-5 w-5 text-white" />;
   }

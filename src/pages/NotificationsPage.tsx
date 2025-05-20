@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import DashboardNavbar from '@/components/DashboardNavbar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Award, FileCheck, Contract, Zap, Devices, Trash2, BellOff } from "lucide-react";
+import { Award, FileCheck, ScrollText, Zap, Tv, Trash2, BellOff } from "lucide-react";
 import { useNotifications, Notification } from '@/hooks/useNotifications';
 import NotificationsList from '@/components/notifications/NotificationsList';
 import { NotificationType } from '@/components/notifications/NotificationItem';
@@ -90,7 +89,7 @@ export default function NotificationsPage() {
                 Automation
               </TabsTrigger>
               <TabsTrigger value="device">
-                <Devices className="h-4 w-4 mr-2" />
+                <Tv className="h-4 w-4 mr-2" />
                 Devices
               </TabsTrigger>
             </TabsList>
