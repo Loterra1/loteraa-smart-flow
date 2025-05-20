@@ -23,6 +23,11 @@ export default function DashboardNavbar() {
     return location.pathname === path;
   };
 
+  const closeMenus = () => {
+    setIsOpen(false);
+    setIsProfileOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full bg-loteraa-black/95 backdrop-blur-md border-b border-loteraa-gray/20">
       <div className="container mx-auto px-4">
@@ -65,10 +70,18 @@ export default function DashboardNavbar() {
               
               {isProfileOpen && (
                 <div className="absolute right-0 mt-2 w-48 py-2 bg-loteraa-gray/90 backdrop-blur-lg rounded-md shadow-xl z-50">
-                  <Link to="/profile" className="block px-4 py-2 text-sm text-white hover:bg-loteraa-purple/20">
+                  <Link 
+                    to="/profile" 
+                    className="block px-4 py-2 text-sm text-white hover:bg-loteraa-purple/20"
+                    onClick={closeMenus}
+                  >
                     Profile Settings
                   </Link>
-                  <Link to="/" className="flex items-center px-4 py-2 text-sm text-white hover:bg-loteraa-purple/20">
+                  <Link 
+                    to="/" 
+                    className="flex items-center px-4 py-2 text-sm text-white hover:bg-loteraa-purple/20"
+                    onClick={closeMenus}
+                  >
                     <LogOut className="h-4 w-4 mr-2" /> Sign Out
                   </Link>
                 </div>
