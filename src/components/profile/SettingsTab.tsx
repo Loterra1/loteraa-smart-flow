@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
-import { Key, Plus, ActivityLog } from 'lucide-react';
+import { Key, Plus, Activity } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function SettingsTab() {
@@ -215,7 +215,7 @@ export default function SettingsTab() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <Label className="flex items-center gap-2">
-                      <ActivityLog className="h-4 w-4 text-loteraa-purple" />
+                      <Activity className="h-4 w-4 text-loteraa-purple" />
                       Smart Contract Logs
                     </Label>
                     <Button 
