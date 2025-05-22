@@ -15,12 +15,63 @@ import DevicesTable from '@/components/devices/DevicesTable';
 import DevicesCards from '@/components/devices/DevicesCards';
 import AddDeviceForm from '@/components/devices/AddDeviceForm';
 
+// Initial device data
+const initialDeviceData = [
+  { 
+    id: '1', 
+    name: 'WeatherSensor1', 
+    type: 'Digital', 
+    status: 'Online', 
+    lastTrigger: '3 mins ago' 
+  },
+  { 
+    id: '2', 
+    name: 'EnergyMeter', 
+    type: 'Physical', 
+    status: 'Standby', 
+    lastTrigger: '1 hr ago' 
+  },
+  { 
+    id: '3', 
+    name: 'GasMonitor99', 
+    type: 'Digital', 
+    status: 'Offline', 
+    lastTrigger: '-' 
+  },
+  { 
+    id: '4', 
+    name: 'TemperatureSensor', 
+    type: 'Digital', 
+    status: 'Online', 
+    lastTrigger: '15 mins ago' 
+  },
+  { 
+    id: '5', 
+    name: 'WaterFlowMeter', 
+    type: 'Physical', 
+    status: 'Online', 
+    lastTrigger: '30 mins ago' 
+  },
+  { 
+    id: '6', 
+    name: 'GasSensor1', 
+    type: 'Digital', 
+    status: 'Online', 
+    lastTrigger: '5 mins ago' 
+  }
+];
+
 export default function DevicesPage() {
   const [viewMode, setViewMode] = useState<'table' | 'card'>('table');
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [isAddDeviceOpen, setIsAddDeviceOpen] = useState(false);
+  const [devices, setDevices] = useState(initialDeviceData);
+  
+  const handleDeviceAdded = (newDevice: typeof initialDeviceData[0]) => {
+    setDevices([newDevice, ...devices]);
+  };
   
   return (
     <div className="min-h-screen bg-loteraa-black">
@@ -104,19 +155,25 @@ export default function DevicesPage() {
             <DevicesTable 
               searchQuery={searchQuery} 
               typeFilter={typeFilter} 
-              statusFilter={statusFilter} 
+              statusFilter={statusFilter}
+              devices={devices}
             />
           ) : (
             <DevicesCards 
               searchQuery={searchQuery} 
               typeFilter={typeFilter} 
-              statusFilter={statusFilter} 
+              statusFilter={statusFilter}
+              devices={devices}
             />
           )}
         </div>
       </div>
       
-      <AddDeviceForm open={isAddDeviceOpen} onOpenChange={setIsAddDeviceOpen} />
+      <AddDeviceForm 
+        open={isAddDeviceOpen} 
+        onOpenChange={setIsAddDeviceOpen}
+        onDeviceAdded={handleDeviceAdded}
+      />
     </div>
   );
 }

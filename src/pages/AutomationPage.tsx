@@ -49,7 +49,11 @@ const AutomationPage: React.FC = () => {
   const [actionFilter, setActionFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [automations] = useState<AutomationType[]>(MOCK_AUTOMATIONS);
+  const [automations, setAutomations] = useState<AutomationType[]>(MOCK_AUTOMATIONS);
+
+  const handleAutomationCreated = (newAutomation: AutomationType) => {
+    setAutomations([newAutomation, ...automations]);
+  };
 
   const filteredAutomations = automations.filter((automation) => {
     // Search filter
@@ -158,6 +162,7 @@ const AutomationPage: React.FC = () => {
         <CreateAutomationForm
           open={isCreateDialogOpen}
           onOpenChange={setIsCreateDialogOpen}
+          onAutomationCreated={handleAutomationCreated}
         />
       </div>
     </div>

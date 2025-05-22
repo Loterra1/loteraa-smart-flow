@@ -43,9 +43,10 @@ const formSchema = z.object({
 interface AddDeviceFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onDeviceAdded: (device: any) => void;
 }
 
-export default function AddDeviceForm({ open, onOpenChange }: AddDeviceFormProps) {
+export default function AddDeviceForm({ open, onOpenChange, onDeviceAdded }: AddDeviceFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,8 +58,17 @@ export default function AddDeviceForm({ open, onOpenChange }: AddDeviceFormProps
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Simulate API call to add device
-    console.log("Adding device:", values);
+    // Create a new device with the form values
+    const newDevice = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: values.name,
+      type: values.type === 'digital' ? 'Digital' : 'Physical',
+      status: 'Online',
+      lastTrigger: 'Just now',
+    };
+    
+    // Call the onDeviceAdded callback with the new device
+    onDeviceAdded(newDevice);
     
     // Show success message
     toast.success("Device added successfully", {
