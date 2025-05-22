@@ -57,6 +57,33 @@ const ViewSmartContractDialog = ({
 
   if (!contract) return null;
 
+  // Get the default contract code
+  const getDefaultContractCode = () => {
+    return contract.code || `// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract ${contract.name.split('.')[0]} {
+    address public owner;
+    mapping(string => string) public sensorData;
+    
+    event DataLogged(string indexed sensorId, string value, uint timestamp);
+    
+    constructor(address _owner) {
+        owner = _owner;
+    }
+    
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not authorized");
+        _;
+    }
+    
+    function logSensorData(string memory sensorId, string memory value) public {
+        sensorData[sensorId] = value;
+        emit DataLogged(sensorId, value, block.timestamp);
+    }
+}`;
+  };
+
   const handleCopyAddress = () => {
     // Simulating copying to clipboard
     navigator.clipboard.writeText(contractAddress)
@@ -124,11 +151,13 @@ const ViewSmartContractDialog = ({
   };
 
   const startEditingCode = () => {
-    setEditableCode(contract.code || '');
+    // Initialize editableCode with existing code or default
+    setEditableCode(getDefaultContractCode());
     setIsEditingCode(true);
   };
 
   const startEditingAbi = () => {
+    // Initialize editableAbi with existing ABI or default
     setEditableAbi(contract.abi || defaultContractABI);
     setIsEditingAbi(true);
   };
@@ -230,6 +259,7 @@ const ViewSmartContractDialog = ({
             <TabsTrigger value="logs" className="data-[state=active]:text-loteraa-purple">Logs</TabsTrigger>
           </TabsList>
 
+          {/* Overview tab content */}
           <TabsContent value="overview" className="border-none p-0 mt-4">
             <div className="space-y-4">
               <div className="bg-loteraa-gray/20 border border-loteraa-gray/30 rounded-md p-4">
@@ -286,6 +316,7 @@ const ViewSmartContractDialog = ({
             </div>
           </TabsContent>
 
+          {/* Code tab content */}
           <TabsContent value="code" className="border-none p-0 mt-4">
             <div className="bg-loteraa-gray/20 border border-loteraa-gray/30 rounded-md p-4">
               <div className="flex justify-between items-center mb-3">
@@ -317,7 +348,7 @@ const ViewSmartContractDialog = ({
                         size="sm" 
                         className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
                         onClick={() => {
-                          navigator.clipboard.writeText(contract.code || '');
+                          navigator.clipboard.writeText(getDefaultContractCode());
                           toast({
                             title: "Code Copied",
                             description: "Contract code has been copied to clipboard.",
@@ -347,29 +378,7 @@ const ViewSmartContractDialog = ({
                   />
                 ) : (
                   <pre className="text-white/90 text-xs font-mono">
-{contract.code || `// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-contract ${contract.name.split('.')[0]} {
-    address public owner;
-    mapping(string => string) public sensorData;
-    
-    event DataLogged(string indexed sensorId, string value, uint timestamp);
-    
-    constructor(address _owner) {
-        owner = _owner;
-    }
-    
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not authorized");
-        _;
-    }
-    
-    function logSensorData(string memory sensorId, string memory value) public {
-        sensorData[sensorId] = value;
-        emit DataLogged(sensorId, value, block.timestamp);
-    }
-}`}
+                    {getDefaultContractCode()}
                   </pre>
                 )}
               </div>
@@ -442,6 +451,7 @@ contract ${contract.name.split('.')[0]} {
             </div>
           </TabsContent>
 
+          {/* Interact tab content */}
           <TabsContent value="interact" className="border-none p-0 mt-4">
             <div className="bg-loteraa-gray/20 border border-loteraa-gray/30 rounded-md p-4">
               <h3 className="font-medium text-white mb-4">Test Contract Functions</h3>
@@ -525,6 +535,7 @@ contract ${contract.name.split('.')[0]} {
             </div>
           </TabsContent>
 
+          {/* Logs tab content */}
           <TabsContent value="logs" className="border-none p-0 mt-4">
             <div className="bg-loteraa-gray/20 border border-loteraa-gray/30 rounded-md p-4">
               <div className="flex justify-between items-center mb-3">

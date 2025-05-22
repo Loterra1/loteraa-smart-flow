@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -57,6 +56,33 @@ const EditSmartContractDialog = ({ isOpen, onClose, contract, onSave }: EditSmar
   const [showCodeEditor, setShowCodeEditor] = useState(false);
   const { toast } = useToast();
   
+  // Get the default contract code
+  const getDefaultContractCode = () => {
+    return contract?.code || `// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract ${contract?.name.split('.')[0] || 'SmartContract'} {
+    address public owner;
+    mapping(string => string) public sensorData;
+    
+    event DataLogged(string indexed sensorId, string value, uint timestamp);
+    
+    constructor(address _owner) {
+        owner = _owner;
+    }
+    
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not authorized");
+        _;
+    }
+    
+    function logSensorData(string memory sensorId, string memory value) public {
+        sensorData[sensorId] = value;
+        emit DataLogged(sensorId, value, block.timestamp);
+    }
+}`;
+  };
+
   // Sample data
   const availableDevices: IoTDevice[] = [
     { id: '3', name: 'Temperature Sensor (TB-103)', type: 'Temperature' },
@@ -87,7 +113,7 @@ const EditSmartContractDialog = ({ isOpen, onClose, contract, onSave }: EditSmar
       setStatus(contract.status);
       setLinkedDevices(initialDevices);
       setLinkedRules(initialRules);
-      setContractCode(contract.code || '');
+      setContractCode(getDefaultContractCode());
     }
   }, [contract]);
 
