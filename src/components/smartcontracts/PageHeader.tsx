@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import { Dialog } from "@/components/ui/dialog";
 import CreateSmartContractDialog from './CreateSmartContractDialog';
 
 interface PageHeaderProps {
@@ -27,11 +28,12 @@ const PageHeader = ({ isDialogOpen, setIsDialogOpen, onContractCreated }: PageHe
         Create Contract
       </Button>
       
-      <CreateSmartContractDialog 
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        onCreate={onContractCreated}
-      />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <CreateSmartContractDialog 
+          onClose={() => setIsDialogOpen(false)}
+          onCreate={onContractCreated}
+        />
+      </Dialog>
     </div>
   );
 };
