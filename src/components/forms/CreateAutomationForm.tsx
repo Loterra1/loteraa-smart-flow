@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -249,7 +248,7 @@ export default function CreateAutomationForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-loteraa-gray border-loteraa-gray/30 text-white sm:max-w-[600px]">
+      <DialogContent className="bg-loteraa-gray border-loteraa-gray/30 text-white sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-white text-xl">Create New Automation</DialogTitle>
         </DialogHeader>
@@ -868,13 +867,13 @@ export default function CreateAutomationForm({
               </div>
             )}
             
-            <DialogFooter>
+            <DialogFooter className="sm:justify-between flex-col sm:flex-row gap-2">
               {step > 1 && (
                 <Button 
                   type="button" 
                   variant="outline" 
                   onClick={prevStep}
-                  className="border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30"
+                  className="border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30 w-full sm:w-auto"
                 >
                   Back
                 </Button>
@@ -884,14 +883,14 @@ export default function CreateAutomationForm({
                 <Button 
                   type="button" 
                   onClick={nextStep}
-                  className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white"
+                  className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white w-full sm:w-auto"
                 >
                   Next Step
                 </Button>
               ) : (
                 <Button 
                   type="submit" 
-                  className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white"
+                  className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white w-full sm:w-auto"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Saving...' : 'Save & Activate'}
