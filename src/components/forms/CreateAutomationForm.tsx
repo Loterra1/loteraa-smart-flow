@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -32,8 +32,10 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Check, Plus, Trash, AlertTriangle } from "lucide-react";
+import { Check, Plus, Trash, AlertTriangle, Upload, FileCode } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useSmartContracts } from "@/hooks/useSmartContracts";
+import { SmartContract } from '@/types/smartContract';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -52,6 +54,9 @@ const formSchema = z.object({
   conditionValue: z.string().optional(),
   contractAction: z.string().optional(),
   contractMethod: z.string().optional(),
+  selectedContract: z.string().optional(),
+  contractCode: z.string().optional(),
+  contractAbi: z.string().optional(),
   authToken: z.string().optional(),
   contractParams: z.string().optional(),
   paymentAmount: z.string().optional(),
@@ -84,6 +89,9 @@ export default function CreateAutomationForm({
     { id: "1", sensor: "Temperature sensor", operator: ">", value: "30°C" }
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [customMethodInput, setCustomMethodInput] = useState(false);
+  const [contractFile, setContractFile] = useState<File | null>(null);
+  const { contracts } = useSmartContracts();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -98,6 +106,9 @@ export default function CreateAutomationForm({
       conditionValue: "30",
       contractAction: "",
       contractMethod: "",
+      selectedContract: "",
+      contractCode: "",
+      contractAbi: "",
       authToken: "",
       contractParams: "",
       paymentAmount: "",
@@ -105,6 +116,15 @@ export default function CreateAutomationForm({
       paymentReason: "Compensation for data usage",
     },
   });
+
+  // Pre-defined contract methods
+  const contractMethods = [
+    { value: "transfer", label: "transfer(address, uint256)" },
+    { value: "approve", label: "approve(address, uint256)" },
+    { value: "mint", label: "mint(address, uint256)" },
+    { value: "burn", label: "burn(uint256)" },
+    { value: "custom", label: "Custom method..." },
+  ];
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
@@ -180,11 +200,7 @@ export default function CreateAutomationForm({
     if (conditions.length > 1) {
       setConditions(conditions.filter(c => c.id !== id));
     } else {
-      toast({
-        title: "Cannot remove",
-        description: "You need at least one condition",
-        variant: "destructive",
-      });
+      toast("Cannot remove - you need at least one condition");
     }
   };
 
@@ -195,6 +211,40 @@ export default function CreateAutomationForm({
       }
       return c;
     }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setContractFile(file);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          form.setValue('contractCode', event.target.result as string);
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  const handleContractActionChange = (value: string) => {
+    form.setValue('contractAction', value);
+    // Reset selected contract and method when switching contract action type
+    form.setValue('selectedContract', '');
+    form.setValue('contractMethod', '');
+    form.setValue('contractCode', '');
+    form.setValue('contractAbi', '');
+    setCustomMethodInput(false);
+  };
+
+  const handleMethodChange = (value: string) => {
+    if (value === 'custom') {
+      setCustomMethodInput(true);
+      form.setValue('contractMethod', '');
+    } else {
+      setCustomMethodInput(false);
+      form.setValue('contractMethod', value);
+    }
   };
 
   return (
@@ -451,10 +501,10 @@ export default function CreateAutomationForm({
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-white">Select Smart Contract</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValueChange={handleContractActionChange} defaultValue={field.value}>
                               <FormControl>
                                 <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
-                                  <SelectValue placeholder="Select contract" />
+                                  <SelectValue placeholder="Select option" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
@@ -468,65 +518,200 @@ export default function CreateAutomationForm({
                         )}
                       />
 
-                      <FormField
-                        control={form.control}
-                        name="contractMethod"
-                        render={({ field }) => (
+                      {form.watch("contractAction") === "bind" && (
+                        <FormField
+                          control={form.control}
+                          name="selectedContract"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Select Contract</FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
+                                    <SelectValue placeholder="Select existing contract" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white max-h-[200px]">
+                                  {contracts.map((contract) => (
+                                    <SelectItem key={contract.id} value={contract.id}>
+                                      {contract.name} ({contract.type})
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )}
+
+                      {form.watch("contractAction") === "create" && (
+                        <div className="space-y-4">
                           <FormItem>
-                            <FormLabel className="text-white">Contract Method to Call</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormLabel className="text-white">Contract Name</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Enter contract name" 
+                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                                onChange={(e) => form.setValue('selectedContract', e.target.value)}
+                              />
+                            </FormControl>
+                          </FormItem>
+                          
+                          <FormItem>
+                            <FormLabel className="text-white">Contract Code</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="// Enter your contract code here" 
+                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white font-mono h-32" 
+                                onChange={(e) => form.setValue('contractCode', e.target.value)}
+                              />
+                            </FormControl>
+                            <p className="text-xs text-white/60 mt-1">Write your smart contract code using Solidity or another supported language</p>
+                          </FormItem>
+                        </div>
+                      )}
+
+                      {form.watch("contractAction") === "upload" && (
+                        <div className="space-y-4">
+                          <FormItem>
+                            <FormLabel className="text-white">Upload Contract File</FormLabel>
+                            <FormControl>
+                              <div className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-loteraa-gray/30 rounded-md bg-loteraa-black/30">
+                                {contractFile ? (
+                                  <div className="flex flex-col items-center gap-2">
+                                    <FileCode className="h-10 w-10 text-loteraa-purple" />
+                                    <p className="text-sm">{contractFile.name}</p>
+                                    <Button 
+                                      type="button" 
+                                      variant="outline" 
+                                      size="sm" 
+                                      onClick={() => {
+                                        setContractFile(null);
+                                        form.setValue('contractCode', '');
+                                      }}
+                                      className="border-loteraa-purple/50 text-loteraa-purple"
+                                    >
+                                      Change File
+                                    </Button>
+                                  </div>
+                                ) : (
+                                  <label className="flex flex-col items-center gap-2 cursor-pointer">
+                                    <Upload className="h-10 w-10 text-loteraa-gray/70" />
+                                    <p className="text-sm text-center">
+                                      Click to select contract file<br />
+                                      <span className="text-xs text-white/50">Supports .sol, .json files</span>
+                                    </p>
+                                    <Input 
+                                      type="file" 
+                                      accept=".sol,.json" 
+                                      className="hidden" 
+                                      onChange={handleFileChange} 
+                                    />
+                                  </label>
+                                )}
+                              </div>
+                            </FormControl>
+                          </FormItem>
+
+                          {contractFile && (
+                            <FormItem>
+                              <FormLabel className="text-white">Contract Name</FormLabel>
                               <FormControl>
-                                <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
-                                  <SelectValue placeholder="Select method" />
-                                </SelectTrigger>
+                                <Input 
+                                  placeholder="Enter contract name" 
+                                  className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                                  defaultValue={contractFile.name.split('.')[0]}
+                                  onChange={(e) => form.setValue('selectedContract', e.target.value)}
+                                />
                               </FormControl>
-                              <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
-                                <SelectItem value="transfer">transfer(address, uint256)</SelectItem>
-                                <SelectItem value="approve">approve(address, uint256)</SelectItem>
-                                <SelectItem value="mint">mint(address, uint256)</SelectItem>
-                                <SelectItem value="burn">burn(uint256)</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                            </FormItem>
+                          )}
+                        </div>
+                      )}
 
-                      <FormField
-                        control={form.control}
-                        name="authToken"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-white">Authorization Token (if required)</FormLabel>
-                            <FormControl>
-                              <Input 
-                                placeholder="Enter auth token" 
-                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      {form.watch("contractAction") && (
+                        <FormField
+                          control={form.control}
+                          name="contractMethod"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Contract Method to Call</FormLabel>
+                              <Select 
+                                onValueChange={handleMethodChange} 
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
+                                    <SelectValue placeholder="Select method" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
+                                  {contractMethods.map((method) => (
+                                    <SelectItem key={method.value} value={method.value}>
+                                      {method.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      )}
 
-                      <FormField
-                        control={form.control}
-                        name="contractParams"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-white">Parameters (if required)</FormLabel>
-                            <FormControl>
-                              <Input 
-                                placeholder="Enter wallet address or dynamic variable" 
-                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      {customMethodInput && (
+                        <FormItem>
+                          <FormLabel className="text-white">Custom Method Name</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="e.g. setThreshold(uint256)" 
+                              className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                              onChange={(e) => form.setValue('contractMethod', e.target.value)}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+
+                      {form.watch("contractAction") && (
+                        <>
+                          <FormField
+                            control={form.control}
+                            name="authToken"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-white">Authorization Token (if required)</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    placeholder="Enter auth token" 
+                                    className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                                    {...field} 
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name="contractParams"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-white">Parameters (if required)</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    placeholder="Enter wallet address or dynamic variable" 
+                                    className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                                    {...field} 
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </>
+                      )}
                     </div>
                   </TabsContent>
                   
@@ -640,7 +825,10 @@ export default function CreateAutomationForm({
                       <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
                         <span className="text-white/70">Action:</span>
                         <span className="font-medium">
-                          {form.watch("contractAction") ? "Smart Contract" : "Token Payment"}
+                          {form.watch("contractAction") ? 
+                            `Smart Contract (${form.watch("contractAction") === "bind" ? "Bind Existing" : 
+                             form.watch("contractAction") === "create" ? "Create New" : "Upload"})` : 
+                            "Token Payment"}
                         </span>
                       </div>
                       
