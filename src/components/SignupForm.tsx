@@ -18,7 +18,6 @@ export default function SignupForm() {
     name: "",
     email: "",
     password: "",
-    walletAddress: ""
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +44,6 @@ export default function SignupForm() {
         name: "",
         email: "",
         password: "",
-        walletAddress: ""
       });
       
       // Redirect to dashboard
@@ -87,34 +85,22 @@ export default function SignupForm() {
     }
   };
 
-  const handleWalletConnect = async () => {
+  const handleConnectWallet = () => {
     setIsLoading(true);
     
-    try {
-      // Simulate wallet connection
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setFormData({
-        ...formData,
-        walletAddress: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
-      });
-      
-      toast({
-        title: "Wallet connected!",
-        description: "Your wallet has been successfully connected.",
-      });
-      
-      // Redirect to dashboard after wallet connection
-      navigate("/dashboard");
-    } catch (error) {
-      toast({
-        title: "Error connecting wallet",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
+    // Simulate connection process
+    setTimeout(() => {
       setIsLoading(false);
-    }
+      
+      // Navigate to dashboard after wallet connection attempt
+      navigate("/dashboard");
+      
+      // Show toast notification
+      toast({
+        title: "Welcome to Loteraa",
+        description: "You've been connected to the platform.",
+      });
+    }, 1500);
   };
 
   return (
@@ -242,19 +228,12 @@ export default function SignupForm() {
                 </div>
                 
                 <Button 
-                  onClick={handleWalletConnect} 
+                  onClick={handleConnectWallet} 
                   className="w-full bg-loteraa-blue hover:bg-loteraa-blue/90" 
-                  disabled={isLoading || formData.walletAddress !== ""}
+                  disabled={isLoading}
                 >
-                  {isLoading ? "Connecting..." : formData.walletAddress ? "Wallet Connected" : "Connect Wallet"}
+                  {isLoading ? "Connecting..." : "Connect Wallet"}
                 </Button>
-                
-                {formData.walletAddress && (
-                  <div className="mt-4 p-3 rounded-md bg-loteraa-blue/10 border border-loteraa-blue/20">
-                    <p className="text-xs text-loteraa-blue mb-1">Connected Wallet:</p>
-                    <p className="text-sm font-mono break-all">{formData.walletAddress}</p>
-                  </div>
-                )}
               </div>
             </TabsContent>
           </Tabs>
