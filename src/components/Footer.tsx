@@ -47,7 +47,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-4">
               <li><a href="#" className="text-white/70 hover:text-white transition-colors">Features</a></li>
               <li><a href="#" className="text-white/70 hover:text-white transition-colors">Use Cases</a></li>
-              <li><a href="#" className="text-white/70 hover:text-white transition-colors">Pricing</a></li>
+              <li><a href="#" className="text-white/70 hover:text-white transition-colors">Documentation</a></li>
               <li><a href="#" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
             </ul>
           </div>
@@ -63,12 +63,12 @@ export default function Footer() {
           </div>
           
           <div>
-            <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Legal</h3>
+            <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Resources</h3>
             <ul className="mt-4 space-y-4">
+              <li><a href="#" className="text-white/70 hover:text-white transition-colors">Blockchain Explorer</a></li>
+              <li><a href="#" className="text-white/70 hover:text-white transition-colors">Ecosystem</a></li>
               <li><a href="#" className="text-white/70 hover:text-white transition-colors">Terms</a></li>
               <li><a href="#" className="text-white/70 hover:text-white transition-colors">Privacy</a></li>
-              <li><a href="#" className="text-white/70 hover:text-white transition-colors">Cookies</a></li>
-              <li><a href="#" className="text-white/70 hover:text-white transition-colors">Licenses</a></li>
             </ul>
           </div>
         </div>
