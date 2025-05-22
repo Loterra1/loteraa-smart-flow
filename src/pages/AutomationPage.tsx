@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/select";
 import AutomationTable from "@/components/automation/AutomationTable";
 import CreateAutomationForm from "@/components/forms/CreateAutomationForm";
+import CreateAutomationWizard from "@/components/forms/CreateAutomationWizard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlusCircle, Filter, Search } from "lucide-react";
+import { Filter, Search } from "lucide-react";
 
 interface AutomationType {
   id: string;
@@ -87,12 +88,7 @@ const AutomationPage: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
           <h1 className="text-3xl font-bold text-white mb-4 md:mb-0">My Automations</h1>
-          <Button 
-            onClick={() => setIsCreateDialogOpen(true)}
-            className="bg-loteraa-purple hover:bg-loteraa-purple/90"
-          >
-            <PlusCircle className="mr-2 h-5 w-5" /> Create Automation
-          </Button>
+          <CreateAutomationWizard onAutomationCreated={handleAutomationCreated} />
         </div>
 
         <Card className="bg-loteraa-gray/10 border-loteraa-gray/30 mb-6">
