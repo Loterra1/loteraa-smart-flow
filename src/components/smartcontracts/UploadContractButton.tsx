@@ -28,7 +28,7 @@ const UploadContractButton = ({
         </DialogTrigger>
         <CreateSmartContractDialog 
           onClose={() => setUploadDialogOpen(false)} 
-          onCreate={onContractCreated}
+          onContractCreated={onContractCreated}
           initialContractType="upload"
         />
       </Dialog>

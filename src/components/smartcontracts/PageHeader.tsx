@@ -31,7 +31,7 @@ const PageHeader = ({ isDialogOpen, setIsDialogOpen, onContractCreated }: PageHe
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <CreateSmartContractDialog 
           onClose={() => setIsDialogOpen(false)}
-          onCreate={onContractCreated}
+          onContractCreated={onContractCreated}
         />
       </Dialog>
     </div>

@@ -16,6 +16,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import DeleteAutomationDialog from "./DeleteAutomationDialog";
+import ViewAutomationDialog from "./ViewAutomationDialog";
+import EditAutomationDialog from "./EditAutomationDialog";
 import { toast } from "sonner";
 import { Edit, Settings } from "lucide-react";
 
@@ -35,26 +37,40 @@ interface AutomationTableProps {
 const AutomationTable: React.FC<AutomationTableProps> = ({ automations }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [automationToDelete, setAutomationToDelete] = useState<AutomationType | null>(null);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedAutomation, setSelectedAutomation] = useState<AutomationType | null>(null);
 
   const handleViewAutomation = (automation: AutomationType) => {
-    toast.info(`Viewing ${automation.name}`, {
-      description: "This would open a detailed view of the automation."
-    });
-    // In a real app, you'd navigate to a detail page or open a modal
+    setSelectedAutomation(automation);
+    setViewDialogOpen(true);
+    
+    // Log for debugging
     console.log("View automation:", automation);
   };
 
   const handleEditAutomation = (automation: AutomationType) => {
-    toast.info(`Editing ${automation.name}`, {
-      description: "This would open the automation editor."
-    });
-    // In a real app, you'd open the edit form with the selected automation
+    setSelectedAutomation(automation);
+    setEditDialogOpen(true);
+    
+    // Log for debugging
     console.log("Edit automation:", automation);
   };
 
   const handleDeleteClick = (automation: AutomationType) => {
     setAutomationToDelete(automation);
     setDeleteDialogOpen(true);
+  };
+
+  const handleToggleStatus = (automation: AutomationType) => {
+    const newStatus = automation.status === "Active" ? "Paused" : "Active";
+    const statusText = newStatus === "Active" ? "activated" : "paused";
+    
+    toast.success(`Automation ${statusText}`, {
+      description: `${automation.name} has been ${statusText}.`
+    });
+    
+    console.log("Toggle status:", automation.id, newStatus);
   };
 
   const getStatusColor = (status: string) => {
@@ -138,6 +154,12 @@ const AutomationTable: React.FC<AutomationTableProps> = ({ automations }) => {
                         <DropdownMenuContent className="bg-loteraa-black border-loteraa-gray/30">
                           <DropdownMenuItem 
                             className="text-white hover:bg-loteraa-gray/30 cursor-pointer"
+                            onClick={() => handleToggleStatus(automation)}
+                          >
+                            {automation.status === "Active" ? "Pause Automation" : "Activate Automation"}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            className="text-white hover:bg-loteraa-gray/30 cursor-pointer"
                             onClick={() => handleDeleteClick(automation)}
                           >
                             Delete
@@ -152,6 +174,22 @@ const AutomationTable: React.FC<AutomationTableProps> = ({ automations }) => {
           </TableBody>
         </Table>
       </div>
+
+      {selectedAutomation && (
+        <>
+          <ViewAutomationDialog
+            automation={selectedAutomation}
+            open={viewDialogOpen}
+            onOpenChange={setViewDialogOpen}
+          />
+
+          <EditAutomationDialog
+            automation={selectedAutomation}
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+          />
+        </>
+      )}
 
       {automationToDelete && (
         <DeleteAutomationDialog
