@@ -35,33 +35,8 @@ import { Check, Plus, Trash, AlertTriangle, Upload, FileCode } from "lucide-reac
 import { Card, CardContent } from "@/components/ui/card";
 import { useSmartContracts } from "@/hooks/useSmartContracts";
 import { SmartContract } from '@/types/smartContract';
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  triggerSource: z.string({
-    required_error: "Please select a trigger source.",
-  }),
-  actionType: z.string({
-    required_error: "Please select an action type.",
-  }),
-  isActive: z.boolean().default(true),
-  triggerMethod: z.enum(["onChange", "onInterval"]).default("onChange"),
-  triggerInterval: z.string().optional(),
-  conditionOperator: z.string().optional(),
-  conditionValue: z.string().optional(),
-  contractAction: z.string().optional(),
-  contractMethod: z.string().optional(),
-  selectedContract: z.string().optional(),
-  contractCode: z.string().optional(),
-  contractAbi: z.string().optional(),
-  authToken: z.string().optional(),
-  contractParams: z.string().optional(),
-  paymentAmount: z.string().optional(),
-  paymentRecipient: z.string().optional(),
-  paymentReason: z.string().optional(),
-});
+import { formSchema, FormValues } from "./automation/AutomationFormSchema";
+import ContractMethodSelector from "./automation/ContractMethodSelector";
 
 interface AutomationType {
   id: string;
@@ -88,11 +63,10 @@ export default function CreateAutomationForm({
     { id: "1", sensor: "Temperature sensor", operator: ">", value: "30°C" }
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [customMethodInput, setCustomMethodInput] = useState(false);
   const [contractFile, setContractFile] = useState<File | null>(null);
   const { contracts } = useSmartContracts();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -104,7 +78,7 @@ export default function CreateAutomationForm({
       conditionOperator: ">",
       conditionValue: "30",
       contractAction: "",
-      contractMethod: "",
+      contractMethods: [],
       selectedContract: "",
       contractCode: "",
       contractAbi: "",
@@ -125,7 +99,7 @@ export default function CreateAutomationForm({
     { value: "custom", label: "Custom method..." },
   ];
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: FormValues) {
     setIsSubmitting(true);
     
     // Create a new automation
@@ -230,20 +204,9 @@ export default function CreateAutomationForm({
     form.setValue('contractAction', value);
     // Reset selected contract and method when switching contract action type
     form.setValue('selectedContract', '');
-    form.setValue('contractMethod', '');
+    form.setValue('contractMethods', []);
     form.setValue('contractCode', '');
     form.setValue('contractAbi', '');
-    setCustomMethodInput(false);
-  };
-
-  const handleMethodChange = (value: string) => {
-    if (value === 'custom') {
-      setCustomMethodInput(true);
-      form.setValue('contractMethod', '');
-    } else {
-      setCustomMethodInput(false);
-      form.setValue('contractMethod', value);
-    }
   };
 
   return (
@@ -630,46 +593,10 @@ export default function CreateAutomationForm({
                       )}
 
                       {form.watch("contractAction") && (
-                        <FormField
-                          control={form.control}
-                          name="contractMethod"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-white">Contract Method to Call</FormLabel>
-                              <Select 
-                                onValueChange={handleMethodChange} 
-                                defaultValue={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
-                                    <SelectValue placeholder="Select method" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
-                                  {contractMethods.map((method) => (
-                                    <SelectItem key={method.value} value={method.value}>
-                                      {method.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                        <ContractMethodSelector 
+                          form={form} 
+                          contractMethods={contractMethods} 
                         />
-                      )}
-
-                      {customMethodInput && (
-                        <FormItem>
-                          <FormLabel className="text-white">Custom Method Name</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="e.g. setThreshold(uint256)" 
-                              className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                              onChange={(e) => form.setValue('contractMethod', e.target.value)}
-                            />
-                          </FormControl>
-                        </FormItem>
                       )}
 
                       {form.watch("contractAction") && (
@@ -830,6 +757,15 @@ export default function CreateAutomationForm({
                             "Token Payment"}
                         </span>
                       </div>
+                      
+                      {form.watch("contractMethods")?.length > 0 && (
+                        <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
+                          <span className="text-white/70">Methods:</span>
+                          <span className="font-medium">
+                            {form.watch("contractMethods").length} methods selected
+                          </span>
+                        </div>
+                      )}
                       
                       <div className="flex items-center justify-between pt-2">
                         <div className="flex items-center">
