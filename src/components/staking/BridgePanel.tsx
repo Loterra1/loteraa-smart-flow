@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { Wallet } from "lucide-react";
 
 const networks = [
   { id: "loteraa", name: "Loteraa Mainnet", icon: "🔷" },
@@ -28,6 +29,7 @@ const BridgePanel = () => {
   const [token, setToken] = useState("TERRA");
   const [amount, setAmount] = useState("");
   const [isBridging, setIsBridging] = useState(false);
+  const [walletConnected, setWalletConnected] = useState(false);
   
   const handleFromNetworkChange = (value: string) => {
     if (value === toNetwork) {
@@ -51,9 +53,18 @@ const BridgePanel = () => {
   
   const handleMax = () => {
     const selectedToken = tokens.find(t => t.symbol === token);
-    if (selectedToken) {
+    if (selectedToken && walletConnected) {
       setAmount(selectedToken.balance);
     }
+  };
+
+  const handleConnectWallet = () => {
+    toast({
+      title: "Connect Wallet",
+      description: "Wallet connection feature will be implemented soon",
+    });
+    // For UI demonstration only
+    setWalletConnected(true);
   };
   
   const handleBridge = async () => {
@@ -77,7 +88,7 @@ const BridgePanel = () => {
       
       toast({
         title: "Bridge initiated",
-        description: `Your bridge of ${amount} ${token} from ${fromNetworkName} to ${toNetworkName} has been initiated. This may take 10-30 minutes to complete.`,
+        description: `Your bridge of ${amount} ${token} from ${fromNetworkName} to ${toNetworkName} has been initiated. This may take 50 seconds to 1 minute to complete.`,
       });
       
       setAmount("");
@@ -100,7 +111,7 @@ const BridgePanel = () => {
         <div>
           <div className="mb-4 p-4 rounded-lg bg-loteraa-purple/20 border border-loteraa-purple/30 text-sm">
             <p className="text-white/90">
-              Bridge your tokens between Loteraa and Polygon networks. The bridging process typically takes 10-30 minutes to complete.
+              Bridge your tokens between Loteraa and Polygon networks. The bridging process typically takes 50 seconds to 1 minute to complete.
             </p>
           </div>
           
@@ -161,11 +172,8 @@ const BridgePanel = () => {
           </div>
           
           <div className="mb-6">
-            <div className="flex justify-between items-center mb-2">
-              <label className="block text-sm text-white/70">Amount</label>
-              <span className="text-xs text-white/70">
-                Balance: {selectedToken?.balance || "0"} {token}
-              </span>
+            <div>
+              <label className="block text-sm text-white/70 mb-2">Amount</label>
             </div>
             <div className="relative">
               <Input
@@ -173,15 +181,24 @@ const BridgePanel = () => {
                 onChange={handleAmountChange}
                 placeholder="0.0"
               />
-              <Button
-                variant="outline"
-                size="sm"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 text-xs"
-                onClick={handleMax}
-              >
-                MAX
-              </Button>
+              {walletConnected && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 text-xs"
+                  onClick={handleMax}
+                >
+                  MAX
+                </Button>
+              )}
             </div>
+            {walletConnected && (
+              <div className="mt-2">
+                <span className="text-xs text-white/70">
+                  Balance: {selectedToken?.balance || "0"} {token}
+                </span>
+              </div>
+            )}
           </div>
           
           <div className="p-4 rounded-lg bg-loteraa-gray/10 border border-loteraa-gray/20 mb-6">
@@ -193,7 +210,7 @@ const BridgePanel = () => {
               
               <div className="flex justify-between">
                 <span className="text-sm text-white/70">Estimated Time</span>
-                <span className="text-sm">10-30 minutes</span>
+                <span className="text-sm">50 seconds - 1 minute</span>
               </div>
               
               <div className="flex justify-between">
@@ -207,13 +224,22 @@ const BridgePanel = () => {
             </div>
           </div>
           
-          <Button 
-            className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
-            disabled={!amount || parseFloat(amount) <= 0 || isBridging}
-            onClick={handleBridge}
-          >
-            {isBridging ? "Bridging..." : "Bridge Tokens"}
-          </Button>
+          {!walletConnected ? (
+            <Button 
+              className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
+              onClick={handleConnectWallet}
+            >
+              <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
+            </Button>
+          ) : (
+            <Button 
+              className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
+              disabled={!amount || parseFloat(amount) <= 0 || isBridging}
+              onClick={handleBridge}
+            >
+              {isBridging ? "Bridging..." : "Bridge Tokens"}
+            </Button>
+          )}
         </div>
       </div>
     </div>

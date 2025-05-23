@@ -26,6 +26,7 @@ const SwapPanel = () => {
   const [fromAmount, setFromAmount] = useState("");
   const [toAmount, setToAmount] = useState("");
   const [isSwapping, setIsSwapping] = useState(false);
+  const [walletConnected, setWalletConnected] = useState(false);
   
   const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -92,6 +93,15 @@ const SwapPanel = () => {
     setFromAmount(toAmount);
     setToAmount(tempAmount);
   };
+
+  const handleConnectWallet = () => {
+    toast({
+      title: "Connect Wallet",
+      description: "Wallet connection feature will be implemented soon",
+    });
+    // For UI demonstration only
+    setWalletConnected(true);
+  };
   
   const handleSwap = async () => {
     if (!fromAmount || parseFloat(fromAmount) <= 0) {
@@ -134,11 +144,8 @@ const SwapPanel = () => {
     <div className="max-w-md mx-auto">
       <div className="space-y-6">
         <div className="p-4 rounded-lg bg-loteraa-gray/20 border border-loteraa-gray/30 backdrop-blur-sm">
-          <div className="flex justify-between items-center mb-2">
+          <div className="mb-2">
             <span className="text-sm text-white/70">From</span>
-            <span className="text-sm text-white/70">
-              Balance: {currentFromToken?.balance} {fromToken}
-            </span>
           </div>
           
           <div className="flex space-x-2">
@@ -164,6 +171,13 @@ const SwapPanel = () => {
               className="flex-1"
             />
           </div>
+          {walletConnected && (
+            <div className="mt-2 text-right">
+              <span className="text-sm text-white/70">
+                Balance: {currentFromToken?.balance} {fromToken}
+              </span>
+            </div>
+          )}
         </div>
         
         <div className="flex justify-center">
@@ -178,11 +192,8 @@ const SwapPanel = () => {
         </div>
         
         <div className="p-4 rounded-lg bg-loteraa-gray/20 border border-loteraa-gray/30 backdrop-blur-sm">
-          <div className="flex justify-between items-center mb-2">
+          <div className="mb-2">
             <span className="text-sm text-white/70">To</span>
-            <span className="text-sm text-white/70">
-              Balance: {currentToToken?.balance} {toToken}
-            </span>
           </div>
           
           <div className="flex space-x-2">
@@ -208,6 +219,13 @@ const SwapPanel = () => {
               className="flex-1 bg-loteraa-gray/10"
             />
           </div>
+          {walletConnected && (
+            <div className="mt-2 text-right">
+              <span className="text-sm text-white/70">
+                Balance: {currentToToken?.balance} {toToken}
+              </span>
+            </div>
+          )}
         </div>
         
         <div className="p-4 rounded-lg bg-loteraa-gray/10 border border-loteraa-gray/20">
@@ -233,13 +251,22 @@ const SwapPanel = () => {
           </div>
         </div>
         
-        <Button 
-          className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
-          disabled={!fromAmount || parseFloat(fromAmount) <= 0 || isSwapping}
-          onClick={handleSwap}
-        >
-          {isSwapping ? "Swapping..." : "Swap"}
-        </Button>
+        {!walletConnected ? (
+          <Button 
+            className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
+            onClick={handleConnectWallet}
+          >
+            Connect Wallet
+          </Button>
+        ) : (
+          <Button 
+            className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
+            disabled={!fromAmount || parseFloat(fromAmount) <= 0 || isSwapping}
+            onClick={handleSwap}
+          >
+            {isSwapping ? "Swapping..." : "Swap"}
+          </Button>
+        )}
       </div>
     </div>
   );
