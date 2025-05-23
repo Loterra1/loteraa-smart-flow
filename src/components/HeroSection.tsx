@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 
 export default function HeroSection() {
   return (
@@ -28,6 +28,9 @@ export default function HeroSection() {
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-transparent border-loteraa-purple text-white hover:bg-loteraa-purple/20 px-8 py-6 text-lg">
               <a href="#features">Learn More</a>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="bg-transparent border-loteraa-blue text-white hover:bg-loteraa-blue/20 px-8 py-6 text-lg">
+              <Link to="/developer-docs">View Documentation <BookOpen className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>
           

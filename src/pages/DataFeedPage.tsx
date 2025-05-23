@@ -1,13 +1,12 @@
-
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import NavigationHeader from "@/components/NavigationHeader";
 import Footer from "@/components/Footer";
-import { ArrowRight, Cpu, Database, Lock, Signal, BarChart, Globe, Clock, Zap } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Activity, Database, Zap, Shield, Globe, ArrowRight, Play, Pause } from "lucide-react";
 
-const DataFeedPage = () => {
+export default function DataFeedPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isInView, setIsInView] = useState(false);
 
@@ -172,7 +171,41 @@ const DataFeedPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-loteraa-black via-loteraa-darkPurple to-loteraa-black relative overflow-hidden">
+      <style>
+        {`
+          @keyframes dataFlow {
+            0% { transform: translateX(-100%) translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(100vw) translateY(-20px); opacity: 0; }
+          }
+          
+          @keyframes pulse3D {
+            0%, 100% { transform: scale(1) rotateY(0deg); opacity: 0.8; }
+            50% { transform: scale(1.1) rotateY(180deg); opacity: 1; }
+          }
+          
+          @keyframes float3D {
+            0%, 100% { transform: translateY(0) rotateX(0deg); }
+            50% { transform: translateY(-20px) rotateX(10deg); }
+          }
+          
+          .data-particle {
+            animation: dataFlow 4s linear infinite;
+          }
+          
+          .ar-element {
+            animation: pulse3D 3s ease-in-out infinite;
+          }
+          
+          .floating-element {
+            animation: float3D 6s ease-in-out infinite;
+          }
+        `}
+      </style>
+
+      {/* AR Background Elements */}
       <canvas
         ref={canvasRef}
         className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
@@ -310,7 +343,7 @@ const DataFeedPage = () => {
                   {
                     title: "Secure Data Transfer",
                     description: "End-to-end encryption ensures your IoT data remains protected from device to blockchain.",
-                    icon: Lock,
+                    icon: Shield,
                     color: "text-loteraa-purple",
                     delay: 100
                   },
@@ -324,7 +357,7 @@ const DataFeedPage = () => {
                   {
                     title: "Verified Sources",
                     description: "All data sources are verified and cryptographically signed to ensure authenticity.",
-                    icon: Cpu,
+                    icon: Activity,
                     color: "text-loteraa-teal",
                     delay: 300
                   },
@@ -345,7 +378,7 @@ const DataFeedPage = () => {
                   {
                     title: "Advanced Analytics",
                     description: "Built-in analytics tools to visualize and gain insights from streaming data.",
-                    icon: BarChart,
+                    icon: Play,
                     color: "text-loteraa-blue",
                     delay: 600
                   }
@@ -686,7 +719,4 @@ tempStream.on("data", (reading) => {
       <Footer />
     </div>
   );
-};
-
-export default DataFeedPage;
-
+}
