@@ -19,6 +19,7 @@ import StakePage from "./pages/StakePage";
 import AmbassadorPage from "./pages/AmbassadorPage";
 import DataFeedPage from "./pages/DataFeedPage";
 import DeveloperDocsPage from "./pages/DeveloperDocsPage";
+import ResearchersPage from "./pages/ResearchersPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/ambassador" element={<AmbassadorPage />} />
           <Route path="/data-feed" element={<DataFeedPage />} />
           <Route path="/developer-docs" element={<DeveloperDocsPage />} />
+          <Route path="/researchers" element={<ResearchersPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

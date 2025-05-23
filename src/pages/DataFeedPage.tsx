@@ -1,12 +1,23 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
 import NavigationHeader from "@/components/NavigationHeader";
 import Footer from "@/components/Footer";
-import { Activity, Database, Zap, Shield, Globe, ArrowRight, Play, Pause, Signal, Clock, Cpu } from "lucide-react";
+import { 
+  Activity, 
+  Thermometer, 
+  Droplets, 
+  Wind, 
+  Zap, 
+  TrendingUp, 
+  MapPin, 
+  Globe, 
+  BarChart3,
+  LineChart,
+  Wifi,
+  Database
+} from "lucide-react";
 
 export default function DataFeedPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

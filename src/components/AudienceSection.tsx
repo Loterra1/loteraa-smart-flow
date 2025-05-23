@@ -9,19 +9,22 @@ export default function AudienceSection() {
       icon: <Code className="h-10 w-10 text-loteraa-blue" />,
       title: "For Developers",
       description: "Build IoT-connected dApps with our comprehensive SDK and API. Integrate real-world data into your blockchain projects seamlessly.",
-      cta: "View Documentation"
+      cta: "View Documentation",
+      link: "/developer-docs"
     },
     {
       icon: <Building className="h-10 w-10 text-loteraa-purple" />,
       title: "For Businesses",
       description: "Automate processes and reduce operational costs. Create new revenue streams through tokenized data and machine-to-machine transactions.",
-      cta: "Book a Demo"
+      cta: "Book a Demo",
+      link: "#"
     },
     {
       icon: <FileText className="h-10 w-10 text-loteraa-teal" />,
       title: "For Researchers",
       description: "Access trustworthy sensor data on a global scale. Leverage verified IoT data sources for your research and development initiatives.",
-      cta: "Explore Data"
+      cta: "Explore Data",
+      link: "/researchers"
     }
   ];
 
@@ -52,9 +55,11 @@ export default function AudienceSection() {
               </div>
               <h3 className="text-2xl font-bold mb-4 text-white">{audience.title}</h3>
               <p className="text-white/70 mb-6 flex-grow">{audience.description}</p>
-              <Button variant="ghost" className="text-white hover:bg-loteraa-gray/30 hover:text-white justify-start p-0 group">
-                <span>{audience.cta}</span>
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Button asChild variant="ghost" className="text-white hover:bg-loteraa-gray/30 hover:text-white justify-start p-0 group">
+                <Link to={audience.link}>
+                  <span>{audience.cta}</span>
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </Button>
             </div>
           ))}
