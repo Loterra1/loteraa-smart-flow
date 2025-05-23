@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -40,26 +39,22 @@ export default function ResearchersPage() {
     {
       icon: Database,
       title: "Verified IoT Data Access",
-      description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity.",
-      reward: "0.1-0.5 LOT per data verification"
+      description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity."
     },
     {
       icon: DollarSign,
       title: "Passive Income Generation",
-      description: "Earn passive income by contributing to data verification and analysis. Get rewarded for every validated data entry.",
-      reward: "Monthly rewards up to 500 LOT"
+      description: "Earn passive income by contributing to data verification and analysis. Get rewarded for every validated data entry."
     },
     {
       icon: Shield,
       title: "Blockchain-Secured Data",
-      description: "All data is cryptographically secured and stored on blockchain, providing immutable research datasets.",
-      reward: "Quality bonus: 10-50 LOT"
+      description: "All data is cryptographically secured and stored on blockchain, providing immutable research datasets."
     },
     {
       icon: BarChart3,
       title: "Advanced Analytics Tools",
-      description: "Access powerful analytics dashboard and tools to process and analyze IoT data at scale.",
-      reward: "Research grants available"
+      description: "Access powerful analytics dashboard and tools to process and analyze IoT data at scale."
     }
   ];
 
@@ -172,9 +167,6 @@ export default function ResearchersPage() {
               <Button size="lg" className="bg-loteraa-teal hover:bg-loteraa-teal/90 text-white px-8 py-6 text-lg hologram-effect">
                 Start Exploring Data <Database className="ml-2 h-5 w-5" />
               </Button>
-              <Button variant="outline" size="lg" className="bg-transparent border-loteraa-purple text-white hover:bg-loteraa-purple/20 px-8 py-6 text-lg">
-                View Research Tools <BarChart3 className="ml-2 h-5 w-5" />
-              </Button>
             </div>
           </div>
         </div>
@@ -267,10 +259,6 @@ export default function ResearchersPage() {
                     <div className="p-3 bg-loteraa-teal/20 rounded-lg">
                       <benefit.icon className="h-6 w-6 text-loteraa-teal" />
                     </div>
-                    <Badge variant="outline" className="text-loteraa-purple border-loteraa-purple/40 bg-loteraa-purple/10">
-                      <Coins className="h-3 w-3 mr-1" />
-                      {benefit.reward}
-                    </Badge>
                   </div>
                   <CardTitle className="text-white text-xl group-hover:text-loteraa-teal transition-colors">
                     {benefit.title}
@@ -310,8 +298,8 @@ export default function ResearchersPage() {
                 <div className="bg-loteraa-blue/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                   <Database className="h-8 w-8 text-loteraa-blue" />
                 </div>
-                <h4 className="text-lg font-semibold text-white mb-2">2. Access Data</h4>
-                <p className="text-white/70 text-sm">Browse and access verified IoT datasets from global sources</p>
+                <h4 className="text-lg font-semibold text-white mb-2">2. Input Data</h4>
+                <p className="text-white/70 text-sm">Enter different types of IoT datas and researches and store them on Loterra blockchain to be used by innovative global products</p>
               </div>
               
               <div className="text-center">
@@ -327,7 +315,7 @@ export default function ResearchersPage() {
                   <Coins className="h-8 w-8 text-loteraa-teal" />
                 </div>
                 <h4 className="text-lg font-semibold text-white mb-2">4. Earn</h4>
-                <p className="text-white/70 text-sm">Receive LOT tokens as rewards for your contributions</p>
+                <p className="text-white/70 text-sm">Receive $Terra tokens as rewards monthly basis for your contributions and other incentives</p>
               </div>
             </div>
           </div>
