@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import NavigationHeader from "@/components/NavigationHeader";
 import Footer from "@/components/Footer";
+import { Link } from "react-router-dom";
 import { 
   Activity, 
   Thermometer, 
@@ -16,7 +17,11 @@ import {
   BarChart3,
   LineChart,
   Wifi,
-  Database
+  Database,
+  ArrowRight,
+  Shield,
+  Cpu,
+  Clock
 } from "lucide-react";
 
 export default function DataFeedPage() {
@@ -211,6 +216,11 @@ export default function DataFeedPage() {
             100% { transform: scale(0.95) rotate(0deg); }
           }
           
+          @keyframes moveRight {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100% - 100px)); }
+          }
+          
           .data-flow {
             animation: dataFlow 3s ease-in-out infinite;
           }
@@ -293,7 +303,7 @@ export default function DataFeedPage() {
                         return (
                           <div 
                             key={i}
-                            className={`absolute w-${size} h-${size} rounded-full animate-pulse`}
+                            className="absolute rounded-full animate-pulse"
                             style={{
                               backgroundColor: `${['#7142F6', '#3182F4', '#0CCCBC', '#ff5e62'][Math.floor(Math.random() * 4)]}`,
                               left: `${10 + Math.random() * 80}%`,
@@ -338,7 +348,7 @@ export default function DataFeedPage() {
                 <div className="absolute bottom-4 left-0 w-full">
                   <div className="flex justify-between gap-2 px-4 text-sm text-white/80">
                     <div className="flex items-center gap-1">
-                      <Signal size={14} className="text-loteraa-purple" />
+                      <Wifi size={14} className="text-loteraa-purple" />
                       <span>Active Sensors: 5,324</span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -402,7 +412,7 @@ export default function DataFeedPage() {
                   {
                     title: "Advanced Analytics",
                     description: "Built-in analytics tools to visualize and gain insights from streaming data.",
-                    icon: Play,
+                    icon: BarChart3,
                     color: "text-loteraa-blue",
                     delay: 600
                   }
@@ -631,16 +641,10 @@ export default function DataFeedPage() {
                         <div className="w-4 h-4 rounded-full bg-loteraa-blue absolute right-4"></div>
                         
                         {/* Data packets animation */}
-                        <div className="w-2 h-2 rounded-full bg-white absolute left-8 animate-[moveRight_2s_linear_infinite]"></div>
-                        <div className="w-2 h-2 rounded-full bg-white absolute left-8 animate-[moveRight_2s_linear_infinite_0.7s]"></div>
-                        <div className="w-2 h-2 rounded-full bg-white absolute left-8 animate-[moveRight_2s_linear_infinite_1.4s]"></div>
+                        <div className="w-2 h-2 rounded-full bg-white absolute left-8" style={{ animation: 'moveRight 2s linear infinite' }}></div>
+                        <div className="w-2 h-2 rounded-full bg-white absolute left-8" style={{ animation: 'moveRight 2s linear infinite 0.7s' }}></div>
+                        <div className="w-2 h-2 rounded-full bg-white absolute left-8" style={{ animation: 'moveRight 2s linear infinite 1.4s' }}></div>
                       </div>
-                      <style jsx>{`
-                        @keyframes moveRight {
-                          0% { transform: translateX(0); }
-                          100% { transform: translateX(calc(100vw - 100px)); }
-                        }
-                      `}</style>
                     </div>
                   </div>
                 </div>
