@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import { Wallet } from "lucide-react";
 
 const stakingOptions = [
   { value: "4weeks", label: "4 Weeks", apy: "12.5%" },
@@ -26,8 +27,8 @@ const StakingPanel = () => {
   const [stakingPeriod, setStakingPeriod] = useState("4weeks");
   const [isStaking, setIsStaking] = useState(false);
   const [sliderValue, setSliderValue] = useState([50]);
+  const [walletConnected, setWalletConnected] = useState(false);
   
-  const currentBalance = 1000; // Mocked balance
   const selectedOption = stakingOptions.find(option => option.value === stakingPeriod);
   
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,17 +37,16 @@ const StakingPanel = () => {
   
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
-    setAmount(((value[0] / 100) * currentBalance).toFixed(2));
+    // We don't calculate the amount anymore since we don't show the balance
   };
   
-  const handleMax = () => {
-    setAmount(currentBalance.toString());
-    setSliderValue([100]);
-  };
-  
-  const handleHalf = () => {
-    setAmount((currentBalance / 2).toString());
-    setSliderValue([50]);
+  const handleConnectWallet = () => {
+    toast({
+      title: "Connect Wallet",
+      description: "Wallet connection feature will be implemented soon",
+    });
+    // For UI demonstration only
+    setWalletConnected(true);
   };
   
   const handleStake = async () => {
@@ -92,9 +92,11 @@ const StakingPanel = () => {
             <div>
               <div className="flex justify-between items-center mb-1">
                 <Label htmlFor="stake-amount">Stake Amount</Label>
-                <span className="text-sm text-white/70">
-                  Balance: {currentBalance} TERRA
-                </span>
+                {walletConnected && (
+                  <span className="text-sm text-white/70">
+                    Balance: 1000 TERRA
+                  </span>
+                )}
               </div>
               <div className="relative">
                 <Input
@@ -104,24 +106,32 @@ const StakingPanel = () => {
                   onChange={handleAmountChange}
                   className="pr-20"
                 />
-                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="h-6 text-xs"
-                    onClick={handleHalf}
-                  >
-                    Half
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="h-6 text-xs"
-                    onClick={handleMax}
-                  >
-                    Max
-                  </Button>
-                </div>
+                {walletConnected && (
+                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-6 text-xs"
+                      onClick={() => {
+                        setAmount("500");
+                        setSliderValue([50]);
+                      }}
+                    >
+                      Half
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-6 text-xs"
+                      onClick={() => {
+                        setAmount("1000");
+                        setSliderValue([100]);
+                      }}
+                    >
+                      Max
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
             
@@ -164,64 +174,90 @@ const StakingPanel = () => {
             </div>
           </div>
           
-          <Button 
-            className="w-full mt-6 bg-loteraa-purple hover:bg-loteraa-purple/90" 
-            disabled={!amount || parseFloat(amount) <= 0 || isStaking}
-            onClick={handleStake}
-          >
-            {isStaking ? "Staking..." : "Stake TERRA"}
-          </Button>
+          {!walletConnected ? (
+            <Button 
+              className="w-full mt-6 bg-loteraa-purple hover:bg-loteraa-purple/90"
+              onClick={handleConnectWallet}
+            >
+              <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
+            </Button>
+          ) : (
+            <Button 
+              className="w-full mt-6 bg-loteraa-purple hover:bg-loteraa-purple/90" 
+              disabled={!amount || parseFloat(amount) <= 0 || isStaking}
+              onClick={handleStake}
+            >
+              {isStaking ? "Staking..." : "Stake TERRA"}
+            </Button>
+          )}
         </div>
       </div>
       
       <div>
         <h3 className="text-xl font-semibold mb-4">Your Staking</h3>
-        <Card className="bg-loteraa-gray/10 border-loteraa-gray/20">
-          <CardContent className="p-6 space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-white/70">Total Staked</span>
-              <span className="font-medium">250 TERRA</span>
-            </div>
-            
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-white/70">Rewards Earned</span>
-              <span className="font-medium text-green-500">+12.35 TERRA</span>
-            </div>
-            
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-white/70">Current APY</span>
-              <span className="font-medium text-loteraa-purple">18.5%</span>
-            </div>
-            
-            <div className="pt-4 border-t border-white/10">
-              <h4 className="font-medium mb-3">Active Stakes</h4>
+        {!walletConnected ? (
+          <Card className="bg-loteraa-gray/10 border-loteraa-gray/20">
+            <CardContent className="p-6 flex flex-col items-center justify-center text-center h-60">
+              <Wallet className="h-12 w-12 text-white/50 mb-4" />
+              <h4 className="text-lg font-medium mb-2">Wallet Not Connected</h4>
+              <p className="text-white/70 mb-6">Connect your wallet to view your staking details</p>
+              <Button 
+                variant="outline" 
+                onClick={handleConnectWallet}
+                className="border-loteraa-purple text-loteraa-purple hover:bg-loteraa-purple/10"
+              >
+                <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="bg-loteraa-gray/10 border-loteraa-gray/20">
+            <CardContent className="p-6 space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-white/70">Total Staked</span>
+                <span className="font-medium">250 TERRA</span>
+              </div>
               
-              <div className="space-y-3">
-                <div className="p-3 bg-loteraa-purple/10 rounded-md border border-loteraa-purple/20">
-                  <div className="flex justify-between">
-                    <span>150 TERRA</span>
-                    <span className="text-loteraa-purple">16.8% APY</span>
-                  </div>
-                  <div className="mt-2 flex justify-between text-sm text-white/70">
-                    <span>8 Weeks</span>
-                    <span>Unlocks in 32 days</span>
-                  </div>
-                </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-white/70">Rewards Earned</span>
+                <span className="font-medium text-green-500">+12.35 TERRA</span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-white/70">Current APY</span>
+                <span className="font-medium text-loteraa-purple">18.5%</span>
+              </div>
+              
+              <div className="pt-4 border-t border-white/10">
+                <h4 className="font-medium mb-3">Active Stakes</h4>
                 
-                <div className="p-3 bg-loteraa-purple/10 rounded-md border border-loteraa-purple/20">
-                  <div className="flex justify-between">
-                    <span>100 TERRA</span>
-                    <span className="text-loteraa-purple">21.3% APY</span>
+                <div className="space-y-3">
+                  <div className="p-3 bg-loteraa-purple/10 rounded-md border border-loteraa-purple/20">
+                    <div className="flex justify-between">
+                      <span>150 TERRA</span>
+                      <span className="text-loteraa-purple">16.8% APY</span>
+                    </div>
+                    <div className="mt-2 flex justify-between text-sm text-white/70">
+                      <span>8 Weeks</span>
+                      <span>Unlocks in 32 days</span>
+                    </div>
                   </div>
-                  <div className="mt-2 flex justify-between text-sm text-white/70">
-                    <span>12 Weeks</span>
-                    <span>Unlocks in 68 days</span>
+                  
+                  <div className="p-3 bg-loteraa-purple/10 rounded-md border border-loteraa-purple/20">
+                    <div className="flex justify-between">
+                      <span>100 TERRA</span>
+                      <span className="text-loteraa-purple">21.3% APY</span>
+                    </div>
+                    <div className="mt-2 flex justify-between text-sm text-white/70">
+                      <span>12 Weeks</span>
+                      <span>Unlocks in 68 days</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
