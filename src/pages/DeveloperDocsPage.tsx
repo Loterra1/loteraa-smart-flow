@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,8 +11,7 @@ import {
   Shield, 
   Monitor, 
   BookOpen, 
-  ArrowRight, 
-  ExternalLink,
+  ArrowRight,
   Layers,
   Zap,
   Globe,
@@ -177,9 +175,6 @@ export default function DeveloperDocsPage() {
               <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg hologram-card">
                 Access Documentation <BookOpen className="ml-2 h-5 w-5" />
               </Button>
-              <Button variant="outline" size="lg" className="bg-transparent border-loteraa-blue text-white hover:bg-loteraa-blue/20 px-8 py-6 text-lg">
-                View API Reference <ExternalLink className="ml-2 h-5 w-5" />
-              </Button>
             </div>
           </div>
         </div>
@@ -248,9 +243,6 @@ export default function DeveloperDocsPage() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white">
                     View Documentation <BookOpen className="ml-2 h-5 w-5" />
-                  </Button>
-                  <Button variant="outline" size="lg" className="bg-transparent border-loteraa-teal text-white hover:bg-loteraa-teal/20">
-                    GitHub Repository <ExternalLink className="ml-2 h-5 w-5" />
                   </Button>
                 </div>
               </div>

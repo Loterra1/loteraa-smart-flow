@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -176,32 +177,43 @@ export default function DataFeedPage() {
       <style>
         {`
           @keyframes dataFlow {
-            0% { transform: translateX(-100%) translateY(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateX(100vw) translateY(-20px); opacity: 0; }
+            0% { transform: translateX(-100%) scale(0.8); opacity: 0; }
+            50% { transform: translateX(0) scale(1); opacity: 1; }
+            100% { transform: translateX(100%) scale(0.8); opacity: 0; }
           }
           
           @keyframes pulse3D {
-            0%, 100% { transform: scale(1) rotateY(0deg); opacity: 0.8; }
-            50% { transform: scale(1.1) rotateY(180deg); opacity: 1; }
+            0%, 100% { transform: scale(1) rotateX(0deg); box-shadow: 0 0 20px rgba(113, 66, 246, 0.3); }
+            50% { transform: scale(1.05) rotateX(5deg); box-shadow: 0 0 40px rgba(113, 66, 246, 0.8); }
           }
           
-          @keyframes float3D {
-            0%, 100% { transform: translateY(0) rotateX(0deg); }
-            50% { transform: translateY(-20px) rotateX(10deg); }
+          @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
           }
           
-          .data-particle {
-            animation: dataFlow 4s linear infinite;
+          @keyframes mapScan {
+            0% { transform: scale(0.95) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(2deg); }
+            100% { transform: scale(0.95) rotate(0deg); }
           }
           
-          .ar-element {
-            animation: pulse3D 3s ease-in-out infinite;
+          .data-flow {
+            animation: dataFlow 3s ease-in-out infinite;
           }
           
-          .floating-element {
-            animation: float3D 6s ease-in-out infinite;
+          .pulse-3d {
+            animation: pulse3D 4s ease-in-out infinite;
+          }
+          
+          .float-up {
+            animation: floatUp 15s linear infinite;
+          }
+          
+          .map-scan {
+            animation: mapScan 6s ease-in-out infinite;
           }
         `}
       </style>
