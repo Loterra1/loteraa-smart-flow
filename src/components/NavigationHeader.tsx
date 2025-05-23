@@ -21,6 +21,7 @@ export default function NavigationHeader() {
             <Link to="/about" className="text-sm font-medium text-white/80 hover:text-white transition-colors">About</Link>
             <Link to="/blog" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Blog</Link>
             <Link to="/stake" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Stake</Link>
+            <Link to="/data-feed" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Real-time Data Feed</Link>
             <Link to="/ambassador" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Ambassador</Link>
             <Link to="/contact" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Contact</Link>
           </nav>
@@ -53,6 +54,7 @@ export default function NavigationHeader() {
             <Link to="/about" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">About</Link>
             <Link to="/blog" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">Blog</Link>
             <Link to="/stake" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">Stake</Link>
+            <Link to="/data-feed" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">Real-time Data Feed</Link>
             <Link to="/ambassador" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">Ambassador</Link>
             <Link to="/contact" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">Contact</Link>
             <div className="pt-4 pb-2">

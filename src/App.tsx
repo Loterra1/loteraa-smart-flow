@@ -17,6 +17,7 @@ import ProfilePage from "./pages/ProfilePage";
 import NotificationsPage from "./pages/NotificationsPage";
 import StakePage from "./pages/StakePage";
 import AmbassadorPage from "./pages/AmbassadorPage";
+import DataFeedPage from "./pages/DataFeedPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/stake" element={<StakePage />} />
           <Route path="/ambassador" element={<AmbassadorPage />} />
+          <Route path="/data-feed" element={<DataFeedPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
