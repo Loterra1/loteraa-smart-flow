@@ -17,7 +17,7 @@ export default function AudienceSection() {
       title: "For Businesses",
       description: "Automate processes and reduce operational costs. Create new revenue streams through tokenized data and machine-to-machine transactions.",
       cta: "Book a Demo",
-      link: "#"
+      link: "/business"
     },
     {
       icon: <FileText className="h-10 w-10 text-loteraa-teal" />,
