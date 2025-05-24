@@ -20,62 +20,33 @@ import { Eye, Pencil, Trash, MoreHorizontal } from "lucide-react";
 import EditDeviceForm from './EditDeviceForm';
 import DeleteDeviceDialog from './DeleteDeviceDialog';
 
-// Sample device data
-const deviceData = [
-  { 
-    id: '1', 
-    name: 'WeatherSensor1', 
-    type: 'Digital', 
-    status: 'Online', 
-    lastTrigger: '3 mins ago' 
-  },
-  { 
-    id: '2', 
-    name: 'EnergyMeter', 
-    type: 'Physical', 
-    status: 'Standby', 
-    lastTrigger: '1 hr ago' 
-  },
-  { 
-    id: '3', 
-    name: 'GasMonitor99', 
-    type: 'Digital', 
-    status: 'Offline', 
-    lastTrigger: '-' 
-  },
-  { 
-    id: '4', 
-    name: 'TemperatureSensor', 
-    type: 'Digital', 
-    status: 'Online', 
-    lastTrigger: '15 mins ago' 
-  },
-  { 
-    id: '5', 
-    name: 'WaterFlowMeter', 
-    type: 'Physical', 
-    status: 'Online', 
-    lastTrigger: '30 mins ago' 
-  }
-];
+type Device = {
+  id: string;
+  name: string;
+  type: string;
+  status: string;
+  lastTrigger: string;
+};
 
 interface DevicesTableProps {
   searchQuery: string;
   typeFilter: string;
   statusFilter: string;
+  devices: Device[];
 }
 
 export default function DevicesTable({
   searchQuery,
   typeFilter,
-  statusFilter
+  statusFilter,
+  devices
 }: DevicesTableProps) {
   const navigate = useNavigate();
-  const [editingDevice, setEditingDevice] = useState<typeof deviceData[0] | null>(null);
-  const [deleteDevice, setDeleteDevice] = useState<typeof deviceData[0] | null>(null);
+  const [editingDevice, setEditingDevice] = useState<Device | null>(null);
+  const [deleteDevice, setDeleteDevice] = useState<Device | null>(null);
   
   // Filter devices based on search query and filters
-  const filteredDevices = deviceData.filter(device => {
+  const filteredDevices = devices.filter(device => {
     const matchesSearch = device.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = typeFilter === 'all' || device.type.toLowerCase() === typeFilter.toLowerCase();
     const matchesStatus = statusFilter === 'all' || device.status.toLowerCase() === statusFilter.toLowerCase();
@@ -87,11 +58,11 @@ export default function DevicesTable({
     navigate(`/devices/${deviceId}`);
   };
   
-  const handleEditDevice = (device: typeof deviceData[0]) => {
+  const handleEditDevice = (device: Device) => {
     setEditingDevice(device);
   };
   
-  const handleDeleteDevice = (device: typeof deviceData[0]) => {
+  const handleDeleteDevice = (device: Device) => {
     setDeleteDevice(device);
   };
 

@@ -7,7 +7,9 @@ import DevicesCards from "@/components/devices/DevicesCards";
 import DevicesTable from "@/components/devices/DevicesTable";
 import AddDeviceForm from "@/components/devices/AddDeviceForm";
 import { Button } from "@/components/ui/button";
-import { Plus, Grid, List } from "lucide-react";
+import { Plus, Grid, List, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -17,9 +19,52 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+// Sample device data - in a real app this would come from an API
+const sampleDevices = [
+  { 
+    id: '1', 
+    name: 'WeatherSensor1', 
+    type: 'Digital', 
+    status: 'Online', 
+    lastTrigger: '3 mins ago' 
+  },
+  { 
+    id: '2', 
+    name: 'EnergyMeter', 
+    type: 'Physical', 
+    status: 'Standby', 
+    lastTrigger: '1 hr ago' 
+  },
+  { 
+    id: '3', 
+    name: 'GasMonitor99', 
+    type: 'Digital', 
+    status: 'Offline', 
+    lastTrigger: '-' 
+  },
+  { 
+    id: '4', 
+    name: 'TemperatureSensor', 
+    type: 'Digital', 
+    status: 'Online', 
+    lastTrigger: '15 mins ago' 
+  },
+  { 
+    id: '5', 
+    name: 'WaterFlowMeter', 
+    type: 'Physical', 
+    status: 'Online', 
+    lastTrigger: '30 mins ago' 
+  }
+];
+
 const DevicesPage = () => {
   const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
   const [isAddDeviceOpen, setIsAddDeviceOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [devices] = useState(sampleDevices);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -71,14 +116,66 @@ const DevicesPage = () => {
                         Connect a new IoT device to your Loteraa network
                       </DialogDescription>
                     </DialogHeader>
-                    <AddDeviceForm onClose={() => setIsAddDeviceOpen(false)} />
+                    <AddDeviceForm />
                   </DialogContent>
                 </Dialog>
               </div>
             </div>
 
+            {/* Filters Section */}
+            <div className="bg-loteraa-gray/10 backdrop-blur-md border border-loteraa-gray/20 rounded-xl p-6 mb-6">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 h-4 w-4" />
+                    <Input
+                      placeholder="Search devices..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 bg-loteraa-gray/20 border-loteraa-gray/30 text-white placeholder-white/50"
+                    />
+                  </div>
+                </div>
+                <Select value={typeFilter} onValueChange={setTypeFilter}>
+                  <SelectTrigger className="w-full sm:w-48 bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                    <SelectValue placeholder="Filter by type" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-loteraa-gray border-loteraa-gray/30">
+                    <SelectItem value="all" className="text-white hover:bg-loteraa-gray/20">All Types</SelectItem>
+                    <SelectItem value="digital" className="text-white hover:bg-loteraa-gray/20">Digital</SelectItem>
+                    <SelectItem value="physical" className="text-white hover:bg-loteraa-gray/20">Physical</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full sm:w-48 bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                    <SelectValue placeholder="Filter by status" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-loteraa-gray border-loteraa-gray/30">
+                    <SelectItem value="all" className="text-white hover:bg-loteraa-gray/20">All Status</SelectItem>
+                    <SelectItem value="online" className="text-white hover:bg-loteraa-gray/20">Online</SelectItem>
+                    <SelectItem value="offline" className="text-white hover:bg-loteraa-gray/20">Offline</SelectItem>
+                    <SelectItem value="standby" className="text-white hover:bg-loteraa-gray/20">Standby</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
             <div className="bg-loteraa-gray/10 backdrop-blur-md border border-loteraa-gray/20 rounded-xl p-6">
-              {viewMode === "cards" ? <DevicesCards /> : <DevicesTable />}
+              {viewMode === "cards" ? (
+                <DevicesCards 
+                  searchQuery={searchQuery}
+                  typeFilter={typeFilter}
+                  statusFilter={statusFilter}
+                  devices={devices}
+                />
+              ) : (
+                <DevicesTable 
+                  searchQuery={searchQuery}
+                  typeFilter={typeFilter}
+                  statusFilter={statusFilter}
+                  devices={devices}
+                />
+              )}
             </div>
           </div>
         </div>
