@@ -21,6 +21,8 @@ import DataFeedPage from "./pages/DataFeedPage";
 import DeveloperDocsPage from "./pages/DeveloperDocsPage";
 import ResearchersPage from "./pages/ResearchersPage";
 import BusinessPage from "./pages/BusinessPage";
+import AboutPage from "./pages/AboutPage";
+import CareersPage from "./pages/CareersPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +51,8 @@ const App = () => (
           <Route path="/developer-docs" element={<DeveloperDocsPage />} />
           <Route path="/researchers" element={<ResearchersPage />} />
           <Route path="/business" element={<BusinessPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/careers" element={<CareersPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
