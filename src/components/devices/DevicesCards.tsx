@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -27,13 +28,27 @@ export default function DevicesCards({
   searchQuery,
   typeFilter,
   statusFilter,
-  devices,
+  devices = [], // Default to empty array to prevent undefined
   onDeviceDeleted,
   onDeviceUpdated
 }: DevicesCardsProps) {
   const navigate = useNavigate();
   const [editingDevice, setEditingDevice] = useState<Device | null>(null);
   const [deleteDevice, setDeleteDevice] = useState<Device | null>(null);
+  
+  console.log("DevicesCards received devices:", devices);
+  console.log("DevicesCards devices type:", typeof devices);
+  console.log("DevicesCards devices is array:", Array.isArray(devices));
+  
+  // Ensure devices is an array before filtering
+  if (!Array.isArray(devices)) {
+    console.error("DevicesCards: devices prop is not an array:", devices);
+    return (
+      <div className="text-center py-12 bg-loteraa-gray/10 border border-loteraa-gray/20 rounded-lg">
+        <p className="text-white/70">Error: Invalid devices data</p>
+      </div>
+    );
+  }
   
   // Filter devices based on search query and filters
   const filteredDevices = devices.filter(device => {
@@ -43,6 +58,8 @@ export default function DevicesCards({
     
     return matchesSearch && matchesType && matchesStatus;
   });
+  
+  console.log("DevicesCards filtered devices:", filteredDevices);
   
   const handleViewDevice = (deviceId: string) => {
     navigate(`/devices/${deviceId}`);

@@ -10,14 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Plus, Grid, List, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 // Sample device data - in a real app this would come from an API
 const sampleDevices = [
@@ -66,15 +58,23 @@ const DevicesPage = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [devices, setDevices] = useState(sampleDevices);
 
+  console.log("DevicesPage rendered with devices:", devices);
+  console.log("Search query:", searchQuery);
+  console.log("Type filter:", typeFilter);
+  console.log("Status filter:", statusFilter);
+
   const handleDeviceAdded = (newDevice: any) => {
+    console.log("Adding new device:", newDevice);
     setDevices(prevDevices => [...prevDevices, newDevice]);
   };
 
   const handleDeviceDeleted = (deviceId: string) => {
+    console.log("Deleting device:", deviceId);
     setDevices(prevDevices => prevDevices.filter(device => device.id !== deviceId));
   };
 
   const handleDeviceUpdated = (updatedDevice: any) => {
+    console.log("Updating device:", updatedDevice);
     setDevices(prevDevices => 
       prevDevices.map(device => 
         device.id === updatedDevice.id ? updatedDevice : device
