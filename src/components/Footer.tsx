@@ -45,7 +45,7 @@ export default function Footer() {
           <div>
             <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Product</h3>
             <ul className="mt-4 space-y-4">
-              <li><a href="#" className="text-white/70 hover:text-white transition-colors">Use Cases</a></li>
+              <li><Link to="/use-cases" className="text-white/70 hover:text-white transition-colors">Use Cases</Link></li>
               <li><a href="#" className="text-white/70 hover:text-white transition-colors">Documentation</a></li>
               <li><a href="#" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
               <li><a href="#" className="text-white/70 hover:text-white transition-colors">Blockchain Explorer</a></li>

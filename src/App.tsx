@@ -26,6 +26,7 @@ import CareersPage from "./pages/CareersPage";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import EcosystemPage from "./pages/EcosystemPage";
+import UseCasesPage from "./pages/UseCasesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -59,6 +60,7 @@ const App = () => (
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/ecosystem" element={<EcosystemPage />} />
+          <Route path="/use-cases" element={<UseCasesPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
