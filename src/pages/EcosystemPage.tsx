@@ -24,11 +24,11 @@ const ecosystemProjects = [
   },
   {
     id: 2,
-    name: "IoT Sensors Network",
+    name: "Port3 Network",
     category: "DePIN",
-    description: "Decentralized network of IoT sensors providing real-time environmental data to smart contracts.",
-    website: "#",
-    logo: "📡"
+    description: "Web3 data network that empowers AI and dApps with social data, providing decentralized data infrastructure.",
+    website: "https://www.port3.io/",
+    logo: "🌐"
   },
   {
     id: 3,
@@ -40,11 +40,11 @@ const ecosystemProjects = [
   },
   {
     id: 4,
-    name: "Loteraa DEX",
+    name: "Kyber Network",
     category: "DeFi",
-    description: "Decentralized exchange for trading IoT data tokens and device connectivity credits.",
-    website: "#",
-    logo: "💱"
+    description: "Decentralized trading protocol that aggregates liquidity from various sources to provide secure token swaps.",
+    website: "https://kyberswap.com",
+    logo: "⚡"
   },
   {
     id: 5,
