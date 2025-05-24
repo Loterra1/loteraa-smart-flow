@@ -64,7 +64,11 @@ const DevicesPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [devices] = useState(sampleDevices);
+  const [devices, setDevices] = useState(sampleDevices);
+
+  const handleDeviceAdded = (newDevice: any) => {
+    setDevices(prevDevices => [...prevDevices, newDevice]);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -102,23 +106,13 @@ const DevicesPage = () => {
                   </Button>
                 </div>
                 
-                <Dialog open={isAddDeviceOpen} onOpenChange={setIsAddDeviceOpen}>
-                  <DialogTrigger asChild>
-                    <Button className="bg-loteraa-purple hover:bg-loteraa-purple/90">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Device
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-loteraa-gray/95 border-loteraa-gray/20 max-w-2xl">
-                    <DialogHeader>
-                      <DialogTitle className="text-white">Add New IoT Device</DialogTitle>
-                      <DialogDescription className="text-white/70">
-                        Connect a new IoT device to your Loteraa network
-                      </DialogDescription>
-                    </DialogHeader>
-                    <AddDeviceForm />
-                  </DialogContent>
-                </Dialog>
+                <Button 
+                  onClick={() => setIsAddDeviceOpen(true)}
+                  className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Device
+                </Button>
               </div>
             </div>
 
@@ -181,6 +175,12 @@ const DevicesPage = () => {
         </div>
       </main>
       <Footer />
+      
+      <AddDeviceForm 
+        open={isAddDeviceOpen}
+        onOpenChange={setIsAddDeviceOpen}
+        onDeviceAdded={handleDeviceAdded}
+      />
     </div>
   );
 };
