@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronLeft, Pencil } from "lucide-react";
 import EditDeviceForm from '@/components/devices/EditDeviceForm';
+import EditTriggerDialog from '@/components/devices/EditTriggerDialog';
 
 // Sample device data
 const deviceData = [
@@ -60,6 +61,7 @@ export default function DeviceDetailPage() {
   const navigate = useNavigate();
   const { deviceId } = useParams();
   const [editingDevice, setEditingDevice] = useState(false);
+  const [editingTrigger, setEditingTrigger] = useState<any>(null);
   
   // Find device data based on ID
   const device = deviceData.find(d => d.id === deviceId);
@@ -81,6 +83,10 @@ export default function DeviceDetailPage() {
       </div>
     );
   }
+  
+  const handleEditTrigger = (trigger: any) => {
+    setEditingTrigger(trigger);
+  };
   
   return (
     <div className="min-h-screen bg-loteraa-black">
@@ -199,6 +205,7 @@ export default function DeviceDetailPage() {
                               <Button 
                                 variant="ghost" 
                                 size="sm"
+                                onClick={() => handleEditTrigger(trigger)}
                                 className="h-8 text-white/80 hover:text-loteraa-purple hover:bg-loteraa-purple/10"
                               >
                                 Edit
@@ -253,6 +260,14 @@ export default function DeviceDetailPage() {
           device={device} 
           open={editingDevice} 
           onOpenChange={setEditingDevice} 
+        />
+      )}
+      
+      {editingTrigger && (
+        <EditTriggerDialog 
+          trigger={editingTrigger} 
+          open={!!editingTrigger} 
+          onOpenChange={() => setEditingTrigger(null)} 
         />
       )}
     </div>

@@ -50,9 +50,15 @@ interface EditDeviceFormProps {
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onDeviceUpdated?: (device: any) => void;
 }
 
-export default function EditDeviceForm({ device, open, onOpenChange }: EditDeviceFormProps) {
+export default function EditDeviceForm({ 
+  device, 
+  open, 
+  onOpenChange, 
+  onDeviceUpdated 
+}: EditDeviceFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,8 +70,17 @@ export default function EditDeviceForm({ device, open, onOpenChange }: EditDevic
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Simulate API call to update device
-    console.log("Updating device:", device.id, values);
+    // Create updated device object
+    const updatedDevice = {
+      ...device,
+      name: values.name,
+      type: values.type.charAt(0).toUpperCase() + values.type.slice(1),
+    };
+    
+    // Call the update callback
+    if (onDeviceUpdated) {
+      onDeviceUpdated(updatedDevice);
+    }
     
     // Show success message
     toast.success("Device updated successfully", {

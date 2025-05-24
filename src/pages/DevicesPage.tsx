@@ -70,6 +70,18 @@ const DevicesPage = () => {
     setDevices(prevDevices => [...prevDevices, newDevice]);
   };
 
+  const handleDeviceDeleted = (deviceId: string) => {
+    setDevices(prevDevices => prevDevices.filter(device => device.id !== deviceId));
+  };
+
+  const handleDeviceUpdated = (updatedDevice: any) => {
+    setDevices(prevDevices => 
+      prevDevices.map(device => 
+        device.id === updatedDevice.id ? updatedDevice : device
+      )
+    );
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <DashboardNavbar />
@@ -161,6 +173,8 @@ const DevicesPage = () => {
                   typeFilter={typeFilter}
                   statusFilter={statusFilter}
                   devices={devices}
+                  onDeviceDeleted={handleDeviceDeleted}
+                  onDeviceUpdated={handleDeviceUpdated}
                 />
               ) : (
                 <DevicesTable 
@@ -168,6 +182,8 @@ const DevicesPage = () => {
                   typeFilter={typeFilter}
                   statusFilter={statusFilter}
                   devices={devices}
+                  onDeviceDeleted={handleDeviceDeleted}
+                  onDeviceUpdated={handleDeviceUpdated}
                 />
               )}
             </div>

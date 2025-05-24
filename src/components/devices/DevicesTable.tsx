@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -33,13 +32,17 @@ interface DevicesTableProps {
   typeFilter: string;
   statusFilter: string;
   devices: Device[];
+  onDeviceDeleted?: (deviceId: string) => void;
+  onDeviceUpdated?: (device: Device) => void;
 }
 
 export default function DevicesTable({
   searchQuery,
   typeFilter,
   statusFilter,
-  devices
+  devices,
+  onDeviceDeleted,
+  onDeviceUpdated
 }: DevicesTableProps) {
   const navigate = useNavigate();
   const [editingDevice, setEditingDevice] = useState<Device | null>(null);
@@ -64,6 +67,18 @@ export default function DevicesTable({
   
   const handleDeleteDevice = (device: Device) => {
     setDeleteDevice(device);
+  };
+
+  const handleDeleteConfirm = (deviceId: string) => {
+    if (onDeviceDeleted) {
+      onDeviceDeleted(deviceId);
+    }
+  };
+
+  const handleEditConfirm = (updatedDevice: Device) => {
+    if (onDeviceUpdated) {
+      onDeviceUpdated(updatedDevice);
+    }
   };
 
   return (
@@ -180,7 +195,8 @@ export default function DevicesTable({
         <EditDeviceForm 
           device={editingDevice} 
           open={!!editingDevice} 
-          onOpenChange={() => setEditingDevice(null)} 
+          onOpenChange={() => setEditingDevice(null)}
+          onDeviceUpdated={handleEditConfirm}
         />
       )}
       
@@ -188,7 +204,8 @@ export default function DevicesTable({
         <DeleteDeviceDialog 
           device={deleteDevice} 
           open={!!deleteDevice} 
-          onOpenChange={() => setDeleteDevice(null)} 
+          onOpenChange={() => setDeleteDevice(null)}
+          onDeviceDeleted={handleDeleteConfirm}
         />
       )}
     </>

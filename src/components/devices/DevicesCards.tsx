@@ -19,13 +19,17 @@ interface DevicesCardsProps {
   typeFilter: string;
   statusFilter: string;
   devices: Device[];
+  onDeviceDeleted?: (deviceId: string) => void;
+  onDeviceUpdated?: (device: Device) => void;
 }
 
 export default function DevicesCards({
   searchQuery,
   typeFilter,
   statusFilter,
-  devices
+  devices,
+  onDeviceDeleted,
+  onDeviceUpdated
 }: DevicesCardsProps) {
   const navigate = useNavigate();
   const [editingDevice, setEditingDevice] = useState<Device | null>(null);
@@ -50,6 +54,18 @@ export default function DevicesCards({
   
   const handleDeleteDevice = (device: Device) => {
     setDeleteDevice(device);
+  };
+
+  const handleDeleteConfirm = (deviceId: string) => {
+    if (onDeviceDeleted) {
+      onDeviceDeleted(deviceId);
+    }
+  };
+
+  const handleEditConfirm = (updatedDevice: Device) => {
+    if (onDeviceUpdated) {
+      onDeviceUpdated(updatedDevice);
+    }
   };
 
   return (
@@ -124,7 +140,8 @@ export default function DevicesCards({
         <EditDeviceForm 
           device={editingDevice} 
           open={!!editingDevice} 
-          onOpenChange={() => setEditingDevice(null)} 
+          onOpenChange={() => setEditingDevice(null)}
+          onDeviceUpdated={handleEditConfirm}
         />
       )}
       
@@ -132,7 +149,8 @@ export default function DevicesCards({
         <DeleteDeviceDialog 
           device={deleteDevice} 
           open={!!deleteDevice} 
-          onOpenChange={() => setDeleteDevice(null)} 
+          onOpenChange={() => setDeleteDevice(null)}
+          onDeviceDeleted={handleDeleteConfirm}
         />
       )}
     </>

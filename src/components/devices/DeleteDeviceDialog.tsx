@@ -19,17 +19,21 @@ interface DeleteDeviceDialogProps {
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onDeviceDeleted?: (deviceId: string) => void;
 }
 
 export default function DeleteDeviceDialog({ 
   device, 
   open, 
-  onOpenChange 
+  onOpenChange,
+  onDeviceDeleted
 }: DeleteDeviceDialogProps) {
 
   const handleDelete = () => {
-    // Simulate API call to delete device
-    console.log("Deleting device:", device.id);
+    // Call the deletion callback to actually remove the device
+    if (onDeviceDeleted) {
+      onDeviceDeleted(device.id);
+    }
     
     // Show success message
     toast.success("Device deleted", {
