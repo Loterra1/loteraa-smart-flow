@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Check, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -43,10 +42,15 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
   const [deviceType, setDeviceType] = useState<DeviceType | null>(null);
   const [selectedProtocol, setSelectedProtocol] = useState<string>("");
   const [selectedSmartContract, setSelectedSmartContract] = useState<string>("");
+  const [selectedDigitalSmartContract, setSelectedDigitalSmartContract] = useState<string>("");
   const [showContractForm, setShowContractForm] = useState(false);
+  const [showDigitalContractForm, setShowDigitalContractForm] = useState(false);
   const [contractCode, setContractCode] = useState("");
+  const [digitalContractCode, setDigitalContractCode] = useState("");
   const [contractMethods, setContractMethods] = useState<string[]>([]);
+  const [digitalContractMethods, setDigitalContractMethods] = useState<string[]>([]);
   const [selectedMethod, setSelectedMethod] = useState("");
+  const [selectedDigitalMethod, setSelectedDigitalMethod] = useState("");
   const { toast } = useToast();
   
   const digitalForm = useForm({
@@ -128,6 +132,16 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
     }
   };
 
+  const handleDigitalSmartContractChange = (value: string) => {
+    setSelectedDigitalSmartContract(value);
+    digitalForm.setValue("smartContract", value);
+    if (value === "new") {
+      setShowDigitalContractForm(true);
+    } else {
+      setShowDigitalContractForm(false);
+    }
+  };
+
   const parseContractMethods = (code: string) => {
     // Simple regex to extract function names from Solidity code
     const functionRegex = /function\s+(\w+)\s*\(/g;
@@ -151,15 +165,35 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
       setSelectedMethod(methods[0]);
     }
   };
+
+  const handleDigitalContractCodeChange = (code: string) => {
+    setDigitalContractCode(code);
+    const methods = parseContractMethods(code);
+    setDigitalContractMethods(methods);
+    if (methods.length > 0) {
+      setSelectedDigitalMethod(methods[0]);
+    }
+  };
   
   const submitDigitalDevice = (data: any) => {
-    console.log("Digital device data:", data);
+    const deviceData = {
+      ...data,
+      contractCode: showDigitalContractForm ? digitalContractCode : undefined,
+      contractMethod: showDigitalContractForm ? selectedDigitalMethod : undefined,
+    };
+    
+    console.log("Digital device data:", deviceData);
     toast({
       title: "Digital Device Added",
       description: `Device ${data.deviceName} has been successfully added.`
     });
     onOpenChange(false);
     setDeviceType(null);
+    setSelectedDigitalSmartContract("");
+    setShowDigitalContractForm(false);
+    setDigitalContractCode("");
+    setDigitalContractMethods([]);
+    setSelectedDigitalMethod("");
     digitalForm.reset();
   };
   
@@ -319,7 +353,10 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Smart Contract to Trigger</FormLabel>
-                      <Select onValueChange={field.onChange}>
+                      <Select onValueChange={(value) => {
+                        field.onChange(value);
+                        handleDigitalSmartContractChange(value);
+                      }}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Choose contract" />
@@ -337,6 +374,40 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                     </FormItem>
                   )}
                 />
+
+                {showDigitalContractForm && (
+                  <div className="space-y-3 border border-loteraa-purple/30 rounded-md p-4 bg-loteraa-purple/5">
+                    <h4 className="text-sm font-medium text-white">Create New Smart Contract</h4>
+                    
+                    <div>
+                      <Label className="text-white mb-2 block">Contract Code</Label>
+                      <Textarea 
+                        placeholder="Paste your Solidity contract code here..."
+                        value={digitalContractCode}
+                        onChange={(e) => handleDigitalContractCodeChange(e.target.value)}
+                        className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white min-h-[100px] font-mono text-xs"
+                      />
+                    </div>
+
+                    {digitalContractMethods.length > 0 && (
+                      <div>
+                        <Label className="text-white mb-2 block">Contract Method to Call</Label>
+                        <Select value={selectedDigitalMethod} onValueChange={setSelectedDigitalMethod}>
+                          <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                            <SelectValue placeholder="Choose method" />
+                          </SelectTrigger>
+                          <SelectContent className="z-50">
+                            {digitalContractMethods.map(method => (
+                              <SelectItem key={method} value={method}>
+                                {method}()
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </div>
+                )}
                 
                 <DialogFooter className="mt-4 flex flex-col sm:flex-row gap-2">
                   <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
