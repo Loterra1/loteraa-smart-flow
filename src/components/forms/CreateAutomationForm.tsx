@@ -37,6 +37,7 @@ import { useSmartContracts } from "@/hooks/useSmartContracts";
 import { SmartContract } from '@/types/smartContract';
 import { formSchema, FormValues } from "./automation/AutomationFormSchema";
 import ContractMethodSelector from "./automation/ContractMethodSelector";
+import CreateTriggerSourceDialog from "./automation/CreateTriggerSourceDialog";
 
 interface AutomationType {
   id: string;
@@ -45,6 +46,14 @@ interface AutomationType {
   actionType: string;
   status: "Active" | "Paused";
   lastTrigger: string;
+}
+
+interface TriggerSource {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  dataFormat: string;
 }
 
 interface CreateAutomationFormProps {
@@ -64,6 +73,8 @@ export default function CreateAutomationForm({
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [contractFile, setContractFile] = useState<File | null>(null);
+  const [customTriggerSources, setCustomTriggerSources] = useState<TriggerSource[]>([]);
+  const [isCreateTriggerDialogOpen, setIsCreateTriggerDialogOpen] = useState(false);
   const { contracts } = useSmartContracts();
 
   const form = useForm<FormValues>({
@@ -77,6 +88,7 @@ export default function CreateAutomationForm({
       triggerInterval: "10mins",
       conditionOperator: ">",
       conditionValue: "30",
+      customRule: "",
       contractAction: "",
       contractMethods: [],
       selectedContract: "",
@@ -90,6 +102,23 @@ export default function CreateAutomationForm({
     },
   });
 
+  // Pre-defined trigger sources
+  const defaultTriggerSources = [
+    { value: "CO² sensor", label: "CO² sensor" },
+    { value: "Power meter", label: "Power meter" },
+    { value: "Temperature sensor", label: "Temperature sensor" },
+    { value: "Water quality monitor", label: "Water quality monitor" },
+  ];
+
+  // Combined trigger sources (default + custom)
+  const allTriggerSources = [
+    ...defaultTriggerSources,
+    ...customTriggerSources.map(source => ({
+      value: source.name,
+      label: `${source.name} (${source.type})`
+    }))
+  ];
+
   // Pre-defined contract methods
   const contractMethods = [
     { value: "transfer", label: "transfer(address, uint256)" },
@@ -98,6 +127,12 @@ export default function CreateAutomationForm({
     { value: "burn", label: "burn(uint256)" },
     { value: "custom", label: "Custom method..." },
   ];
+
+  const handleTriggerSourceCreated = (newTriggerSource: TriggerSource) => {
+    setCustomTriggerSources([...customTriggerSources, newTriggerSource]);
+    // Automatically select the newly created trigger source
+    form.setValue('triggerSource', newTriggerSource.name);
+  };
 
   function onSubmit(values: FormValues) {
     setIsSubmitting(true);
@@ -210,632 +245,687 @@ export default function CreateAutomationForm({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-loteraa-gray border-loteraa-gray/30 text-white sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-white text-xl">Create New Automation</DialogTitle>
-        </DialogHeader>
-        
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="w-full bg-loteraa-gray/30 rounded-lg p-2 mb-6">
-              <div className="flex justify-between items-center">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <div 
-                    key={s} 
-                    className={`flex flex-col items-center ${step === s ? 'text-loteraa-purple' : 'text-white/50'}`}
-                  >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 ${step === s ? 'bg-loteraa-purple text-white' : step > s ? 'bg-loteraa-purple/30 text-white' : 'bg-loteraa-gray/50 text-white/50'}`}>
-                      {step > s ? <Check className="h-4 w-4" /> : s}
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="bg-loteraa-gray border-loteraa-gray/30 text-white sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-white text-xl">Create New Automation</DialogTitle>
+          </DialogHeader>
+          
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="w-full bg-loteraa-gray/30 rounded-lg p-2 mb-6">
+                <div className="flex justify-between items-center">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <div 
+                      key={s} 
+                      className={`flex flex-col items-center ${step === s ? 'text-loteraa-purple' : 'text-white/50'}`}
+                    >
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-1 ${step === s ? 'bg-loteraa-purple text-white' : step > s ? 'bg-loteraa-purple/30 text-white' : 'bg-loteraa-gray/50 text-white/50'}`}>
+                        {step > s ? <Check className="h-4 w-4" /> : s}
+                      </div>
+                      <span className="text-xs">Step {s}</span>
                     </div>
-                    <span className="text-xs">Step {s}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <div className="w-full h-1 bg-loteraa-gray/20 mt-2 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-loteraa-purple transition-all duration-300" 
+                    style={{ width: `${(step / 5) * 100}%` }}
+                  />
+                </div>
               </div>
-              <div className="w-full h-1 bg-loteraa-gray/20 mt-2 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-loteraa-purple transition-all duration-300" 
-                  style={{ width: `${(step / 5) * 100}%` }}
-                />
-              </div>
-            </div>
 
-            {/* Step 1: Basic Information */}
-            {step === 1 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">Basic Information</h3>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-white">Automation Name</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="Enter a name for this automation" 
-                          className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            )}
-
-            {/* Step 2: Select Trigger Source */}
-            {step === 2 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">Select Trigger Source</h3>
-                <FormField
-                  control={form.control}
-                  name="triggerSource"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-white">Trigger Source</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
-                            <SelectValue placeholder="Select trigger source" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
-                          <SelectItem value="CO² sensor">CO² sensor</SelectItem>
-                          <SelectItem value="Power meter">Power meter</SelectItem>
-                          <SelectItem value="Temperature sensor">Temperature sensor</SelectItem>
-                          <SelectItem value="Water quality monitor">Water quality monitor</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="pt-4">
-                  <h4 className="text-sm font-medium mb-2">Trigger Method</h4>
+              {/* Step 1: Basic Information */}
+              {step === 1 && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Basic Information</h3>
                   <FormField
                     control={form.control}
-                    name="triggerMethod"
+                    name="name"
                     render={({ field }) => (
-                      <FormItem className="space-y-3">
+                      <FormItem>
+                        <FormLabel className="text-white">Automation Name</FormLabel>
                         <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-col space-y-1"
-                          >
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="onChange" id="onChange" />
-                              <FormLabel htmlFor="onChange" className="font-normal cursor-pointer">
-                                On Change
-                              </FormLabel>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="onInterval" id="onInterval" />
-                              <FormLabel htmlFor="onInterval" className="font-normal cursor-pointer">
-                                On Interval
-                              </FormLabel>
-                            </div>
-                          </RadioGroup>
+                          <Input 
+                            placeholder="Enter a name for this automation" 
+                            className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                            {...field} 
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
+              )}
 
-                {form.watch("triggerMethod") === "onInterval" && (
+              {/* Step 2: Select Trigger Source */}
+              {step === 2 && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-medium">Select Trigger Source</h3>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsCreateTriggerDialogOpen(true)}
+                      className="border-loteraa-purple/50 text-loteraa-purple hover:bg-loteraa-purple/10"
+                    >
+                      <Plus className="mr-2 h-4 w-4" /> Create New
+                    </Button>
+                  </div>
+                  
                   <FormField
                     control={form.control}
-                    name="triggerInterval"
+                    name="triggerSource"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-white">Frequency / Interval</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormLabel className="text-white">Trigger Source</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
-                              <SelectValue placeholder="Select interval" />
+                              <SelectValue placeholder="Select trigger source" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
-                            <SelectItem value="1min">Every 1 minute</SelectItem>
-                            <SelectItem value="5mins">Every 5 minutes</SelectItem>
-                            <SelectItem value="10mins">Every 10 minutes</SelectItem>
-                            <SelectItem value="30mins">Every 30 minutes</SelectItem>
-                            <SelectItem value="1hour">Every hour</SelectItem>
-                            <SelectItem value="6hours">Every 6 hours</SelectItem>
-                            <SelectItem value="12hours">Every 12 hours</SelectItem>
-                            <SelectItem value="1day">Every day</SelectItem>
+                            {allTriggerSources.map((source) => (
+                              <SelectItem key={source.value} value={source.value}>
+                                {source.label}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                )}
-              </div>
-            )}
 
-            {/* Step 3: Set Trigger Conditions */}
-            {step === 3 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">Set Trigger Conditions</h3>
-                <p className="text-sm text-white/70">Define when this automation should be triggered</p>
-                
-                <div className="space-y-3">
-                  {conditions.map((condition, index) => (
-                    <Card key={condition.id} className="bg-loteraa-black/30 border-loteraa-gray/30">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm font-medium">Condition {index + 1}</span>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0 text-white/70 hover:text-white hover:bg-loteraa-gray/30"
-                            onClick={() => removeCondition(condition.id)}
-                          >
-                            <Trash className="h-4 w-4" />
-                          </Button>
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-2">
-                          <div>
-                            <FormLabel className="text-xs text-white/70">Sensor</FormLabel>
-                            <Select 
-                              defaultValue={condition.sensor}
-                              onValueChange={(value) => updateCondition(condition.id, 'sensor', value)}
+                  <div className="pt-4">
+                    <h4 className="text-sm font-medium mb-2">Trigger Method</h4>
+                    <FormField
+                      control={form.control}
+                      name="triggerMethod"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="flex flex-col space-y-1"
                             >
-                              <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white h-9 text-sm">
-                                <SelectValue placeholder="Select sensor" />
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="onChange" id="onChange" />
+                                <FormLabel htmlFor="onChange" className="font-normal cursor-pointer">
+                                  On Change
+                                </FormLabel>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="onInterval" id="onInterval" />
+                                <FormLabel htmlFor="onInterval" className="font-normal cursor-pointer">
+                                  On Interval
+                                </FormLabel>
+                              </div>
+                            </RadioGroup>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  {form.watch("triggerMethod") === "onInterval" && (
+                    <FormField
+                      control={form.control}
+                      name="triggerInterval"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white">Frequency / Interval</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
+                                <SelectValue placeholder="Select interval" />
                               </SelectTrigger>
-                              <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
-                                <SelectItem value="Temperature sensor">Temperature sensor</SelectItem>
-                                <SelectItem value="CO² sensor">CO² sensor</SelectItem>
-                                <SelectItem value="Power meter">Power meter</SelectItem>
-                                <SelectItem value="Water quality monitor">Water quality monitor</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-
-                          <div>
-                            <FormLabel className="text-xs text-white/70">Operator</FormLabel>
-                            <Select 
-                              defaultValue={condition.operator}
-                              onValueChange={(value) => updateCondition(condition.id, 'operator', value)}
-                            >
-                              <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white h-9 text-sm">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
-                                <SelectItem value=">">Greater than (&gt;)</SelectItem>
-                                <SelectItem value="<">Less than (&lt;)</SelectItem>
-                                <SelectItem value="=">Equal to (=)</SelectItem>
-                                <SelectItem value="!=">Not equal to (!=)</SelectItem>
-                                <SelectItem value=">=">Greater or equal (≥)</SelectItem>
-                                <SelectItem value="<=">Less or equal (≤)</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-
-                          <div>
-                            <FormLabel className="text-xs text-white/70">Value</FormLabel>
-                            <Input 
-                              className="bg-loteraa-black/50 border-loteraa-gray/30 text-white h-9 text-sm" 
-                              defaultValue={condition.value}
-                              onChange={(e) => updateCondition(condition.id, 'value', e.target.value)}
-                            />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full bg-transparent border-dashed border-loteraa-purple/50 text-loteraa-purple hover:bg-loteraa-purple/10"
-                    onClick={addCondition}
-                  >
-                    <Plus className="mr-2 h-4 w-4" /> Add More Condition
-                  </Button>
+                            </FormControl>
+                            <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
+                              <SelectItem value="1min">Every 1 minute</SelectItem>
+                              <SelectItem value="5mins">Every 5 minutes</SelectItem>
+                              <SelectItem value="10mins">Every 10 minutes</SelectItem>
+                              <SelectItem value="30mins">Every 30 minutes</SelectItem>
+                              <SelectItem value="1hour">Every hour</SelectItem>
+                              <SelectItem value="6hours">Every 6 hours</SelectItem>
+                              <SelectItem value="12hours">Every 12 hours</SelectItem>
+                              <SelectItem value="1day">Every day</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Step 4: Choose Action */}
-            {step === 4 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">Choose Action</h3>
-                
-                <Tabs defaultValue="smartcontract" className="w-full">
-                  <TabsList className="grid grid-cols-2 bg-loteraa-black/30">
-                    <TabsTrigger value="smartcontract">Smart Contract</TabsTrigger>
-                    <TabsTrigger value="payment">Payment</TabsTrigger>
-                  </TabsList>
+              {/* Step 3: Set Trigger Conditions */}
+              {step === 3 && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Set Trigger Conditions</h3>
+                  <p className="text-sm text-white/70">Define when this automation should be triggered</p>
                   
-                  <TabsContent value="smartcontract" className="pt-4">
-                    <div className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="contractAction"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-white">Select Smart Contract</FormLabel>
-                            <Select onValueChange={handleContractActionChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
-                                  <SelectValue placeholder="Select option" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
-                                <SelectItem value="bind">Bind Existing</SelectItem>
-                                <SelectItem value="create">Create New</SelectItem>
-                                <SelectItem value="upload">Upload Contract</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                  <div className="space-y-3">
+                    {conditions.map((condition, index) => (
+                      <Card key={condition.id} className="bg-loteraa-black/30 border-loteraa-gray/30">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-medium">Condition {index + 1}</span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-white/70 hover:text-white hover:bg-loteraa-gray/30"
+                              onClick={() => removeCondition(condition.id)}
+                            >
+                              <Trash className="h-4 w-4" />
+                            </Button>
+                          </div>
 
-                      {form.watch("contractAction") === "bind" && (
-                        <FormField
-                          control={form.control}
-                          name="selectedContract"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-white">Select Contract</FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                  <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
-                                    <SelectValue placeholder="Select existing contract" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white max-h-[200px]">
-                                  {contracts.map((contract) => (
-                                    <SelectItem key={contract.id} value={contract.id}>
-                                      {contract.name} ({contract.type})
+                          <div className="grid grid-cols-3 gap-2">
+                            <div>
+                              <FormLabel className="text-xs text-white/70">Sensor</FormLabel>
+                              <Select 
+                                defaultValue={condition.sensor}
+                                onValueChange={(value) => updateCondition(condition.id, 'sensor', value)}
+                              >
+                                <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white h-9 text-sm">
+                                  <SelectValue placeholder="Select sensor" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
+                                  {allTriggerSources.map((source) => (
+                                    <SelectItem key={source.value} value={source.value}>
+                                      {source.label}
                                     </SelectItem>
                                   ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div>
+                              <FormLabel className="text-xs text-white/70">Operator</FormLabel>
+                              <Select 
+                                defaultValue={condition.operator}
+                                onValueChange={(value) => updateCondition(condition.id, 'operator', value)}
+                              >
+                                <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white h-9 text-sm">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
+                                  <SelectItem value=">">Greater than (&gt;)</SelectItem>
+                                  <SelectItem value="<">Less than (&lt;)</SelectItem>
+                                  <SelectItem value="=">Equal to (=)</SelectItem>
+                                  <SelectItem value="!=">Not equal to (!=)</SelectItem>
+                                  <SelectItem value=">=">Greater or equal (≥)</SelectItem>
+                                  <SelectItem value="<=">Less or equal (≤)</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div>
+                              <FormLabel className="text-xs text-white/70">Value</FormLabel>
+                              <Input 
+                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white h-9 text-sm" 
+                                defaultValue={condition.value}
+                                onChange={(e) => updateCondition(condition.id, 'value', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full bg-transparent border-dashed border-loteraa-purple/50 text-loteraa-purple hover:bg-loteraa-purple/10"
+                      onClick={addCondition}
+                    >
+                      <Plus className="mr-2 h-4 w-4" /> Add More Condition
+                    </Button>
+                  </div>
+
+                  {/* Custom Rule Section */}
+                  <div className="pt-4 border-t border-loteraa-gray/20">
+                    <FormField
+                      control={form.control}
+                      name="customRule"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white">Custom Rule (Optional)</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Write custom trigger logic (e.g., IF temperature > 30 AND humidity < 40 THEN trigger automation...)" 
+                              className="bg-loteraa-black/50 border-loteraa-gray/30 text-white h-20" 
+                              {...field} 
+                            />
+                          </FormControl>
+                          <p className="text-xs text-white/60 mt-1">
+                            Write advanced trigger rules using conditions, logical operators (AND, OR), and custom logic
+                          </p>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Step 4: Choose Action */}
+              {step === 4 && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Choose Action</h3>
+                  
+                  <Tabs defaultValue="smartcontract" className="w-full">
+                    <TabsList className="grid grid-cols-2 bg-loteraa-black/30">
+                      <TabsTrigger value="smartcontract">Smart Contract</TabsTrigger>
+                      <TabsTrigger value="payment">Payment</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="smartcontract" className="pt-4">
+                      <div className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="contractAction"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Select Smart Contract</FormLabel>
+                              <Select onValueChange={handleContractActionChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
+                                    <SelectValue placeholder="Select option" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
+                                  <SelectItem value="bind">Bind Existing</SelectItem>
+                                  <SelectItem value="create">Create New</SelectItem>
+                                  <SelectItem value="upload">Upload Contract</SelectItem>
                                 </SelectContent>
                               </Select>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-                      )}
 
-                      {form.watch("contractAction") === "create" && (
-                        <div className="space-y-4">
-                          <FormItem>
-                            <FormLabel className="text-white">Contract Name</FormLabel>
-                            <FormControl>
-                              <Input 
-                                placeholder="Enter contract name" 
-                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                                onChange={(e) => form.setValue('selectedContract', e.target.value)}
-                              />
-                            </FormControl>
-                          </FormItem>
-                          
-                          <FormItem>
-                            <FormLabel className="text-white">Contract Code</FormLabel>
-                            <FormControl>
-                              <Textarea 
-                                placeholder="// Enter your contract code here" 
-                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white font-mono h-32" 
-                                onChange={(e) => form.setValue('contractCode', e.target.value)}
-                              />
-                            </FormControl>
-                            <p className="text-xs text-white/60 mt-1">Write your smart contract code using Solidity or another supported language</p>
-                          </FormItem>
-                        </div>
-                      )}
+                        {form.watch("contractAction") === "bind" && (
+                          <FormField
+                            control={form.control}
+                            name="selectedContract"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-white">Select Contract</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                  <FormControl>
+                                    <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
+                                      <SelectValue placeholder="Select existing contract" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white max-h-[200px]">
+                                    {contracts.map((contract) => (
+                                      <SelectItem key={contract.id} value={contract.id}>
+                                        {contract.name} ({contract.type})
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        )}
 
-                      {form.watch("contractAction") === "upload" && (
-                        <div className="space-y-4">
-                          <FormItem>
-                            <FormLabel className="text-white">Upload Contract File</FormLabel>
-                            <FormControl>
-                              <div className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-loteraa-gray/30 rounded-md bg-loteraa-black/30">
-                                {contractFile ? (
-                                  <div className="flex flex-col items-center gap-2">
-                                    <FileCode className="h-10 w-10 text-loteraa-purple" />
-                                    <p className="text-sm">{contractFile.name}</p>
-                                    <Button 
-                                      type="button" 
-                                      variant="outline" 
-                                      size="sm" 
-                                      onClick={() => {
-                                        setContractFile(null);
-                                        form.setValue('contractCode', '');
-                                      }}
-                                      className="border-loteraa-purple/50 text-loteraa-purple"
-                                    >
-                                      Change File
-                                    </Button>
-                                  </div>
-                                ) : (
-                                  <label className="flex flex-col items-center gap-2 cursor-pointer">
-                                    <Upload className="h-10 w-10 text-loteraa-gray/70" />
-                                    <p className="text-sm text-center">
-                                      Click to select contract file<br />
-                                      <span className="text-xs text-white/50">Supports .sol, .json files</span>
-                                    </p>
-                                    <Input 
-                                      type="file" 
-                                      accept=".sol,.json" 
-                                      className="hidden" 
-                                      onChange={handleFileChange} 
-                                    />
-                                  </label>
-                                )}
-                              </div>
-                            </FormControl>
-                          </FormItem>
-
-                          {contractFile && (
+                        {form.watch("contractAction") === "create" && (
+                          <div className="space-y-4">
                             <FormItem>
                               <FormLabel className="text-white">Contract Name</FormLabel>
                               <FormControl>
                                 <Input 
                                   placeholder="Enter contract name" 
                                   className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                                  defaultValue={contractFile.name.split('.')[0]}
                                   onChange={(e) => form.setValue('selectedContract', e.target.value)}
                                 />
                               </FormControl>
                             </FormItem>
-                          )}
-                        </div>
-                      )}
-
-                      {form.watch("contractAction") && (
-                        <ContractMethodSelector 
-                          form={form} 
-                          contractMethods={contractMethods} 
-                        />
-                      )}
-
-                      {form.watch("contractAction") && (
-                        <>
-                          <FormField
-                            control={form.control}
-                            name="authToken"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-white">Authorization Token (if required)</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    placeholder="Enter auth token" 
-                                    className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                                    {...field} 
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                          <FormField
-                            control={form.control}
-                            name="contractParams"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-white">Parameters (if required)</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    placeholder="Enter wallet address or dynamic variable" 
-                                    className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                                    {...field} 
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </>
-                      )}
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="payment" className="pt-4">
-                    <div className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="paymentAmount"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-white">Send Amount (Terra tokens)</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number"
-                                placeholder="Enter token amount" 
-                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="paymentRecipient"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-white">Payment Recipient</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            
+                            <FormItem>
+                              <FormLabel className="text-white">Contract Code</FormLabel>
                               <FormControl>
-                                <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
-                                  <SelectValue placeholder="Select recipient" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
-                                <SelectItem value="Device owner">Device Owner</SelectItem>
-                                <SelectItem value="Developer">Developer</SelectItem>
-                                <SelectItem value="Data provider">Data Provider</SelectItem>
-                                <SelectItem value="Custom">Custom Address</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      {form.watch("paymentRecipient") === "Custom" && (
-                        <FormItem>
-                          <FormLabel className="text-white">Custom Address</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="Enter wallet address" 
-                              className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-
-                      <FormField
-                        control={form.control}
-                        name="paymentReason"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-white">Payment Reason</FormLabel>
-                            <FormControl>
-                              <Textarea 
-                                placeholder="Enter reason for payment" 
-                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </div>
-            )}
-
-            {/* Step 5: Review & Save */}
-            {step === 5 && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">Review & Save</h3>
-                
-                <Card className="bg-loteraa-black/30 border-loteraa-gray/30">
-                  <CardContent className="p-4">
-                    <div className="space-y-3">
-                      <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
-                        <span className="text-white/70">Name:</span>
-                        <span className="font-medium">{form.getValues("name")}</span>
-                      </div>
-                      
-                      <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
-                        <span className="text-white/70">Device:</span>
-                        <span className="font-medium">{form.getValues("triggerSource")}</span>
-                      </div>
-                      
-                      <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
-                        <span className="text-white/70">Trigger:</span>
-                        <span className="font-medium">
-                          {conditions[0]?.sensor} {conditions[0]?.operator} {conditions[0]?.value}
-                          {conditions.length > 1 && ` (+${conditions.length - 1} more)`}
-                        </span>
-                      </div>
-                      
-                      <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
-                        <span className="text-white/70">Action:</span>
-                        <span className="font-medium">
-                          {form.watch("contractAction") ? 
-                            `Smart Contract (${form.watch("contractAction") === "bind" ? "Bind Existing" : 
-                             form.watch("contractAction") === "create" ? "Create New" : "Upload"})` : 
-                            "Token Payment"}
-                        </span>
-                      </div>
-                      
-                      {form.watch("contractMethods")?.length > 0 && (
-                        <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
-                          <span className="text-white/70">Methods:</span>
-                          <span className="font-medium">
-                            {form.watch("contractMethods").length} methods selected
-                          </span>
-                        </div>
-                      )}
-                      
-                      <div className="flex items-center justify-between pt-2">
-                        <div className="flex items-center">
-                          <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
-                          <span>Will be activated after saving</span>
-                        </div>
-                        
-                        <FormField
-                          control={form.control}
-                          name="isActive"
-                          render={({ field }) => (
-                            <FormItem className="flex items-center space-x-2">
-                              <FormControl>
-                                <Switch
-                                  checked={field.value}
-                                  onCheckedChange={field.onChange}
-                                  className="data-[state=checked]:bg-loteraa-purple"
+                                <Textarea 
+                                  placeholder="// Enter your contract code here" 
+                                  className="bg-loteraa-black/50 border-loteraa-gray/30 text-white font-mono h-32" 
+                                  onChange={(e) => form.setValue('contractCode', e.target.value)}
                                 />
                               </FormControl>
+                              <p className="text-xs text-white/60 mt-1">Write your smart contract code using Solidity or another supported language</p>
+                            </FormItem>
+                          </div>
+                        )}
+
+                        {form.watch("contractAction") === "upload" && (
+                          <div className="space-y-4">
+                            <FormItem>
+                              <FormLabel className="text-white">Upload Contract File</FormLabel>
+                              <FormControl>
+                                <div className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-loteraa-gray/30 rounded-md bg-loteraa-black/30">
+                                  {contractFile ? (
+                                    <div className="flex flex-col items-center gap-2">
+                                      <FileCode className="h-10 w-10 text-loteraa-purple" />
+                                      <p className="text-sm">{contractFile.name}</p>
+                                      <Button 
+                                        type="button" 
+                                        variant="outline" 
+                                        size="sm" 
+                                        onClick={() => {
+                                          setContractFile(null);
+                                          form.setValue('contractCode', '');
+                                        }}
+                                        className="border-loteraa-purple/50 text-loteraa-purple"
+                                      >
+                                        Change File
+                                      </Button>
+                                    </div>
+                                  ) : (
+                                    <label className="flex flex-col items-center gap-2 cursor-pointer">
+                                      <Upload className="h-10 w-10 text-loteraa-gray/70" />
+                                      <p className="text-sm text-center">
+                                        Click to select contract file<br />
+                                        <span className="text-xs text-white/50">Supports .sol, .json files</span>
+                                      </p>
+                                      <Input 
+                                        type="file" 
+                                        accept=".sol,.json" 
+                                        className="hidden" 
+                                        onChange={handleFileChange} 
+                                      />
+                                    </label>
+                                  )}
+                                </div>
+                              </FormControl>
+                            </FormItem>
+
+                            {contractFile && (
+                              <FormItem>
+                                <FormLabel className="text-white">Contract Name</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    placeholder="Enter contract name" 
+                                    className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                                    defaultValue={contractFile.name.split('.')[0]}
+                                    onChange={(e) => form.setValue('selectedContract', e.target.value)}
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          </div>
+                        )}
+
+                        {form.watch("contractAction") && (
+                          <ContractMethodSelector 
+                            form={form} 
+                            contractMethods={contractMethods} 
+                          />
+                        )}
+
+                        {form.watch("contractAction") && (
+                          <>
+                            <FormField
+                              control={form.control}
+                              name="authToken"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="text-white">Authorization Token (if required)</FormLabel>
+                                  <FormControl>
+                                    <Input 
+                                      placeholder="Enter auth token" 
+                                      className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                                      {...field} 
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            <FormField
+                              control={form.control}
+                              name="contractParams"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="text-white">Parameters (if required)</FormLabel>
+                                  <FormControl>
+                                    <Input 
+                                      placeholder="Enter wallet address or dynamic variable" 
+                                      className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                                      {...field} 
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </>
+                        )}
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="payment" className="pt-4">
+                      <div className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="paymentAmount"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Send Amount (Terra tokens)</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number"
+                                  placeholder="Enter token amount" 
+                                  className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                                  {...field} 
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="paymentRecipient"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Payment Recipient</FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="bg-loteraa-black/50 border-loteraa-gray/30 text-white">
+                                    <SelectValue placeholder="Select recipient" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-loteraa-gray border-loteraa-gray/30 text-white">
+                                  <SelectItem value="Device owner">Device Owner</SelectItem>
+                                  <SelectItem value="Developer">Developer</SelectItem>
+                                  <SelectItem value="Data provider">Data Provider</SelectItem>
+                                  <SelectItem value="Custom">Custom Address</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        {form.watch("paymentRecipient") === "Custom" && (
+                          <FormItem>
+                            <FormLabel className="text-white">Custom Address</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="Enter wallet address" 
+                                className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+
+                        <FormField
+                          control={form.control}
+                          name="paymentReason"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-white">Payment Reason</FormLabel>
+                              <FormControl>
+                                <Textarea 
+                                  placeholder="Enter reason for payment" 
+                                  className="bg-loteraa-black/50 border-loteraa-gray/30 text-white" 
+                                  {...field} 
+                                />
+                              </FormControl>
+                              <FormMessage />
                             </FormItem>
                           )}
                         />
                       </div>
-                      
-                      <div className="bg-loteraa-gray/20 rounded p-3 mt-4 flex items-center gap-2 text-sm">
-                        <AlertTriangle className="h-4 w-4 text-yellow-400" />
-                        <p className="text-white/80">
-                          This automation will run automatically based on the conditions set. 
-                          You can pause it anytime from the automations dashboard.
-                        </p>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              )}
+
+              {/* Step 5: Review & Save */}
+              {step === 5 && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">Review & Save</h3>
+                  
+                  <Card className="bg-loteraa-black/30 border-loteraa-gray/30">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
+                          <span className="text-white/70">Name:</span>
+                          <span className="font-medium">{form.getValues("name")}</span>
+                        </div>
+                        
+                        <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
+                          <span className="text-white/70">Device:</span>
+                          <span className="font-medium">{form.getValues("triggerSource")}</span>
+                        </div>
+                        
+                        <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
+                          <span className="text-white/70">Trigger:</span>
+                          <span className="font-medium">
+                            {conditions[0]?.sensor} {conditions[0]?.operator} {conditions[0]?.value}
+                            {conditions.length > 1 && ` (+${conditions.length - 1} more)`}
+                          </span>
+                        </div>
+
+                        {form.watch("customRule") && (
+                          <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
+                            <span className="text-white/70">Custom Rule:</span>
+                            <span className="font-medium text-sm truncate max-w-[200px]">
+                              {form.watch("customRule")}
+                            </span>
+                          </div>
+                        )}
+                        
+                        <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
+                          <span className="text-white/70">Action:</span>
+                          <span className="font-medium">
+                            {form.watch("contractAction") ? 
+                              `Smart Contract (${form.watch("contractAction") === "bind" ? "Bind Existing" : 
+                               form.watch("contractAction") === "create" ? "Create New" : "Upload"})` : 
+                              "Token Payment"}
+                          </span>
+                        </div>
+                        
+                        {form.watch("contractMethods")?.length > 0 && (
+                          <div className="flex justify-between border-b border-loteraa-gray/20 pb-2">
+                            <span className="text-white/70">Methods:</span>
+                            <span className="font-medium">
+                              {form.watch("contractMethods").length} methods selected
+                            </span>
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center justify-between pt-2">
+                          <div className="flex items-center">
+                            <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                            <span>Will be activated after saving</span>
+                          </div>
+                          
+                          <FormField
+                            control={form.control}
+                            name="isActive"
+                            render={({ field }) => (
+                              <FormItem className="flex items-center space-x-2">
+                                <FormControl>
+                                  <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    className="data-[state=checked]:bg-loteraa-purple"
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        
+                        <div className="bg-loteraa-gray/20 rounded p-3 mt-4 flex items-center gap-2 text-sm">
+                          <AlertTriangle className="h-4 w-4 text-yellow-400" />
+                          <p className="text-white/80">
+                            This automation will run automatically based on the conditions set. 
+                            You can pause it anytime from the automations dashboard.
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-            
-            <DialogFooter className="sm:justify-between flex-col sm:flex-row gap-2">
-              {step > 1 && (
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={prevStep}
-                  className="border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30 w-full sm:w-auto"
-                >
-                  Back
-                </Button>
+                    </CardContent>
+                  </Card>
+                </div>
               )}
               
-              {step < 5 ? (
-                <Button 
-                  type="button" 
-                  onClick={nextStep}
-                  className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white w-full sm:w-auto"
-                >
-                  Next Step
-                </Button>
-              ) : (
-                <Button 
-                  type="submit" 
-                  className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white w-full sm:w-auto"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Saving...' : 'Save & Activate'}
-                </Button>
-              )}
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+              <DialogFooter className="sm:justify-between flex-col sm:flex-row gap-2">
+                {step > 1 && (
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={prevStep}
+                    className="border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30 w-full sm:w-auto"
+                  >
+                    Back
+                  </Button>
+                )}
+                
+                {step < 5 ? (
+                  <Button 
+                    type="button" 
+                    onClick={nextStep}
+                    className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white w-full sm:w-auto"
+                  >
+                    Next Step
+                  </Button>
+                ) : (
+                  <Button 
+                    type="submit" 
+                    className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white w-full sm:w-auto"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Saving...' : 'Save & Activate'}
+                  </Button>
+                )}
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+
+      <CreateTriggerSourceDialog
+        open={isCreateTriggerDialogOpen}
+        onOpenChange={setIsCreateTriggerDialogOpen}
+        onTriggerSourceCreated={handleTriggerSourceCreated}
+      />
+    </>
   );
 }

@@ -16,6 +16,7 @@ export const formSchema = z.object({
   triggerInterval: z.string().optional(),
   conditionOperator: z.string().optional(),
   conditionValue: z.string().optional(),
+  customRule: z.string().optional(),
   contractAction: z.string().optional(),
   contractMethods: z.array(z.string()).default([]),
   selectedContract: z.string().optional(),
