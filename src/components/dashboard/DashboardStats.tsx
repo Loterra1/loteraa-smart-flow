@@ -5,15 +5,7 @@ import { ChevronUp } from "lucide-react";
 
 export default function DashboardStats() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <StatCard 
-        title="Total Sensors" 
-        value="12" 
-        trend={<ChevronUp className="h-4 w-4 text-green-500" />}
-        trendValue="+2"
-        iconBg="bg-loteraa-purple/20"
-        iconColor="text-loteraa-purple"
-      />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
       <StatCard 
         title="Data Streams" 
         value="4" 
@@ -25,19 +17,11 @@ export default function DashboardStats() {
       <StatCard 
         title="Total Earnings" 
         value="350" 
-        unit="$SEN"
+        unit="$TERRA"
         trend={<ChevronUp className="h-4 w-4 text-green-500" />}
         trendValue="+45"
         iconBg="bg-loteraa-teal/20"
         iconColor="text-loteraa-teal"
-      />
-      <StatCard 
-        title="Active Sensors" 
-        value="9" 
-        trend={<ChevronUp className="h-4 w-4 text-green-500" />}
-        trendValue="+3"
-        iconBg="bg-green-500/20"
-        iconColor="text-green-500"
       />
     </div>
   );

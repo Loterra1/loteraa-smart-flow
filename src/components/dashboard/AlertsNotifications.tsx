@@ -2,6 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, Check } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
 const notifications = [
   {
@@ -37,6 +38,12 @@ const notifications = [
 ];
 
 export default function AlertsNotifications() {
+  const navigate = useNavigate();
+
+  const handleViewAllNotifications = () => {
+    navigate('/notifications');
+  };
+
   return (
     <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
       <CardHeader className="pb-2">
@@ -59,7 +66,10 @@ export default function AlertsNotifications() {
             </div>
           ))}
           
-          <button className="w-full py-2 text-sm text-loteraa-purple hover:text-loteraa-purple/80 transition-colors">
+          <button 
+            onClick={handleViewAllNotifications}
+            className="w-full py-2 text-sm text-loteraa-purple hover:text-loteraa-purple/80 transition-colors"
+          >
             View All Notifications
           </button>
         </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from 'react-router-dom';
 
 const sensors = [
   { 
@@ -40,6 +41,12 @@ const sensors = [
 ];
 
 export default function SensorsList() {
+  const navigate = useNavigate();
+
+  const handleViewSensor = (sensorId: number) => {
+    navigate(`/devices/${sensorId}`);
+  };
+
   return (
     <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
       <CardHeader className="pb-2">
@@ -77,7 +84,12 @@ export default function SensorsList() {
                   <TableCell className="text-white/80">{sensor.lastReading}</TableCell>
                   <TableCell className="text-white/70">{sensor.lastUpdate}</TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="sm" className="h-8 text-loteraa-purple hover:text-loteraa-purple/80 hover:bg-loteraa-purple/10">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 text-loteraa-purple hover:text-loteraa-purple/80 hover:bg-loteraa-purple/10"
+                      onClick={() => handleViewSensor(sensor.id)}
+                    >
                       View
                     </Button>
                   </TableCell>

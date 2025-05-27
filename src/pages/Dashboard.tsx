@@ -9,8 +9,15 @@ import SensorCharts from '@/components/dashboard/SensorCharts';
 import AlertsNotifications from '@/components/dashboard/AlertsNotifications';
 import AutomationTriggers from '@/components/dashboard/AutomationTriggers';
 import ActionButtons from '@/components/dashboard/ActionButtons';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
+  const handleViewSmartContractDetails = () => {
+    navigate('/smart-contracts');
+  };
+
   return (
     <div className="min-h-screen bg-loteraa-black">
       <DashboardNavbar />
@@ -46,7 +53,10 @@ export default function Dashboard() {
                     <span className="text-white font-semibold">0</span>
                   </div>
                   <div className="pt-2">
-                    <button className="w-full text-sm text-loteraa-purple hover:text-loteraa-purple/80 transition-colors">
+                    <button 
+                      onClick={handleViewSmartContractDetails}
+                      className="w-full text-sm text-loteraa-purple hover:text-loteraa-purple/80 transition-colors"
+                    >
                       View Details
                     </button>
                   </div>
