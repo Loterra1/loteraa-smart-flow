@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 type DeviceType = "digital" | "physical";
 
@@ -40,6 +41,12 @@ type AddIoTDeviceFormProps = {
 
 export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFormProps) {
   const [deviceType, setDeviceType] = useState<DeviceType | null>(null);
+  const [selectedProtocol, setSelectedProtocol] = useState<string>("");
+  const [selectedSmartContract, setSelectedSmartContract] = useState<string>("");
+  const [showContractForm, setShowContractForm] = useState(false);
+  const [contractCode, setContractCode] = useState("");
+  const [contractMethods, setContractMethods] = useState<string[]>([]);
+  const [selectedMethod, setSelectedMethod] = useState("");
   const { toast } = useToast();
   
   const digitalForm = useForm({
@@ -62,6 +69,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
       gatewayId: "",
       sensorId: "",
       connectionProtocol: "",
+      connectionUrl: "",
       pollRate: "60",
       smartContract: "",
       bindToAutomation: "no",
@@ -70,6 +78,78 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
   
   const handleDeviceTypeChange = (value: string) => {
     setDeviceType(value as DeviceType);
+  };
+
+  const handleProtocolChange = (value: string) => {
+    setSelectedProtocol(value);
+    physicalForm.setValue("connectionProtocol", value);
+  };
+
+  const getProtocolUrlPlaceholder = () => {
+    switch (selectedProtocol) {
+      case "mqtt":
+        return "mqtt://broker.example.com:1883";
+      case "http":
+        return "https://api.example.com/endpoint";
+      case "coap":
+        return "coap://server.example.com:5683";
+      case "websocket":
+        return "ws://websocket.example.com:8080";
+      case "bluetooth":
+        return "Not applicable for Bluetooth";
+      default:
+        return "Enter connection URL";
+    }
+  };
+
+  const getProtocolUrlLabel = () => {
+    switch (selectedProtocol) {
+      case "mqtt":
+        return "MQTT Broker URL";
+      case "http":
+        return "API Endpoint URL";
+      case "coap":
+        return "CoAP Server URL";
+      case "websocket":
+        return "WebSocket Connector URL";
+      case "bluetooth":
+        return "Bluetooth (No URL needed)";
+      default:
+        return "Connection URL";
+    }
+  };
+
+  const handleSmartContractChange = (value: string) => {
+    setSelectedSmartContract(value);
+    if (value === "new") {
+      setShowContractForm(true);
+    } else {
+      setShowContractForm(false);
+    }
+  };
+
+  const parseContractMethods = (code: string) => {
+    // Simple regex to extract function names from Solidity code
+    const functionRegex = /function\s+(\w+)\s*\(/g;
+    const methods: string[] = [];
+    let match;
+    
+    while ((match = functionRegex.exec(code)) !== null) {
+      if (!methods.includes(match[1])) {
+        methods.push(match[1]);
+      }
+    }
+    
+    return methods;
+  };
+
+  const handleContractCodeChange = (code: string) => {
+    setContractCode(code);
+    const methods = parseContractMethods(code);
+    setContractMethods(methods);
+    if (methods.length > 0) {
+      setSelectedMethod(methods[0]);
+    }
   };
   
   const submitDigitalDevice = (data: any) => {
@@ -84,13 +164,26 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
   };
   
   const submitPhysicalDevice = (data: any) => {
-    console.log("Physical device data:", data);
+    const deviceData = {
+      ...data,
+      connectionUrl: physicalForm.getValues("connectionUrl"),
+      contractCode: showContractForm ? contractCode : undefined,
+      contractMethod: showContractForm ? selectedMethod : undefined,
+    };
+    
+    console.log("Physical device data:", deviceData);
     toast({
       title: "Physical Device Added",
       description: `Device ${data.deviceName} has been successfully added.`
     });
     onOpenChange(false);
     setDeviceType(null);
+    setSelectedProtocol("");
+    setSelectedSmartContract("");
+    setShowContractForm(false);
+    setContractCode("");
+    setContractMethods([]);
+    setSelectedMethod("");
     physicalForm.reset();
   };
   
@@ -336,7 +429,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Connection Protocol</FormLabel>
-                      <Select onValueChange={field.onChange}>
+                      <Select onValueChange={handleProtocolChange}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select protocol" />
@@ -354,6 +447,25 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                     </FormItem>
                   )}
                 />
+
+                {selectedProtocol && selectedProtocol !== "bluetooth" && (
+                  <FormField
+                    control={physicalForm.control}
+                    name="connectionUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{getProtocolUrlLabel()}</FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder={getProtocolUrlPlaceholder()}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
                 
                 <FormField
                   control={physicalForm.control}
@@ -375,7 +487,10 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Smart Contract to Trigger</FormLabel>
-                      <Select onValueChange={field.onChange}>
+                      <Select onValueChange={(value) => {
+                        field.onChange(value);
+                        handleSmartContractChange(value);
+                      }}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Choose contract" />
@@ -393,6 +508,40 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                     </FormItem>
                   )}
                 />
+
+                {showContractForm && (
+                  <div className="space-y-3 border border-loteraa-purple/30 rounded-md p-4 bg-loteraa-purple/5">
+                    <h4 className="text-sm font-medium text-white">Create New Smart Contract</h4>
+                    
+                    <div>
+                      <Label className="text-white mb-2 block">Contract Code</Label>
+                      <Textarea 
+                        placeholder="Paste your Solidity contract code here..."
+                        value={contractCode}
+                        onChange={(e) => handleContractCodeChange(e.target.value)}
+                        className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white min-h-[100px] font-mono text-xs"
+                      />
+                    </div>
+
+                    {contractMethods.length > 0 && (
+                      <div>
+                        <Label className="text-white mb-2 block">Contract Method to Call</Label>
+                        <Select value={selectedMethod} onValueChange={setSelectedMethod}>
+                          <SelectTrigger className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+                            <SelectValue placeholder="Choose method" />
+                          </SelectTrigger>
+                          <SelectContent className="z-50">
+                            {contractMethods.map(method => (
+                              <SelectItem key={method} value={method}>
+                                {method}()
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </div>
+                )}
                 
                 <FormField
                   control={physicalForm.control}
