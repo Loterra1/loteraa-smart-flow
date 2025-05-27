@@ -12,6 +12,7 @@ import DeviceDetailPage from "./pages/DeviceDetailPage";
 import AutomationPage from "./pages/AutomationPage";
 import SmartContractsPage from "./pages/SmartContractsPage";
 import DatasetEntryPage from "./pages/DatasetEntryPage";
+import DataListingPage from "./pages/DataListingPage";
 import EarningsPage from "./pages/EarningsPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotificationsPage from "./pages/NotificationsPage";
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/automation" element={<AutomationPage />} />
           <Route path="/smart-contracts" element={<SmartContractsPage />} />
           <Route path="/dataset-entry" element={<DatasetEntryPage />} />
+          <Route path="/data-listing" element={<DataListingPage />} />
           <Route path="/earnings" element={<EarningsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
