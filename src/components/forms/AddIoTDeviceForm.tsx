@@ -47,6 +47,8 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
   const [showDigitalContractForm, setShowDigitalContractForm] = useState(false);
   const [contractCode, setContractCode] = useState("");
   const [digitalContractCode, setDigitalContractCode] = useState("");
+  const [contractName, setContractName] = useState("");
+  const [digitalContractName, setDigitalContractName] = useState("");
   const [contractMethods, setContractMethods] = useState<string[]>([]);
   const [digitalContractMethods, setDigitalContractMethods] = useState<string[]>([]);
   const [selectedMethod, setSelectedMethod] = useState("");
@@ -178,6 +180,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
   const submitDigitalDevice = (data: any) => {
     const deviceData = {
       ...data,
+      contractName: showDigitalContractForm ? digitalContractName : undefined,
       contractCode: showDigitalContractForm ? digitalContractCode : undefined,
       contractMethod: showDigitalContractForm ? selectedDigitalMethod : undefined,
     };
@@ -192,6 +195,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
     setSelectedDigitalSmartContract("");
     setShowDigitalContractForm(false);
     setDigitalContractCode("");
+    setDigitalContractName("");
     setDigitalContractMethods([]);
     setSelectedDigitalMethod("");
     digitalForm.reset();
@@ -201,6 +205,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
     const deviceData = {
       ...data,
       connectionUrl: physicalForm.getValues("connectionUrl"),
+      contractName: showContractForm ? contractName : undefined,
       contractCode: showContractForm ? contractCode : undefined,
       contractMethod: showContractForm ? selectedMethod : undefined,
     };
@@ -216,6 +221,7 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
     setSelectedSmartContract("");
     setShowContractForm(false);
     setContractCode("");
+    setContractName("");
     setContractMethods([]);
     setSelectedMethod("");
     physicalForm.reset();
@@ -378,6 +384,16 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                 {showDigitalContractForm && (
                   <div className="space-y-3 border border-loteraa-purple/30 rounded-md p-4 bg-loteraa-purple/5">
                     <h4 className="text-sm font-medium text-white">Create New Smart Contract</h4>
+                    
+                    <div>
+                      <Label className="text-white mb-2 block">Smart Contract Name</Label>
+                      <Input 
+                        placeholder="Enter smart contract name"
+                        value={digitalContractName}
+                        onChange={(e) => setDigitalContractName(e.target.value)}
+                        className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                      />
+                    </div>
                     
                     <div>
                       <Label className="text-white mb-2 block">Contract Code</Label>
@@ -583,6 +599,16 @@ export default function AddIoTDeviceForm({ open, onOpenChange }: AddIoTDeviceFor
                 {showContractForm && (
                   <div className="space-y-3 border border-loteraa-purple/30 rounded-md p-4 bg-loteraa-purple/5">
                     <h4 className="text-sm font-medium text-white">Create New Smart Contract</h4>
+                    
+                    <div>
+                      <Label className="text-white mb-2 block">Smart Contract Name</Label>
+                      <Input 
+                        placeholder="Enter smart contract name"
+                        value={contractName}
+                        onChange={(e) => setContractName(e.target.value)}
+                        className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white"
+                      />
+                    </div>
                     
                     <div>
                       <Label className="text-white mb-2 block">Contract Code</Label>
