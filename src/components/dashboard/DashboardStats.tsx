@@ -1,27 +1,39 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronUp } from "lucide-react";
 
 export default function DashboardStats() {
+  const [isNewAccount, setIsNewAccount] = useState(true);
+
+  useEffect(() => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const parsedData = JSON.parse(userData);
+      setIsNewAccount(parsedData.isNewAccount !== false);
+    }
+  }, []);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
       <StatCard 
         title="Data Streams" 
-        value="4" 
-        trend={<ChevronUp className="h-4 w-4 text-green-500" />}
-        trendValue="+1"
+        value="0" 
+        trend={<ChevronUp className="h-4 w-4 text-gray-500" />}
+        trendValue="Start collecting data"
         iconBg="bg-loteraa-blue/20"
         iconColor="text-loteraa-blue"
+        isNew={isNewAccount}
       />
       <StatCard 
         title="Total Earnings" 
-        value="350" 
+        value="0" 
         unit="$TERRA"
-        trend={<ChevronUp className="h-4 w-4 text-green-500" />}
-        trendValue="+45"
+        trend={<ChevronUp className="h-4 w-4 text-gray-500" />}
+        trendValue="Begin earning"
         iconBg="bg-loteraa-teal/20"
         iconColor="text-loteraa-teal"
+        isNew={isNewAccount}
       />
     </div>
   );
@@ -35,9 +47,10 @@ interface StatCardProps {
   trendValue: string;
   iconBg: string;
   iconColor: string;
+  isNew?: boolean;
 }
 
-function StatCard({ title, value, unit, trend, trendValue, iconBg, iconColor }: StatCardProps) {
+function StatCard({ title, value, unit, trend, trendValue, iconBg, iconColor, isNew }: StatCardProps) {
   return (
     <Card className="bg-loteraa-gray/20 border-loteraa-gray/30 hover:border-loteraa-purple/50 transition-colors">
       <CardContent className="p-6">
@@ -50,7 +63,9 @@ function StatCard({ title, value, unit, trend, trendValue, iconBg, iconColor }: 
             </div>
             <div className="flex items-center mt-2">
               {trend}
-              <span className="text-xs text-green-500 ml-1">{trendValue} this week</span>
+              <span className={`text-xs ml-1 ${isNew ? 'text-gray-500' : 'text-green-500'}`}>
+                {trendValue}
+              </span>
             </div>
           </div>
           <div className={`p-2 rounded-lg ${iconBg}`}>

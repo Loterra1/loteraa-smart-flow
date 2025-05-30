@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { SmartContract } from '@/types/smartContract';
@@ -6,52 +5,8 @@ import SmartContractService from '@/utils/smartContractUtils';
 import { apiService } from '@/services/apiService';
 
 export const useSmartContracts = () => {
-  const [contracts, setContracts] = useState<SmartContract[]>([
-    {
-      id: '1',
-      name: 'Environmental Data Access',
-      type: 'Access Control',
-      status: 'Active',
-      trigger: 'Automated',
-      lastModified: 'May 15, 2025',
-      address: '0x7F4e7630f8742e7Db0606a55E3d45970E3F3dC25',
-      code: SmartContractService.generateDefaultContractCode('EnvironmentalDataAccess'),
-      abi: SmartContractService.generateDefaultABI()
-    },
-    {
-      id: '2',
-      name: 'Payment Distribution',
-      type: 'Financial',
-      status: 'Active',
-      trigger: 'Manual',
-      lastModified: 'May 10, 2025',
-      address: '0x8e3f...4d5f',
-      code: SmartContractService.generateDefaultContractCode('PaymentDistribution'),
-      abi: SmartContractService.generateDefaultABI()
-    },
-    {
-      id: '3',
-      name: 'Data Verification Contract',
-      type: 'Validation',
-      status: 'Active',
-      trigger: 'Event-driven',
-      lastModified: 'May 5, 2025',
-      address: '0x9a2c...7e8b',
-      code: SmartContractService.generateDefaultContractCode('DataVerificationContract'),
-      abi: SmartContractService.generateDefaultABI()
-    },
-    {
-      id: '4',
-      name: 'Device Authorization',
-      type: 'Security',
-      status: 'Inactive',
-      trigger: 'On-demand',
-      lastModified: 'Apr 28, 2025',
-      address: '0x6b1d...9f3a',
-      code: SmartContractService.generateDefaultContractCode('DeviceAuthorization'),
-      abi: SmartContractService.generateDefaultABI()
-    },
-  ]);
+  // Start with empty array for new accounts
+  const [contracts, setContracts] = useState<SmartContract[]>([]);
   
   const [selectedContract, setSelectedContract] = useState<SmartContract | null>(null);
   const { toast } = useToast();

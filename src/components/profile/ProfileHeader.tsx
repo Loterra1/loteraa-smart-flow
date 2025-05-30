@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link, Upload } from 'lucide-react';
@@ -14,12 +14,24 @@ import { toast } from "@/hooks/use-toast";
 
 export default function ProfileHeader() {
   const [user, setUser] = useState({
-    name: "Alex Johnson",
+    name: "New User",
     role: "Researcher",
     avatarUrl: "",
   });
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  useEffect(() => {
+    // Load user data from localStorage
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const parsedData = JSON.parse(userData);
+      setUser(prev => ({
+        ...prev,
+        name: parsedData.name || "New User"
+      }));
+    }
+  }, []);
   
   const connectWallet = () => {
     // This would connect to a wallet in a real implementation

@@ -27,6 +27,24 @@ export default function SignupForm() {
     });
   };
 
+  const initializeNewAccount = () => {
+    // Clear any existing demo data from localStorage
+    localStorage.removeItem('demoMode');
+    localStorage.removeItem('userData');
+    localStorage.removeItem('demoData');
+    
+    // Initialize fresh account data
+    const newUserData = {
+      name: formData.name || "New User",
+      email: formData.email,
+      isNewAccount: true,
+      signupDate: new Date().toISOString(),
+      accountType: isLoginMode ? 'returning' : 'new'
+    };
+    
+    localStorage.setItem('userData', JSON.stringify(newUserData));
+  };
+
   const handleEmailSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -34,6 +52,9 @@ export default function SignupForm() {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Initialize new account
+      initializeNewAccount();
       
       toast({
         title: "Account created successfully!",
@@ -46,7 +67,7 @@ export default function SignupForm() {
         password: "",
       });
       
-      // Redirect to dashboard
+      // Redirect to fresh dashboard
       navigate("/dashboard");
     } catch (error) {
       toast({
@@ -67,12 +88,15 @@ export default function SignupForm() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
+      // Initialize returning account (still fresh for demo purposes)
+      initializeNewAccount();
+      
       toast({
         title: "Login successful!",
         description: "Welcome back to Loteraa platform.",
       });
       
-      // Redirect to dashboard after login
+      // Redirect to fresh dashboard
       navigate("/dashboard");
     } catch (error) {
       toast({
@@ -92,13 +116,16 @@ export default function SignupForm() {
     setTimeout(() => {
       setIsLoading(false);
       
-      // Navigate to dashboard after wallet connection attempt
+      // Initialize new wallet account
+      initializeNewAccount();
+      
+      // Navigate to fresh dashboard
       navigate("/dashboard");
       
       // Show toast notification
       toast({
-        title: "Welcome to Loteraa",
-        description: "You've been connected to the platform.",
+        title: "Wallet Connected Successfully",
+        description: "Welcome to Loteraa platform.",
       });
     }, 1500);
   };

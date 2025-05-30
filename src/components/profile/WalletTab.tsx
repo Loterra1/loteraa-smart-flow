@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -18,13 +18,35 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 
 export default function WalletTab() {
-  const terraBalance = 12450;
+  const [terraBalance, setTerraBalance] = useState(0);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [withdrawAddress, setWithdrawAddress] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
+  useEffect(() => {
+    // For new accounts, start with 0 balance
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const parsedData = JSON.parse(userData);
+      if (parsedData.isNewAccount !== false) {
+        setTerraBalance(0);
+      } else {
+        // For existing accounts, you might load balance from API
+        setTerraBalance(0);
+      }
+    }
+  }, []);
+
   const handleWithdraw = () => {
+    if (terraBalance === 0) {
+      toast({
+        title: "No balance to withdraw",
+        description: "Start earning Terra tokens by submitting data and using IoT devices.",
+        variant: "destructive"
+      });
+      return;
+    }
     setIsWithdrawOpen(true);
   };
   

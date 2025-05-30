@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import DashboardNavbar from '@/components/DashboardNavbar';
@@ -13,6 +13,18 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    // Check if user data exists, if not create fresh account
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    } else {
+      // If no user data, redirect to signup
+      navigate('/signup');
+    }
+  }, [navigate]);
 
   const handleViewSmartContractDetails = () => {
     navigate('/smart-contracts');
@@ -42,11 +54,11 @@ export default function Dashboard() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-white/70">Today</span>
-                    <span className="text-white font-semibold">4 triggers</span>
+                    <span className="text-white font-semibold">0 triggers</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-white/70">Settlements</span>
-                    <span className="text-white font-semibold">2</span>
+                    <span className="text-white font-semibold">0</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-white/70">Failures</span>
