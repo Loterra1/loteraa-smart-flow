@@ -17,6 +17,8 @@ import {
   Save
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import SmartContractService from '@/utils/smartContractUtils';
+import APP_CONSTANTS from '@/constants/app';
 
 interface SmartContract {
   id: string;
@@ -27,6 +29,7 @@ interface SmartContract {
   lastModified: string;
   code?: string;
   abi?: string;
+  address?: string;
 }
 
 interface ViewSmartContractDialogProps {
@@ -57,35 +60,17 @@ const ViewSmartContractDialog = ({
 
   if (!contract) return null;
 
-  // Get the default contract code
+  // Use the smart contract service for default code generation
   const getDefaultContractCode = () => {
-    return contract.code || `// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+    return contract.code || SmartContractService.generateDefaultContractCode(contract.name);
+  };
 
-contract ${contract.name.split('.')[0]} {
-    address public owner;
-    mapping(string => string) public sensorData;
-    
-    event DataLogged(string indexed sensorId, string value, uint timestamp);
-    
-    constructor(address _owner) {
-        owner = _owner;
-    }
-    
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not authorized");
-        _;
-    }
-    
-    function logSensorData(string memory sensorId, string memory value) public {
-        sensorData[sensorId] = value;
-        emit DataLogged(sensorId, value, block.timestamp);
-    }
-}`;
+  const getDefaultABI = () => {
+    return contract.abi || SmartContractService.generateDefaultABI();
   };
 
   const handleCopyAddress = () => {
-    // Simulating copying to clipboard
+    const contractAddress = contract.address || '0x7F4e7630f8742e7Db0606a55E3d45970E3F3dC25';
     navigator.clipboard.writeText(contractAddress)
       .then(() => {
         setCopied(true);
@@ -109,14 +94,25 @@ contract ${contract.name.split('.')[0]} {
       onExportContract(contract.id);
     }
     
-    // Create a file blob with contract code
-    const blob = new Blob([contract.code || ''], { type: 'text/plain' });
+    // Create exportable contract data
+    const exportData = {
+      name: contract.name,
+      type: contract.type,
+      code: getDefaultContractCode(),
+      abi: getDefaultABI(),
+      metadata: {
+        version: "1.0.0",
+        compiler: "solc 0.8.0",
+        exported: new Date().toISOString()
+      }
+    };
+    
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     
-    // Create a download link and trigger it
     const a = document.createElement('a');
     a.href = url;
-    a.download = contract.name;
+    a.download = `${contract.name.replace(/\s+/g, '_')}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -128,7 +124,7 @@ contract ${contract.name.split('.')[0]} {
     });
   };
 
-  const handleExecuteCall = () => {
+  const handleExecuteCall = async () => {
     if (!sensorId || !sensorValue) {
       toast({
         title: "Validation Error",
@@ -140,29 +136,54 @@ contract ${contract.name.split('.')[0]} {
 
     setExecutingCall(true);
     
-    // Simulate contract execution
-    setTimeout(() => {
-      setExecutingCall(false);
+    try {
+      const contractAddress = contract.address || '0x7F4e7630f8742e7Db0606a55E3d45970E3F3dC25';
+      const result = await SmartContractService.callContractFunction(
+        contractAddress,
+        'logSensorData',
+        [sensorId, sensorValue]
+      );
+      
       toast({
         title: "Function Executed",
         description: `Successfully logged data: ${sensorId} = ${sensorValue}`,
       });
-    }, 1500);
+      
+      console.log('Contract execution result:', result);
+    } catch (error) {
+      toast({
+        title: "Execution Failed",
+        description: "Failed to execute contract function.",
+        variant: "destructive"
+      });
+    } finally {
+      setExecutingCall(false);
+    }
   };
 
   const startEditingCode = () => {
-    // Initialize editableCode with existing code or default
     setEditableCode(getDefaultContractCode());
     setIsEditingCode(true);
   };
 
   const startEditingAbi = () => {
-    // Initialize editableAbi with existing ABI or default
-    setEditableAbi(contract.abi || defaultContractABI);
+    setEditableAbi(getDefaultABI());
     setIsEditingAbi(true);
   };
 
   const saveCodeChanges = () => {
+    // Validate contract code before saving
+    const validation = SmartContractService.validateContractCode(editableCode);
+    
+    if (!validation.isValid) {
+      toast({
+        title: "Code Validation Failed",
+        description: validation.errors.join(', '),
+        variant: "destructive"
+      });
+      return;
+    }
+    
     toast({
       title: "Code Updated",
       description: "Contract code has been updated successfully.",
@@ -192,38 +213,7 @@ contract ${contract.name.split('.')[0]} {
     setIsEditingAbi(false);
   };
 
-  const contractAddress = '0x7F4e7630f8742e7Db0606a55E3d45970E3F3dC25';
-  const defaultContractABI = `[
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_owner",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "sensorId",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "value",
-          "type": "string"
-        }
-      ],
-      "name": "logSensorData",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }
-  ]`;
+  const contractAddress = contract.address || '0x7F4e7630f8742e7Db0606a55E3d45970E3F3dC25';
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -414,7 +404,7 @@ contract ${contract.name.split('.')[0]} {
                         size="sm" 
                         className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20"
                         onClick={() => {
-                          navigator.clipboard.writeText(contract.abi || defaultContractABI);
+                          navigator.clipboard.writeText(getDefaultABI());
                           toast({
                             title: "ABI Copied",
                             description: "Contract ABI has been copied to clipboard.",
@@ -444,7 +434,7 @@ contract ${contract.name.split('.')[0]} {
                   />
                 ) : (
                   <pre className="text-white/90 text-xs font-mono">
-                    {contract.abi || defaultContractABI}
+                    {getDefaultABI()}
                   </pre>
                 )}
               </div>
@@ -619,7 +609,6 @@ contract ${contract.name.split('.')[0]} {
               className="bg-loteraa-purple hover:bg-loteraa-purple/90"
               onClick={() => {
                 onClose();
-                // Simulate opening the edit dialog
                 toast({
                   title: "Opening Editor",
                   description: "Edit contract dialog opened.",
