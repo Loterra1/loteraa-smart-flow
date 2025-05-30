@@ -81,6 +81,7 @@ const EarningsPage: React.FC = () => {
   const [isAddDatasetOpen, setIsAddDatasetOpen] = useState(false);
   const [isOptimizeEarningsOpen, setIsOptimizeEarningsOpen] = useState(false);
   const [isWithdrawFundsOpen, setIsWithdrawFundsOpen] = useState(false);
+  const [isContractDetailsOpen, setIsContractDetailsOpen] = useState(false);
   const [selectedDeviceForPerformance, setSelectedDeviceForPerformance] = useState<DeviceData | null>(null);
   
   // Form states
@@ -152,6 +153,24 @@ const EarningsPage: React.FC = () => {
     storageUsed: "225 MB / 1 GB",
     cpuUsage: 32,
     memoryUsage: 45
+  };
+
+  const contractDetails = {
+    name: "Data Access Control",
+    type: "Access Management",
+    status: "Active",
+    earnings: "$3,200.00 Terra",
+    contractAddress: "terra1abc...xyz789",
+    deployedDate: "March 15, 2025",
+    totalTransactions: 1847,
+    gasUsed: "2.45 Terra",
+    lastActivity: "2 hours ago",
+    description: "Smart contract managing access control for IoT data streams with automated payment processing.",
+    recentTransactions: [
+      { hash: "0x7a8b...3e2f", amount: "$125.00", type: "Data Access", timestamp: "2 hours ago" },
+      { hash: "0x9c4d...1a5b", amount: "$89.50", type: "Access Grant", timestamp: "4 hours ago" },
+      { hash: "0x6f2e...8d9c", amount: "$156.75", type: "Data Query", timestamp: "6 hours ago" },
+    ]
   };
 
   const handleViewDevicePerformance = (device: DeviceData) => {
@@ -234,6 +253,10 @@ const EarningsPage: React.FC = () => {
     }, 2000);
     
     setIsOptimizeEarningsOpen(false);
+  };
+
+  const handleViewContractDetails = () => {
+    setIsContractDetailsOpen(true);
   };
 
   return (
@@ -576,7 +599,12 @@ const EarningsPage: React.FC = () => {
                       </TableCell>
                       <TableCell className="text-loteraa-purple">$3,200.00 Terra</TableCell>
                       <TableCell>
-                        <Button variant="ghost" size="sm" className="text-loteraa-purple hover:bg-loteraa-gray/30">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-loteraa-purple hover:bg-loteraa-gray/30"
+                          onClick={handleViewContractDetails}
+                        >
                           View Details
                         </Button>
                       </TableCell>
@@ -686,7 +714,7 @@ const EarningsPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-loteraa-gray/30 p-3 rounded-lg space-y-2 sm:space-y-3">
+                <div className="bg-loteraa-gray/30 p-3 rounded-lg space-y-2">
                   <h3 className="text-base font-medium">Verification Results</h3>
                   <div className="grid grid-cols-3 gap-2">
                     <div className="flex flex-col items-center p-2 bg-loteraa-gray/20 rounded-lg">
@@ -1174,6 +1202,98 @@ const EarningsPage: React.FC = () => {
               <Button onClick={handleWithdrawFunds} size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90">
                 Withdraw Funds
               </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Smart Contract Details Dialog */}
+        <Dialog open={isContractDetailsOpen} onOpenChange={setIsContractDetailsOpen}>
+          <DialogContent className="bg-loteraa-gray/90 border-loteraa-gray/30 text-white sm:max-w-[700px] max-h-[90vh] w-[95vw] overflow-hidden p-4 sm:p-6">
+            <DialogHeader className="space-y-1">
+              <DialogTitle className="text-lg sm:text-2xl">Smart Contract Details</DialogTitle>
+              <DialogDescription className="text-white/70 text-xs sm:text-sm">
+                Detailed information about your smart contract
+              </DialogDescription>
+            </DialogHeader>
+            <ScrollArea className="max-h-[60vh] overflow-y-auto pr-2 sm:pr-4">
+              <div className="space-y-4 sm:space-y-6 text-sm sm:text-base">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-loteraa-gray/30 rounded-lg gap-2">
+                  <div>
+                    <h3 className="text-sm sm:text-base font-medium">{contractDetails.name}</h3>
+                    <p className="text-xs text-white/70">{contractDetails.type}</p>
+                  </div>
+                  <Badge className="bg-green-600 text-xs w-fit">
+                    {contractDetails.status}
+                  </Badge>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  <div className="bg-loteraa-gray/30 p-2 rounded-lg">
+                    <p className="text-xs text-white/70">Total Earnings</p>
+                    <p className="text-sm font-medium text-loteraa-purple">{contractDetails.earnings}</p>
+                  </div>
+                  <div className="bg-loteraa-gray/30 p-2 rounded-lg">
+                    <p className="text-xs text-white/70">Transactions</p>
+                    <p className="text-sm font-medium">{contractDetails.totalTransactions.toLocaleString()}</p>
+                  </div>
+                  <div className="bg-loteraa-gray/30 p-2 rounded-lg">
+                    <p className="text-xs text-white/70">Gas Used</p>
+                    <p className="text-sm font-medium">{contractDetails.gasUsed}</p>
+                  </div>
+                  <div className="bg-loteraa-gray/30 p-2 rounded-lg">
+                    <p className="text-xs text-white/70">Last Activity</p>
+                    <p className="text-sm font-medium">{contractDetails.lastActivity}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-base font-medium">Contract Information</h3>
+                  <div className="bg-loteraa-gray/30 p-3 rounded-lg space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-loteraa-gray/30 pb-2 gap-1">
+                      <span className="text-white/70">Contract Address:</span>
+                      <span className="text-xs font-mono break-all">{contractDetails.contractAddress}</span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-loteraa-gray/30 pb-2 gap-1">
+                      <span className="text-white/70">Deployed:</span>
+                      <span>{contractDetails.deployedDate}</span>
+                    </div>
+                    <div className="pt-2">
+                      <span className="text-white/70">Description:</span>
+                      <p className="text-xs text-white/90 mt-1">{contractDetails.description}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-base font-medium">Recent Transactions</h3>
+                  <div className="space-y-2">
+                    {contractDetails.recentTransactions.map((tx, index) => (
+                      <div key={index} className="bg-loteraa-gray/30 p-2 rounded-lg">
+                        <div className="flex flex-col xs:flex-row xs:justify-between xs:items-start gap-1">
+                          <div>
+                            <p className="text-xs font-mono text-white/80">{tx.hash}</p>
+                            <p className="text-xs text-white/70">{tx.type}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm text-loteraa-purple">{tx.amount} Terra</p>
+                            <p className="text-xs text-white/70">{tx.timestamp}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ScrollArea>
+            <DialogFooter className="flex-col gap-2 sm:flex-row sm:justify-between mt-4">
+              <Button variant="outline" size="sm" className="bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20 text-xs sm:text-sm">
+                <Download className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Transaction History
+              </Button>
+              <DialogClose asChild>
+                <Button size="sm" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-xs sm:text-sm">
+                  Close
+                </Button>
+              </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>
