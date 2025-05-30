@@ -347,30 +347,6 @@ const EarningsPage: React.FC = () => {
                 </Table>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg font-medium text-white">Earnings by Source</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
-                      <p className="text-white/50">Earnings by source chart visualization</p>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg font-medium text-white">Monthly Earnings Trend</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-64 bg-loteraa-gray/30 rounded-lg flex items-center justify-center">
-                      <p className="text-white/50">Monthly earnings trend chart visualization</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-              
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-medium text-white">Quick Actions</h2>
               </div>
