@@ -1,8 +1,10 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Clock } from "lucide-react";
+import { Check, Clock, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from 'react-router-dom';
 
 interface AutomationTrigger {
   id: number;
@@ -14,8 +16,13 @@ interface AutomationTrigger {
   hash?: string;
 }
 
-export default function AutomationTriggers() {
+interface AutomationTriggersProps {
+  isNewAccount?: boolean;
+}
+
+export default function AutomationTriggers({ isNewAccount = false }: AutomationTriggersProps) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [triggers, setTriggers] = useState<AutomationTrigger[]>([
     {
       id: 1,
@@ -45,6 +52,10 @@ export default function AutomationTriggers() {
     }
   ]);
 
+  const handleCreateAutomation = () => {
+    navigate('/automation');
+  };
+
   const toggleTrigger = (triggerId: number) => {
     setTriggers(triggers.map(trigger => {
       if (trigger.id === triggerId) {
@@ -58,6 +69,33 @@ export default function AutomationTriggers() {
       return trigger;
     }));
   };
+
+  if (isNewAccount) {
+    return (
+      <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-medium text-white">Automation Triggers</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center py-12">
+          <div className="text-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-loteraa-blue/10 flex items-center justify-center">
+              <Zap className="h-8 w-8 text-loteraa-blue/50" />
+            </div>
+            <h3 className="text-lg font-medium text-white mb-2">No automation rules yet</h3>
+            <p className="text-white/70 mb-4 max-w-sm">
+              Create automation rules to trigger smart contracts based on your device data.
+            </p>
+            <Button 
+              onClick={handleCreateAutomation}
+              className="bg-loteraa-blue hover:bg-loteraa-blue/90"
+            >
+              Create Your First Automation
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">

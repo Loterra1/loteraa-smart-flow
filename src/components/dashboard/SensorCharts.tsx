@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -14,19 +13,47 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
+import { TrendingUp } from 'lucide-react';
 
-// Sample data for the past 7 days
-const sensorData = [
-  { day: "Mon", temperature: 22, humidity: 65, motion: 8 },
-  { day: "Tue", temperature: 25, humidity: 62, motion: 12 },
-  { day: "Wed", temperature: 28, humidity: 58, motion: 5 },
-  { day: "Thu", temperature: 30, humidity: 54, motion: 15 },
-  { day: "Fri", temperature: 29, humidity: 57, motion: 7 },
-  { day: "Sat", temperature: 26, humidity: 61, motion: 3 },
-  { day: "Sun", temperature: 24, humidity: 63, motion: 10 },
-];
+interface SensorChartsProps {
+  isNewAccount?: boolean;
+}
 
-export default function SensorCharts() {
+export default function SensorCharts({ isNewAccount = false }: SensorChartsProps) {
+  if (isNewAccount) {
+    return (
+      <div className="mb-8">
+        <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium text-white">Sensor Data Trends</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-loteraa-blue/10 flex items-center justify-center">
+                <TrendingUp className="h-8 w-8 text-loteraa-blue/50" />
+              </div>
+              <h3 className="text-lg font-medium text-white mb-2">No sensor data yet</h3>
+              <p className="text-white/70 max-w-md">
+                Connect devices and start collecting data to see trends and analytics here.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Sample data for the past 7 days
+  const sensorData = [
+    { day: "Mon", temperature: 22, humidity: 65, motion: 8 },
+    { day: "Tue", temperature: 25, humidity: 62, motion: 12 },
+    { day: "Wed", temperature: 28, humidity: 58, motion: 5 },
+    { day: "Thu", temperature: 30, humidity: 54, motion: 15 },
+    { day: "Fri", temperature: 29, humidity: 57, motion: 7 },
+    { day: "Sat", temperature: 26, humidity: 61, motion: 3 },
+    { day: "Sun", temperature: 24, humidity: 63, motion: 10 },
+  ];
+
   return (
     <div className="mb-8">
       <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">

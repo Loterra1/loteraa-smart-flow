@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import DashboardNavbar from '@/components/DashboardNavbar';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import SensorsList from '@/components/dashboard/SensorsList';
@@ -14,12 +13,15 @@ import { useNavigate } from 'react-router-dom';
 export default function Dashboard() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+  const [isNewAccount, setIsNewAccount] = useState(true);
 
   useEffect(() => {
     // Check if user data exists, if not create fresh account
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
-      setUserData(JSON.parse(storedUserData));
+      const parsedData = JSON.parse(storedUserData);
+      setUserData(parsedData);
+      setIsNewAccount(parsedData.isNewAccount !== false);
     } else {
       // If no user data, redirect to signup
       navigate('/signup');
@@ -43,7 +45,7 @@ export default function Dashboard() {
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           <div className="lg:col-span-2">
-            <SensorsList />
+            <SensorsList isNewAccount={isNewAccount} />
           </div>
           <div>
             <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
@@ -78,14 +80,14 @@ export default function Dashboard() {
           </div>
         </div>
         
-        <SensorCharts />
+        <SensorCharts isNewAccount={isNewAccount} />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           <div className="lg:col-span-2">
-            <AutomationTriggers />
+            <AutomationTriggers isNewAccount={isNewAccount} />
           </div>
           <div>
-            <AlertsNotifications />
+            <AlertsNotifications isNewAccount={isNewAccount} />
           </div>
         </div>
         
