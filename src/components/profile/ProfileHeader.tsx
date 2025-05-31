@@ -14,7 +14,7 @@ import { toast } from "@/hooks/use-toast";
 
 export default function ProfileHeader() {
   const [user, setUser] = useState({
-    name: "New User",
+    name: "Alex Johnson",
     role: "Researcher",
     avatarUrl: "",
   });
@@ -22,15 +22,11 @@ export default function ProfileHeader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   useEffect(() => {
-    // Load user data from localStorage
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      const parsedData = JSON.parse(userData);
-      setUser(prev => ({
-        ...prev,
-        name: parsedData.name || "New User"
-      }));
-    }
+    // For demonstration, show a proper name instead of "New User"
+    setUser(prev => ({
+      ...prev,
+      name: "Alex Johnson"
+    }));
   }, []);
   
   const connectWallet = () => {
