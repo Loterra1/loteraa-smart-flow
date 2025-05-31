@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardNavbar from "@/components/DashboardNavbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ import AutomationTable from "@/components/automation/AutomationTable";
 import CreateAutomationForm from "@/components/forms/CreateAutomationForm";
 import CreateAutomationWizard from "@/components/forms/CreateAutomationWizard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Filter, Search } from "lucide-react";
+import { Filter, Search, Zap, Plus } from "lucide-react";
 
 interface AutomationType {
   id: string;
@@ -25,35 +25,38 @@ interface AutomationType {
   lastTrigger: string;
 }
 
-const MOCK_AUTOMATIONS: AutomationType[] = [
-  {
-    id: "1",
-    name: "Air Alert",
-    triggerSource: "CO² sensor",
-    actionType: "Smart Contract",
-    status: "Active",
-    lastTrigger: "5 mins ago",
-  },
-  {
-    id: "2",
-    name: "Auto-pay Energy",
-    triggerSource: "Power meter",
-    actionType: "Payment transfer",
-    status: "Active",
-    lastTrigger: "12 mins ago",
-  },
-];
-
 const AutomationPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [deviceFilter, setDeviceFilter] = useState("all");
   const [actionFilter, setActionFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [automations, setAutomations] = useState<AutomationType[]>(MOCK_AUTOMATIONS);
+  const [automations, setAutomations] = useState<AutomationType[]>([]);
+  const [isNewAccount, setIsNewAccount] = useState(true);
+
+  useEffect(() => {
+    // Check if user has automations in localStorage
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const parsedData = JSON.parse(userData);
+      if (parsedData.automations && parsedData.automations.length > 0) {
+        setAutomations(parsedData.automations);
+        setIsNewAccount(false);
+      } else {
+        setIsNewAccount(true);
+      }
+    }
+  }, []);
 
   const handleAutomationCreated = (newAutomation: AutomationType) => {
-    setAutomations([newAutomation, ...automations]);
+    const updatedAutomations = [newAutomation, ...automations];
+    setAutomations(updatedAutomations);
+    setIsNewAccount(false);
+    
+    // Update localStorage
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    userData.automations = updatedAutomations;
+    localStorage.setItem('userData', JSON.stringify(userData));
   };
 
   const filteredAutomations = automations.filter((automation) => {
@@ -64,7 +67,7 @@ const AutomationPage: React.FC = () => {
       automation.triggerSource.toLowerCase().includes(searchQuery.toLowerCase());
 
     // Device filter
-    const matchesDevice = deviceFilter === "all" || true; // For now, assume all match since we don't have device IDs in our mock data
+    const matchesDevice = deviceFilter === "all" || true;
 
     // Action filter
     const matchesAction =
@@ -81,6 +84,37 @@ const AutomationPage: React.FC = () => {
 
     return matchesSearch && matchesDevice && matchesAction && matchesStatus;
   });
+
+  if (isNewAccount) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        <DashboardNavbar />
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
+            <h1 className="text-3xl font-bold text-white mb-4 md:mb-0">My Automations</h1>
+            <CreateAutomationWizard onAutomationCreated={handleAutomationCreated} />
+          </div>
+
+          <div className="bg-loteraa-gray/10 backdrop-blur-md border border-loteraa-gray/20 rounded-xl p-12 text-center">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-loteraa-blue/10 flex items-center justify-center">
+              <Zap className="h-8 w-8 text-loteraa-blue/50" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-4">No automation rules yet</h2>
+            <p className="text-white/70 mb-6 max-w-md mx-auto">
+              Create automation rules to trigger smart contracts based on your device data and start automating your processes.
+            </p>
+            <CreateAutomationWizard onAutomationCreated={handleAutomationCreated} />
+          </div>
+
+          <CreateAutomationForm
+            open={isCreateDialogOpen}
+            onOpenChange={setIsCreateDialogOpen}
+            onAutomationCreated={handleAutomationCreated}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardNavbar from '@/components/DashboardNavbar';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -13,64 +13,11 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
-interface EarningsData {
-  totalEarnings: string;
-  monthlyChange: string;
-  pendingPayments: string;
-  lastPayment: string;
-  earningsHistory: {
-    date: string;
-    amount: string;
-    source: string;
-    status: string;
-  }[];
-}
-
-interface DeviceData {
-  id: string;
-  name: string;
-  type: string;
-  status: string;
-  earnings: string;
-  dataPoints: number;
-}
-
-interface DatasetData {
-  id: string;
-  title: string;
-  type: string;
-  status: string;
-  earnings: string;
-  verificationData: {
-    contractId: string;
-    status: string;
-    timestamp: string;
-    fileSize: string;
-    totalRecords: string;
-    coverage: string;
-    accessType: string;
-    accessPrice: string;
-    paymentAmount: string;
-    walletAddress: string;
-    txHash: string;
-  };
-}
-
-interface DevicePerformanceData {
-  deviceId: string;
-  deviceName: string;
-  status: string;
-  uptime: string;
-  lastSync: string;
-  batteryLevel: number;
-  dataPoints: number;
-  storageUsed: string;
-  cpuUsage: number;
-  memoryUsage: number;
-}
-
-const EarningsPage: React.FC = () => {
+export default function EarningsPage() {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
   const [isEarningsBreakdownOpen, setIsEarningsBreakdownOpen] = useState(false);
@@ -83,7 +30,117 @@ const EarningsPage: React.FC = () => {
   const [isWithdrawFundsOpen, setIsWithdrawFundsOpen] = useState(false);
   const [isContractDetailsOpen, setIsContractDetailsOpen] = useState(false);
   const [selectedDeviceForPerformance, setSelectedDeviceForPerformance] = useState<DeviceData | null>(null);
-  
+  const [isNewAccount, setIsNewAccount] = useState(true);
+  const [timeFilter, setTimeFilter] = useState("7d");
+
+  useEffect(() => {
+    // Check if user has any earnings data
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const parsedData = JSON.parse(userData);
+      // Check if user has devices, datasets, contracts, or automations that could generate earnings
+      const hasActivity = (parsedData.devices && parsedData.devices.length > 0) ||
+                         (parsedData.datasets && parsedData.datasets.length > 0) ||
+                         (parsedData.contracts && parsedData.contracts.length > 0) ||
+                         (parsedData.automations && parsedData.automations.length > 0);
+      setIsNewAccount(!hasActivity);
+    }
+  }, []);
+
+  const handleStartEarning = () => {
+    navigate('/devices');
+  };
+
+  const handleSubmitDataset = () => {
+    navigate('/dataset-entry');
+  };
+
+  const handleViewDevicePerformance = (device: DeviceData) => {
+    setSelectedDeviceForPerformance(device);
+    setIsDevicePerformanceOpen(true);
+  };
+
+  const handleAddDevice = () => {
+    if (!deviceName || !deviceType) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Device added",
+      description: `${deviceName} has been successfully added to your devices`,
+    });
+
+    setDeviceName("");
+    setDeviceType("");
+    setIsAddDeviceOpen(false);
+  };
+
+  const handleAddDataset = () => {
+    if (!datasetTitle || !datasetType) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Dataset added",
+      description: "Your dataset has been submitted for research",
+    });
+
+    setDatasetTitle("");
+    setDatasetType("");
+    setDatasetDescription("");
+    setIsAddDatasetOpen(false);
+  };
+
+  const handleWithdrawFunds = () => {
+    if (!withdrawAmount || !withdrawAddress) {
+      toast({
+        title: "Error",
+        description: "Please provide both amount and destination address",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Withdrawal initiated",
+      description: `${withdrawAmount} Terra will be sent to your wallet shortly`,
+    });
+
+    setWithdrawAmount("");
+    setWithdrawAddress("");
+    setIsWithdrawFundsOpen(false);
+  };
+
+  const handleOptimizeEarnings = () => {
+    toast({
+      title: "Optimization initiated",
+      description: "Your earnings are being analyzed for optimization opportunities",
+    });
+    
+    setTimeout(() => {
+      toast({
+        title: "Optimization complete",
+        description: "We've identified 3 opportunities to increase your earnings",
+      });
+    }, 2000);
+    
+    setIsOptimizeEarningsOpen(false);
+  };
+
+  const handleViewContractDetails = () => {
+    setIsContractDetailsOpen(true);
+  };
+
   // Form states
   const [deviceName, setDeviceName] = useState("");
   const [deviceType, setDeviceType] = useState("");
@@ -173,91 +230,78 @@ const EarningsPage: React.FC = () => {
     ]
   };
 
-  const handleViewDevicePerformance = (device: DeviceData) => {
-    setSelectedDeviceForPerformance(device);
-    setIsDevicePerformanceOpen(true);
-  };
+  if (isNewAccount) {
+    return (
+      <div className="min-h-screen bg-loteraa-black">
+        <DashboardNavbar />
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold gradient-text mb-2">Earnings Overview</h1>
+            <p className="text-white/70">Track your rewards from IoT data contributions and smart contract interactions</p>
+          </div>
 
-  const handleAddDevice = () => {
-    if (!deviceName || !deviceType) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive"
-      });
-      return;
-    }
+          <div className="bg-loteraa-gray/10 backdrop-blur-md border border-loteraa-gray/20 rounded-xl p-12 text-center">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-loteraa-teal/10 flex items-center justify-center">
+              <Coins className="h-8 w-8 text-loteraa-teal/50" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-4">Start earning $TERRA rewards</h2>
+            <p className="text-white/70 mb-8 max-w-md mx-auto">
+              Connect devices, submit datasets, and create automations to start earning rewards through our decentralized ecosystem.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md mx-auto">
+              <Button 
+                onClick={handleStartEarning}
+                className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+              >
+                Connect Devices
+              </Button>
+              <Button 
+                onClick={handleSubmitDataset}
+                variant="outline"
+                className="border-loteraa-teal text-loteraa-teal hover:bg-loteraa-teal/10"
+              >
+                Submit Dataset
+              </Button>
+            </div>
 
-    toast({
-      title: "Device added",
-      description: `${deviceName} has been successfully added to your devices`,
-    });
-
-    setDeviceName("");
-    setDeviceType("");
-    setIsAddDeviceOpen(false);
-  };
-
-  const handleAddDataset = () => {
-    if (!datasetTitle || !datasetType) {
-      toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    toast({
-      title: "Dataset added",
-      description: "Your dataset has been submitted for research",
-    });
-
-    setDatasetTitle("");
-    setDatasetType("");
-    setDatasetDescription("");
-    setIsAddDatasetOpen(false);
-  };
-
-  const handleWithdrawFunds = () => {
-    if (!withdrawAmount || !withdrawAddress) {
-      toast({
-        title: "Error",
-        description: "Please provide both amount and destination address",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    toast({
-      title: "Withdrawal initiated",
-      description: `${withdrawAmount} Terra will be sent to your wallet shortly`,
-    });
-
-    setWithdrawAmount("");
-    setWithdrawAddress("");
-    setIsWithdrawFundsOpen(false);
-  };
-
-  const handleOptimizeEarnings = () => {
-    toast({
-      title: "Optimization initiated",
-      description: "Your earnings are being analyzed for optimization opportunities",
-    });
-    
-    setTimeout(() => {
-      toast({
-        title: "Optimization complete",
-        description: "We've identified 3 opportunities to increase your earnings",
-      });
-    }, 2000);
-    
-    setIsOptimizeEarningsOpen(false);
-  };
-
-  const handleViewContractDetails = () => {
-    setIsContractDetailsOpen(true);
-  };
+            <div className="mt-8 text-left max-w-lg mx-auto">
+              <h3 className="text-lg font-semibold text-white mb-4">How to earn rewards:</h3>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-loteraa-purple/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-loteraa-purple text-xs font-bold">1</span>
+                  </div>
+                  <div>
+                    <p className="text-white font-medium">Connect IoT Devices</p>
+                    <p className="text-white/60 text-sm">Earn rewards for providing real-time sensor data</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-loteraa-blue/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-loteraa-blue text-xs font-bold">2</span>
+                  </div>
+                  <div>
+                    <p className="text-white font-medium">Submit Datasets</p>
+                    <p className="text-white/60 text-sm">Get verified and earn from dataset contributions</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-loteraa-teal/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-loteraa-teal text-xs font-bold">3</span>
+                  </div>
+                  <div>
+                    <p className="text-white font-medium">Create Automations</p>
+                    <p className="text-white/60 text-sm">Earn from smart contract interactions and triggers</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-loteraa-black">
@@ -684,7 +728,7 @@ const EarningsPage: React.FC = () => {
                   </div>
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-loteraa-gray/30 pb-2 gap-1">
                     <span className="text-white/70">Status:</span>
-                    <Badge className="bg-green-600 text-xs w-fit sm:w-auto">
+                    <Badge className="bg-green-600 text-xs w-fit">
                       {verifiedDataset.verificationData.status}
                     </Badge>
                   </div>
@@ -1276,6 +1320,4 @@ const EarningsPage: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default EarningsPage;
+}

@@ -5,13 +5,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Download, Eye, Filter } from "lucide-react";
+import { Search, Download, Eye, Filter, Database } from "lucide-react";
 import DashboardNavbar from '@/components/DashboardNavbar';
 import DatasetDetailsModal from '@/components/datasets/DatasetDetailsModal';
 import { useDatasets } from '@/hooks/useDatasets';
+import { useNavigate } from 'react-router-dom';
 
 export default function DataListingPage() {
   const { datasets } = useDatasets();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedDataset, setSelectedDataset] = useState(null);
@@ -51,7 +53,41 @@ export default function DataListingPage() {
     URL.revokeObjectURL(url);
   };
 
+  const handleSubmitDataset = () => {
+    navigate('/dataset-entry');
+  };
+
   const categories = ['all', ...Array.from(new Set(verifiedDatasets.map(d => d.type)))];
+
+  if (verifiedDatasets.length === 0) {
+    return (
+      <div className="min-h-screen bg-loteraa-black">
+        <DashboardNavbar />
+        <div className="container mx-auto px-4 py-4 sm:py-8">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-xl sm:text-3xl font-bold gradient-text mb-2">IoT Data Listing</h1>
+            <p className="text-white/70 text-sm sm:text-base">Browse and download verified IoT datasets for your development projects</p>
+          </div>
+          
+          <div className="bg-loteraa-gray/10 backdrop-blur-md border border-loteraa-gray/20 rounded-xl p-12 text-center">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-loteraa-teal/10 flex items-center justify-center">
+              <Database className="h-8 w-8 text-loteraa-teal/50" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-4">No verified datasets available yet</h2>
+            <p className="text-white/70 mb-6 max-w-md mx-auto">
+              Be the first to contribute! Submit your IoT datasets for verification and help build our decentralized data ecosystem.
+            </p>
+            <Button 
+              onClick={handleSubmitDataset}
+              className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+            >
+              Submit Your Dataset
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-loteraa-black">
@@ -170,7 +206,7 @@ export default function DataListingPage() {
         </div>
 
         {/* Empty State */}
-        {filteredDatasets.length === 0 && (
+        {filteredDatasets.length === 0 && verifiedDatasets.length > 0 && (
           <div className="text-center py-12">
             <div className="text-white/50 mb-4">
               <Search className="h-12 w-12 mx-auto mb-4" />
