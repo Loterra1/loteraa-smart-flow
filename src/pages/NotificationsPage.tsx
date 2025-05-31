@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardNavbar from '@/components/DashboardNavbar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,16 @@ export default function NotificationsPage() {
   } = useNotifications();
   
   const [activeTab, setActiveTab] = useState<NotificationType | 'all'>('all');
+  const [isNewAccount, setIsNewAccount] = useState(true);
+
+  useEffect(() => {
+    // Check if user has any notifications
+    if (notifications && notifications.length > 0) {
+      setIsNewAccount(false);
+    } else {
+      setIsNewAccount(true);
+    }
+  }, [notifications]);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value as NotificationType | 'all');
@@ -37,6 +47,40 @@ export default function NotificationsPage() {
   };
 
   const unreadCount = getUnreadCount();
+
+  if (isNewAccount) {
+    return (
+      <div className="min-h-screen bg-loteraa-black">
+        <DashboardNavbar />
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold gradient-text mb-2">Notifications</h1>
+            <p className="text-white/70">
+              Track your activity and important updates across the platform
+            </p>
+          </div>
+          
+          <div className="bg-loteraa-gray/10 backdrop-blur-md border border-loteraa-gray/20 rounded-xl p-12 text-center">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-loteraa-teal/10 flex items-center justify-center">
+              <BellOff className="h-8 w-8 text-loteraa-teal/50" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-4">No notifications yet</h2>
+            <p className="text-white/70 mb-6 max-w-md mx-auto">
+              When you perform activities like adding devices, verifying datasets, or deploying smart contracts, notifications will appear here.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button className="bg-loteraa-purple hover:bg-loteraa-purple/90">
+                Connect Your First Device
+              </Button>
+              <Button variant="outline" className="border-loteraa-gray/30 text-white hover:bg-loteraa-gray/20">
+                Submit Dataset
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-loteraa-black">

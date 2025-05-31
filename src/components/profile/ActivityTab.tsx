@@ -1,8 +1,9 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Link } from "react-router-dom";
+import { Activity } from 'lucide-react';
 
 // Sample data for the engagement graph
 const engagementData = [
@@ -34,6 +35,49 @@ const recentActions = [
 ];
 
 export default function ActivityTab() {
+  const [isNewAccount, setIsNewAccount] = useState(true);
+
+  useEffect(() => {
+    // Check if user has any activity (this would come from actual user data)
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const parsedData = JSON.parse(userData);
+      if (parsedData.hasActivity) {
+        setIsNewAccount(false);
+      }
+    }
+  }, []);
+
+  if (isNewAccount) {
+    return (
+      <div className="p-4 md:p-6">
+        <div className="flex flex-col items-center justify-center py-12 px-4">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-loteraa-teal/10 flex items-center justify-center">
+            <Activity className="h-8 w-8 text-loteraa-teal/50" />
+          </div>
+          <h3 className="text-xl font-medium text-white mb-3">No recent activity</h3>
+          <p className="text-white/70 text-center max-w-md mb-6">
+            Start using the platform by connecting devices, submitting datasets, or creating automations to see your activity here.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link 
+              to="/devices" 
+              className="px-4 py-2 bg-loteraa-purple hover:bg-loteraa-purple/90 text-white rounded-md text-sm font-medium transition-colors"
+            >
+              Connect Device
+            </Link>
+            <Link 
+              to="/dataset-entry" 
+              className="px-4 py-2 border border-loteraa-gray/30 text-white hover:bg-loteraa-gray/20 rounded-md text-sm font-medium transition-colors"
+            >
+              Submit Dataset
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 md:p-6">
       <div className="space-y-6">
