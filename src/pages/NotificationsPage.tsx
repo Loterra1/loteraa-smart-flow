@@ -68,14 +68,6 @@ export default function NotificationsPage() {
             <p className="text-white/70 mb-6 max-w-md mx-auto">
               When you perform activities like adding devices, verifying datasets, or deploying smart contracts, notifications will appear here.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-loteraa-purple hover:bg-loteraa-purple/90">
-                Connect Your First Device
-              </Button>
-              <Button variant="outline" className="border-loteraa-gray/30 text-white hover:bg-loteraa-gray/20">
-                Submit Dataset
-              </Button>
-            </div>
           </div>
         </div>
       </div>
