@@ -71,7 +71,7 @@ export default function SmartContractsPage() {
           onClose={() => setIsViewDialogOpen(false)}
           contract={selectedContract}
           onExportContract={(contractId) => {
-            // Implementation kept the same
+            console.log("Exporting contract:", contractId);
           }}
           onSaveContractCode={handleSaveContractCode}
         />

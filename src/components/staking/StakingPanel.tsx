@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,6 +15,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { Wallet } from "lucide-react";
 
+interface StakeEntry {
+  id: string;
+  amount: number;
+  period: string;
+  apy: string;
+  unlockDate: string;
+  daysRemaining: number;
+}
+
 const stakingOptions = [
   { value: "4weeks", label: "4 Weeks", apy: "12.5%" },
   { value: "8weeks", label: "8 Weeks", apy: "16.8%" },
@@ -28,8 +37,25 @@ const StakingPanel = () => {
   const [isStaking, setIsStaking] = useState(false);
   const [sliderValue, setSliderValue] = useState([50]);
   const [walletConnected, setWalletConnected] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(1000);
+  const [userStakes, setUserStakes] = useState<StakeEntry[]>([]);
+  const [totalStaked, setTotalStaked] = useState(0);
+  const [totalRewards, setTotalRewards] = useState(0);
   
   const selectedOption = stakingOptions.find(option => option.value === stakingPeriod);
+  
+  // Calculate total staked amount
+  useEffect(() => {
+    const total = userStakes.reduce((sum, stake) => sum + stake.amount, 0);
+    setTotalStaked(total);
+    
+    // Calculate total rewards (simplified calculation)
+    const rewards = userStakes.reduce((sum, stake) => {
+      const apyNumber = parseFloat(stake.apy.replace('%', ''));
+      return sum + (stake.amount * apyNumber / 100 / 12); // Monthly rewards approximation
+    }, 0);
+    setTotalRewards(rewards);
+  }, [userStakes]);
   
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
@@ -37,15 +63,17 @@ const StakingPanel = () => {
   
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
-    // We don't calculate the amount anymore since we don't show the balance
+    if (walletConnected) {
+      const calculatedAmount = (walletBalance * value[0] / 100).toFixed(2);
+      setAmount(calculatedAmount);
+    }
   };
   
   const handleConnectWallet = () => {
     toast({
-      title: "Connect Wallet",
-      description: "Wallet connection feature will be implemented soon",
+      title: "Wallet Connected",
+      description: "Successfully connected to your wallet",
     });
-    // For UI demonstration only
     setWalletConnected(true);
   };
   
@@ -59,11 +87,35 @@ const StakingPanel = () => {
       return;
     }
     
+    const stakeAmount = parseFloat(amount);
+    if (stakeAmount > walletBalance) {
+      toast({
+        title: "Insufficient balance",
+        description: "You don't have enough TERRA tokens",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsStaking(true);
     
-    // Simulate staking operation
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Update wallet balance
+      setWalletBalance(prev => prev - stakeAmount);
+      
+      // Add new stake entry
+      const newStake: StakeEntry = {
+        id: Date.now().toString(),
+        amount: stakeAmount,
+        period: selectedOption?.label || "",
+        apy: selectedOption?.apy || "",
+        unlockDate: new Date(Date.now() + (4 * 7 * 24 * 60 * 60 * 1000)).toLocaleDateString(), // 4 weeks from now
+        daysRemaining: 28 // Example days
+      };
+      
+      setUserStakes(prev => [...prev, newStake]);
       
       toast({
         title: "Staked successfully",
@@ -94,7 +146,7 @@ const StakingPanel = () => {
                 <Label htmlFor="stake-amount">Stake Amount</Label>
                 {walletConnected && (
                   <span className="text-sm text-white/70">
-                    Balance: 1000 TERRA
+                    Balance: {walletBalance.toFixed(2)} TERRA
                   </span>
                 )}
               </div>
@@ -113,7 +165,8 @@ const StakingPanel = () => {
                       size="sm" 
                       className="h-6 text-xs"
                       onClick={() => {
-                        setAmount("500");
+                        const halfAmount = (walletBalance / 2).toFixed(2);
+                        setAmount(halfAmount);
                         setSliderValue([50]);
                       }}
                     >
@@ -124,7 +177,7 @@ const StakingPanel = () => {
                       size="sm" 
                       className="h-6 text-xs"
                       onClick={() => {
-                        setAmount("1000");
+                        setAmount(walletBalance.toFixed(2));
                         setSliderValue([100]);
                       }}
                     >
@@ -135,22 +188,24 @@ const StakingPanel = () => {
               </div>
             </div>
             
-            <div className="space-y-2">
-              <Slider
-                value={sliderValue}
-                onValueChange={handleSliderChange}
-                max={100}
-                step={1}
-                className="py-4"
-              />
-              <div className="flex justify-between text-xs text-white/70">
-                <span>0%</span>
-                <span>25%</span>
-                <span>50%</span>
-                <span>75%</span>
-                <span>100%</span>
+            {walletConnected && (
+              <div className="space-y-2">
+                <Slider
+                  value={sliderValue}
+                  onValueChange={handleSliderChange}
+                  max={100}
+                  step={1}
+                  className="py-4"
+                />
+                <div className="flex justify-between text-xs text-white/70">
+                  <span>0%</span>
+                  <span>25%</span>
+                  <span>50%</span>
+                  <span>75%</span>
+                  <span>100%</span>
+                </div>
               </div>
-            </div>
+            )}
             
             <div>
               <Label htmlFor="period" className="mb-2 block">
@@ -210,49 +265,53 @@ const StakingPanel = () => {
               </Button>
             </CardContent>
           </Card>
+        ) : userStakes.length === 0 ? (
+          <Card className="bg-loteraa-gray/10 border-loteraa-gray/20">
+            <CardContent className="p-6 flex flex-col items-center justify-center text-center h-60">
+              <div className="w-12 h-12 rounded-full bg-loteraa-purple/20 flex items-center justify-center mb-4">
+                <Wallet className="h-6 w-6 text-loteraa-purple" />
+              </div>
+              <h4 className="text-lg font-medium mb-2">No Stakes Yet</h4>
+              <p className="text-white/70 mb-4">You haven't staked any TERRA tokens yet</p>
+              <div className="text-sm text-white/50">
+                <p>Your Balance: {walletBalance.toFixed(2)} TERRA</p>
+              </div>
+            </CardContent>
+          </Card>
         ) : (
           <Card className="bg-loteraa-gray/10 border-loteraa-gray/20">
             <CardContent className="p-6 space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-white/70">Total Staked</span>
-                <span className="font-medium">250 TERRA</span>
+                <span className="font-medium">{totalStaked.toFixed(2)} TERRA</span>
               </div>
               
               <div className="flex justify-between items-center">
                 <span className="text-sm text-white/70">Rewards Earned</span>
-                <span className="font-medium text-green-500">+12.35 TERRA</span>
+                <span className="font-medium text-green-500">+{totalRewards.toFixed(2)} TERRA</span>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-sm text-white/70">Current APY</span>
-                <span className="font-medium text-loteraa-purple">18.5%</span>
+                <span className="text-sm text-white/70">Available Balance</span>
+                <span className="font-medium">{walletBalance.toFixed(2)} TERRA</span>
               </div>
               
               <div className="pt-4 border-t border-white/10">
                 <h4 className="font-medium mb-3">Active Stakes</h4>
                 
                 <div className="space-y-3">
-                  <div className="p-3 bg-loteraa-purple/10 rounded-md border border-loteraa-purple/20">
-                    <div className="flex justify-between">
-                      <span>150 TERRA</span>
-                      <span className="text-loteraa-purple">16.8% APY</span>
+                  {userStakes.map((stake) => (
+                    <div key={stake.id} className="p-3 bg-loteraa-purple/10 rounded-md border border-loteraa-purple/20">
+                      <div className="flex justify-between">
+                        <span>{stake.amount} TERRA</span>
+                        <span className="text-loteraa-purple">{stake.apy} APY</span>
+                      </div>
+                      <div className="mt-2 flex justify-between text-sm text-white/70">
+                        <span>{stake.period}</span>
+                        <span>Unlocks in {stake.daysRemaining} days</span>
+                      </div>
                     </div>
-                    <div className="mt-2 flex justify-between text-sm text-white/70">
-                      <span>8 Weeks</span>
-                      <span>Unlocks in 32 days</span>
-                    </div>
-                  </div>
-                  
-                  <div className="p-3 bg-loteraa-purple/10 rounded-md border border-loteraa-purple/20">
-                    <div className="flex justify-between">
-                      <span>100 TERRA</span>
-                      <span className="text-loteraa-purple">21.3% APY</span>
-                    </div>
-                    <div className="mt-2 flex justify-between text-sm text-white/70">
-                      <span>12 Weeks</span>
-                      <span>Unlocks in 68 days</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </CardContent>
