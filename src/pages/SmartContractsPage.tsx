@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import DashboardNavbar from '@/components/DashboardNavbar';
 import ViewSmartContractDialog from '@/components/smartcontracts/ViewSmartContractDialog';
@@ -7,18 +8,7 @@ import PageHeader from '@/components/smartcontracts/PageHeader';
 import SmartContractsList from '@/components/smartcontracts/SmartContractsList';
 import UploadContractButton from '@/components/smartcontracts/UploadContractButton';
 import { useSmartContracts } from '@/hooks/useSmartContracts';
-
-interface SmartContract {
-  id: string;
-  name: string;
-  type: string;
-  status: 'Active' | 'Inactive';
-  trigger: string;
-  lastModified: string;
-  file?: File;
-  code?: string;
-  abi?: string;
-}
+import { SmartContract } from '@/types/smartContract';
 
 export default function SmartContractsPage() {
   const {
