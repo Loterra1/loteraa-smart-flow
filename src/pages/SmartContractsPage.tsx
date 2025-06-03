@@ -42,9 +42,8 @@ export default function SmartContractsPage() {
     setIsDeleteDialogOpen(true);
   };
 
-  const handleContractCreatedWrapper = (contract: any) => {
-    // Convert the contract to match the expected type
-    const normalizedContract: SmartContract = {
+  const normalizeContract = (contract: any): SmartContract => {
+    return {
       ...contract,
       status: contract.status === 'Pending' || contract.status === 'Error' ? 'Active' : contract.status,
       description: contract.description || '',
@@ -52,30 +51,20 @@ export default function SmartContractsPage() {
       createdAt: contract.createdAt || new Date().toISOString(),
       lastInteraction: contract.lastInteraction || new Date().toISOString()
     };
+  };
+
+  const handleContractCreatedWrapper = (contract: any) => {
+    const normalizedContract = normalizeContract(contract);
     handleContractCreated(normalizedContract);
   };
 
   const handleSaveContractCodeWrapper = (contract: any, code: string, abi: string) => {
-    const normalizedContract: SmartContract = {
-      ...contract,
-      status: contract.status === 'Pending' || contract.status === 'Error' ? 'Active' : contract.status,
-      description: contract.description || '',
-      network: contract.network || 'Ethereum',
-      createdAt: contract.createdAt || new Date().toISOString(),
-      lastInteraction: contract.lastInteraction || new Date().toISOString()
-    };
+    const normalizedContract = normalizeContract(contract);
     handleSaveContractCode(normalizedContract, code, abi);
   };
 
   const handleContractUpdatedWrapper = (contract: any) => {
-    const normalizedContract: SmartContract = {
-      ...contract,
-      status: contract.status === 'Pending' || contract.status === 'Error' ? 'Active' : contract.status,
-      description: contract.description || '',
-      network: contract.network || 'Ethereum',
-      createdAt: contract.createdAt || new Date().toISOString(),
-      lastInteraction: contract.lastInteraction || new Date().toISOString()
-    };
+    const normalizedContract = normalizeContract(contract);
     handleContractUpdated(normalizedContract);
   };
 
