@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, KeyRound, User } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function SignupForm() {
   const { toast } = useToast();
@@ -27,39 +28,43 @@ export default function SignupForm() {
     });
   };
 
-  const initializeNewAccount = () => {
-    // Clear any existing demo data from localStorage
-    localStorage.removeItem('demoMode');
-    localStorage.removeItem('userData');
-    localStorage.removeItem('demoData');
-    
-    // Initialize fresh account data
-    const newUserData = {
-      name: formData.name || "New User",
-      email: formData.email,
-      isNewAccount: true,
-      signupDate: new Date().toISOString(),
-      accountType: isLoginMode ? 'returning' : 'new'
-    };
-    
-    localStorage.setItem('userData', JSON.stringify(newUserData));
-  };
-
   const handleEmailSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Initialize new account
-      initializeNewAccount();
-      
-      toast({
-        title: "Account created successfully!",
-        description: "Welcome to Loteraa platform.",
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: "https://loteraa.xyz/",
+          data: {
+            name: formData.name,
+          }
+        }
       });
+
+      if (error) {
+        toast({
+          title: "Error creating account",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (data.user && !data.session) {
+        toast({
+          title: "Check your email!",
+          description: "We've sent you a confirmation link to complete your signup.",
+        });
+      } else if (data.session) {
+        toast({
+          title: "Account created successfully!",
+          description: "Welcome to Loteraa platform.",
+        });
+        navigate("/dashboard");
+      }
       
       setFormData({
         name: "",
@@ -67,12 +72,10 @@ export default function SignupForm() {
         password: "",
       });
       
-      // Redirect to fresh dashboard
-      navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error creating account",
-        description: "Please try again later.",
+        description: error.message || "Please try again later.",
         variant: "destructive",
       });
     } finally {
@@ -85,23 +88,32 @@ export default function SignupForm() {
     setIsLoading(true);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Initialize returning account (still fresh for demo purposes)
-      initializeNewAccount();
-      
-      toast({
-        title: "Login successful!",
-        description: "Welcome back to Loteraa platform.",
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
       });
+
+      if (error) {
+        toast({
+          title: "Login failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (data.session) {
+        toast({
+          title: "Login successful!",
+          description: "Welcome back to Loteraa platform.",
+        });
+        navigate("/dashboard");
+      }
       
-      // Redirect to fresh dashboard
-      navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Login failed",
-        description: "Invalid email or password.",
+        description: error.message || "Invalid email or password.",
         variant: "destructive",
       });
     } finally {
@@ -112,14 +124,11 @@ export default function SignupForm() {
   const handleConnectWallet = () => {
     setIsLoading(true);
     
-    // Simulate connection process
+    // Simulate connection process for now
     setTimeout(() => {
       setIsLoading(false);
       
-      // Initialize new wallet account
-      initializeNewAccount();
-      
-      // Navigate to fresh dashboard
+      // Navigate to dashboard
       navigate("/dashboard");
       
       // Show toast notification

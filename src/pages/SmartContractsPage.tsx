@@ -42,6 +42,43 @@ export default function SmartContractsPage() {
     setIsDeleteDialogOpen(true);
   };
 
+  const handleContractCreatedWrapper = (contract: any) => {
+    // Convert the contract to match the expected type
+    const normalizedContract: SmartContract = {
+      ...contract,
+      status: contract.status === 'Pending' || contract.status === 'Error' ? 'Active' : contract.status,
+      description: contract.description || '',
+      network: contract.network || 'Ethereum',
+      createdAt: contract.createdAt || new Date().toISOString(),
+      lastInteraction: contract.lastInteraction || new Date().toISOString()
+    };
+    handleContractCreated(normalizedContract);
+  };
+
+  const handleSaveContractCodeWrapper = (contract: any, code: string, abi: string) => {
+    const normalizedContract: SmartContract = {
+      ...contract,
+      status: contract.status === 'Pending' || contract.status === 'Error' ? 'Active' : contract.status,
+      description: contract.description || '',
+      network: contract.network || 'Ethereum',
+      createdAt: contract.createdAt || new Date().toISOString(),
+      lastInteraction: contract.lastInteraction || new Date().toISOString()
+    };
+    handleSaveContractCode(normalizedContract, code, abi);
+  };
+
+  const handleContractUpdatedWrapper = (contract: any) => {
+    const normalizedContract: SmartContract = {
+      ...contract,
+      status: contract.status === 'Pending' || contract.status === 'Error' ? 'Active' : contract.status,
+      description: contract.description || '',
+      network: contract.network || 'Ethereum',
+      createdAt: contract.createdAt || new Date().toISOString(),
+      lastInteraction: contract.lastInteraction || new Date().toISOString()
+    };
+    handleContractUpdated(normalizedContract);
+  };
+
   return (
     <div className="min-h-screen bg-loteraa-black">
       <DashboardNavbar />
@@ -49,7 +86,7 @@ export default function SmartContractsPage() {
         <PageHeader 
           isDialogOpen={isCreateDialogOpen}
           setIsDialogOpen={setIsCreateDialogOpen}
-          onContractCreated={handleContractCreated}
+          onContractCreated={handleContractCreatedWrapper}
         />
 
         <SmartContractsList
@@ -62,7 +99,7 @@ export default function SmartContractsPage() {
         <UploadContractButton
           isUploadDialogOpen={uploadDialogOpen}
           setUploadDialogOpen={setUploadDialogOpen}
-          onContractCreated={handleContractCreated}
+          onContractCreated={handleContractCreatedWrapper}
         />
 
         {/* Dialogs */}
@@ -73,14 +110,14 @@ export default function SmartContractsPage() {
           onExportContract={(contractId) => {
             console.log("Exporting contract:", contractId);
           }}
-          onSaveContractCode={handleSaveContractCode}
+          onSaveContractCode={handleSaveContractCodeWrapper}
         />
 
         <EditSmartContractDialog 
           isOpen={isEditDialogOpen}
           onClose={() => setIsEditDialogOpen(false)}
           contract={selectedContract}
-          onSave={handleContractUpdated}
+          onSave={handleContractUpdatedWrapper}
         />
 
         <DeleteSmartContractDialog 

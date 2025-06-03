@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import SignupPage from "./pages/SignupPage";
 import Dashboard from "./pages/Dashboard";
@@ -34,40 +35,42 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/devices" element={<DevicesPage />} />
-          <Route path="/devices/:deviceId" element={<DeviceDetailPage />} />
-          <Route path="/automation" element={<AutomationPage />} />
-          <Route path="/smart-contracts" element={<SmartContractsPage />} />
-          <Route path="/dataset-entry" element={<DatasetEntryPage />} />
-          <Route path="/data-listing" element={<DataListingPage />} />
-          <Route path="/earnings" element={<EarningsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/stake" element={<StakePage />} />
-          <Route path="/ambassador" element={<AmbassadorPage />} />
-          <Route path="/data-feed" element={<DataFeedPage />} />
-          <Route path="/developer-docs" element={<DeveloperDocsPage />} />
-          <Route path="/researchers" element={<ResearchersPage />} />
-          <Route path="/business" element={<BusinessPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/careers" element={<CareersPage />} />
-          <Route path="/terms" element={<TermsPage />} />
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/ecosystem" element={<EcosystemPage />} />
-          <Route path="/use-cases" element={<UseCasesPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/devices" element={<DevicesPage />} />
+            <Route path="/devices/:deviceId" element={<DeviceDetailPage />} />
+            <Route path="/automation" element={<AutomationPage />} />
+            <Route path="/smart-contracts" element={<SmartContractsPage />} />
+            <Route path="/dataset-entry" element={<DatasetEntryPage />} />
+            <Route path="/data-listing" element={<DataListingPage />} />
+            <Route path="/earnings" element={<EarningsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/stake" element={<StakePage />} />
+            <Route path="/ambassador" element={<AmbassadorPage />} />
+            <Route path="/data-feed" element={<DataFeedPage />} />
+            <Route path="/developer-docs" element={<DeveloperDocsPage />} />
+            <Route path="/researchers" element={<ResearchersPage />} />
+            <Route path="/business" element={<BusinessPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/careers" element={<CareersPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/ecosystem" element={<EcosystemPage />} />
+            <Route path="/use-cases" element={<UseCasesPage />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
