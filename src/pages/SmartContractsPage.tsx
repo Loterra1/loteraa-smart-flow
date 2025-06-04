@@ -45,7 +45,7 @@ export default function SmartContractsPage() {
   const normalizeContract = (contract: any): SmartContract => {
     return {
       ...contract,
-      status: contract.status === 'Pending' || contract.status === 'Error' ? 'Active' : contract.status,
+      status: (contract.status === 'Pending' || contract.status === 'Error') ? 'Active' : (contract.status as 'Active' | 'Inactive'),
       description: contract.description || '',
       network: contract.network || 'Ethereum',
       createdAt: contract.createdAt || new Date().toISOString(),

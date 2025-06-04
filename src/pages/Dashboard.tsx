@@ -9,35 +9,54 @@ import AlertsNotifications from '@/components/dashboard/AlertsNotifications';
 import AutomationTriggers from '@/components/dashboard/AutomationTriggers';
 import ActionButtons from '@/components/dashboard/ActionButtons';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState(null);
+  const { user, profile, loading } = useAuth();
   const [isNewAccount, setIsNewAccount] = useState(true);
 
   useEffect(() => {
+    if (!loading && !user) {
+      navigate('/signup');
+      return;
+    }
+
     // Check if user data exists, if not create fresh account
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
       const parsedData = JSON.parse(storedUserData);
-      setUserData(parsedData);
       setIsNewAccount(parsedData.isNewAccount !== false);
-    } else {
-      // If no user data, redirect to signup
-      navigate('/signup');
+    } else if (user) {
+      // If user exists but no stored data, it's likely a new account
+      setIsNewAccount(true);
     }
-  }, [navigate]);
+  }, [navigate, user, loading]);
 
   const handleViewSmartContractDetails = () => {
     navigate('/smart-contracts');
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-loteraa-black flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // Will redirect to signup
+  }
 
   return (
     <div className="min-h-screen bg-loteraa-black">
       <DashboardNavbar />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold gradient-text mb-2">Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold gradient-text mb-2">
+            Welcome, {profile?.name || user.email?.split('@')[0] || 'User'}
+          </h1>
           <p className="text-white/70">Monitor your IoT devices and smart contract interactions</p>
         </div>
         
