@@ -106,6 +106,11 @@ export default {
 				'fade-in': {
 					'0%': { opacity: '0', transform: 'translateY(10px)' },
 					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'jump-fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(20px) scale(0.9)' },
+					'50%': { transform: 'translateY(-5px) scale(1.05)' },
+					'100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
 				}
 			},
 			animation: {
@@ -115,9 +120,39 @@ export default {
 				'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
 				'move-background': 'move-background 10s ease infinite',
 				'blob-rotate': 'blob-rotate 20s linear infinite',
-				'fade-in': 'fade-in 0.5s ease-out'
+				'fade-in': 'fade-in 0.8s ease-out',
+				'jump-fade-in': 'jump-fade-in 0.6s ease-out'
+			},
+			animationDelay: {
+				'100': '0.1s',
+				'200': '0.2s',
+				'300': '0.3s',
+				'400': '0.4s',
+				'500': '0.5s',
+				'600': '0.6s',
+				'700': '0.7s',
+				'800': '0.8s',
+				'900': '0.9s',
+				'1000': '1s'
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities }: { addUtilities: any }) {
+			const newUtilities = {
+				'.animation-delay-100': { animationDelay: '0.1s' },
+				'.animation-delay-200': { animationDelay: '0.2s' },
+				'.animation-delay-300': { animationDelay: '0.3s' },
+				'.animation-delay-400': { animationDelay: '0.4s' },
+				'.animation-delay-500': { animationDelay: '0.5s' },
+				'.animation-delay-600': { animationDelay: '0.6s' },
+				'.animation-delay-700': { animationDelay: '0.7s' },
+				'.animation-delay-800': { animationDelay: '0.8s' },
+				'.animation-delay-900': { animationDelay: '0.9s' },
+				'.animation-delay-1000': { animationDelay: '1s' }
+			}
+			addUtilities(newUtilities)
+		}
+	],
 } satisfies Config;

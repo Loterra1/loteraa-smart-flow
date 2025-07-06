@@ -22,7 +22,6 @@ export default function NavigationHeader() {
             <Link to="/stake" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Stake</Link>
             <Link to="/data-feed" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Real-time Data Feed</Link>
             <Link to="/ambassador" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Ambassador</Link>
-            <Link to="/contact" className="text-sm font-medium text-white/80 hover:text-white transition-colors">Contact</Link>
           </nav>
           
           <div className="hidden md:flex items-center">
@@ -54,7 +53,6 @@ export default function NavigationHeader() {
             <Link to="/stake" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">Stake</Link>
             <Link to="/data-feed" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">Real-time Data Feed</Link>
             <Link to="/ambassador" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">Ambassador</Link>
-            <Link to="/contact" className="text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-loteraa-purple/20">Contact</Link>
             <div className="pt-4 pb-2">
               <Button asChild className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90 text-white">
                 <Link to="/signup">Sign Up</Link>

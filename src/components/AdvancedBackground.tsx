@@ -10,6 +10,8 @@ interface Node {
   color: string;
   connections: Node[];
   pulsePhase: number;
+  update(width: number, height: number): void;
+  draw(ctx: CanvasRenderingContext2D, time: number): void;
 }
 
 export default function AdvancedBackground() {
