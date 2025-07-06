@@ -17,10 +17,32 @@ export default function HeroSection() {
             Infrastructure layer connecting IoT sensor data directly to blockchain smart contracts - enabling machine-to-machine payments, trustless automation, and data monetization.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in animation-delay-500">
+          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in animation-delay-500 mb-12">
             <Button asChild size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
               <Link to="/signup">Start Building <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
+          </div>
+
+          <div className="animate-fade-in animation-delay-700 mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Powerful Features</h2>
+            <p className="text-lg text-white/80 max-w-3xl">
+              Unlock new possibilities at the intersection of IoT and blockchain technologies.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 items-center animate-fade-in animation-delay-900 mb-16">
+            <div className="text-left">
+              <p className="text-lg text-white/90 leading-relaxed">
+                Loteraa powers a modular infrastructure that enables physical or digital sensors to autonomously communicate with smart contracts creating a decentralized machine-to-machine economy.
+              </p>
+            </div>
+            <div className="flex justify-center">
+              <img 
+                src="/lovable-uploads/8e2ae6e5-2676-42fa-99e5-d8d99a5cbd6e.png" 
+                alt="Loteraa Infrastructure" 
+                className="max-w-full h-auto rounded-lg"
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -15,6 +15,7 @@ export default function SignupForm() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -37,7 +38,7 @@ export default function SignupForm() {
         email: formData.email,
         password: formData.password,
         options: {
-          emailRedirectTo: "https://loteraa.xyz/",
+          emailRedirectTo: `${window.location.origin}/`,
           data: {
             name: formData.name,
           }
@@ -121,36 +122,86 @@ export default function SignupForm() {
     }
   };
 
-  const handleConnectWallet = () => {
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
     
-    // Simulate connection process for now
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Navigate to dashboard
-      navigate("/dashboard");
-      
-      // Show toast notification
-      toast({
-        title: "Wallet Connected Successfully",
-        description: "Welcome to Loteraa platform.",
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
+        redirectTo: `${window.location.origin}/reset-password`,
       });
-    }, 1500);
+
+      if (error) {
+        toast({
+          title: "Error sending reset email",
+          description: error.message,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Password reset email sent!",
+        description: "Check your email for instructions to reset your password.",
+      });
+      
+      setShowForgotPassword(false);
+      
+    } catch (error: any) {
+      toast({
+        title: "Error sending reset email",
+        description: error.message || "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <Card className="w-full max-w-md mx-auto bg-loteraa-gray/20 backdrop-blur-md border-loteraa-gray/30">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">
-          {isLoginMode ? "Login to your account" : "Create an account"}
+          {showForgotPassword ? "Reset Password" : (isLoginMode ? "Login to your account" : "Create an account")}
         </CardTitle>
         <CardDescription className="text-center">
-          {isLoginMode ? "Enter your credentials to login" : "Choose your preferred signup method"}
+          {showForgotPassword ? "Enter your email to reset your password" : (isLoginMode ? "Enter your credentials to login" : "Enter your information to create an account")}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {isLoginMode ? (
+        {showForgotPassword ? (
+          <form onSubmit={handleForgotPassword} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="forgot-email">Email</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                <Input
+                  id="forgot-email"
+                  name="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  className="pl-10"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            
+            <Button type="submit" className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90" disabled={isLoading}>
+              {isLoading ? "Sending..." : "Send Reset Email"}
+            </Button>
+            
+            <Button 
+              type="button" 
+              variant="link" 
+              onClick={() => setShowForgotPassword(false)} 
+              className="w-full text-loteraa-blue hover:text-loteraa-blue/90"
+            >
+              Back to Login
+            </Button>
+          </form>
+        ) : isLoginMode ? (
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="login-email">Email</Label>
@@ -189,103 +240,87 @@ export default function SignupForm() {
             <Button type="submit" className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90" disabled={isLoading}>
               {isLoading ? "Logging in..." : "Login"}
             </Button>
+            
+            <Button 
+              type="button" 
+              variant="link" 
+              onClick={() => setShowForgotPassword(true)} 
+              className="w-full text-loteraa-blue hover:text-loteraa-blue/90"
+            >
+              Forgot Password?
+            </Button>
           </form>
         ) : (
-          <Tabs defaultValue="email" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="email">Email</TabsTrigger>
-              <TabsTrigger value="wallet">Web3 Wallet</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="email">
-              <form onSubmit={handleEmailSignup} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                    <Input
-                      id="name"
-                      name="name"
-                      placeholder="Enter your name"
-                      className="pl-10"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="name@example.com"
-                      className="pl-10"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <div className="relative">
-                    <KeyRound className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      placeholder="Create a password"
-                      className="pl-10"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <Button type="submit" className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90" disabled={isLoading}>
-                  {isLoading ? "Creating Account..." : "Create Account"}
-                </Button>
-              </form>
-            </TabsContent>
-            
-            <TabsContent value="wallet">
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground text-center">
-                    Connect your wallet to continue. We support MetaMask, WalletConnect, and more.
-                  </p>
-                </div>
-                
-                <Button 
-                  onClick={handleConnectWallet} 
-                  className="w-full bg-loteraa-blue hover:bg-loteraa-blue/90" 
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Connecting..." : "Connect Wallet"}
-                </Button>
+          <form onSubmit={handleEmailSignup} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <div className="relative">
+                <User className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                <Input
+                  id="name"
+                  name="name"
+                  placeholder="Enter your name"
+                  className="pl-10"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
               </div>
-            </TabsContent>
-          </Tabs>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  className="pl-10"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <KeyRound className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Create a password"
+                  className="pl-10"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            
+            <Button type="submit" className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90" disabled={isLoading}>
+              {isLoading ? "Creating Account..." : "Create Account"}
+            </Button>
+          </form>
         )}
       </CardContent>
       <CardFooter className="flex flex-col space-y-4">
-        <div className="text-center w-full">
-          <Button 
-            type="button" 
-            variant="link" 
-            onClick={() => setIsLoginMode(!isLoginMode)} 
-            className="text-loteraa-blue hover:text-loteraa-blue/90"
-          >
-            {isLoginMode ? "Don't have an account? Sign up" : "Already have an account? Login"}
-          </Button>
-        </div>
+        {!showForgotPassword && (
+          <div className="text-center w-full">
+            <Button 
+              type="button" 
+              variant="link" 
+              onClick={() => setIsLoginMode(!isLoginMode)} 
+              className="text-loteraa-blue hover:text-loteraa-blue/90"
+            >
+              {isLoginMode ? "Don't have an account? Sign up" : "Already have an account? Login"}
+            </Button>
+          </div>
+        )}
         <div className="text-center text-sm text-white/70 mt-2">
           By continuing, you agree to Loteraa's{" "}
           <a href="#" className="underline hover:text-white">Terms of Service</a> and{" "}
