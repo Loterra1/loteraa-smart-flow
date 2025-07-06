@@ -1,5 +1,5 @@
 
-import ParticleBackground from "@/components/ParticleBackground";
+import AdvancedBackground from "@/components/AdvancedBackground";
 import NavigationHeader from "@/components/NavigationHeader";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ParticleBackground />
+      <AdvancedBackground />
       <NavigationHeader />
       <main>
         <HeroSection />
