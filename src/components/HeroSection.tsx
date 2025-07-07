@@ -28,7 +28,7 @@ export default function HeroSection() {
 
           <div className="animate-fade-in animation-delay-3000 mb-16 max-w-6xl w-full">
             <div className="bg-black/80 backdrop-blur-md border border-loteraa-gray/40 rounded-lg p-16">
-              <p className="text-4xl text-white/90 leading-relaxed text-center max-w-4xl mx-auto glowing-text">
+              <p className="text-lg md:text-2xl lg:text-4xl text-white/90 leading-relaxed text-center max-w-4xl mx-auto glowing-text">
                 Loteraa's vision is to power the first global decentralized sensor network, where real-world data becomes the fuel for smart automation, DePIN incentives, and decentralized economies.
               </p>
             </div>
