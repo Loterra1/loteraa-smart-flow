@@ -1,5 +1,6 @@
 
 import AdvancedBackground from "@/components/AdvancedBackground";
+import AnimatedDataDots from "@/components/AnimatedDataDots";
 import NavigationHeader from "@/components/NavigationHeader";
 import HeroSection from "@/components/HeroSection";
 import CorePrinciples from "@/components/CorePrinciples";
@@ -10,8 +11,9 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-black">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-black via-loteraa-darkPurple/20 to-black">
       <AdvancedBackground />
+      <AnimatedDataDots />
       <NavigationHeader />
       <main>
         <HeroSection />
