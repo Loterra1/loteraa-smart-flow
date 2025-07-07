@@ -23,18 +23,26 @@ export default function HeroSection() {
             </Button>
           </div>
 
-          <div className="animate-fade-in animation-delay-700 mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Powerful Features</h2>
-            <p className="text-lg text-white/80 max-w-3xl">
-              Unlock new possibilities at the intersection of IoT and blockchain technologies.
-            </p>
-          </div>
-
-          <div className="animate-fade-in animation-delay-900 mb-16 max-w-4xl">
-            <div className="bg-loteraa-gray/30 backdrop-blur-md border border-loteraa-gray/40 rounded-lg p-8">
-              <p className="text-lg text-white/90 leading-relaxed">
+          <div className="animate-fade-in animation-delay-900 mb-8 max-w-5xl">
+            <div className="bg-loteraa-gray/30 backdrop-blur-md border border-loteraa-gray/40 rounded-lg p-10">
+              <p className="text-xl text-white/90 leading-relaxed mb-6">
                 Loteraa powers a modular infrastructure that enables physical or digital sensors to autonomously communicate with smart contracts creating a decentralized machine-to-machine economy.
               </p>
+            </div>
+          </div>
+
+          <div className="animate-fade-in animation-delay-1000 mb-16 max-w-5xl">
+            <div className="relative">
+              <img 
+                src="/lovable-uploads/267dda64-7a1e-4349-af16-466eda622938.png" 
+                alt="Loteraa Network Visualization" 
+                className="w-full h-64 object-cover rounded-lg"
+              />
+              <div className="absolute inset-0 bg-loteraa-black/60 rounded-lg flex items-center justify-center p-8">
+                <p className="text-lg text-white/90 leading-relaxed text-center max-w-3xl">
+                  Loteraa's vision is to power the first global decentralized sensor network, where real-world data becomes the fuel for smart automation, DePIN incentives, and decentralized economies.
+                </p>
+              </div>
             </div>
           </div>
         </div>

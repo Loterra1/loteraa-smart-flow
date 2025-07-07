@@ -11,7 +11,7 @@ export default function CorePrinciples() {
           </h2>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           <Card className="bg-loteraa-gray/40 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-200">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
@@ -42,6 +42,38 @@ export default function CorePrinciples() {
                 traffic behaviors, or market sentiment. This digital-first IoT layer helps developers test 
                 real-time logic before hardware deployment and creates a sandbox for AI models, automation 
                 flows, or token-reward experiments.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-loteraa-gray/40 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-600">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-white">
+                Reward Mechanism
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-white/80 leading-relaxed">
+                Loteraa's core reward loop centers on Data-to-Earn. Users earn $LOT for contributing quality data, 
+                running sensor nodes, validating uploads, or building dApps. Smart contracts verify contributions 
+                and automate payouts.
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-loteraa-gray/40 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-800">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-white">
+                Physical IoT dApps
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-white/80 leading-relaxed">
+                Loteraa is built to power physical decentralized applications. Whether it's environmental sensors 
+                in smart farms, GPS trackers on logistics fleets, or biometric gates in smart cities Loteraa 
+                provides the infrastructure to build real-world dApps with on-chain verification, automation, 
+                and token rewards. These dApps use smart contracts to reward node uptime, detect anomalies, 
+                and automate responses creating an end-to-end programmable physical world.
               </p>
             </CardContent>
           </Card>
