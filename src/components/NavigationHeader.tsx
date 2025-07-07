@@ -12,7 +12,12 @@ export default function NavigationHeader() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center space-x-2">
+              <img 
+                src="/lovable-uploads/40cbc360-b1aa-42cd-858a-5f580b1f1350.png" 
+                alt="Loteraa Logo" 
+                className="w-8 h-8"
+              />
               <span className="text-xl font-bold gradient-text">LOTERAA</span>
             </Link>
           </div>

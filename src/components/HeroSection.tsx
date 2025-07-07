@@ -30,19 +30,10 @@ export default function HeroSection() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 items-center animate-fade-in animation-delay-900 mb-16">
-            <div className="text-left">
-              <p className="text-lg text-white/90 leading-relaxed">
-                Loteraa powers a modular infrastructure that enables physical or digital sensors to autonomously communicate with smart contracts creating a decentralized machine-to-machine economy.
-              </p>
-            </div>
-            <div className="flex justify-center">
-              <img 
-                src="/lovable-uploads/8e2ae6e5-2676-42fa-99e5-d8d99a5cbd6e.png" 
-                alt="Loteraa Infrastructure" 
-                className="max-w-full h-auto rounded-lg"
-              />
-            </div>
+          <div className="text-center animate-fade-in animation-delay-900 mb-16">
+            <p className="text-lg text-white/90 leading-relaxed max-w-3xl">
+              Loteraa powers a modular infrastructure that enables physical or digital sensors to autonomously communicate with smart contracts creating a decentralized machine-to-machine economy.
+            </p>
           </div>
         </div>
       </div>

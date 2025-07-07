@@ -2,24 +2,25 @@
 export interface SmartContract {
   id: string;
   name: string;
+  address: string;
+  abi: string;
   description: string;
-  status: "Active" | "Inactive" | "Pending" | "Error";
-  address?: string;
-  abi?: string;
-  code?: string;
   network: string;
+  status: "Active" | "Inactive";
   createdAt: string;
   lastInteraction: string;
-  lastModified?: string;
-  gasUsed?: number;
+}
+
+export interface ContractMethod {
+  name: string;
+  type: 'function' | 'event';
+  inputs: ContractInput[];
+  outputs?: ContractInput[];
+  stateMutability?: 'pure' | 'view' | 'nonpayable' | 'payable';
+}
+
+export interface ContractInput {
+  name: string;
   type: string;
-  trigger?: string;
-  methods?: Array<{
-    name: string;
-    type: string;
-    inputs: Array<{
-      name: string;
-      type: string;
-    }>;
-  }>;
+  internalType?: string;
 }
