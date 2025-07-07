@@ -49,7 +49,7 @@ export default function CorePrinciples() {
               <img 
                 src="/lovable-uploads/8027db38-dd38-4c6f-afc7-4b7f1bdeed00.png" 
                 alt="" 
-                className="absolute right-0 top-0 w-32 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
+                className="absolute right-0 top-0 w-56 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
               />
             </div>
             <CardHeader className="relative z-10">
@@ -74,7 +74,7 @@ export default function CorePrinciples() {
               <img 
                 src="/lovable-uploads/c425ae29-8f3b-4b1b-a1a5-50062978e056.png" 
                 alt="" 
-                className="absolute right-0 bottom-0 w-32 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
+                className="absolute right-0 bottom-0 w-56 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
               />
             </div>
             <CardHeader className="relative z-10">
@@ -99,7 +99,7 @@ export default function CorePrinciples() {
               <img 
                 src="/lovable-uploads/05430015-7293-481c-aef0-4e5015e0491e.png" 
                 alt="" 
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 w-24 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 w-56 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
               />
             </div>
             <CardHeader className="relative z-10">
@@ -122,7 +122,7 @@ export default function CorePrinciples() {
               <img 
                 src="/lovable-uploads/494f92b9-37ce-4847-a0b0-b04c1f50a12d.png" 
                 alt="" 
-                className="absolute right-0 bottom-0 w-28 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
+                className="absolute right-0 bottom-0 w-56 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
               />
             </div>
             <CardHeader className="relative z-10">
