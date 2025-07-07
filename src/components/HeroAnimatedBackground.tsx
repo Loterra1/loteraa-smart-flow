@@ -26,27 +26,28 @@ export default function HeroAnimatedBackground() {
     if (!ctx) return;
 
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const heroSection = canvas.parentElement;
+      if (heroSection) {
+        canvas.width = heroSection.offsetWidth;
+        canvas.height = heroSection.offsetHeight;
+      }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mousePosition.current.x = e.clientX;
-      mousePosition.current.y = e.clientY;
+      const rect = canvas.getBoundingClientRect();
+      mousePosition.current.x = e.clientX - rect.left;
+      mousePosition.current.y = e.clientY - rect.top;
     };
 
-    // Digital futuristic colors
+    // Only lavender purple and aqua marine colors
     const colors = [
-      '#7142F6', // Purple
-      '#3182F4', // Blue  
-      '#0CCCBC', // Teal
-      '#ffffff', // White
-      '#9333ea'  // Violet
+      '#7142F6', // Lavender purple
+      '#0CCCBC', // Aqua marine
     ];
     
     const initNodes = () => {
       nodes.current = [];
-      const nodeCount = Math.floor((window.innerWidth * window.innerHeight) / 8000);
+      const nodeCount = Math.floor((canvas.width * canvas.height) / 8000);
       
       for (let i = 0; i < nodeCount; i++) {
         const node: DigitalNode = {
@@ -82,7 +83,7 @@ export default function HeroAnimatedBackground() {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Draw subtle grid pattern
+      // Draw subtle grid pattern with lavender purple
       ctx.beginPath();
       const gridSize = 60;
       for (let x = 0; x < canvas.width; x += gridSize) {
@@ -188,7 +189,7 @@ export default function HeroAnimatedBackground() {
         ctx.restore();
       });
       
-      // Add scanning lines effect
+      // Add scanning lines effect with aqua marine
       const time = Date.now() * 0.0005;
       for (let i = 0; i < 2; i++) {
         const y = Math.sin(time + i * Math.PI) * canvas.height * 0.3 + canvas.height * 0.5;
@@ -206,16 +207,21 @@ export default function HeroAnimatedBackground() {
       requestAnimationFrame(animate);
     };
 
-    window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('mousemove', handleMouseMove);
+    const resizeObserver = new ResizeObserver(resizeCanvas);
+    const heroSection = canvas.parentElement;
+    if (heroSection) {
+      resizeObserver.observe(heroSection);
+    }
+    
+    canvas.addEventListener('mousemove', handleMouseMove);
     
     resizeCanvas();
     initNodes();
     animate();
     
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      window.removeEventListener('mousemove', handleMouseMove);
+      resizeObserver.disconnect();
+      canvas.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
