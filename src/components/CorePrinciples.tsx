@@ -20,11 +20,11 @@ export default function CorePrinciples() {
           className="absolute right-0 top-1/3 transform -translate-y-1/3 w-96 h-auto opacity-70 z-0 filter brightness-150 drop-shadow-[0_0_25px_rgba(12,204,188,0.7)]"
         />
         
-        {/* Image 1 - Bottom */}
+        {/* Image 3 duplicate - Bottom (replacing Image 1) */}
         <img 
-          src="/lovable-uploads/a6b50502-c1aa-48fa-ab66-c7b7f2d7316d.png" 
+          src="/lovable-uploads/d1ef467c-333e-4564-84ae-bf42c8b1f09d.png" 
           alt="" 
-          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-96 h-auto opacity-60 z-0 filter brightness-140 drop-shadow-[0_0_30px_rgba(113,66,246,0.5)]"
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[28rem] h-auto opacity-60 z-0 filter brightness-140 drop-shadow-[0_0_30px_rgba(113,66,246,0.5)]"
         />
       </div>
 
