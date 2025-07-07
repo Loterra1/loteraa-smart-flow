@@ -43,7 +43,7 @@ export default function CorePrinciples() {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          <Card className="bg-gradient-to-br from-purple-200/20 to-purple-300/10 backdrop-blur-md border-loteraa-gray/50 animate-jump-fade-in animation-delay-600 hover:animate-bounce-ar relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 animate-jump-fade-in animation-delay-600 hover:animate-bounce-ar relative overflow-hidden">
             {/* Background Image for AI Model Training */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
@@ -68,7 +68,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-purple-200/20 to-purple-300/10 backdrop-blur-md border-loteraa-gray/50 animate-jump-fade-in animation-delay-800 hover:animate-bounce-ar relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 animate-jump-fade-in animation-delay-800 hover:animate-bounce-ar relative overflow-hidden">
             {/* Background Image for Digital IoT Data Layer */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
@@ -93,7 +93,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-200/20 to-purple-300/10 backdrop-blur-md border-loteraa-gray/50 animate-jump-fade-in animation-delay-1000 hover:animate-bounce-ar relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 animate-jump-fade-in animation-delay-1000 hover:animate-bounce-ar relative overflow-hidden">
             {/* Background Image for Reward Mechanism */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
@@ -116,7 +116,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-200/20 to-purple-300/10 backdrop-blur-md border-loteraa-gray/50 animate-jump-fade-in animation-delay-1200 hover:animate-bounce-ar relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 animate-jump-fade-in animation-delay-1200 hover:animate-bounce-ar relative overflow-hidden">
             {/* Background Image for Physical IoT dApps */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
