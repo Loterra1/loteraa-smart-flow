@@ -36,7 +36,7 @@ export default function AudienceSection() {
         <img 
           src="/lovable-uploads/1af8bb21-e405-4ca8-9195-8c2467659bf2.png" 
           alt="" 
-          className="absolute left-8 top-1/2 transform -translate-y-1/2 w-80 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_40px_rgba(113,66,246,0.8)] animate-pulse-soft"
+          className="absolute left-8 bottom-20 w-96 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_40px_rgba(113,66,246,0.8)] animate-pulse-soft"
         />
         
         {/* Image 2 - Middle */}
@@ -50,7 +50,7 @@ export default function AudienceSection() {
         <img 
           src="/lovable-uploads/e71c8a60-3341-4ed2-aa64-b8fe751414a5.png" 
           alt="" 
-          className="absolute right-8 top-1/2 transform -translate-y-1/2 w-80 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_40px_rgba(113,66,246,0.8)] animate-pulse-soft"
+          className="absolute right-8 bottom-20 w-96 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_40px_rgba(113,66,246,0.8)] animate-pulse-soft"
         />
       </div>
 
