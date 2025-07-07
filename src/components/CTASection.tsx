@@ -7,25 +7,18 @@ export default function CTASection() {
     <section className="py-20 bg-black relative overflow-hidden">
       {/* Background Images with Glow */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Image 1 - Left side */}
+        {/* Image 1 - Purple Planet on Left side */}
         <img 
-          src="/lovable-uploads/1af8bb21-e405-4ca8-9195-8c2467659bf2.png" 
+          src="/lovable-uploads/9f81737e-d7bf-45b7-8ef8-18af4f2cb9ae.png" 
           alt="" 
-          className="absolute left-8 top-1/2 transform -translate-y-1/2 w-80 h-auto opacity-50 z-0 filter brightness-150 drop-shadow-[0_0_60px_rgba(113,66,246,0.9)] animate-pulse-soft"
+          className="absolute left-8 top-1/2 transform -translate-y-1/2 w-96 h-auto opacity-60 z-0 filter brightness-200 drop-shadow-[0_0_80px_rgba(113,66,246,1.0)] animate-pulse-soft"
         />
         
-        {/* Image 2 - Center */}
+        {/* Image 2 - Purple Crystal in Center */}
         <img 
-          src="/lovable-uploads/e84154a3-b53d-415a-8915-18a1ecc5b505.png" 
+          src="/lovable-uploads/294bd0c7-5b0d-45ec-b638-ad20f77ce0d8.png" 
           alt="" 
-          className="absolute left-1/2 top-1/4 transform -translate-x-1/2 w-96 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_80px_rgba(113,66,246,1.0)] animate-pulse-soft"
-        />
-        
-        {/* Image 3 - Right side */}
-        <img 
-          src="/lovable-uploads/e71c8a60-3341-4ed2-aa64-b8fe751414a5.png" 
-          alt="" 
-          className="absolute right-8 bottom-1/4 w-80 h-auto opacity-50 z-0 filter brightness-150 drop-shadow-[0_0_60px_rgba(113,66,246,0.9)] animate-pulse-soft"
+          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-auto opacity-70 z-0 filter brightness-200 drop-shadow-[0_0_100px_rgba(113,66,246,1.2)] animate-pulse-soft"
         />
       </div>
 
