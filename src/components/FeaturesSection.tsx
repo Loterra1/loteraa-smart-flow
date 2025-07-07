@@ -1,5 +1,4 @@
 
-
 import { Database, Zap, Code, Coins, BarChart3 } from "lucide-react";
 
 export default function FeaturesSection() {
@@ -42,55 +41,64 @@ export default function FeaturesSection() {
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_30px_rgba(49,130,244,0.8)] animate-pulse-soft"
         />
         
-        {/* Image 2 - Purple Crystals on right side and original duplicates */}
+        {/* Image 2 - Purple Crystals distributed across the section */}
+        {/* Top left area - near Real-Time Data Feed */}
         <img 
           src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
           alt="" 
-          className="absolute right-10 top-1/4 w-40 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
-        />
-        <img 
-          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
-          alt="" 
-          className="absolute right-20 bottom-1/4 w-32 h-auto opacity-35 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
-        />
-        <img 
-          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
-          alt="" 
-          className="absolute left-1/3 top-10 w-36 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
-        />
-        <img 
-          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
-          alt="" 
-          className="absolute right-1/3 bottom-10 w-34 h-auto opacity-35 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
-        />
-        {/* MOVED: Purple crystal beside Decentralized Dashboard - moved to bottom right */}
-        <img 
-          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
-          alt="" 
-          className="absolute right-10 bottom-1/3 w-35 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+          className="absolute left-8 top-16 w-38 h-auto opacity-35 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
         />
         
-        {/* NEW: 3 Additional Image 2 duplicates as requested */}
-        {/* Below Developer API & SDK */}
+        {/* Top right area */}
         <img 
           src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
           alt="" 
-          className="absolute left-1/3 bottom-1/4 w-42 h-auto opacity-38 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
-        />
-        {/* Above Real Time Data Feed - moved to top left */}
-        <img 
-          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
-          alt="" 
-          className="absolute left-10 top-1/6 w-38 h-auto opacity-33 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
-        />
-        {/* Below Tokenized Rewards */}
-        <img 
-          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
-          alt="" 
-          className="absolute right-1/4 bottom-1/5 w-40 h-auto opacity-36 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+          className="absolute right-12 top-20 w-40 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
         />
         
-        {/* Image 3 - Purple/Pink Crystals on left side and duplicates */}
+        {/* Middle left area */}
+        <img 
+          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
+          alt="" 
+          className="absolute left-16 top-1/2 w-36 h-auto opacity-32 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+        />
+        
+        {/* Below Developer API & SDK - left side */}
+        <img 
+          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
+          alt="" 
+          className="absolute left-1/4 bottom-1/3 w-42 h-auto opacity-38 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+        />
+        
+        {/* Near Decentralized Dashboard - right side */}
+        <img 
+          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
+          alt="" 
+          className="absolute right-16 bottom-1/4 w-44 h-auto opacity-42 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+        />
+        
+        {/* Below Tokenized Rewards - center right */}
+        <img 
+          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
+          alt="" 
+          className="absolute right-1/3 bottom-16 w-40 h-auto opacity-36 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+        />
+        
+        {/* Bottom left corner */}
+        <img 
+          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
+          alt="" 
+          className="absolute left-12 bottom-12 w-32 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+        />
+        
+        {/* Far below the blue crystal - bottom center */}
+        <img 
+          src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
+          alt="" 
+          className="absolute left-1/2 bottom-8 transform -translate-x-1/2 w-35 h-auto opacity-28 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+        />
+        
+        {/* Image 3 - Purple/Pink Crystals distributed */}
         <img 
           src="/lovable-uploads/5922370a-5cd7-49bb-b920-4ce1c5cae5a4.png" 
           alt="" 
@@ -136,4 +144,3 @@ export default function FeaturesSection() {
     </section>
   );
 }
-
