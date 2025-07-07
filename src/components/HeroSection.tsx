@@ -23,14 +23,6 @@ export default function HeroSection() {
             </Button>
           </div>
 
-          <div className="animate-fade-in animation-delay-900 mb-8 max-w-6xl">
-            <div className="bg-black/80 backdrop-blur-md border border-loteraa-gray/40 rounded-lg p-16">
-              <p className="text-4xl text-white/90 leading-relaxed mb-6 glowing-text">
-                Loteraa powers a modular infrastructure that enables physical or digital sensors to autonomously communicate with smart contracts creating a decentralized machine-to-machine economy.
-              </p>
-            </div>
-          </div>
-
           <div className="animate-fade-in animation-delay-1200 mb-16 max-w-6xl w-full">
             <div className="bg-black/80 backdrop-blur-md border border-loteraa-gray/40 rounded-lg p-16">
               <p className="text-4xl text-white/90 leading-relaxed text-center max-w-4xl mx-auto glowing-text">

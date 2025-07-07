@@ -11,7 +11,7 @@ export interface SmartContract {
   lastInteraction?: string;
   type: string;
   trigger: string;
-  lastModified?: string;
+  lastModified: string;
   code?: string;
   gasUsed?: number;
   methods?: Array<{
