@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -110,6 +111,20 @@ export default {
 					'0%': { opacity: '0', transform: 'translateY(40px) scale(0.9)' },
 					'50%': { transform: 'translateY(-5px) scale(1.05)' },
 					'100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
+				},
+				'bounce-ar': {
+					'0%, 20%, 50%, 80%, 100%': { 
+						transform: 'translateY(0) scale(1)',
+						animationTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+					},
+					'40%': { 
+						transform: 'translateY(-20px) scale(1.1)',
+						animationTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+					},
+					'60%': { 
+						transform: 'translateY(-10px) scale(1.05)',
+						animationTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+					}
 				}
 			},
 			animation: {
@@ -120,7 +135,8 @@ export default {
 				'move-background': 'move-background 10s ease infinite',
 				'blob-rotate': 'blob-rotate 20s linear infinite',
 				'fade-in': 'fade-in 1.2s ease-out',
-				'jump-fade-in': 'jump-fade-in 1s ease-out'
+				'jump-fade-in': 'jump-fade-in 1s ease-out',
+				'bounce-ar': 'bounce-ar 2s infinite'
 			},
 			animationDelay: {
 				'100': '0.1s',
@@ -153,7 +169,11 @@ export default {
 				'.animation-delay-900': { animationDelay: '0.9s' },
 				'.animation-delay-1000': { animationDelay: '1s' },
 				'.animation-delay-1100': { animationDelay: '1.1s' },
-				'.animation-delay-1200': { animationDelay: '1.2s' }
+				'.animation-delay-1200': { animationDelay: '1.2s' },
+				'.glowing-text': {
+					textShadow: '0 0 10px rgba(113, 66, 246, 0.5), 0 0 20px rgba(113, 66, 246, 0.3), 0 0 30px rgba(113, 66, 246, 0.2)',
+					color: '#ffffff'
+				}
 			}
 			addUtilities(newUtilities)
 		}

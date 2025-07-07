@@ -12,7 +12,7 @@ export default function CorePrinciples() {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          <Card className="bg-loteraa-black/80 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-600">
+          <Card className="bg-black/90 backdrop-blur-md border-loteraa-gray/50 animate-jump-fade-in animation-delay-600 hover:animate-bounce-ar">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 AI Model Training via On-Chain Data
@@ -29,7 +29,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
           
-          <Card className="bg-loteraa-black/80 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-800">
+          <Card className="bg-black/90 backdrop-blur-md border-loteraa-gray/50 animate-jump-fade-in animation-delay-800 hover:animate-bounce-ar">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 Digital IoT Data Layer
@@ -46,7 +46,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className="bg-loteraa-black/80 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-1000">
+          <Card className="bg-black/90 backdrop-blur-md border-loteraa-gray/50 animate-jump-fade-in animation-delay-1000 hover:animate-bounce-ar">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 Reward Mechanism
@@ -61,7 +61,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className="bg-loteraa-black/80 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-1200">
+          <Card className="bg-black/90 backdrop-blur-md border-loteraa-gray/50 animate-jump-fade-in animation-delay-1200 hover:animate-bounce-ar">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 Physical IoT dApps

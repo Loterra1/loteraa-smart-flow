@@ -24,8 +24,8 @@ export default function HeroSection() {
           </div>
 
           <div className="animate-fade-in animation-delay-900 mb-8 max-w-6xl">
-            <div className="bg-loteraa-gray/30 backdrop-blur-md border border-loteraa-gray/40 rounded-lg p-12">
-              <p className="text-2xl text-white/90 leading-relaxed mb-6">
+            <div className="bg-black/80 backdrop-blur-md border border-loteraa-gray/40 rounded-lg p-16">
+              <p className="text-3xl text-white/90 leading-relaxed mb-6">
                 Loteraa powers a modular infrastructure that enables physical or digital sensors to autonomously communicate with smart contracts creating a decentralized machine-to-machine economy.
               </p>
             </div>
@@ -36,10 +36,11 @@ export default function HeroSection() {
               <img 
                 src="/lovable-uploads/267dda64-7a1e-4349-af16-466eda622938.png" 
                 alt="Loteraa Network Visualization" 
-                className="w-full h-96 object-cover rounded-lg"
+                className="w-120 h-109 object-cover rounded-lg mx-auto"
+                style={{width: '120px', height: '109px'}}
               />
               <div className="absolute inset-0 bg-loteraa-black/60 rounded-lg flex items-center justify-center p-12">
-                <p className="text-2xl text-white/90 leading-relaxed text-center max-w-4xl">
+                <p className="text-3xl text-white/90 leading-relaxed text-center max-w-4xl glowing-text">
                   Loteraa's vision is to power the first global decentralized sensor network, where real-world data becomes the fuel for smart automation, DePIN incentives, and decentralized economies.
                 </p>
               </div>
