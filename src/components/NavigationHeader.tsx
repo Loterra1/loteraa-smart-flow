@@ -16,7 +16,7 @@ export default function NavigationHeader() {
               <img 
                 src="/lovable-uploads/40cbc360-b1aa-42cd-858a-5f580b1f1350.png" 
                 alt="Loteraa Logo" 
-                className="w-8 h-8"
+                className="w-10 h-10"
               />
               <span className="text-xl font-bold gradient-text">LOTERAA</span>
             </Link>

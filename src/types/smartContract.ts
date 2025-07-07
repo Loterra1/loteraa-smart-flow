@@ -9,6 +9,19 @@ export interface SmartContract {
   status: "Active" | "Inactive";
   createdAt: string;
   lastInteraction: string;
+  type: string;
+  trigger?: string;
+  lastModified?: string;
+  code?: string;
+  gasUsed?: number;
+  methods?: Array<{
+    name: string;
+    type: string;
+    inputs: Array<{
+      name: string;
+      type: string;
+    }>;
+  }>;
 }
 
 export interface ContractMethod {

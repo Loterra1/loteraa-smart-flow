@@ -12,7 +12,7 @@ export default function CorePrinciples() {
         </div>
         
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          <Card className="bg-loteraa-gray/20 backdrop-blur-md border-loteraa-gray/30 animate-fade-in animation-delay-200">
+          <Card className="bg-loteraa-gray/40 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-200">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 AI Model Training via On-Chain Data
@@ -29,7 +29,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
           
-          <Card className="bg-loteraa-gray/20 backdrop-blur-md border-loteraa-gray/30 animate-fade-in animation-delay-400">
+          <Card className="bg-loteraa-gray/40 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-400">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 Digital IoT Data Layer
