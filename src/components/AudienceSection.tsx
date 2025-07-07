@@ -29,11 +29,7 @@ export default function AudienceSection() {
   ];
 
   return (
-    <section className="py-20 relative overflow-hidden">
-      <div className="mesh-bg">
-        <div className="mesh-grid"></div>
-      </div>
-      
+    <section className="py-20 bg-black">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
