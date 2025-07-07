@@ -2,8 +2,32 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-black border-t border-loteraa-gray/20">
-      <div className="container px-4 sm:px-6 lg:px-8 py-12 mx-auto">
+    <footer className="bg-black border-t border-loteraa-gray/20 relative overflow-hidden">
+      {/* Background Images with Glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Left sphere */}
+        <img 
+          src="/lovable-uploads/7d2e9782-88f3-417e-bc10-917e24caba98.png" 
+          alt="" 
+          className="absolute left-8 top-1/2 transform -translate-y-1/2 w-64 h-auto opacity-60 z-0 filter brightness-200 drop-shadow-[0_0_80px_rgba(113,66,246,1.0)] animate-pulse-soft"
+        />
+        
+        {/* Middle sphere */}
+        <img 
+          src="/lovable-uploads/7d2e9782-88f3-417e-bc10-917e24caba98.png" 
+          alt="" 
+          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-auto opacity-70 z-0 filter brightness-200 drop-shadow-[0_0_100px_rgba(113,66,246,1.2)] animate-pulse-soft"
+        />
+        
+        {/* Right sphere */}
+        <img 
+          src="/lovable-uploads/7d2e9782-88f3-417e-bc10-917e24caba98.png" 
+          alt="" 
+          className="absolute right-8 top-1/2 transform -translate-y-1/2 w-64 h-auto opacity-60 z-0 filter brightness-200 drop-shadow-[0_0_80px_rgba(113,66,246,1.0)] animate-pulse-soft"
+        />
+      </div>
+
+      <div className="container px-4 sm:px-6 lg:px-8 py-12 mx-auto relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div className="col-span-2">
             <Link to="/" className="flex items-center">
