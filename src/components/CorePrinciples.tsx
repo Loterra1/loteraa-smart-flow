@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function CorePrinciples() {
   return (
-    <section className="py-20 bg-gradient-to-b from-loteraa-black/50 to-loteraa-gray/20">
+    <section className="py-20 bg-black">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in animation-delay-300">
