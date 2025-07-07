@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -150,7 +149,11 @@ export default {
 				'900': '0.9s',
 				'1000': '1s',
 				'1100': '1.1s',
-				'1200': '1.2s'
+				'1200': '1.2s',
+				'1500': '1.5s',
+				'2000': '2s',
+				'2500': '2.5s',
+				'3000': '3s'
 			}
 		}
 	},
@@ -170,6 +173,10 @@ export default {
 				'.animation-delay-1000': { animationDelay: '1s' },
 				'.animation-delay-1100': { animationDelay: '1.1s' },
 				'.animation-delay-1200': { animationDelay: '1.2s' },
+				'.animation-delay-1500': { animationDelay: '1.5s' },
+				'.animation-delay-2000': { animationDelay: '2s' },
+				'.animation-delay-2500': { animationDelay: '2.5s' },
+				'.animation-delay-3000': { animationDelay: '3s' },
 				'.glowing-text': {
 					textShadow: '0 0 10px rgba(113, 66, 246, 0.5), 0 0 20px rgba(113, 66, 246, 0.3), 0 0 30px rgba(113, 66, 246, 0.2)',
 					color: '#ffffff'
