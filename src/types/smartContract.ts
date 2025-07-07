@@ -2,13 +2,13 @@
 export interface SmartContract {
   id: string;
   name: string;
-  address: string;
-  abi: string;
-  description: string;
-  network: string;
+  address?: string;
+  abi?: string;
+  description?: string;
+  network?: string;
   status: "Active" | "Inactive";
   createdAt: string;
-  lastInteraction: string;
+  lastInteraction?: string;
   type: string;
   trigger?: string;
   lastModified?: string;

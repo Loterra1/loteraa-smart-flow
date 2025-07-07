@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -104,11 +103,11 @@ export default {
 					'100%': { transform: 'rotate(360deg)' }
 				},
 				'fade-in': {
-					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'0%': { opacity: '0', transform: 'translateY(30px)' },
 					'100%': { opacity: '1', transform: 'translateY(0)' }
 				},
 				'jump-fade-in': {
-					'0%': { opacity: '0', transform: 'translateY(20px) scale(0.9)' },
+					'0%': { opacity: '0', transform: 'translateY(40px) scale(0.9)' },
 					'50%': { transform: 'translateY(-5px) scale(1.05)' },
 					'100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
 				}
@@ -120,8 +119,8 @@ export default {
 				'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
 				'move-background': 'move-background 10s ease infinite',
 				'blob-rotate': 'blob-rotate 20s linear infinite',
-				'fade-in': 'fade-in 0.8s ease-out',
-				'jump-fade-in': 'jump-fade-in 0.6s ease-out'
+				'fade-in': 'fade-in 1.2s ease-out',
+				'jump-fade-in': 'jump-fade-in 1s ease-out'
 			},
 			animationDelay: {
 				'100': '0.1s',
@@ -133,7 +132,9 @@ export default {
 				'700': '0.7s',
 				'800': '0.8s',
 				'900': '0.9s',
-				'1000': '1s'
+				'1000': '1s',
+				'1100': '1.1s',
+				'1200': '1.2s'
 			}
 		}
 	},
@@ -150,7 +151,9 @@ export default {
 				'.animation-delay-700': { animationDelay: '0.7s' },
 				'.animation-delay-800': { animationDelay: '0.8s' },
 				'.animation-delay-900': { animationDelay: '0.9s' },
-				'.animation-delay-1000': { animationDelay: '1s' }
+				'.animation-delay-1000': { animationDelay: '1s' },
+				'.animation-delay-1100': { animationDelay: '1.1s' },
+				'.animation-delay-1200': { animationDelay: '1.2s' }
 			}
 			addUtilities(newUtilities)
 		}

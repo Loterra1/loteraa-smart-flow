@@ -6,13 +6,13 @@ export default function CorePrinciples() {
     <section className="py-20 bg-gradient-to-b from-loteraa-black/50 to-loteraa-gray/20">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in animation-delay-300">
             Core Principles
           </h2>
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          <Card className="bg-loteraa-gray/40 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-200">
+          <Card className="bg-loteraa-black/80 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-600">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 AI Model Training via On-Chain Data
@@ -29,7 +29,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
           
-          <Card className="bg-loteraa-gray/40 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-400">
+          <Card className="bg-loteraa-black/80 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-800">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 Digital IoT Data Layer
@@ -46,7 +46,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className="bg-loteraa-gray/40 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-600">
+          <Card className="bg-loteraa-black/80 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-1000">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 Reward Mechanism
@@ -61,7 +61,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className="bg-loteraa-gray/40 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-800">
+          <Card className="bg-loteraa-black/80 backdrop-blur-md border-loteraa-gray/50 animate-fade-in animation-delay-1200">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-white">
                 Physical IoT dApps
