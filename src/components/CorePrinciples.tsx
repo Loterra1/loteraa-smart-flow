@@ -3,8 +3,32 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function CorePrinciples() {
   return (
-    <section className="py-20 bg-black">
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
+    <section className="py-20 bg-black relative overflow-hidden">
+      {/* Background Images */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Image 3 - Left side */}
+        <img 
+          src="/lovable-uploads/d1ef467c-333e-4564-84ae-bf42c8b1f09d.png" 
+          alt="" 
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 w-64 h-auto opacity-20 z-0"
+        />
+        
+        {/* Image 2 - Right side */}
+        <img 
+          src="/lovable-uploads/41e38ae2-f165-4010-ab17-e95bb9f5150a.png" 
+          alt="" 
+          className="absolute right-0 top-1/3 transform -translate-y-1/3 w-72 h-auto opacity-20 z-0"
+        />
+        
+        {/* Image 1 - Bottom */}
+        <img 
+          src="/lovable-uploads/a6b50502-c1aa-48fa-ab66-c7b7f2d7316d.png" 
+          alt="" 
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-80 h-auto opacity-15 z-0"
+        />
+      </div>
+
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in animation-delay-300">
             Core Principles
