@@ -23,7 +23,7 @@ export default function CTASection() {
         
         {/* Image 1 Duplicate - Purple Robot Head on Right side */}
         <img 
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0c100085-a166-4401-ac09-ba6d2ff7225d-CZhgUWEtHStq2kCRlGcQnGKMp4yQaC.png" 
+          src="/lovable-uploads/0c100085-a166-4401-ac09-ba6d2ff7225d.png" 
           alt="" 
           className="absolute right-8 top-1/2 transform -translate-y-1/2 w-96 h-auto opacity-60 z-0 filter brightness-200 drop-shadow-[0_0_80px_rgba(113,66,246,1.0)] animate-pulse-soft"
         />
