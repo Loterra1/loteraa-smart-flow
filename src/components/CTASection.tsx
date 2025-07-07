@@ -20,6 +20,13 @@ export default function CTASection() {
           alt="" 
           className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-auto opacity-70 z-0 filter brightness-200 drop-shadow-[0_0_100px_rgba(113,66,246,1.2)] animate-pulse-soft"
         />
+        
+        {/* Image 1 Duplicate - Purple Robot Head on Right side */}
+        <img 
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0c100085-a166-4401-ac09-ba6d2ff7225d-CZhgUWEtHStq2kCRlGcQnGKMp4yQaC.png" 
+          alt="" 
+          className="absolute right-8 top-1/2 transform -translate-y-1/2 w-96 h-auto opacity-60 z-0 filter brightness-200 drop-shadow-[0_0_80px_rgba(113,66,246,1.0)] animate-pulse-soft"
+        />
       </div>
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
