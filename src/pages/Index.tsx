@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-black via-loteraa-darkPurple/20 to-black">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-black via-black/95 to-loteraa-darkPurple/30">
       <AdvancedBackground />
       <AnimatedDataDots />
       <NavigationHeader />
