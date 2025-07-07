@@ -37,7 +37,7 @@ export default function CorePrinciples() {
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in animation-delay-300">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in animation-delay-1000">
             Core Principles
           </h2>
         </div>
