@@ -10,21 +10,21 @@ export default function CorePrinciples() {
         <img 
           src="/lovable-uploads/d1ef467c-333e-4564-84ae-bf42c8b1f09d.png" 
           alt="" 
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 w-64 h-auto opacity-20 z-0"
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 w-80 h-auto opacity-70 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)]"
         />
         
         {/* Image 2 - Right side */}
         <img 
           src="/lovable-uploads/41e38ae2-f165-4010-ab17-e95bb9f5150a.png" 
           alt="" 
-          className="absolute right-0 top-1/3 transform -translate-y-1/3 w-72 h-auto opacity-20 z-0"
+          className="absolute right-0 top-1/3 transform -translate-y-1/3 w-96 h-auto opacity-70 z-0 filter brightness-150 drop-shadow-[0_0_25px_rgba(12,204,188,0.7)]"
         />
         
         {/* Image 1 - Bottom */}
         <img 
           src="/lovable-uploads/a6b50502-c1aa-48fa-ab66-c7b7f2d7316d.png" 
           alt="" 
-          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-80 h-auto opacity-15 z-0"
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-96 h-auto opacity-60 z-0 filter brightness-140 drop-shadow-[0_0_30px_rgba(113,66,246,0.5)]"
         />
       </div>
 
