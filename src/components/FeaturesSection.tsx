@@ -63,11 +63,11 @@ export default function FeaturesSection() {
           alt="" 
           className="absolute right-1/3 bottom-10 w-34 h-auto opacity-35 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
         />
-        {/* ADJUSTED: Purple crystal below/beside Decentralized Dashboard */}
+        {/* MOVED: Purple crystal beside Decentralized Dashboard - moved to bottom right */}
         <img 
           src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
           alt="" 
-          className="absolute right-1/3 bottom-1/6 w-28 h-auto opacity-25 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+          className="absolute right-10 bottom-1/3 w-35 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
         />
         
         {/* NEW: 3 Additional Image 2 duplicates as requested */}
@@ -77,11 +77,11 @@ export default function FeaturesSection() {
           alt="" 
           className="absolute left-1/3 bottom-1/4 w-42 h-auto opacity-38 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
         />
-        {/* ADJUSTED: Above Real Time Data Feed - moved higher up */}
+        {/* Above Real Time Data Feed - moved to top left */}
         <img 
           src="/lovable-uploads/3c22ba94-5195-49f8-91d3-bbd18517ee08.png" 
           alt="" 
-          className="absolute left-1/4 top-1/8 w-38 h-auto opacity-33 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
+          className="absolute left-10 top-1/6 w-38 h-auto opacity-33 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.7)] animate-pulse-soft"
         />
         {/* Below Tokenized Rewards */}
         <img 
