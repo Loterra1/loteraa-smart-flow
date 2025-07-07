@@ -32,18 +32,10 @@ export default function HeroSection() {
           </div>
 
           <div className="animate-fade-in animation-delay-1200 mb-16 max-w-6xl w-full">
-            <div className="relative">
-              <img 
-                src="/lovable-uploads/267dda64-7a1e-4349-af16-466eda622938.png" 
-                alt="Loteraa Network Visualization" 
-                className="w-120 h-120 object-cover rounded-lg mx-auto"
-                style={{width: '120px', height: '120px'}}
-              />
-              <div className="absolute inset-0 bg-loteraa-black/60 rounded-lg flex items-center justify-center p-12">
-                <p className="text-4xl text-white/90 leading-relaxed text-center max-w-4xl glowing-text">
-                  Loteraa's vision is to power the first global decentralized sensor network, where real-world data becomes the fuel for smart automation, DePIN incentives, and decentralized economies.
-                </p>
-              </div>
+            <div className="bg-black/80 backdrop-blur-md border border-loteraa-gray/40 rounded-lg p-16">
+              <p className="text-4xl text-white/90 leading-relaxed text-center max-w-4xl mx-auto glowing-text">
+                Loteraa's vision is to power the first global decentralized sensor network, where real-world data becomes the fuel for smart automation, DePIN incentives, and decentralized economies.
+              </p>
             </div>
           </div>
         </div>
