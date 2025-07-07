@@ -47,7 +47,7 @@ export default function CorePrinciples() {
             {/* Background Image for AI Model Training */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0c100085-a166-4401-ac09-ba6d2ff7225d-CZhgUWEtHStq2kCRlGcQnGKMp4yQaC.png" 
+                src="/lovable-uploads/8027db38-dd38-4c6f-afc7-4b7f1bdeed00.png" 
                 alt="" 
                 className="absolute right-0 top-0 w-32 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
               />
@@ -72,7 +72,7 @@ export default function CorePrinciples() {
             {/* Background Image for Digital IoT Data Layer */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/c1248f3c-d96d-4840-b7db-c157ff6c782c-k0Sx1tEFHN1NI2XFJ8wPeTYNi6s7H3.png" 
+                src="/lovable-uploads/c425ae29-8f3b-4b1b-a1a5-50062978e056.png" 
                 alt="" 
                 className="absolute right-0 bottom-0 w-32 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
               />
@@ -97,7 +97,7 @@ export default function CorePrinciples() {
             {/* Background Image for Reward Mechanism */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/349d3bcd-55e7-4f02-bcc5-b340af78f4f9-YQNTGShpeMR6KGNJAa1xLCo2D8hTp5.png" 
+                src="/lovable-uploads/05430015-7293-481c-aef0-4e5015e0491e.png" 
                 alt="" 
                 className="absolute left-0 top-1/2 transform -translate-y-1/2 w-24 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
               />
@@ -120,7 +120,7 @@ export default function CorePrinciples() {
             {/* Background Image for Physical IoT dApps */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/89d36f9c-cd23-4f0f-9d66-28e5810c6f51-gCnZaGKH6MYrFaKOznJt1N8klVyJJe.png" 
+                src="/lovable-uploads/494f92b9-37ce-4847-a0b0-b04c1f50a12d.png" 
                 alt="" 
                 className="absolute right-0 bottom-0 w-28 h-auto opacity-30 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
               />
