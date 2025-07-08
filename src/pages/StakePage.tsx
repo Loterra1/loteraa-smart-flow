@@ -10,6 +10,7 @@ import StakingStats from "@/components/staking/StakingStats";
 
 const StakePage = () => {
   const [activeTab, setActiveTab] = useState("stake");
+  const [walletConnected, setWalletConnected] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -51,15 +52,15 @@ const StakePage = () => {
                 </TabsList>
 
                 <TabsContent value="stake" className="p-6">
-                  <StakingPanel />
+                  <StakingPanel walletConnected={walletConnected} setWalletConnected={setWalletConnected} />
                 </TabsContent>
 
                 <TabsContent value="swap" className="p-6">
-                  <SwapPanel />
+                  <SwapPanel walletConnected={walletConnected} setWalletConnected={setWalletConnected} />
                 </TabsContent>
 
                 <TabsContent value="bridge" className="p-6">
-                  <BridgePanel />
+                  <BridgePanel walletConnected={walletConnected} setWalletConnected={setWalletConnected} />
                 </TabsContent>
               </Tabs>
             </div>

@@ -18,18 +18,22 @@ const networks = [
 ];
 
 const tokens = [
-  { symbol: "TERRA", name: "Loteraa Token", balance: "1000.00" },
+  { symbol: "LOT", name: "Loteraa Token", balance: "1000.00" },
   { symbol: "USDT", name: "Tether USD", balance: "400.00" },
   { symbol: "USDC", name: "USD Coin", balance: "350.00" },
 ];
 
-const BridgePanel = () => {
+interface BridgePanelProps {
+  walletConnected: boolean;
+  setWalletConnected: (connected: boolean) => void;
+}
+
+const BridgePanel = ({ walletConnected, setWalletConnected }: BridgePanelProps) => {
   const [fromNetwork, setFromNetwork] = useState("loteraa");
   const [toNetwork, setToNetwork] = useState("polygon");
-  const [token, setToken] = useState("TERRA");
+  const [token, setToken] = useState("LOT");
   const [amount, setAmount] = useState("");
   const [isBridging, setIsBridging] = useState(false);
-  const [walletConnected, setWalletConnected] = useState(false);
   
   const handleFromNetworkChange = (value: string) => {
     if (value === toNetwork) {

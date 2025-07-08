@@ -24,6 +24,11 @@ interface StakeEntry {
   daysRemaining: number;
 }
 
+interface StakingPanelProps {
+  walletConnected: boolean;
+  setWalletConnected: (connected: boolean) => void;
+}
+
 const stakingOptions = [
   { value: "4weeks", label: "4 Weeks", apy: "12.5%" },
   { value: "8weeks", label: "8 Weeks", apy: "16.8%" },
@@ -31,13 +36,12 @@ const stakingOptions = [
   { value: "4months", label: "4 Months", apy: "27.5%" },
 ];
 
-const StakingPanel = () => {
+const StakingPanel = ({ walletConnected, setWalletConnected }: StakingPanelProps) => {
   const [amount, setAmount] = useState("");
   const [stakingPeriod, setStakingPeriod] = useState("4weeks");
   const [isStaking, setIsStaking] = useState(false);
   const [sliderValue, setSliderValue] = useState([50]);
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletBalance, setWalletBalance] = useState(1000);
+  const [walletBalance, setWalletBalance] = useState(0);
   const [userStakes, setUserStakes] = useState<StakeEntry[]>([]);
   const [totalStaked, setTotalStaked] = useState(0);
   const [totalRewards, setTotalRewards] = useState(0);
@@ -75,6 +79,7 @@ const StakingPanel = () => {
       description: "Successfully connected to your wallet",
     });
     setWalletConnected(true);
+    setWalletBalance(1000); // Set balance when wallet connects
   };
   
   const handleStake = async () => {
@@ -91,7 +96,7 @@ const StakingPanel = () => {
     if (stakeAmount > walletBalance) {
       toast({
         title: "Insufficient balance",
-        description: "You don't have enough TERRA tokens",
+        description: "You don't have enough LOT tokens",
         variant: "destructive",
       });
       return;
@@ -119,7 +124,7 @@ const StakingPanel = () => {
       
       toast({
         title: "Staked successfully",
-        description: `You have staked ${amount} TERRA for ${selectedOption?.label}`,
+        description: `You have staked ${amount} LOT for ${selectedOption?.label}`,
       });
       
       setAmount("");
@@ -139,14 +144,14 @@ const StakingPanel = () => {
     <div className="grid md:grid-cols-2 gap-8">
       <div className="space-y-6">
         <div>
-          <h3 className="text-xl font-semibold mb-4">Stake TERRA</h3>
+          <h3 className="text-xl font-semibold mb-4">Stake LOT</h3>
           <div className="space-y-4">
             <div>
               <div className="flex justify-between items-center mb-1">
                 <Label htmlFor="stake-amount">Stake Amount</Label>
                 {walletConnected && (
                   <span className="text-sm text-white/70">
-                    Balance: {walletBalance.toFixed(2)} TERRA
+                    Balance: {walletBalance.toFixed(2)} LOT
                   </span>
                 )}
               </div>
@@ -242,7 +247,7 @@ const StakingPanel = () => {
               disabled={!amount || parseFloat(amount) <= 0 || isStaking}
               onClick={handleStake}
             >
-              {isStaking ? "Staking..." : "Stake TERRA"}
+              {isStaking ? "Staking..." : "Stake LOT"}
             </Button>
           )}
         </div>
@@ -255,14 +260,7 @@ const StakingPanel = () => {
             <CardContent className="p-6 flex flex-col items-center justify-center text-center h-60">
               <Wallet className="h-12 w-12 text-white/50 mb-4" />
               <h4 className="text-lg font-medium mb-2">Wallet Not Connected</h4>
-              <p className="text-white/70 mb-6">Connect your wallet to view your staking details</p>
-              <Button 
-                variant="outline" 
-                onClick={handleConnectWallet}
-                className="border-loteraa-purple text-loteraa-purple hover:bg-loteraa-purple/10"
-              >
-                <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
-              </Button>
+              <p className="text-white/70">Connect your wallet to view your staking details</p>
             </CardContent>
           </Card>
         ) : userStakes.length === 0 ? (
@@ -272,9 +270,9 @@ const StakingPanel = () => {
                 <Wallet className="h-6 w-6 text-loteraa-purple" />
               </div>
               <h4 className="text-lg font-medium mb-2">No Stakes Yet</h4>
-              <p className="text-white/70 mb-4">You haven't staked any TERRA tokens yet</p>
+              <p className="text-white/70 mb-4">You haven't staked any LOT tokens yet</p>
               <div className="text-sm text-white/50">
-                <p>Your Balance: {walletBalance.toFixed(2)} TERRA</p>
+                <p>Your Balance: {walletBalance.toFixed(2)} LOT</p>
               </div>
             </CardContent>
           </Card>
@@ -283,17 +281,17 @@ const StakingPanel = () => {
             <CardContent className="p-6 space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-white/70">Total Staked</span>
-                <span className="font-medium">{totalStaked.toFixed(2)} TERRA</span>
+                <span className="font-medium">{totalStaked.toFixed(2)} LOT</span>
               </div>
               
               <div className="flex justify-between items-center">
                 <span className="text-sm text-white/70">Rewards Earned</span>
-                <span className="font-medium text-green-500">+{totalRewards.toFixed(2)} TERRA</span>
+                <span className="font-medium text-green-500">+{totalRewards.toFixed(2)} LOT</span>
               </div>
               
               <div className="flex justify-between items-center">
                 <span className="text-sm text-white/70">Available Balance</span>
-                <span className="font-medium">{walletBalance.toFixed(2)} TERRA</span>
+                <span className="font-medium">{walletBalance.toFixed(2)} LOT</span>
               </div>
               
               <div className="pt-4 border-t border-white/10">
@@ -303,7 +301,7 @@ const StakingPanel = () => {
                   {userStakes.map((stake) => (
                     <div key={stake.id} className="p-3 bg-loteraa-purple/10 rounded-md border border-loteraa-purple/20">
                       <div className="flex justify-between">
-                        <span>{stake.amount} TERRA</span>
+                        <span>{stake.amount} LOT</span>
                         <span className="text-loteraa-purple">{stake.apy} APY</span>
                       </div>
                       <div className="mt-2 flex justify-between text-sm text-white/70">

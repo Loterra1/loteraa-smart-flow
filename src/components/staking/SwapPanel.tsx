@@ -13,20 +13,24 @@ import {
 import { toast } from "@/hooks/use-toast";
 
 const tokens = [
-  { symbol: "TERRA", name: "Loteraa Token", balance: "1000.00", price: 2.47 },
+  { symbol: "LOT", name: "Loteraa Token", balance: "1000.00", price: 2.47 },
   { symbol: "POL", name: "Polygon", balance: "5.25", price: 0.75 },
   { symbol: "ETH", name: "Ethereum", balance: "0.12", price: 3500.00 },
   { symbol: "USDT", name: "Tether", balance: "400.00", price: 1.00 },
   { symbol: "USDC", name: "USD Coin", balance: "350.00", price: 1.00 },
 ];
 
-const SwapPanel = () => {
-  const [fromToken, setFromToken] = useState("TERRA");
+interface SwapPanelProps {
+  walletConnected: boolean;
+  setWalletConnected: (connected: boolean) => void;
+}
+
+const SwapPanel = ({ walletConnected, setWalletConnected }: SwapPanelProps) => {
+  const [fromToken, setFromToken] = useState("LOT");
   const [toToken, setToToken] = useState("USDC");
   const [fromAmount, setFromAmount] = useState("");
   const [toAmount, setToAmount] = useState("");
   const [isSwapping, setIsSwapping] = useState(false);
-  const [walletConnected, setWalletConnected] = useState(false);
   
   const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -246,7 +250,7 @@ const SwapPanel = () => {
             
             <div className="flex justify-between">
               <span className="text-sm text-white/70">Network Fee</span>
-              <span className="text-sm">0.001 TERRA</span>
+              <span className="text-sm">0.001 LOT</span>
             </div>
           </div>
         </div>
