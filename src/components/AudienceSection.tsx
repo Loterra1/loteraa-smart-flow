@@ -113,17 +113,6 @@ export default function AudienceSection() {
             <Link to="/signup">Get Started Today <ArrowRight className="ml-2 h-5 w-5" /></Link>
           </Button>
         </div>
-
-        <div className="mt-16 text-center">
-          <img 
-            src="/lovable-uploads/4e6bf546-c118-4c87-a5cb-89d4241b0830.png" 
-            alt="LOT Coin" 
-            className="mx-auto w-48 h-48 object-contain mb-6"
-          />
-          <Button size="lg" className="bg-loteraa-teal hover:bg-loteraa-teal/90 text-white px-8 py-6 text-lg">
-            Buy $LOT Token
-          </Button>
-        </div>
       </div>
     </section>
   );
