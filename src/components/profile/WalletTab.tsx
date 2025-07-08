@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 
 export default function WalletTab() {
-  const [terraBalance, setTerraBalance] = useState(0);
+  const [lotBalance, setLotBalance] = useState(0);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [withdrawAddress, setWithdrawAddress] = useState('');
@@ -30,19 +29,19 @@ export default function WalletTab() {
     if (userData) {
       const parsedData = JSON.parse(userData);
       if (parsedData.isNewAccount !== false) {
-        setTerraBalance(0);
+        setLotBalance(0);
       } else {
         // For existing accounts, you might load balance from API
-        setTerraBalance(0);
+        setLotBalance(0);
       }
     }
   }, []);
 
   const handleWithdraw = () => {
-    if (terraBalance === 0) {
+    if (lotBalance === 0) {
       toast({
         title: "No balance to withdraw",
-        description: "Start earning Terra tokens by submitting data and using IoT devices.",
+        description: "Start earning LOT tokens by submitting data and using IoT devices.",
         variant: "destructive"
       });
       return;
@@ -67,10 +66,10 @@ export default function WalletTab() {
       return;
     }
     
-    if (amount > terraBalance) {
+    if (amount > lotBalance) {
       toast({
         title: "Insufficient balance",
-        description: "You don't have enough Terra tokens for this withdrawal",
+        description: "You don't have enough LOT tokens for this withdrawal",
         variant: "destructive"
       });
       return;
@@ -99,7 +98,7 @@ export default function WalletTab() {
       // Show success message
       toast({
         title: "Withdrawal initiated",
-        description: `${amount} Terra tokens are being sent to your wallet`,
+        description: `${amount} LOT tokens are being sent to your wallet`,
       });
     }, 2000);
   };
@@ -110,14 +109,14 @@ export default function WalletTab() {
         <CardHeader className="bg-gradient-to-r from-loteraa-purple/20 to-loteraa-black/20">
           <CardTitle className="flex items-center gap-2">
             <Wallet className="h-5 w-5 text-loteraa-purple" />
-            <span className="text-white">Terra Token Balance</span>
+            <span className="text-white">LOT Token Balance</span>
           </CardTitle>
         </CardHeader>
         
         <CardContent className="py-6">
           <div className="flex items-baseline">
-            <span className="text-3xl font-bold text-white">{terraBalance.toLocaleString()}</span>
-            <span className="ml-2 text-loteraa-purple">Terra</span>
+            <span className="text-3xl font-bold text-white">{lotBalance.toLocaleString()}</span>
+            <span className="ml-2 text-loteraa-purple">LOT</span>
           </div>
         </CardContent>
         
@@ -143,7 +142,7 @@ export default function WalletTab() {
       <Dialog open={isWithdrawOpen} onOpenChange={setIsWithdrawOpen}>
         <DialogContent className="bg-loteraa-black border-loteraa-gray/30 text-white sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-xl text-white">Withdraw Terra Tokens</DialogTitle>
+            <DialogTitle className="text-xl text-white">Withdraw LOT Tokens</DialogTitle>
             <DialogDescription className="text-loteraa-gray/80">
               Enter the amount and destination address for your withdrawal.
             </DialogDescription>
@@ -154,7 +153,7 @@ export default function WalletTab() {
               <div className="flex items-center justify-between">
                 <Label htmlFor="amount">Amount</Label>
                 <Badge variant="outline" className="text-xs border-loteraa-gray/50">
-                  Available: {terraBalance.toLocaleString()} Terra
+                  Available: {lotBalance.toLocaleString()} LOT
                 </Badge>
               </div>
               <Input
@@ -183,7 +182,7 @@ export default function WalletTab() {
             <div className="mt-4 p-3 rounded-md bg-loteraa-purple/10 border border-loteraa-purple/20 text-sm">
               <p className="flex items-center gap-1">
                 <span>Network Fee:</span>
-                <span className="font-medium">0.5 Terra</span>
+                <span className="font-medium">0.5 LOT</span>
               </p>
               <p className="text-xs text-loteraa-gray/80 mt-1">
                 This fee is used to cover transaction costs on the blockchain network.

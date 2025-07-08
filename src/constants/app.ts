@@ -64,7 +64,7 @@ export const APP_CONSTANTS = {
   
   // Currency configuration
   CURRENCY: {
-    SYMBOL: '$TERRA',
+    SYMBOL: '$LOT',
     DECIMALS: 2,
     FORMAT: 'en-US'
   },

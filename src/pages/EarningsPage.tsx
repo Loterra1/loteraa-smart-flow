@@ -59,10 +59,10 @@ export default function EarningsPage() {
 
   // Show earnings page content for all users (new and existing)
   const earningsOverview = [
-    { title: "Total Earnings", value: "0", unit: "$TERRA", change: "+0%", icon: DollarSign },
-    { title: "This Month", value: "0", unit: "$TERRA", change: "+0%", icon: TrendingUp },
+    { title: "Total Earnings", value: "0", unit: "$LOT", change: "+0%", icon: DollarSign },
+    { title: "This Month", value: "0", unit: "$LOT", change: "+0%", icon: TrendingUp },
     { title: "Data Points", value: "0", unit: "points", change: "+0%", icon: Database },
-    { title: "Avg. Daily", value: "0", unit: "$TERRA", change: "+0%", icon: Coins },
+    { title: "Avg. Daily", value: "0", unit: "$LOT", change: "+0%", icon: Coins },
   ];
 
   const earningsData: EarningsData[] = [];

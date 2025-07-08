@@ -28,7 +28,7 @@ export default function DashboardStats() {
       <StatCard 
         title="Total Earnings" 
         value="0" 
-        unit="$TERRA"
+        unit="$LOT"
         trend={<ChevronUp className="h-4 w-4 text-gray-500" />}
         trendValue="Begin earning"
         iconBg="bg-loteraa-teal/20"
