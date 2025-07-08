@@ -1,9 +1,38 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useRef, useState } from "react";
 
 export default function CorePrinciples() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false, false]);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            // Animate cards in sequence with delays
+            setTimeout(() => setVisibleCards(prev => [true, ...prev.slice(1)]), 600);
+            setTimeout(() => setVisibleCards(prev => [prev[0], true, ...prev.slice(2)]), 900);
+            setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 2), true, prev[3]]), 1200);
+            setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 3), true]), 1500);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="py-20 bg-black relative overflow-hidden">
+    <section ref={sectionRef} className="py-20 bg-black relative overflow-hidden">
       {/* Background Images */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Image 3 - Left side */}
@@ -37,13 +66,13 @@ export default function CorePrinciples() {
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in animation-delay-1000">
+          <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             Core Principles
           </h2>
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          <Card className="bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 animate-jump-fade-in animation-delay-600 hover:animate-bounce-ar relative overflow-hidden">
+          <Card className={`bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[0] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {/* Background Image for AI Model Training */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
@@ -68,7 +97,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
           
-          <Card className="bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 animate-jump-fade-in animation-delay-800 hover:animate-bounce-ar relative overflow-hidden">
+          <Card className={`bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[1] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {/* Background Image for Digital IoT Data Layer */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
@@ -93,7 +122,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 animate-jump-fade-in animation-delay-1000 hover:animate-bounce-ar relative overflow-hidden">
+          <Card className={`bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[2] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {/* Background Image for Reward Mechanism */}
             <div className="absolute inset-0 pointer-events-none">
               <img 
@@ -116,7 +145,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 animate-jump-fade-in animation-delay-1200 hover:animate-bounce-ar relative overflow-hidden">
+          <Card className={`bg-gradient-to-br from-white/5 to-purple-500/5 backdrop-blur-sm border-white/10 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[3] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {/* Background Image for Physical IoT dApps */}
             <div className="absolute inset-0 pointer-events-none">
               <img 

@@ -2,8 +2,31 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Building, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 
 export default function AudienceSection() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const audiences = [
     {
       icon: <Code className="h-10 w-10 text-loteraa-blue" />,
@@ -29,7 +52,7 @@ export default function AudienceSection() {
   ];
 
   return (
-    <section className="py-20 bg-black relative overflow-hidden">
+    <section ref={sectionRef} className="py-20 bg-black relative overflow-hidden">
       {/* Background Holographic Head Images */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Image 1 - Left side */}
@@ -56,10 +79,10 @@ export default function AudienceSection() {
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <span className="gradient-text">Who is it for?</span>
           </h2>
-          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+          <p className={`text-xl text-white/70 max-w-2xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             Our infrastructure serves multiple stakeholders in the IoT-blockchain ecosystem
           </p>
         </div>

@@ -222,6 +222,10 @@ export default {
 				'.glowing-text-enhanced': {
 					textShadow: '0 0 15px rgba(113, 66, 246, 0.7), 0 0 25px rgba(113, 66, 246, 0.5), 0 0 35px rgba(113, 66, 246, 0.3), 0 0 45px rgba(12, 204, 188, 0.2)',
 					color: '#ffffff'
+				},
+				'.glowing-text-ultra': {
+					textShadow: '0 0 20px rgba(113, 66, 246, 1.0), 0 0 35px rgba(113, 66, 246, 0.8), 0 0 50px rgba(113, 66, 246, 0.6), 0 0 65px rgba(12, 204, 188, 0.4), 0 0 80px rgba(113, 66, 246, 0.2)',
+					color: '#ffffff'
 				}
 			}
 			addUtilities(newUtilities)
