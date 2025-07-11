@@ -32,36 +32,15 @@ export default function CorePrinciples() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 bg-black relative overflow-hidden">
-      {/* Background Images */}
+    <section ref={sectionRef} className="py-20 relative overflow-hidden">
+      {/* Background Image */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Image 3 - Left side */}
         <img 
-          src="/lovable-uploads/d1ef467c-333e-4564-84ae-bf42c8b1f09d.png" 
+          src="/lovable-uploads/a6f6f001-c472-416b-9f80-7c0da082a66c.png" 
           alt="" 
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 w-80 h-auto opacity-70 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
+          className="absolute inset-0 w-full h-full object-cover opacity-80 z-0"
         />
-        
-        {/* Image 2 - Right side */}
-        <img 
-          src="/lovable-uploads/41e38ae2-f165-4010-ab17-e95bb9f5150a.png" 
-          alt="" 
-          className="absolute right-0 top-1/3 transform -translate-y-1/3 w-96 h-auto opacity-70 z-0 filter brightness-150 drop-shadow-[0_0_25px_rgba(12,204,188,0.7)] animate-pulse-soft"
-        />
-        
-        {/* Image 3 duplicate - Bottom (replacing Image 1) */}
-        <img 
-          src="/lovable-uploads/d1ef467c-333e-4564-84ae-bf42c8b1f09d.png" 
-          alt="" 
-          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[30rem] h-auto opacity-60 z-0 filter brightness-140 drop-shadow-[0_0_30px_rgba(113,66,246,0.5)] animate-pulse-soft"
-        />
-        
-        {/* Original Image 3 - Left side (increased size) */}
-        <img 
-          src="/lovable-uploads/d1ef467c-333e-4564-84ae-bf42c8b1f09d.png" 
-          alt="" 
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 w-[22rem] h-auto opacity-70 z-0 filter brightness-150 drop-shadow-[0_0_20px_rgba(113,66,246,0.6)] animate-pulse-soft"
-        />
+        <div className="absolute inset-0 bg-black/40 z-0"></div>
       </div>
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
