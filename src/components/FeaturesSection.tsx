@@ -159,7 +159,7 @@ export default function FeaturesSection() {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="gradient-text">Powerful</span> Features
+            <span className="text-loteraa-purple">Powerful</span> Features
           </h2>
           <p className={`text-xl text-white/70 max-w-2xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             Unlock new possibilities at the intersection of IoT and blockchain technologies

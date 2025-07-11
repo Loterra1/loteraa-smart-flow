@@ -11,8 +11,8 @@ export default function HeroSection() {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-            <span className="gradient-text animate-fade-in animation-delay-1000">Connecting IoT</span> to <br /> 
-            <span className="gradient-text animate-fade-in animation-delay-2000">Blockchain</span> 
+            <span className="text-loteraa-purple animate-fade-in animation-delay-1000">Connecting IoT</span> to <br /> 
+            <span className="text-loteraa-purple animate-fade-in animation-delay-2000">Blockchain</span> 
             <span className="animate-fade-in animation-delay-3000"> Seamlessly</span>
           </h1>
           

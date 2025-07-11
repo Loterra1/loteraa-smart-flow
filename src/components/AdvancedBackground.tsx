@@ -59,7 +59,7 @@ export default function AdvancedBackground() {
         this.size = size;
         this.speedX = (Math.random() - 0.5) * 0.5;
         this.speedY = (Math.random() - 0.5) * 0.5;
-        this.color = `rgba(${12 + Math.random() * 50}, ${204 + Math.random() * 50}, ${188 + Math.random() * 50}, ${0.5 + Math.random() * 0.5})`;
+        this.color = `rgba(${150 + Math.random() * 50}, ${100 + Math.random() * 50}, ${200 + Math.random() * 50}, ${0.5 + Math.random() * 0.5})`;
         this.connections = [];
         this.pulsePhase = Math.random() * Math.PI * 2;
       }
@@ -126,7 +126,7 @@ export default function AdvancedBackground() {
             
             ctx.beginPath();
             ctx.arc(packetX, packetY, 2, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(12, 204, 188, ${alpha})`;
+            ctx.fillStyle = `rgba(150, 100, 200, ${alpha})`;
             ctx.fill();
           }
         });
@@ -187,7 +187,7 @@ export default function AdvancedBackground() {
       });
       
       // Add holographic scan lines effect
-      ctx.fillStyle = 'rgba(12, 204, 188, 0.02)';
+      ctx.fillStyle = 'rgba(150, 100, 200, 0.02)';
       for (let i = 0; i < 3; i++) {
         const y = (canvas.height / 3) * i + (Math.sin(time * 0.001) * 20);
         ctx.fillRect(0, y, canvas.width, 1);

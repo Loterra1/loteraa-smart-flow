@@ -18,7 +18,7 @@ export default function NavigationHeader() {
                 alt="Loteraa Logo" 
                 className="w-10 h-10"
               />
-              <span className="text-xl font-bold gradient-text">LOTERAA</span>
+              <span className="text-xl font-bold text-loteraa-purple">LOTERAA</span>
             </Link>
           </div>
           
