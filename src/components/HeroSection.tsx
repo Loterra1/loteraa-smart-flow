@@ -7,11 +7,19 @@ import HeroAnimatedBackground from "./HeroAnimatedBackground";
 export default function HeroSection() {
   return (
     <section className="pt-24 pb-16 min-h-[90vh] flex items-center relative overflow-hidden">
-      <HeroAnimatedBackground />
+      {/* Background Image */}
+      <div className="absolute inset-0 pointer-events-none">
+        <img 
+          src="/lovable-uploads/ad2d8c5b-4ec7-4290-8418-48736bd1e877.png" 
+          alt="" 
+          className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+        />
+        <div className="absolute inset-0 bg-black/40 z-0"></div>
+      </div>
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
-            <span className="text-loteraa-purple animate-fade-in animation-delay-1000">Connecting IoT</span> to <br /> 
+            <span className="text-loteraa-purple animate-fade-in animation-delay-1000">Connecting IoT</span> To <br /> 
             <span className="text-loteraa-purple animate-fade-in animation-delay-2000">Blockchain</span> 
             <span className="animate-fade-in animation-delay-3000"> Seamlessly</span>
           </h1>

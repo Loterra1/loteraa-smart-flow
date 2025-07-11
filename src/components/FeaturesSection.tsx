@@ -67,9 +67,9 @@ export default function FeaturesSection() {
         <img 
           src="/lovable-uploads/4faaf311-5b6c-4e1e-94ed-9880369a3ac6.png" 
           alt="" 
-          className="absolute inset-0 w-full h-full object-cover opacity-40 z-0"
+          className="absolute inset-0 w-full h-full object-cover opacity-50 z-0"
         />
-        <div className="absolute inset-0 bg-black/60 z-0"></div>
+        <div className="absolute inset-0 bg-black/50 z-0"></div>
       </div>
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
