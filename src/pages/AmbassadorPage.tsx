@@ -179,8 +179,7 @@ const AmbassadorPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden bg-gray-900">
-      
+    <div className="min-h-screen flex flex-col bg-gray-900">
       <NavigationHeader />
       
       <main className="flex-grow pt-28 pb-20 relative z-10">

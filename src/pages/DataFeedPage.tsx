@@ -189,57 +189,7 @@ export default function DataFeedPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 relative overflow-hidden">
-      <style>
-        {`
-          @keyframes dataFlow {
-            0% { transform: translateX(-100%) scale(0.8); opacity: 0; }
-            50% { transform: translateX(0) scale(1); opacity: 1; }
-            100% { transform: translateX(100%) scale(0.8); opacity: 0; }
-          }
-          
-          @keyframes pulse3D {
-            0%, 100% { transform: scale(1) rotateX(0deg); box-shadow: 0 0 20px rgba(113, 66, 246, 0.3); }
-            50% { transform: scale(1.05) rotateX(5deg); box-shadow: 0 0 40px rgba(113, 66, 246, 0.8); }
-          }
-          
-          @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-          }
-          
-          @keyframes mapScan {
-            0% { transform: scale(0.95) rotate(0deg); }
-            50% { transform: scale(1.05) rotate(2deg); }
-            100% { transform: scale(0.95) rotate(0deg); }
-          }
-          
-          @keyframes moveRight {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(100% - 100px)); }
-          }
-          
-          .data-flow {
-            animation: dataFlow 3s ease-in-out infinite;
-          }
-          
-          .pulse-3d {
-            animation: pulse3D 4s ease-in-out infinite;
-          }
-          
-          .float-up {
-            animation: floatUp 15s linear infinite;
-          }
-          
-          .map-scan {
-            animation: mapScan 6s ease-in-out infinite;
-          }
-        `}
-      </style>
-
-      
+    <div className="min-h-screen bg-gray-900">
       <NavigationHeader />
       
       <main className="flex-grow pt-28 pb-20 relative z-10">

@@ -77,50 +77,7 @@ export default function DeveloperDocsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 relative overflow-hidden">
-      <style>
-        {`
-          @keyframes codeFloat {
-            0%, 100% { transform: translateY(0) rotateX(0deg); opacity: 0.3; }
-            50% { transform: translateY(-30px) rotateX(15deg); opacity: 0.8; }
-          }
-          
-          @keyframes digitalRain {
-            0% { transform: translateY(-100vh); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(100vh); opacity: 0; }
-          }
-          
-          @keyframes hologramGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(113, 66, 246, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(113, 66, 246, 0.8), 0 0 60px rgba(49, 130, 244, 0.4); }
-          }
-          
-          @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 10px rgba(113, 66, 246, 0.5); }
-            50% { text-shadow: 0 0 20px rgba(113, 66, 246, 1), 0 0 30px rgba(49, 130, 244, 0.5); }
-          }
-          
-          .code-element {
-            animation: codeFloat 8s ease-in-out infinite;
-          }
-          
-          .digital-rain {
-            animation: digitalRain 6s linear infinite;
-          }
-          
-          .hologram-card {
-            animation: hologramGlow 4s ease-in-out infinite;
-          }
-          
-          .glow-text {
-            animation: textGlow 3s ease-in-out infinite;
-          }
-        `}
-      </style>
-
-
+    <div className="min-h-screen bg-gray-900">
       <NavigationHeader />
       
       {/* Hero Section */}
