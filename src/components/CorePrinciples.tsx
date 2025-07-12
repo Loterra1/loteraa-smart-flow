@@ -51,7 +51,7 @@ export default function CorePrinciples() {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          <Card className={`bg-gradient-to-br from-white to-white/80 backdrop-blur-sm border-white/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[0] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[0] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <CardHeader className="relative z-10">
               <CardTitle className="text-xl font-bold text-black">
                 AI Model Training via On-Chain Data
@@ -67,7 +67,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
           
-          <Card className={`bg-gradient-to-br from-white to-white/80 backdrop-blur-sm border-white/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[1] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[1] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <CardHeader className="relative z-10">
               <CardTitle className="text-xl font-bold text-black">
                 Digital IoT Data Layer
@@ -84,7 +84,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className={`bg-gradient-to-br from-white to-white/80 backdrop-blur-sm border-white/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[2] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[2] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <CardHeader className="relative z-10">
               <CardTitle className="text-xl font-bold text-black">
                 Reward Mechanism
@@ -99,7 +99,7 @@ export default function CorePrinciples() {
             </CardContent>
           </Card>
 
-          <Card className={`bg-gradient-to-br from-white to-white/80 backdrop-blur-sm border-white/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[3] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[3] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <CardHeader className="relative z-10">
               <CardTitle className="text-xl font-bold text-black">
                 Physical IoT dApps
