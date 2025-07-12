@@ -128,7 +128,7 @@ const categoryColors = {
 
 export default function UseCasesPage() {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-black">
       <NavigationHeader />
       
       <section className="pt-32 pb-20">

@@ -77,7 +77,7 @@ export default function DeveloperDocsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-black">
       <NavigationHeader />
       
       {/* Hero Section */}

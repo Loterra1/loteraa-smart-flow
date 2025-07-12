@@ -189,7 +189,7 @@ export default function DataFeedPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-black">
       <NavigationHeader />
       
       <main className="flex-grow pt-28 pb-20 relative z-10">
