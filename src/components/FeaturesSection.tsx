@@ -65,7 +65,7 @@ export default function FeaturesSection() {
       {/* Background Image */}
       <div className="absolute inset-0 pointer-events-none">
         <img 
-          src="/lovable-uploads/4faaf311-5b6c-4e1e-94ed-9880369a3ac6.png" 
+          src="/lovable-uploads/d5937960-da7e-4ddf-ad0c-0546b878ba8e.png" 
           alt="" 
           className="absolute inset-0 w-full h-full object-cover opacity-50 z-0"
         />
