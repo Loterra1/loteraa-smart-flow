@@ -77,7 +77,7 @@ export default function DeveloperDocsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gray-900 relative overflow-hidden">
       <style>
         {`
           @keyframes codeFloat {
@@ -120,36 +120,6 @@ export default function DeveloperDocsPage() {
         `}
       </style>
 
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Digital Rain Effect */}
-        {animatedElements.map((element) => (
-          <div
-            key={element.id}
-            className="absolute digital-rain text-loteraa-blue/20 font-mono text-xs"
-            style={{
-              left: `${element.x}%`,
-              animationDelay: `${element.delay}s`
-            }}
-          >
-            {Math.random() > 0.5 ? '1' : '0'}
-          </div>
-        ))}
-        
-        {/* Floating Code Elements */}
-        <div className="absolute top-20 left-10 code-element">
-          <Code className="h-8 w-8 text-loteraa-purple/30" />
-        </div>
-        <div className="absolute top-32 right-20 code-element" style={{ animationDelay: '2s' }}>
-          <Cpu className="h-6 w-6 text-loteraa-blue/30" />
-        </div>
-        <div className="absolute bottom-40 left-1/4 code-element" style={{ animationDelay: '4s' }}>
-          <Globe className="h-10 w-10 text-loteraa-teal/30" />
-        </div>
-        <div className="absolute top-1/2 right-10 code-element" style={{ animationDelay: '6s' }}>
-          <Zap className="h-7 w-7 text-loteraa-purple/30" />
-        </div>
-      </div>
 
       <NavigationHeader />
       

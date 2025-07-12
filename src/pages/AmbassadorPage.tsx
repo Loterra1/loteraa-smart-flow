@@ -179,12 +179,7 @@ const AmbassadorPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-900">
-      <canvas
-        ref={canvasRef}
-        className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
-        style={{ opacity: 0.8 }}
-      />
+    <div className="min-h-screen flex flex-col relative overflow-hidden bg-gray-900">
       
       <NavigationHeader />
       
