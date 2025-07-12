@@ -81,7 +81,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-loteraa-black via-loteraa-darkPurple to-loteraa-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
       <style>
         {`
           @keyframes floatUp {
@@ -138,7 +138,18 @@ export default function AboutPage() {
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Background Image with Blinking Animation */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-pulse"
+          style={{
+            backgroundImage: 'url(/lovable-uploads/e8f7438d-9185-47d4-9143-4786efb7c203.png)'
+          }}
+        />
+        
+        {/* Dark Overlay for Better Text Readability */}
+        <div className="absolute inset-0 bg-black/50" />
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <Badge className="mb-6 bg-loteraa-purple/20 text-loteraa-purple border-loteraa-purple/30 px-6 py-2 text-lg">
               About Loteraa
@@ -197,7 +208,18 @@ export default function AboutPage() {
 
       {/* Technology Section */}
       <section className="py-20 relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Background Image with Blinking Animation */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-pulse"
+          style={{
+            backgroundImage: 'url(/lovable-uploads/1f35f413-427c-4618-ac38-210e2f836087.png)'
+          }}
+        />
+        
+        {/* Dark Overlay for Better Text Readability */}
+        <div className="absolute inset-0 bg-black/60" />
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               <span className="gradient-text">Our Technology</span>
@@ -292,7 +314,18 @@ export default function AboutPage() {
 
       {/* CTA Section */}
       <section className="py-20 relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        {/* Background Image with Blinking Animation */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-pulse"
+          style={{
+            backgroundImage: 'url(/lovable-uploads/c13f7198-37ec-480e-aaa4-784917b0969f.png)'
+          }}
+        />
+        
+        {/* Dark Overlay for Better Text Readability */}
+        <div className="absolute inset-0 bg-black/60" />
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h3 className="text-3xl md:text-4xl font-bold mb-6">
             <span className="gradient-text">Join the Revolution</span>
           </h3>

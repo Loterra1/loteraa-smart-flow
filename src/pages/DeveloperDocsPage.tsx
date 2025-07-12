@@ -77,7 +77,7 @@ export default function DeveloperDocsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-loteraa-black via-loteraa-darkPurple to-loteraa-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
       <style>
         {`
           @keyframes codeFloat {
