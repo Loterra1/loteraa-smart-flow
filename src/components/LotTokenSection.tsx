@@ -10,7 +10,7 @@ export default function LotTokenSection() {
         <img 
           src="/lovable-uploads/4981a0b9-fddb-457f-98bf-938f71ee27de.png" 
           alt="LOT Coin" 
-          className="mx-auto w-64 h-64 object-contain drop-shadow-[0_0_30px_rgba(113,66,246,0.5)]"
+          className="mx-auto w-80 h-80 sm:w-96 sm:h-96 lg:w-[500px] lg:h-[500px] object-contain drop-shadow-[0_0_30px_rgba(113,66,246,0.5)]"
         />
       </div>
     </section>
