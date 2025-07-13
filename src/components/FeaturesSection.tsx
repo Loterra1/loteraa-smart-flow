@@ -62,15 +62,6 @@ export default function FeaturesSection() {
 
   return (
     <section ref={sectionRef} id="features" className="py-20 relative overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 pointer-events-none">
-        <img 
-          src="/lovable-uploads/d5937960-da7e-4ddf-ad0c-0546b878ba8e.png" 
-          alt="" 
-          className="absolute inset-0 w-full h-full object-cover opacity-50 z-0"
-        />
-        <div className="absolute inset-0 bg-black/10 z-0"></div>
-      </div>
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">

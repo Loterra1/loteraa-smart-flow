@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div className="col-span-2">
             <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-purple-500">LOTERAA</span>
+              <span className="text-2xl font-bold text-loteraa-purple">LOTERAA</span>
             </Link>
             <p className="mt-4 text-white/70 max-w-xs">
               Connecting IoT devices to smart contracts for real-time, secure, and decentralized automation.

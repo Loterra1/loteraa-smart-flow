@@ -53,29 +53,6 @@ export default function AudienceSection() {
 
   return (
     <section ref={sectionRef} className="py-20 bg-black relative overflow-hidden">
-      {/* Background Holographic Head Images */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Image 1 - Left side */}
-        <img 
-          src="/lovable-uploads/1af8bb21-e405-4ca8-9195-8c2467659bf2.png" 
-          alt="" 
-          className="absolute left-8 bottom-20 w-96 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_40px_rgba(113,66,246,0.8)] animate-pulse-soft"
-        />
-        
-        {/* Image 2 - Middle */}
-        <img 
-          src="/lovable-uploads/e84154a3-b53d-415a-8915-18a1ecc5b505.png" 
-          alt="" 
-          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-auto opacity-35 z-0 filter brightness-150 drop-shadow-[0_0_50px_rgba(113,66,246,0.9)] animate-pulse-soft"
-        />
-        
-        {/* Image 3 - Right side */}
-        <img 
-          src="/lovable-uploads/e71c8a60-3341-4ed2-aa64-b8fe751414a5.png" 
-          alt="" 
-          className="absolute right-8 bottom-20 w-96 h-auto opacity-40 z-0 filter brightness-150 drop-shadow-[0_0_40px_rgba(113,66,246,0.8)] animate-pulse-soft"
-        />
-      </div>
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">

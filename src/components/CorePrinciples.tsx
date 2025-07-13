@@ -53,12 +53,12 @@ export default function CorePrinciples() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[0] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <CardHeader className="relative z-10">
-              <CardTitle className="text-xl font-bold text-black">
+              <CardTitle className="text-xl font-bold text-white">
                 AI Model Training via On-Chain Data
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-black font-bold leading-relaxed">
+              <p className="text-white leading-relaxed">
                 AI projects can train their models using decentralized, verified data from Loteraa's IoT network. 
                 Researchers upload sensor feeds like weather, motion, CO2 levels validated by smart contracts and 
                 rewarded through token incentives. Models are trained using data or real-time feeds, creating a 
@@ -69,12 +69,12 @@ export default function CorePrinciples() {
           
           <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[1] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <CardHeader className="relative z-10">
-              <CardTitle className="text-xl font-bold text-black">
+              <CardTitle className="text-xl font-bold text-white">
                 Digital IoT Data Layer
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-black font-bold leading-relaxed">
+              <p className="text-white leading-relaxed">
                 Beyond physical devices, Loteraa supports digital IoT streams such as APIs, browser plugins, 
                 or digital sensor emulators. Developers can build dApps that simulate weather conditions, 
                 traffic behaviors, or market sentiment. This digital-first IoT layer helps developers test 
@@ -86,12 +86,12 @@ export default function CorePrinciples() {
 
           <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[2] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <CardHeader className="relative z-10">
-              <CardTitle className="text-xl font-bold text-black">
+              <CardTitle className="text-xl font-bold text-white">
                 Reward Mechanism
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-black font-bold leading-relaxed">
+              <p className="text-white leading-relaxed">
                 Loteraa's core reward loop centers on Data-to-Earn. Users earn $LOT for contributing quality data, 
                 running sensor nodes, validating uploads, or building dApps. Smart contracts verify contributions 
                 and automate payouts.
@@ -101,12 +101,12 @@ export default function CorePrinciples() {
 
           <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[3] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <CardHeader className="relative z-10">
-              <CardTitle className="text-xl font-bold text-black">
+              <CardTitle className="text-xl font-bold text-white">
                 Physical IoT dApps
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
-              <p className="text-black font-bold leading-relaxed">
+              <p className="text-white leading-relaxed">
                 Loteraa is built to power physical decentralized applications. Whether it's environmental sensors 
                 in smart farms, GPS trackers on logistics fleets, or biometric gates in smart cities Loteraa 
                 provides the infrastructure to build real-world dApps with on-chain verification, automation, 

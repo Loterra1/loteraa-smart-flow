@@ -81,74 +81,11 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
-      <style>
-        {`
-          @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-          }
-          
-          @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(113, 66, 246, 0.3); transform: scale(1); }
-            50% { box-shadow: 0 0 40px rgba(12, 204, 188, 0.5); transform: scale(1.02); }
-          }
-          
-          @keyframes networkPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-          }
-          
-          .float-animation {
-            animation: floatUp 12s linear infinite;
-          }
-          
-          .pulse-glow {
-            animation: pulseGlow 4s ease-in-out infinite;
-          }
-          
-          .network-pulse {
-            animation: networkPulse 3s ease-in-out infinite;
-          }
-        `}
-      </style>
-
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {animatedElements.map((element) => (
-          <div
-            key={element.id}
-            className="absolute float-animation"
-            style={{
-              left: `${element.x}%`,
-              animationDelay: `${element.delay}s`
-            }}
-          >
-            {element.id % 4 === 0 && <Cpu className="h-4 w-4 text-loteraa-purple/40" />}
-            {element.id % 4 === 1 && <Network className="h-4 w-4 text-loteraa-blue/40" />}
-            {element.id % 4 === 2 && <Database className="h-4 w-4 text-loteraa-teal/40" />}
-            {element.id % 4 === 3 && <Lock className="h-4 w-4 text-loteraa-purple/40" />}
-          </div>
-        ))}
-      </div>
-
+    <div className="min-h-screen bg-black">
       <NavigationHeader />
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative">
-        {/* Background Image with Blinking Animation */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-pulse"
-          style={{
-            backgroundImage: 'url(/lovable-uploads/e8f7438d-9185-47d4-9143-4786efb7c203.png)'
-          }}
-        />
-        
-        {/* Dark Overlay for Better Text Readability */}
-        <div className="absolute inset-0 bg-black/50" />
-        
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <Badge className="mb-6 bg-loteraa-purple/20 text-loteraa-purple border-loteraa-purple/30 px-6 py-2 text-lg">
@@ -156,8 +93,8 @@ export default function AboutPage() {
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8">
-              <span className="gradient-text">Connecting IoT</span> <br />
-              <span className="gradient-text">to Blockchain</span>
+              <span className="text-loteraa-purple">Connecting IoT</span> <br />
+              <span className="text-loteraa-purple">to Blockchain</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -170,22 +107,11 @@ export default function AboutPage() {
 
       {/* Mission Section */}
       <section className="py-20 relative">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: 'url(/lovable-uploads/a6217186-6307-4c4e-9415-829ebaaeb224.png)'
-          }}
-        />
-        
-        {/* Dark Overlay for Better Text Readability */}
-        <div className="absolute inset-0 bg-black/60" />
-        
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/20">
+          <div className="bg-gray-500/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-gray-400/20">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Our Mission</span>
+                <span className="text-loteraa-purple">Our Mission</span>
               </h2>
               <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
                 To create a decentralized ecosystem where IoT devices can securely interact with 
@@ -219,21 +145,10 @@ export default function AboutPage() {
 
       {/* Technology Section */}
       <section className="py-20 relative">
-        {/* Background Image with Blinking Animation */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-pulse"
-          style={{
-            backgroundImage: 'url(/lovable-uploads/1f35f413-427c-4618-ac38-210e2f836087.png)'
-          }}
-        />
-        
-        {/* Dark Overlay for Better Text Readability */}
-        <div className="absolute inset-0 bg-black/60" />
-        
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Our Technology</span>
+              <span className="text-loteraa-purple">Our Technology</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Built on cutting-edge blockchain technology with a focus on scalability and security
@@ -241,7 +156,7 @@ export default function AboutPage() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+            <Card className="bg-gray-500/10 backdrop-blur-sm border-gray-400/20">
               <CardHeader>
                 <div className="p-4 bg-loteraa-purple/20 rounded-lg w-fit mb-4">
                   <Network className="h-10 w-10 text-loteraa-purple" />
@@ -256,7 +171,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
             
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+            <Card className="bg-gray-500/10 backdrop-blur-sm border-gray-400/20">
               <CardHeader>
                 <div className="p-4 bg-loteraa-blue/20 rounded-lg w-fit mb-4">
                   <Shield className="h-10 w-10 text-loteraa-blue" />
@@ -271,7 +186,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
             
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+            <Card className="bg-gray-500/10 backdrop-blur-sm border-gray-400/20">
               <CardHeader>
                 <div className="p-4 bg-loteraa-teal/20 rounded-lg w-fit mb-4">
                   <Rocket className="h-10 w-10 text-loteraa-teal" />
@@ -290,12 +205,12 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 relative">
+      <section className="py-20 bg-black relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/20">
+          <div className="bg-gray-500/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-gray-400/20">
             <div className="text-center mb-12">
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">Our Values</span>
+                <span className="text-loteraa-purple">Our Values</span>
               </h3>
               <p className="text-white/70 text-xl">
                 The principles that guide everything we do
@@ -305,7 +220,7 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {values.map((value, index) => (
                 <div key={index} className="text-center group">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20 hover:border-loteraa-teal/50 transition-all duration-300">
+                  <div className="bg-gray-500/10 backdrop-blur-sm rounded-lg p-6 border border-gray-400/20 hover:border-loteraa-teal/50 transition-all duration-300">
                     <div className="mx-auto mb-4 p-3 bg-loteraa-teal/20 rounded-lg w-fit group-hover:bg-loteraa-teal/30 transition-colors">
                       {value.icon}
                     </div>
@@ -325,25 +240,14 @@ export default function AboutPage() {
 
       {/* CTA Section */}
       <section className="py-20 relative">
-        {/* Background Image with Blinking Animation */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-pulse"
-          style={{
-            backgroundImage: 'url(/lovable-uploads/c13f7198-37ec-480e-aaa4-784917b0969f.png)'
-          }}
-        />
-        
-        {/* Dark Overlay for Better Text Readability */}
-        <div className="absolute inset-0 bg-black/60" />
-        
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h3 className="text-3xl md:text-4xl font-bold mb-6">
-            <span className="gradient-text">Join the Revolution</span>
+            <span className="text-loteraa-purple">Join the Revolution</span>
           </h3>
           <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto">
             Be part of the future where IoT and blockchain converge to create endless possibilities
           </p>
-          <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg pulse-glow">
+          <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
             Get Started Today <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>

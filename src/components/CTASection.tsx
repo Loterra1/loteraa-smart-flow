@@ -28,29 +28,6 @@ export default function CTASection() {
 
   return (
     <section ref={sectionRef} className="py-20 bg-black relative overflow-hidden">
-      {/* Background Images with Glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Image 1 - Purple Planet on Left side */}
-        <img 
-          src="/lovable-uploads/9f81737e-d7bf-45b7-8ef8-18af4f2cb9ae.png" 
-          alt="" 
-          className="absolute left-8 top-1/2 transform -translate-y-1/2 w-96 h-auto opacity-60 z-0 filter brightness-200 drop-shadow-[0_0_80px_rgba(113,66,246,1.0)] animate-pulse-soft"
-        />
-        
-        {/* Image 2 - Purple Crystal in Center */}
-        <img 
-          src="/lovable-uploads/294bd0c7-5b0d-45ec-b638-ad20f77ce0d8.png" 
-          alt="" 
-          className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-auto opacity-70 z-0 filter brightness-200 drop-shadow-[0_0_100px_rgba(113,66,246,1.2)] animate-pulse-soft"
-        />
-        
-        {/* Image 1 Duplicate - Purple Robot Head on Right side */}
-        <img 
-          src="/lovable-uploads/0c100085-a166-4401-ac09-ba6d2ff7225d.png" 
-          alt="" 
-          className="absolute right-8 top-1/2 transform -translate-y-1/2 w-96 h-auto opacity-60 z-0 filter brightness-200 drop-shadow-[0_0_80px_rgba(113,66,246,1.0)] animate-pulse-soft"
-        />
-      </div>
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="max-w-4xl mx-auto text-center">
