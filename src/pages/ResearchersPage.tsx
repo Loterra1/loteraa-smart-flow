@@ -68,7 +68,7 @@ export default function ResearchersPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-loteraa-black via-loteraa-darkPurple to-loteraa-black relative overflow-hidden">
+    <div className="min-h-screen bg-black relative overflow-hidden">
       <style>
         {`
           @keyframes dataOrbit {
@@ -112,36 +112,6 @@ export default function ResearchersPage() {
         `}
       </style>
 
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Data Stream Effects */}
-        {animatedDataPoints.map((point) => (
-          <div
-            key={point.id}
-            className="absolute data-stream text-loteraa-blue/40 font-mono text-xs"
-            style={{
-              left: `${point.x}%`,
-              animationDelay: `${point.delay}s`
-            }}
-          >
-            {point.type === 'temperature' ? '🌡️' : point.type === 'humidity' ? '💧' : point.type === 'pressure' ? '📊' : '📡'}
-          </div>
-        ))}
-        
-        {/* Floating Data Points */}
-        <div className="absolute top-20 left-10 data-orbit">
-          <Database className="h-6 w-6 text-loteraa-purple/50" />
-        </div>
-        <div className="absolute top-32 right-20 data-orbit" style={{ animationDelay: '5s' }}>
-          <BarChart3 className="h-8 w-8 text-loteraa-blue/50" />
-        </div>
-        <div className="absolute bottom-40 left-1/4 data-orbit" style={{ animationDelay: '10s' }}>
-          <Globe className="h-10 w-10 text-loteraa-teal/50" />
-        </div>
-        <div className="absolute top-1/2 right-10 data-orbit" style={{ animationDelay: '15s' }}>
-          <Activity className="h-7 w-7 text-loteraa-purple/50" />
-        </div>
-      </div>
 
       <NavigationHeader />
       

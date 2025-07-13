@@ -11,7 +11,7 @@ export default function Footer() {
               <span className="text-2xl font-bold text-loteraa-purple">LOTERAA</span>
             </Link>
             <p className="mt-4 text-white/70 max-w-xs">
-              Connecting IoT devices to smart contracts for real-time, secure, and decentralized automation.
+              Building the future of IoT-Blockchain infrastructure.
             </p>
             <div className="flex space-x-4 mt-6">
               <a href="https://www.x.com/loteraa1" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">

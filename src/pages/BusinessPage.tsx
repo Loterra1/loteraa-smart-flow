@@ -64,7 +64,7 @@ export default function BusinessPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-loteraa-black via-loteraa-darkPurple to-loteraa-black relative overflow-hidden">
+    <div className="min-h-screen bg-black relative overflow-hidden">
       <style>
         {`
           @keyframes businessOrbit {
@@ -108,36 +108,6 @@ export default function BusinessPage() {
         `}
       </style>
 
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Data Flow Effects */}
-        {animatedPoints.map((point) => (
-          <div
-            key={point.id}
-            className="absolute data-flow text-loteraa-teal/40 font-mono text-xs"
-            style={{
-              left: `${point.x}%`,
-              animationDelay: `${point.delay}s`
-            }}
-          >
-            {point.type === 'sensor' ? '📡' : point.type === 'device' ? '📱' : point.type === 'network' ? '🌐' : '📊'}
-          </div>
-        ))}
-        
-        {/* Floating Business Icons */}
-        <div className="absolute top-20 left-10 business-orbit">
-          <Factory className="h-6 w-6 text-loteraa-purple/50" />
-        </div>
-        <div className="absolute top-32 right-20 business-orbit" style={{ animationDelay: '5s' }}>
-          <Smartphone className="h-8 w-8 text-loteraa-blue/50" />
-        </div>
-        <div className="absolute bottom-40 left-1/4 business-orbit" style={{ animationDelay: '10s' }}>
-          <Network className="h-10 w-10 text-loteraa-teal/50" />
-        </div>
-        <div className="absolute top-1/2 right-10 business-orbit" style={{ animationDelay: '15s' }}>
-          <Cpu className="h-7 w-7 text-loteraa-purple/50" />
-        </div>
-      </div>
 
       <NavigationHeader />
       
