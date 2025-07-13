@@ -129,7 +129,7 @@ export default function AboutPage() {
         className="py-20 relative"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-gray-500/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-gray-400/20">
+          <div className="bg-gray-500/10 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-gray-400/20">
             <div className="text-center mb-12">
               <h2 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <span className="text-loteraa-purple">Our Mission</span>
@@ -143,7 +143,7 @@ export default function AboutPage() {
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {goals.map((goal, index) => (
-                <Card key={index} className={`bg-gray-500/10 backdrop-blur-sm border-gray-400/20 hover:border-loteraa-purple/50 transition-all duration-700 ease-out group ${visibleSections.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${600 + index * 150}ms` }}>
+                <Card key={index} className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:border-loteraa-purple/50 transition-all duration-700 ease-out group ${visibleSections.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${600 + index * 150}ms` }}>
                   <CardHeader className="text-center">
                     <div className="mx-auto mb-4 p-3 bg-loteraa-purple/20 rounded-lg w-fit group-hover:bg-loteraa-purple/30 transition-colors">
                       {goal.icon}
@@ -181,7 +181,7 @@ export default function AboutPage() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className={`bg-gray-500/10 backdrop-blur-sm border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '600ms' }}>
+            <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '600ms' }}>
               <CardHeader>
                 <div className="p-4 bg-loteraa-purple/20 rounded-lg w-fit mb-4">
                   <Network className="h-10 w-10 text-loteraa-purple" />
@@ -196,7 +196,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
             
-            <Card className={`bg-gray-500/10 backdrop-blur-sm border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '750ms' }}>
+            <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '750ms' }}>
               <CardHeader>
                 <div className="p-4 bg-loteraa-blue/20 rounded-lg w-fit mb-4">
                   <Shield className="h-10 w-10 text-loteraa-blue" />
@@ -211,7 +211,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
             
-            <Card className={`bg-gray-500/10 backdrop-blur-sm border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '900ms' }}>
+            <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '900ms' }}>
               <CardHeader>
                 <div className="p-4 bg-loteraa-teal/20 rounded-lg w-fit mb-4">
                   <Rocket className="h-10 w-10 text-loteraa-teal" />
@@ -236,7 +236,7 @@ export default function AboutPage() {
         className="py-20 bg-black relative"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gray-500/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-gray-400/20">
+          <div className="bg-gray-500/10 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-gray-400/20">
             <div className="text-center mb-12">
               <h3 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.values ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <span className="text-loteraa-purple">Our Values</span>
@@ -249,7 +249,7 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {values.map((value, index) => (
                 <div key={index} className="text-center group">
-                  <div className={`bg-gray-500/10 backdrop-blur-sm rounded-lg p-6 border border-gray-400/20 hover:border-loteraa-teal/50 transition-all duration-700 ease-out ${visibleSections.values ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${600 + index * 150}ms` }}>
+                  <div className={`bg-gray-500/10 backdrop-blur-md rounded-lg p-6 border border-gray-400/20 hover:border-loteraa-teal/50 transition-all duration-700 ease-out ${visibleSections.values ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${600 + index * 150}ms` }}>
                     <div className="mx-auto mb-4 p-3 bg-loteraa-teal/20 rounded-lg w-fit group-hover:bg-loteraa-teal/30 transition-colors">
                       {value.icon}
                     </div>
