@@ -68,7 +68,7 @@ export default function AudienceSection() {
           {audiences.map((audience, index) => (
             <div 
               key={index}
-              className="bg-gradient-to-br from-loteraa-gray/30 to-transparent backdrop-blur-sm rounded-xl p-8 border border-loteraa-gray/20 flex flex-col h-full"
+              className="bg-gray-500/10 backdrop-blur-sm rounded-xl p-8 border border-gray-400/20 flex flex-col h-full"
             >
               <div className="bg-loteraa-gray/30 rounded-lg w-20 h-20 flex items-center justify-center mb-6">
                 {audience.icon}

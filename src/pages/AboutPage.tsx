@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,17 +22,34 @@ import {
 } from "lucide-react";
 
 export default function AboutPage() {
-  const [animatedElements, setAnimatedElements] = useState<Array<{ id: number; x: number; y: number; delay: number }>>([]);
+  const [visibleSections, setVisibleSections] = useState<Record<string, boolean>>({});
+  const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
   useEffect(() => {
-    const elements = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 5,
-    }));
-    setAnimatedElements(elements);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.getAttribute('data-section');
+            if (sectionId) {
+              setVisibleSections(prev => ({ ...prev, [sectionId]: true }));
+            }
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
+    );
+
+    Object.values(sectionRefs.current).forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
   }, []);
+
+  const setSectionRef = (sectionId: string) => (el: HTMLElement | null) => {
+    sectionRefs.current[sectionId] = el;
+  };
 
   const goals = [
     {
@@ -106,14 +123,18 @@ export default function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 relative">
+      <section 
+        ref={setSectionRef('mission')} 
+        data-section="mission" 
+        className="py-20 relative"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="bg-gray-500/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-gray-400/20">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <span className="text-loteraa-purple">Our Mission</span>
               </h2>
-              <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+              <p className={`text-xl text-white/80 max-w-3xl mx-auto leading-relaxed transition-all duration-1000 ease-out delay-300 ${visibleSections.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 To create a decentralized ecosystem where IoT devices can securely interact with 
                 blockchain networks, enabling new forms of automation, data monetization, and 
                 machine-to-machine transactions that benefit everyone.
@@ -122,7 +143,7 @@ export default function AboutPage() {
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {goals.map((goal, index) => (
-                <Card key={index} className="bg-white/10 backdrop-blur-sm border-white/20 hover:border-loteraa-purple/50 transition-all duration-300 group">
+                <Card key={index} className={`bg-gray-500/10 backdrop-blur-sm border-gray-400/20 hover:border-loteraa-purple/50 transition-all duration-700 ease-out group ${visibleSections.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${600 + index * 150}ms` }}>
                   <CardHeader className="text-center">
                     <div className="mx-auto mb-4 p-3 bg-loteraa-purple/20 rounded-lg w-fit group-hover:bg-loteraa-purple/30 transition-colors">
                       {goal.icon}
@@ -144,19 +165,23 @@ export default function AboutPage() {
       </section>
 
       {/* Technology Section */}
-      <section className="py-20 relative">
+      <section 
+        ref={setSectionRef('technology')} 
+        data-section="technology" 
+        className="py-20 relative"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               <span className="text-loteraa-purple">Our Technology</span>
             </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
+            <p className={`text-xl text-white/70 max-w-2xl mx-auto transition-all duration-1000 ease-out delay-300 ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               Built on cutting-edge blockchain technology with a focus on scalability and security
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="bg-gray-500/10 backdrop-blur-sm border-gray-400/20">
+            <Card className={`bg-gray-500/10 backdrop-blur-sm border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '600ms' }}>
               <CardHeader>
                 <div className="p-4 bg-loteraa-purple/20 rounded-lg w-fit mb-4">
                   <Network className="h-10 w-10 text-loteraa-purple" />
@@ -171,7 +196,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
             
-            <Card className="bg-gray-500/10 backdrop-blur-sm border-gray-400/20">
+            <Card className={`bg-gray-500/10 backdrop-blur-sm border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '750ms' }}>
               <CardHeader>
                 <div className="p-4 bg-loteraa-blue/20 rounded-lg w-fit mb-4">
                   <Shield className="h-10 w-10 text-loteraa-blue" />
@@ -186,7 +211,7 @@ export default function AboutPage() {
               </CardContent>
             </Card>
             
-            <Card className="bg-gray-500/10 backdrop-blur-sm border-gray-400/20">
+            <Card className={`bg-gray-500/10 backdrop-blur-sm border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '900ms' }}>
               <CardHeader>
                 <div className="p-4 bg-loteraa-teal/20 rounded-lg w-fit mb-4">
                   <Rocket className="h-10 w-10 text-loteraa-teal" />
@@ -205,14 +230,18 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 bg-black relative">
+      <section 
+        ref={setSectionRef('values')} 
+        data-section="values" 
+        className="py-20 bg-black relative"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gray-500/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-gray-400/20">
             <div className="text-center mb-12">
-              <h3 className="text-3xl md:text-4xl font-bold mb-6">
+              <h3 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.values ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <span className="text-loteraa-purple">Our Values</span>
               </h3>
-              <p className="text-white/70 text-xl">
+              <p className={`text-white/70 text-xl transition-all duration-1000 ease-out delay-300 ${visibleSections.values ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 The principles that guide everything we do
               </p>
             </div>
@@ -220,7 +249,7 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {values.map((value, index) => (
                 <div key={index} className="text-center group">
-                  <div className="bg-gray-500/10 backdrop-blur-sm rounded-lg p-6 border border-gray-400/20 hover:border-loteraa-teal/50 transition-all duration-300">
+                  <div className={`bg-gray-500/10 backdrop-blur-sm rounded-lg p-6 border border-gray-400/20 hover:border-loteraa-teal/50 transition-all duration-700 ease-out ${visibleSections.values ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${600 + index * 150}ms` }}>
                     <div className="mx-auto mb-4 p-3 bg-loteraa-teal/20 rounded-lg w-fit group-hover:bg-loteraa-teal/30 transition-colors">
                       {value.icon}
                     </div>
@@ -239,17 +268,23 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 relative">
+      <section 
+        ref={setSectionRef('cta')} 
+        data-section="cta" 
+        className="py-20 relative"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h3 className="text-3xl md:text-4xl font-bold mb-6">
+          <h3 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.cta ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <span className="text-loteraa-purple">Join the Revolution</span>
           </h3>
-          <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto">
+          <p className={`text-xl text-white/70 mb-8 max-w-2xl mx-auto transition-all duration-1000 ease-out delay-300 ${visibleSections.cta ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             Be part of the future where IoT and blockchain converge to create endless possibilities
           </p>
-          <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
-            Get Started Today <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+          <div className={`transition-all duration-1000 ease-out delay-600 ${visibleSections.cta ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
+              Get Started Today <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </section>
 
