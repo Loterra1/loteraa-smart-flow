@@ -120,7 +120,7 @@ export default function ResearchersPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <Badge className="mb-6 bg-loteraa-teal/20 text-loteraa-teal border-loteraa-teal/30 px-6 py-2 text-lg">
-              For Researchers & Data Analysts
+              <span className="text-loteraa-teal">For Researchers & Data Analysts</span>
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8">
@@ -134,7 +134,7 @@ export default function ResearchersPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="bg-loteraa-teal hover:bg-loteraa-teal/90 text-white px-8 py-6 text-lg hologram-effect">
+              <Button size="lg" className="bg-loteraa-teal hover:bg-loteraa-teal/90 text-white px-8 py-6 text-lg">
                 Start Exploring Data <Database className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -142,79 +142,13 @@ export default function ResearchersPage() {
         </div>
       </section>
 
-      {/* Animated World Map Section */}
-      <section className="py-20 relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Global Data Network</span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Real-time IoT data collection from devices worldwide
-            </p>
-          </div>
-          
-          <div className="bg-loteraa-gray/20 backdrop-blur-sm rounded-2xl p-8 border border-loteraa-gray/30 hologram-effect">
-            <div className="relative w-full h-96 map-pulse">
-              <svg viewBox="0 0 1000 500" className="w-full h-full">
-                {/* Simplified world map outline */}
-                <path d="M100 200 Q200 150 300 200 T500 200 T700 180 T900 200" 
-                      stroke="#7142F6" strokeWidth="2" fill="none" opacity="0.6"/>
-                <path d="M150 300 Q250 280 350 300 T550 320 T750 300 T900 320" 
-                      stroke="#3182F4" strokeWidth="2" fill="none" opacity="0.6"/>
-                
-                {/* Animated data points on map */}
-                {dataCategories.map((category, index) => (
-                  <g key={index}>
-                    <circle 
-                      cx={150 + index * 140} 
-                      cy={200 + Math.sin(index) * 50} 
-                      r="8" 
-                      fill="#0CCCBC" 
-                      className="animate-ping"
-                      style={{ animationDelay: `${index * 0.5}s` }}
-                    />
-                    <circle 
-                      cx={150 + index * 140} 
-                      cy={200 + Math.sin(index) * 50} 
-                      r="4" 
-                      fill="#0CCCBC"
-                    />
-                  </g>
-                ))}
-                
-                {/* Data connection lines */}
-                <line x1="150" y1="200" x2="290" y2="150" stroke="#7142F6" strokeWidth="1" strokeDasharray="5,5" opacity="0.5">
-                  <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-                </line>
-                <line x1="290" y1="150" x2="430" y2="220" stroke="#3182F4" strokeWidth="1" strokeDasharray="5,5" opacity="0.5">
-                  <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-                </line>
-              </svg>
-              
-              {/* Data category overlays */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-                  {dataCategories.map((category, index) => (
-                    <div key={index} className="bg-loteraa-black/50 backdrop-blur-sm rounded-lg p-4 border border-loteraa-gray/30">
-                      <div className="text-2xl mb-2">{category.icon}</div>
-                      <div className={`font-bold ${category.color}`}>{category.count}</div>
-                      <div className="text-white/70 text-sm">{category.name}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Research Benefits Section */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Research & Earn</span>
+              <span className="text-loteraa-teal">Research & Earn</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Contribute to the global IoT data ecosystem and earn rewards for your research contributions
@@ -223,7 +157,7 @@ export default function ResearchersPage() {
           
           <div className="grid md:grid-cols-2 gap-8">
             {researchBenefits.map((benefit, index) => (
-              <Card key={index} className="bg-loteraa-gray/30 backdrop-blur-sm border-loteraa-gray/40 hover:border-loteraa-teal/50 transition-all duration-300 hologram-effect group">
+              <Card key={index} className="bg-loteraa-gray/30 backdrop-blur-sm border-loteraa-gray/40 hover:border-loteraa-teal/50 transition-all duration-300 group">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
                     <div className="p-3 bg-loteraa-teal/20 rounded-lg">
@@ -248,10 +182,10 @@ export default function ResearchersPage() {
       {/* How It Works Section */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-loteraa-teal/20 to-loteraa-purple/20 rounded-2xl p-8 md:p-12 border border-loteraa-teal/30 hologram-effect">
+          <div className="bg-loteraa-teal/20 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-loteraa-teal/30">
             <div className="text-center mb-12">
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="gradient-text">How It Works</span>
+                <span className="text-loteraa-teal">How It Works</span>
               </h3>
             </div>
             

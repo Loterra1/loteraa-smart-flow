@@ -89,7 +89,7 @@ export default function DeveloperDocsPage() {
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8 glow-text">
-              <span className="text-loteraa-purple">Build the Future</span> of <br />
+              <span className="text-loteraa-purple">Build the Future</span> <span className="text-white">of</span> <br />
               <span className="text-loteraa-purple">IoT & Blockchain</span>
             </h1>
             
