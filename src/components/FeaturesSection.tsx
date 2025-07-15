@@ -73,11 +73,11 @@ export default function FeaturesSection() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-wrap justify-center gap-8">
           {features.map((feature, index) => (
             <div 
               key={index}
-              className={`bg-loteraa-gray/20 backdrop-blur-sm rounded-xl p-6 border border-loteraa-gray/20 transition-all duration-1000 hover:border-loteraa-purple/50 hover:translate-y-[-5px] group ${visibleCards[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              className={`w-[300px] h-[450px] bg-loteraa-gray/20 backdrop-blur-sm rounded-xl p-6 border border-loteraa-gray/20 transition-all duration-1000 hover:border-loteraa-purple/50 hover:translate-y-[-5px] group ${visibleCards[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             >
               <h3 className="text-xl font-bold mb-3 text-loteraa-purple">{feature.title}</h3>
               <p className="text-white/70">{feature.description}</p>
