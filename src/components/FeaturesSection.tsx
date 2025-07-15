@@ -85,10 +85,10 @@ export default function FeaturesSection() {
         </div>
         
         {/* Stake & Reward Card */}
-        <div className={`w-[1200px] bg-gray-500/10 backdrop-blur-md rounded-lg p-6 border border-gray-400/20 hover:border-loteraa-teal/50 transition-all duration-1000 mt-8 mx-auto ${isStakeCardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`w-full max-w-4xl bg-gray-500/10 backdrop-blur-md rounded-lg p-4 sm:p-6 border border-gray-400/20 hover:border-loteraa-teal/50 transition-all duration-1000 mt-8 mx-auto ${isStakeCardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="text-center">
-            <h3 className="text-xl font-bold mb-4 text-loteraa-purple">Loteraa Stake & Reward Mechanism</h3>
-            <p className="text-white/70 text-sm mb-6">Loteraa's Stake & Reward system is designed to power the decentralized data economy by locking value, ensuring network integrity, and incentivizing contributors all while increasing the utility and demand for the native token $LOT.</p>
+            <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-loteraa-purple">Loteraa Stake & Reward Mechanism</h3>
+            <p className="text-white/70 text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed">Loteraa's Stake & Reward system is designed to power the decentralized data economy by locking value, ensuring network integrity, and incentivizing contributors all while increasing the utility and demand for the native token $LOT.</p>
             <Button 
               onClick={() => navigate('/stake')}
               className="bg-loteraa-purple hover:bg-loteraa-purple/80 text-white"
