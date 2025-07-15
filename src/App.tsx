@@ -24,7 +24,7 @@ import DeveloperDocsPage from "./pages/DeveloperDocsPage";
 import ResearchersPage from "./pages/ResearchersPage";
 import BusinessPage from "./pages/BusinessPage";
 import AboutPage from "./pages/AboutPage";
-import CareersPage from "./pages/CareersPage";
+
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import EcosystemPage from "./pages/EcosystemPage";
@@ -60,7 +60,7 @@ const App = () => (
             <Route path="/researchers" element={<ResearchersPage />} />
             <Route path="/business" element={<BusinessPage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/careers" element={<CareersPage />} />
+            
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/ecosystem" element={<EcosystemPage />} />

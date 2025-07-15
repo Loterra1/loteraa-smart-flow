@@ -89,8 +89,8 @@ export default function DeveloperDocsPage() {
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8 glow-text">
-              <span className="gradient-text">Build the Future</span> of <br />
-              <span className="gradient-text">IoT & Blockchain</span>
+              <span className="text-loteraa-purple">Build the Future</span> of <br />
+              <span className="text-loteraa-purple">IoT & Blockchain</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -112,7 +112,7 @@ export default function DeveloperDocsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 glow-text">
-              <span className="gradient-text">Developer Toolkit</span>
+              <span className="text-loteraa-purple">Developer Toolkit</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Everything you need to build, test, and deploy IoT applications on the Loteraa blockchain

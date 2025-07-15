@@ -7,7 +7,6 @@ import VisionMissionSection from "@/components/VisionMissionSection";
 import CorePrinciples from "@/components/CorePrinciples";
 import FeaturesSection from "@/components/FeaturesSection";
 import AudienceSection from "@/components/AudienceSection";
-import LotTokenSection from "@/components/LotTokenSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
@@ -21,7 +20,6 @@ const Index = () => {
         <CorePrinciples />
         <FeaturesSection />
         <AudienceSection />
-        <LotTokenSection />
         <CTASection />
       </main>
       <Footer />

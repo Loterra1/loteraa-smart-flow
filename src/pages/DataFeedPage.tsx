@@ -201,7 +201,7 @@ export default function DataFeedPage() {
                 Secure & Real-Time
               </span>
               <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                <span className="gradient-text">Real-time IoT Data Feed</span>
+                <span className="text-loteraa-purple">Real-time IoT Data Feed</span>
               </h1>
               <p className={`text-xl text-white/80 max-w-3xl mx-auto mb-8 transition-all duration-700 delay-200 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
                 Loteraa provides secure, low-latency data streaming from IoT devices directly to blockchain networks, 
@@ -313,7 +313,7 @@ export default function DataFeedPage() {
           <section className="mb-24">
             <div className="max-w-5xl mx-auto">
               <h2 className={`text-3xl md:text-4xl font-bold mb-12 text-center transition-all duration-700 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                <span className="gradient-text">Why Choose Loteraa Data Feeds</span>
+                <span className="text-loteraa-purple">Why Choose Loteraa Data Feeds</span>
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -384,7 +384,7 @@ export default function DataFeedPage() {
           <section className="mb-24">
             <div className="max-w-5xl mx-auto">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-center transition-all duration-700 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                <span className="gradient-text">Available Data Types</span>
+                <span className="text-loteraa-purple">Available Data Types</span>
               </h2>
               <p className={`text-xl text-white/80 max-w-3xl mx-auto mb-12 text-center transition-all duration-700 delay-100 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
                 Access a wide variety of IoT sensor data to power your dApps
@@ -534,7 +534,7 @@ export default function DataFeedPage() {
           <section className="mb-24">
             <div className="max-w-5xl mx-auto">
               <h2 className={`text-3xl md:text-4xl font-bold mb-12 text-center transition-all duration-700 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                <span className="gradient-text">How Loteraa Data Feed Works</span>
+                <span className="text-loteraa-purple">How Loteraa Data Feed Works</span>
               </h2>
               
               <div className="space-y-12">

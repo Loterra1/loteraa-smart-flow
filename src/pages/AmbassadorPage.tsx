@@ -190,7 +190,7 @@ const AmbassadorPage = () => {
               <span className="inline-block px-4 py-2 rounded-full bg-loteraa-purple/20 backdrop-blur-md border border-loteraa-purple/20 text-white/90 text-sm font-medium mb-4">
                 Join Our Global Community
               </span>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-loteraa-purple">
                 Loteraa Ambassador Program
               </h1>
               <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
@@ -249,7 +249,7 @@ const AmbassadorPage = () => {
           {/* Program Benefits */}
           <div className="max-w-5xl mx-auto mb-20">
             <h2 className="text-3xl font-bold mb-12 text-center">
-              <span className="gradient-text">Ambassador Benefits</span>
+              <span className="text-loteraa-purple">Ambassador Benefits</span>
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -294,7 +294,7 @@ const AmbassadorPage = () => {
           {/* How It Works */}
           <div className="max-w-5xl mx-auto mb-20">
             <h2 className="text-3xl font-bold mb-12 text-center">
-              <span className="gradient-text">How It Works</span>
+              <span className="text-loteraa-purple">How It Works</span>
             </h2>
             
             <div className="space-y-8">
@@ -351,7 +351,7 @@ const AmbassadorPage = () => {
           {/* Technology Focus */}
           <div className="max-w-5xl mx-auto mb-20 bg-loteraa-gray/20 backdrop-blur-md border border-loteraa-gray/30 rounded-xl p-8">
             <h2 className="text-3xl font-bold mb-6 text-center">
-              <span className="gradient-text">SensorChain Technology</span>
+              <span className="text-loteraa-purple">SensorChain Technology</span>
             </h2>
             
             <p className="text-white/80 text-lg mb-8 text-center">
