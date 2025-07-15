@@ -119,8 +119,8 @@ export default function ResearchersPage() {
       <section className="pt-32 pb-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="mb-6 bg-loteraa-teal/20 text-loteraa-teal border-loteraa-teal/30 px-6 py-2 text-lg">
-              <span className="text-loteraa-teal">For Researchers & Data Analysts</span>
+            <Badge className="mb-6 bg-loteraa-teal text-white border-loteraa-teal px-6 py-2 text-lg">
+              <span className="text-white">For Researchers & Data Analysts</span>
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8">
