@@ -119,13 +119,13 @@ export default function ResearchersPage() {
       <section className="pt-32 pb-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="mb-6 bg-loteraa-teal text-white border-loteraa-teal px-6 py-2 text-lg">
+            <Badge className="mb-6 bg-loteraa-purple text-white border-loteraa-purple px-6 py-2 text-lg">
               <span className="text-white">For Researchers & Data Analysts</span>
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8">
-              <span className="text-loteraa-teal">Explore Global</span> <br />
-              <span className="text-loteraa-teal">IoT Data</span>
+              <span className="text-loteraa-purple">Explore Global</span> <br />
+              <span className="text-loteraa-purple">IoT Data</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -134,7 +134,7 @@ export default function ResearchersPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="bg-loteraa-teal hover:bg-loteraa-teal/90 text-white px-8 py-6 text-lg">
+              <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
                 Start Exploring Data <Database className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -148,7 +148,7 @@ export default function ResearchersPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-loteraa-teal">Research & Earn</span>
+              <span className="text-loteraa-purple">Research & Earn</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Contribute to the global IoT data ecosystem and earn rewards for your research contributions
@@ -182,10 +182,10 @@ export default function ResearchersPage() {
       {/* How It Works Section */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-loteraa-teal backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-loteraa-teal/30">
+          <div className="bg-loteraa-purple backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-loteraa-purple/30">
             <div className="text-center mb-12">
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="text-loteraa-teal">How It Works</span>
+                <span className="text-loteraa-purple">How It Works</span>
               </h3>
             </div>
             
