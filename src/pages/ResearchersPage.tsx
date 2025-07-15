@@ -185,7 +185,7 @@ export default function ResearchersPage() {
           <div className="bg-loteraa-purple backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-loteraa-purple/30">
             <div className="text-center mb-12">
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="text-loteraa-purple">How It Works</span>
+                <span className="text-white">How It Works</span>
               </h3>
             </div>
             
