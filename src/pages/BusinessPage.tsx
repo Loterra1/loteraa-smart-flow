@@ -138,60 +138,6 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      {/* Global Network Section */}
-      <section className="py-20 relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-loteraa-purple">Global IoT Network</span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Connect your devices and tap into a worldwide ecosystem of data and opportunities
-            </p>
-          </div>
-          
-          <div className="bg-loteraa-gray/20 backdrop-blur-sm rounded-2xl p-8 border border-loteraa-gray/30 hologram-glow">
-            <div className="relative w-full h-96 map-glow">
-              <svg viewBox="0 0 1000 500" className="w-full h-full">
-                {/* Simplified world map outline */}
-                <path d="M100 200 Q200 150 300 200 T500 200 T700 180 T900 200" 
-                      stroke="#7142F6" strokeWidth="2" fill="none" opacity="0.6"/>
-                <path d="M150 300 Q250 280 350 300 T550 320 T750 300 T900 320" 
-                      stroke="#3182F4" strokeWidth="2" fill="none" opacity="0.6"/>
-                
-                {/* Animated data points on map */}
-                {['Europe', 'North America', 'Asia', 'Africa'].map((region, index) => (
-                  <g key={index}>
-                    <circle 
-                      cx={150 + index * 200} 
-                      cy={200 + Math.sin(index) * 60} 
-                      r="10" 
-                      fill="#0CCCBC" 
-                      className="animate-ping"
-                      style={{ animationDelay: `${index * 0.7}s` }}
-                    />
-                    <circle 
-                      cx={150 + index * 200} 
-                      cy={200 + Math.sin(index) * 60} 
-                      r="5" 
-                      fill="#0CCCBC"
-                    />
-                  </g>
-                ))}
-                
-                {/* Data connection lines */}
-                <line x1="150" y1="200" x2="350" y2="140" stroke="#7142F6" strokeWidth="1" strokeDasharray="5,5" opacity="0.5">
-                  <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-                </line>
-                <line x1="350" y1="140" x2="550" y2="240" stroke="#3182F4" strokeWidth="1" strokeDasharray="5,5" opacity="0.5">
-                  <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
-                </line>
-              </svg>
-              
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Business Benefits Section */}
       <section className="py-20 relative">

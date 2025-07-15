@@ -124,8 +124,8 @@ export default function ResearchersPage() {
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8">
-              <span className="gradient-text">Explore Global</span> <br />
-              <span className="gradient-text">IoT Data</span>
+              <span className="text-loteraa-teal">Explore Global</span> <br />
+              <span className="text-loteraa-teal">IoT Data</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -182,7 +182,7 @@ export default function ResearchersPage() {
       {/* How It Works Section */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-loteraa-teal/20 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-loteraa-teal/30">
+          <div className="bg-loteraa-teal backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-loteraa-teal/30">
             <div className="text-center mb-12">
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
                 <span className="text-loteraa-teal">How It Works</span>
