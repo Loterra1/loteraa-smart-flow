@@ -1,11 +1,15 @@
 
 import { Database, Zap, Code, Coins, BarChart3 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 export default function FeaturesSection() {
   const [isVisible, setIsVisible] = useState(false);
-  const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false, false, false]);
+  const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false, false]);
+  const [isStakeCardVisible, setIsStakeCardVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -17,8 +21,8 @@ export default function FeaturesSection() {
             setTimeout(() => setVisibleCards(prev => [true, ...prev.slice(1)]), 800);
             setTimeout(() => setVisibleCards(prev => [prev[0], true, ...prev.slice(2)]), 1100);
             setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 2), true, ...prev.slice(3)]), 1400);
-            setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 3), true, prev[4]]), 1700);
-            setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 4), true]), 2000);
+            setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 3), true]), 1700);
+            setTimeout(() => setIsStakeCardVisible(true), 2000);
           }
         });
       },
@@ -36,27 +40,22 @@ export default function FeaturesSection() {
     {
       icon: null,
       title: "Real-Time Data Feed",
-      description: "Secure, low-latency data streaming from IoT devices directly to blockchain networks."
+      description: "Loteraa enables continuous, secure, and low-latency streaming of sensor data from physical environments such as temperature, GPS, or usage metrics directly to its blockchain network. This real-time pipeline ensures high-frequency data flows are verifiable, timestamped, and immutable, enabling on-chain actions to reflect dynamic, real-world conditions with unprecedented precision and speed."
     },
     {
       icon: null,
       title: "Web3 Connected Contracts",
-      description: "Seamlessly connect sensor data to trigger smart contract executions across multiple blockchains."
+      description: "Loteraa smart contracts respond autonomously to live sensor inputs enabling logic-based automation across DeFi, logistics, energy, and AI sectors. Data triggers from IoT devices execute cross-chain operations such as payments, alerts, insurance payouts, or asset transfers, establishing an intelligent link between off-chain activities and on-chain decision-making without intermediaries."
     },
     {
       icon: null,
       title: "Developer API & SDK",
-      description: "Comprehensive tools and documentation to build IoT-blockchain integrations with minimal effort."
+      description: "Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains."
     },
     {
       icon: null,
       title: "Tokenized Rewards",
-      description: "Incentive mechanisms for data providers and consumers built directly into the protocol."
-    },
-    {
-      icon: null,
-      title: "Decentralized Dashboard",
-      description: "Monitor and manage your IoT networks with advanced real-time analytics and insights."
+      description: "Every participant whether data provider, validator, or consumer is incentivized through $LOT token rewards. Verified data uploads, accurate validations, and meaningful interactions trigger automated, on-chain compensation. This embedded economy aligns ecosystem incentives, fuels engagement, and sustains a decentralized model of crowdsourced data infrastructure that is scalable, fair, and self-regulating."
     }
   ];
 
@@ -83,6 +82,20 @@ export default function FeaturesSection() {
               <p className="text-white/70">{feature.description}</p>
             </div>
           ))}
+        </div>
+        
+        {/* Stake & Reward Card */}
+        <div className={`w-[728px] h-[100px] bg-loteraa-gray/20 backdrop-blur-sm rounded-xl p-6 border border-loteraa-gray/20 transition-all duration-1000 hover:border-loteraa-purple/50 mt-8 mx-auto flex items-center justify-between ${isStakeCardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="flex-1">
+            <h3 className="text-xl font-bold mb-2 text-loteraa-purple">Loteraa Stake & Reward Mechanism</h3>
+            <p className="text-white/70 text-sm">Loteraa's Stake & Reward system is designed to power the decentralized data economy by locking value, ensuring network integrity, and incentivizing contributors all while increasing the utility and demand for the native token $LOT.</p>
+          </div>
+          <Button 
+            onClick={() => navigate('/stake')}
+            className="ml-6 bg-loteraa-purple hover:bg-loteraa-purple/80 text-white"
+          >
+            Stake
+          </Button>
         </div>
       </div>
     </section>
