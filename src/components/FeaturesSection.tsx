@@ -85,17 +85,17 @@ export default function FeaturesSection() {
         </div>
         
         {/* Stake & Reward Card */}
-        <div className={`w-[728px] h-[100px] bg-loteraa-gray/20 backdrop-blur-sm rounded-xl p-6 border border-loteraa-gray/20 transition-all duration-1000 hover:border-loteraa-purple/50 mt-8 mx-auto flex items-center justify-between ${isStakeCardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="flex-1">
-            <h3 className="text-xl font-bold mb-2 text-loteraa-purple">Loteraa Stake & Reward Mechanism</h3>
-            <p className="text-white/70 text-sm">Loteraa's Stake & Reward system is designed to power the decentralized data economy by locking value, ensuring network integrity, and incentivizing contributors all while increasing the utility and demand for the native token $LOT.</p>
+        <div className={`w-[1200px] bg-gray-500/10 backdrop-blur-md rounded-lg p-6 border border-gray-400/20 hover:border-loteraa-teal/50 transition-all duration-1000 mt-8 mx-auto ${isStakeCardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="text-center">
+            <h3 className="text-xl font-bold mb-4 text-loteraa-purple">Loteraa Stake & Reward Mechanism</h3>
+            <p className="text-white/70 text-sm mb-6">Loteraa's Stake & Reward system is designed to power the decentralized data economy by locking value, ensuring network integrity, and incentivizing contributors all while increasing the utility and demand for the native token $LOT.</p>
+            <Button 
+              onClick={() => navigate('/stake')}
+              className="bg-loteraa-purple hover:bg-loteraa-purple/80 text-white"
+            >
+              Stake
+            </Button>
           </div>
-          <Button 
-            onClick={() => navigate('/stake')}
-            className="ml-6 bg-loteraa-purple hover:bg-loteraa-purple/80 text-white"
-          >
-            Stake
-          </Button>
         </div>
       </div>
     </section>
