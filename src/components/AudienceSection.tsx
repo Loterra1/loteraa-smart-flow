@@ -75,7 +75,7 @@ export default function AudienceSection() {
             return (
               <div 
                 key={index}
-                className="bg-gray-500/10 backdrop-blur-md rounded-xl p-8 border border-gray-400/20 flex flex-col h-full relative overflow-hidden"
+                className="bg-gray-500/10 backdrop-blur-md rounded-xl p-6 md:p-8 border border-gray-400/20 flex flex-col h-full relative overflow-hidden"
                 style={{
                   backgroundImage: `url(${backgroundImages[index]})`,
                   backgroundSize: 'cover',
@@ -84,6 +84,9 @@ export default function AudienceSection() {
                 }}
               >
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+                {/* Purple light effects for each card */}
+                <div className="absolute top-4 right-4 w-24 h-24 bg-loteraa-purple/30 rounded-full blur-2xl animate-pulse"></div>
+                <div className="absolute bottom-4 left-4 w-32 h-32 bg-loteraa-purple/20 rounded-full blur-3xl animate-pulse animation-delay-500"></div>
                 <div className="bg-loteraa-gray/30 rounded-lg w-20 h-20 flex items-center justify-center mb-6 relative z-10">
                   {audience.icon}
                 </div>
@@ -108,13 +111,13 @@ export default function AudienceSection() {
       </div>
       
       {/* Real-World → Web3 Integration Section */}
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 uppercase">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 uppercase">
               <span className="text-loteraa-purple">Real-World → Web3</span> Integration
             </h2>
-            <p className="text-xl text-white/70 leading-relaxed">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed">
               Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
             </p>
           </div>
@@ -125,6 +128,18 @@ export default function AudienceSection() {
               className="max-w-full h-auto object-contain"
             />
           </div>
+        </div>
+      </div>
+
+      {/* End to End Trust Layer Section */}
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
+        <div className="text-center max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 uppercase">
+            <span className="text-loteraa-purple">End to End Trust Layer</span> for IoT
+          </h2>
+          <p className="text-lg md:text-xl text-white/70 leading-relaxed">
+            Trust is everything in decentralized systems and Loteraa delivers it across the entire stack. From sensor identity to data hashing, from oracle relay to on-chain logic every step is cryptographically validated and publicly auditable.
+          </p>
         </div>
       </div>
     </section>
