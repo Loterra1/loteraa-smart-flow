@@ -133,13 +133,16 @@ export default function AudienceSection() {
 
       {/* End to End Trust Layer Section */}
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
-        <div className="text-center max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 uppercase">
-            <span className="text-loteraa-purple">End to End Trust Layer</span> for IoT
-          </h2>
-          <p className="text-lg md:text-xl text-white/70 leading-relaxed">
-            Trust is everything in decentralized systems and Loteraa delivers it across the entire stack. From sensor identity to data hashing, from oracle relay to on-chain logic every step is cryptographically validated and publicly auditable.
-          </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+          <div>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 uppercase">
+              <span className="text-loteraa-purple">End to End Trust Layer</span> for IoT
+            </h2>
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed">
+              Trust is everything in decentralized systems and Loteraa delivers it across the entire stack. From sensor identity to data hashing, from oracle relay to on-chain logic every step is cryptographically validated and publicly auditable.
+            </p>
+          </div>
+          <div></div>
         </div>
       </div>
     </section>
