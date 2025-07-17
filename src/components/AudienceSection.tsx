@@ -65,29 +65,44 @@ export default function AudienceSection() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {audiences.map((audience, index) => (
-            <div 
-              key={index}
-              className="bg-gray-500/10 backdrop-blur-md rounded-xl p-8 border border-gray-400/20 flex flex-col h-full"
-            >
-              <div className="bg-loteraa-gray/30 rounded-lg w-20 h-20 flex items-center justify-center mb-6">
-                {audience.icon}
+          {audiences.map((audience, index) => {
+            const backgroundImages = [
+              '/lovable-uploads/07ee704a-5fe3-4bd9-bd9e-3250a3b2458d.png',
+              '/lovable-uploads/a4ab4d2b-fc0b-402f-a078-886f9a7d59c7.png', 
+              '/lovable-uploads/410d68c1-ec95-4914-bd57-bf9e5b6c966e.png'
+            ];
+            
+            return (
+              <div 
+                key={index}
+                className="bg-gray-500/10 backdrop-blur-md rounded-xl p-8 border border-gray-400/20 flex flex-col h-full relative overflow-hidden"
+                style={{
+                  backgroundImage: `url(${backgroundImages[index]})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              >
+                <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+                <div className="bg-loteraa-gray/30 rounded-lg w-20 h-20 flex items-center justify-center mb-6 relative z-10">
+                  {audience.icon}
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-white relative z-10">{audience.title}</h3>
+                <p className="text-white/70 mb-6 flex-grow relative z-10">{audience.description}</p>
+                <Button asChild variant="ghost" className="text-white hover:bg-loteraa-gray/30 hover:text-white justify-start p-0 group relative z-10">
+                  <Link to={audience.link}>
+                    <span>{audience.cta}</span>
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-white">{audience.title}</h3>
-              <p className="text-white/70 mb-6 flex-grow">{audience.description}</p>
-              <Button asChild variant="ghost" className="text-white hover:bg-loteraa-gray/30 hover:text-white justify-start p-0 group">
-                <Link to={audience.link}>
-                  <span>{audience.cta}</span>
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </div>
-          ))}
+            );
+          })}
         </div>
         
         <div className="mt-16 text-center">
           <Button asChild size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
-            <Link to="/signup">Get Started Today <ArrowRight className="ml-2 h-5 w-5" /></Link>
+            <Link to="/signup">Start Building <ArrowRight className="ml-2 h-5 w-5" /></Link>
           </Button>
         </div>
       </div>
