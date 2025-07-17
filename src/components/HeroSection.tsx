@@ -10,11 +10,20 @@ export default function HeroSection() {
       {/* Background Image */}
       <div className="absolute inset-0 pointer-events-none">
         <img 
-          src="/lovable-uploads/ad2d8c5b-4ec7-4290-8418-48736bd1e877.png" 
+          src="/lovable-uploads/d98a6185-c72c-4d83-99f4-5c5d80aadc18.png" 
           alt="" 
-          className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+          className="absolute inset-0 w-full h-full object-cover opacity-80 z-0"
         />
-        <div className="absolute inset-0 bg-black/20 z-0"></div>
+        {/* Blinking circles overlay */}
+        <div className="absolute inset-0 z-1">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            {/* Inner circle */}
+            <div className="absolute w-32 h-32 rounded-full bg-white/20 animate-pulse"></div>
+            {/* Outer circle */}
+            <div className="absolute w-64 h-64 rounded-full bg-white/10 animate-pulse animation-delay-500 -translate-x-16 -translate-y-16"></div>
+          </div>
+        </div>
+        <div className="absolute inset-0 bg-black/20 z-2"></div>
       </div>
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
