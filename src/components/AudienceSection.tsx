@@ -112,13 +112,21 @@ export default function AudienceSection() {
       
       {/* Real-World → Web3 Integration Section */}
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start">
           <div>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 uppercase">
               <span className="text-loteraa-purple">Real-World → Web3</span> Integration
             </h2>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
               Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
+            </p>
+            
+            {/* End to End Trust Layer Section - moved here to be close */}
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 uppercase">
+              <span className="text-loteraa-purple">End to End Trust Layer</span> for IoT
+            </h2>
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed">
+              Trust is everything in decentralized systems and Loteraa delivers it across the entire stack. From sensor identity to data hashing, from oracle relay to on-chain logic every step is cryptographically validated and publicly auditable.
             </p>
           </div>
           <div className="flex justify-center lg:justify-end">
@@ -128,21 +136,6 @@ export default function AudienceSection() {
               className="max-w-full h-auto object-contain"
             />
           </div>
-        </div>
-      </div>
-
-      {/* End to End Trust Layer Section */}
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-          <div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 uppercase">
-              <span className="text-loteraa-purple">End to End Trust Layer</span> for IoT
-            </h2>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed">
-              Trust is everything in decentralized systems and Loteraa delivers it across the entire stack. From sensor identity to data hashing, from oracle relay to on-chain logic every step is cryptographically validated and publicly auditable.
-            </p>
-          </div>
-          <div></div>
         </div>
       </div>
     </section>
