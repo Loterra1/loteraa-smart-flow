@@ -83,7 +83,7 @@ export default function AudienceSection() {
                   backgroundRepeat: 'no-repeat'
                 }}
               >
-                <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
                 <div className="bg-loteraa-gray/30 rounded-lg w-20 h-20 flex items-center justify-center mb-6 relative z-10">
                   {audience.icon}
                 </div>
@@ -104,6 +104,27 @@ export default function AudienceSection() {
           <Button asChild size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
             <Link to="/signup">Start Building <ArrowRight className="ml-2 h-5 w-5" /></Link>
           </Button>
+        </div>
+      </div>
+      
+      {/* Real-World → Web3 Integration Section */}
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 uppercase">
+              <span className="text-loteraa-purple">Real-World → Web3</span> Integration
+            </h2>
+            <p className="text-xl text-white/70 leading-relaxed">
+              Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
+            </p>
+          </div>
+          <div className="flex justify-center lg:justify-end">
+            <img 
+              src="/lovable-uploads/cafe6ef9-d65b-4d78-add0-9a345a6fc12b.png" 
+              alt="Real-World to Web3 Integration" 
+              className="max-w-full h-auto object-contain"
+            />
+          </div>
         </div>
       </div>
     </section>
