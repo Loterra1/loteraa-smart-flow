@@ -7,20 +7,28 @@ import HeroAnimatedBackground from "./HeroAnimatedBackground";
 export default function HeroSection() {
   return (
     <section className="pt-24 pb-16 min-h-[90vh] flex items-center relative overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image with Light Effects */}
       <div className="absolute inset-0 pointer-events-none">
         <img 
           src="/lovable-uploads/d98a6185-c72c-4d83-99f4-5c5d80aadc18.png" 
           alt="" 
-          className="absolute inset-0 w-full h-full object-cover opacity-80 z-0"
+          className="absolute inset-0 w-full h-full object-cover opacity-80 z-0 animate-pulse"
         />
+        
+        {/* Purple Light Overlay */}
+        <div className="absolute inset-0 z-1">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-loteraa-purple/30 rounded-full blur-3xl animate-pulse animation-delay-300"></div>
+          <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-loteraa-purple/25 rounded-full blur-3xl animate-pulse animation-delay-600"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-loteraa-purple/20 rounded-full blur-3xl animate-pulse animation-delay-900"></div>
+        </div>
+        
         {/* Blinking circles overlay */}
         <div className="absolute inset-0 z-1">
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             {/* Inner circle */}
-            <div className="absolute w-32 h-32 rounded-full bg-white/20 animate-pulse"></div>
+            <div className="absolute w-32 h-32 rounded-full bg-loteraa-purple/30 animate-pulse"></div>
             {/* Outer circle */}
-            <div className="absolute w-64 h-64 rounded-full bg-white/10 animate-pulse animation-delay-500 -translate-x-16 -translate-y-16"></div>
+            <div className="absolute w-64 h-64 rounded-full bg-loteraa-purple/20 animate-pulse animation-delay-500 -translate-x-16 -translate-y-16"></div>
           </div>
         </div>
         <div className="absolute inset-0 bg-black/20 z-2"></div>
