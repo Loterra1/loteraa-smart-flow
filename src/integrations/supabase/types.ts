@@ -14,7 +14,247 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      datasets: {
+        Row: {
+          access_price: number | null
+          access_type: string
+          created_at: string
+          description: string | null
+          download_count: number | null
+          file_size: number | null
+          file_structure: Json | null
+          file_type: string
+          file_url: string
+          id: string
+          name: string
+          region: string | null
+          reward_amount: number | null
+          status: string
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+          verification_details: Json | null
+          verified_at: string | null
+        }
+        Insert: {
+          access_price?: number | null
+          access_type?: string
+          created_at?: string
+          description?: string | null
+          download_count?: number | null
+          file_size?: number | null
+          file_structure?: Json | null
+          file_type: string
+          file_url: string
+          id?: string
+          name: string
+          region?: string | null
+          reward_amount?: number | null
+          status?: string
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+          verification_details?: Json | null
+          verified_at?: string | null
+        }
+        Update: {
+          access_price?: number | null
+          access_type?: string
+          created_at?: string
+          description?: string | null
+          download_count?: number | null
+          file_size?: number | null
+          file_structure?: Json | null
+          file_type?: string
+          file_url?: string
+          id?: string
+          name?: string
+          region?: string | null
+          reward_amount?: number | null
+          status?: string
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+          verification_details?: Json | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      downloads: {
+        Row: {
+          created_at: string
+          dataset_id: string
+          download_url: string | null
+          id: string
+          payment_amount: number | null
+          payment_status: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dataset_id: string
+          download_url?: string | null
+          id?: string
+          payment_amount?: number | null
+          payment_status?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dataset_id?: string
+          download_url?: string | null
+          id?: string
+          payment_amount?: number | null
+          payment_status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "downloads_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "datasets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      earnings: {
+        Row: {
+          amount: number
+          created_at: string
+          dataset_id: string | null
+          id: string
+          status: string
+          transaction_hash: string | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          dataset_id?: string | null
+          id?: string
+          status?: string
+          transaction_hash?: string | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          dataset_id?: string | null
+          id?: string
+          status?: string
+          transaction_hash?: string | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "earnings_dataset_id_fkey"
+            columns: ["dataset_id"]
+            isOneToOne: false
+            referencedRelation: "datasets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          is_read: boolean | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          lot_token_balance: number | null
+          total_datasets_uploaded: number | null
+          total_earnings: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          lot_token_balance?: number | null
+          total_datasets_uploaded?: number | null
+          total_earnings?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          lot_token_balance?: number | null
+          total_datasets_uploaded?: number | null
+          total_earnings?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_activities: {
+        Row: {
+          activity_data: Json | null
+          activity_type: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          activity_data?: Json | null
+          activity_type: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          activity_data?: Json | null
+          activity_type?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
