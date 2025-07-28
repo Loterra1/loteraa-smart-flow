@@ -190,7 +190,7 @@ const AmbassadorPage = () => {
               <span className="inline-block px-4 py-2 rounded-full bg-loteraa-purple/20 backdrop-blur-md border border-loteraa-purple/20 text-white/90 text-sm font-medium mb-4">
                 Join Our Global Community
               </span>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-loteraa-purple">
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
                 Loteraa Ambassador Program
               </h1>
               <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
@@ -200,7 +200,7 @@ const AmbassadorPage = () => {
               <Button 
                 onClick={() => setShowApplyForm(true)}
                 size="lg" 
-                className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8"
+                className="bg-white hover:bg-white/90 text-black px-8"
               >
                 Apply Now <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -236,7 +236,7 @@ const AmbassadorPage = () => {
                   })}
                   
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Globe className="w-16 h-16 text-white/90" />
+                    <Globe className="w-16 h-16 text-white" />
                   </div>
                 </div>
               </div>
@@ -249,13 +249,13 @@ const AmbassadorPage = () => {
           {/* Program Benefits */}
           <div className="max-w-5xl mx-auto mb-20">
             <h2 className="text-3xl font-bold mb-12 text-center">
-              <span className="text-loteraa-purple">Ambassador Benefits</span>
+              <span className="text-white">Ambassador Benefits</span>
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="bg-loteraa-gray/20 backdrop-blur-md border border-loteraa-gray/30 shadow-lg">
                 <CardHeader>
-                  <Award className="h-10 w-10 mb-3 text-loteraa-purple" />
+                  <Award className="h-10 w-10 mb-3 text-white" />
                   <CardTitle className="text-white/90">Weekly Rewards</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -267,7 +267,7 @@ const AmbassadorPage = () => {
               
               <Card className="bg-loteraa-gray/20 backdrop-blur-md border border-loteraa-gray/30 shadow-lg">
                 <CardHeader>
-                  <Users className="h-10 w-10 mb-3 text-loteraa-blue" />
+                  <Users className="h-10 w-10 mb-3 text-white" />
                   <CardTitle className="text-white/90">Community Leadership</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -279,7 +279,7 @@ const AmbassadorPage = () => {
               
               <Card className="bg-loteraa-gray/20 backdrop-blur-md border border-loteraa-gray/30 shadow-lg">
                 <CardHeader>
-                  <Zap className="h-10 w-10 mb-3 text-loteraa-teal" />
+                  <Zap className="h-10 w-10 mb-3 text-white" />
                   <CardTitle className="text-white/90">Early Access</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -294,7 +294,7 @@ const AmbassadorPage = () => {
           {/* How It Works */}
           <div className="max-w-5xl mx-auto mb-20">
             <h2 className="text-3xl font-bold mb-12 text-center">
-              <span className="text-loteraa-purple">How It Works</span>
+              <span className="text-white">How It Works</span>
             </h2>
             
             <div className="space-y-8">
@@ -351,7 +351,7 @@ const AmbassadorPage = () => {
           {/* Technology Focus */}
           <div className="max-w-5xl mx-auto mb-20 bg-loteraa-gray/20 backdrop-blur-md border border-loteraa-gray/30 rounded-xl p-8">
             <h2 className="text-3xl font-bold mb-6 text-center">
-              <span className="text-loteraa-purple">SensorChain Technology</span>
+              <span className="text-white">SensorChain Technology</span>
             </h2>
             
             <p className="text-white/80 text-lg mb-8 text-center">
@@ -361,7 +361,7 @@ const AmbassadorPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
                 <div className="flex gap-3">
-                  <BadgeCheck className="h-6 w-6 text-loteraa-teal flex-shrink-0" />
+                  <BadgeCheck className="h-6 w-6 text-white flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-white/90">Trustless Data Verification</h4>
                     <p className="text-white/70">Sensor data is cryptographically verified and stored on-chain, ensuring integrity and immutability.</p>
@@ -369,7 +369,7 @@ const AmbassadorPage = () => {
                 </div>
                 
                 <div className="flex gap-3">
-                  <BadgeCheck className="h-6 w-6 text-loteraa-teal flex-shrink-0" />
+                  <BadgeCheck className="h-6 w-6 text-white flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-white/90">Machine-to-Machine Payments</h4>
                     <p className="text-white/70">IoT devices can autonomously transact with each other using smart contracts and Loteraa tokens.</p>
@@ -377,7 +377,7 @@ const AmbassadorPage = () => {
                 </div>
                 
                 <div className="flex gap-3">
-                  <BadgeCheck className="h-6 w-6 text-loteraa-teal flex-shrink-0" />
+                  <BadgeCheck className="h-6 w-6 text-white flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-white/90">Automated Triggers</h4>
                     <p className="text-white/70">Sensor readings can automatically trigger smart contract executions for real-world applications.</p>
@@ -387,7 +387,7 @@ const AmbassadorPage = () => {
               
               <div className="space-y-4">
                 <div className="flex gap-3">
-                  <BadgeCheck className="h-6 w-6 text-loteraa-teal flex-shrink-0" />
+                  <BadgeCheck className="h-6 w-6 text-white flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-white/90">Data Monetization</h4>
                     <p className="text-white/70">Sensor owners can monetize their data through the Loteraa marketplace, creating new revenue streams.</p>
@@ -395,7 +395,7 @@ const AmbassadorPage = () => {
                 </div>
                 
                 <div className="flex gap-3">
-                  <BadgeCheck className="h-6 w-6 text-loteraa-teal flex-shrink-0" />
+                  <BadgeCheck className="h-6 w-6 text-white flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-white/90">Cross-Chain Compatibility</h4>
                     <p className="text-white/70">Loteraa bridges with major blockchains including Polygon for maximum interoperability.</p>
@@ -403,7 +403,7 @@ const AmbassadorPage = () => {
                 </div>
                 
                 <div className="flex gap-3">
-                  <BadgeCheck className="h-6 w-6 text-loteraa-teal flex-shrink-0" />
+                  <BadgeCheck className="h-6 w-6 text-white flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-white/90">Low Latency Validation</h4>
                     <p className="text-white/70">Our proprietary consensus mechanism ensures fast validation of sensor data with minimal energy consumption.</p>
@@ -417,7 +417,7 @@ const AmbassadorPage = () => {
           <div className="max-w-4xl mx-auto text-center">
             <div className="bg-gradient-to-r from-loteraa-purple/30 via-loteraa-blue/30 to-loteraa-teal/30 backdrop-blur-md rounded-xl p-8 border border-loteraa-purple/20">
               <h2 className="text-3xl font-bold mb-6">
-                <span className="gradient-text">Ready to Join the Revolution?</span>
+                <span className="text-white">Ready to Join the Revolution?</span>
               </h2>
               <p className="text-white/80 text-lg mb-8">
                 Become a Loteraa Ambassador today and help us build the future of IoT-Blockchain integration. Connect innovators, developers, and communities to create a decentralized sensor network ecosystem.
@@ -426,11 +426,11 @@ const AmbassadorPage = () => {
                 <Button 
                   onClick={() => setShowApplyForm(true)}
                   size="lg" 
-                  className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8"
+                  className="bg-white hover:bg-white/90 text-black px-8"
                 >
                   Apply Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button asChild variant="outline" size="lg" className="bg-transparent border-loteraa-purple/50 text-white hover:bg-loteraa-purple/20">
+                <Button asChild variant="outline" size="lg" className="bg-transparent border-white/50 text-white hover:bg-white/20">
                   <Link to="/contact">Contact Us</Link>
                 </Button>
               </div>

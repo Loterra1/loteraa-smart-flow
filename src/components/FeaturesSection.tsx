@@ -73,8 +73,8 @@ export default function FeaturesSection() {
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 uppercase ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="text-loteraa-purple">Powerful</span> Features
+          <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-white transition-all duration-1000 uppercase ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <span className="text-white">Powerful</span> Features
           </h2>
           <p className={`text-xl text-white/70 max-w-2xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             Unlock new possibilities at the intersection of IoT and blockchain technologies
@@ -87,7 +87,7 @@ export default function FeaturesSection() {
               key={index}
               className={`w-[300px] h-[450px] bg-loteraa-gray/20 backdrop-blur-sm rounded-xl p-6 border border-loteraa-gray/20 transition-all duration-1000 hover:border-loteraa-purple/50 hover:translate-y-[-5px] group ${visibleCards[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             >
-              <h3 className="text-xl font-bold mb-3 text-loteraa-purple">{feature.title}</h3>
+              <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
               <p className="text-white/70">{feature.description}</p>
             </div>
           ))}
@@ -96,11 +96,11 @@ export default function FeaturesSection() {
         {/* Stake & Reward Card */}
         <div className={`w-full max-w-4xl bg-gray-500/10 backdrop-blur-md rounded-lg p-4 sm:p-6 border border-gray-400/20 hover:border-loteraa-teal/50 transition-all duration-1000 mt-8 mx-auto ${isStakeCardVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="text-center">
-            <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-loteraa-purple">Loteraa Stake & Reward Mechanism</h3>
+            <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-white">Loteraa Stake & Reward Mechanism</h3>
             <p className="text-white/70 text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed">Loteraa's Stake & Reward system is designed to power the decentralized data economy by locking value, ensuring network integrity, and incentivizing contributors all while increasing the utility and demand for the native token $LOT.</p>
             <Button 
               onClick={() => navigate('/stake')}
-              className="bg-loteraa-purple hover:bg-loteraa-purple/80 text-white"
+              className="bg-black hover:bg-black/80 text-white"
             >
               Stake
             </Button>

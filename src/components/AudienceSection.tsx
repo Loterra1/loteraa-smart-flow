@@ -29,21 +29,21 @@ export default function AudienceSection() {
 
   const audiences = [
     {
-      icon: <Code className="h-10 w-10 text-loteraa-blue" />,
+      icon: <Code className="h-10 w-10 text-white" />,
       title: "For Developers",
       description: "Build IoT-connected dApps with our comprehensive SDK and API. Integrate real-world data into your blockchain projects seamlessly.",
       cta: "View Documentation",
       link: "/developer-docs"
     },
     {
-      icon: <Building className="h-10 w-10 text-loteraa-purple" />,
+      icon: <Building className="h-10 w-10 text-white" />,
       title: "For Businesses",
       description: "Automate processes and reduce operational costs. Create new revenue streams through tokenized data and machine-to-machine transactions.",
       cta: "Book a Demo",
       link: "/business"
     },
     {
-      icon: <FileText className="h-10 w-10 text-loteraa-teal" />,
+      icon: <FileText className="h-10 w-10 text-white" />,
       title: "For Researchers",
       description: "Access trustworthy sensor data on a global scale. Leverage verified IoT data sources for your research and development initiatives.",
       cta: "Explore Data",
@@ -56,8 +56,8 @@ export default function AudienceSection() {
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 uppercase ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="text-loteraa-purple">Who Is It For?</span>
+          <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-white transition-all duration-1000 uppercase ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <span className="text-white">Who Is It For?</span>
           </h2>
           <p className={`text-xl text-white/70 max-w-2xl mx-auto transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             Our infrastructure serves multiple stakeholders in the IoT-blockchain ecosystem
@@ -104,7 +104,7 @@ export default function AudienceSection() {
         </div>
         
         <div className="mt-16 text-center">
-          <Button asChild size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
+          <Button asChild size="lg" className="bg-black hover:bg-black/90 text-white px-8 py-6 text-lg">
             <Link to="/signup">Start Building <ArrowRight className="ml-2 h-5 w-5" /></Link>
           </Button>
         </div>
@@ -114,16 +114,16 @@ export default function AudienceSection() {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start">
           <div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 uppercase">
-              <span className="text-loteraa-purple">Real-World → Web3</span> Integration
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
+              <span className="text-white">Real-World → Web3</span> Integration
             </h2>
             <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
               Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
             </p>
             
             {/* End to End Trust Layer Section - moved here to be close */}
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 uppercase">
-              <span className="text-loteraa-purple">End to End Trust Layer</span> for IoT
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
+              <span className="text-white">End to End Trust Layer</span> for IoT
             </h2>
             <p className="text-lg md:text-xl text-white/70 leading-relaxed">
               Trust is everything in decentralized systems and Loteraa delivers it across the entire stack. From sensor identity to data hashing, from oracle relay to on-chain logic every step is cryptographically validated and publicly auditable.

@@ -201,7 +201,7 @@ export default function DataFeedPage() {
                 Secure & Real-Time
               </span>
               <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                <span className="text-loteraa-purple">Real-time IoT Data Feed</span>
+                <span className="text-white">Real-time IoT Data Feed</span>
               </h1>
               <p className={`text-xl text-white/80 max-w-3xl mx-auto mb-8 transition-all duration-700 delay-200 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
                 Loteraa provides secure, low-latency data streaming from IoT devices directly to blockchain networks, 
@@ -210,14 +210,14 @@ export default function DataFeedPage() {
               <div className={`flex flex-col sm:flex-row justify-center gap-4 transition-all duration-700 delay-300 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
                 <Button 
                   size="lg" 
-                  className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg"
+                  className="bg-white hover:bg-white/90 text-black px-8 py-6 text-lg"
                 >
                   Get Access <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className="bg-transparent border-loteraa-purple text-white hover:bg-loteraa-purple/20 px-8 py-6 text-lg"
+                  className="bg-transparent border-white text-white hover:bg-white/20 px-8 py-6 text-lg"
                 >
                   Explore Data Types
                 </Button>
@@ -313,7 +313,7 @@ export default function DataFeedPage() {
           <section className="mb-24">
             <div className="max-w-5xl mx-auto">
               <h2 className={`text-3xl md:text-4xl font-bold mb-12 text-center transition-all duration-700 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                <span className="text-loteraa-purple">Why Choose Loteraa Data Feeds</span>
+                <span className="text-white">Why Choose Loteraa Data Feeds</span>
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -322,42 +322,42 @@ export default function DataFeedPage() {
                     title: "Secure Data Transfer",
                     description: "End-to-end encryption ensures your IoT data remains protected from device to blockchain.",
                     icon: Shield,
-                    color: "text-loteraa-purple",
+                    color: "text-white",
                     delay: 100
                   },
                   {
                     title: "Low Latency",
                     description: "Advanced infrastructure delivers data in milliseconds, enabling real-time applications and automation.",
                     icon: Zap,
-                    color: "text-loteraa-blue",
+                    color: "text-white",
                     delay: 200
                   },
                   {
                     title: "Verified Sources",
                     description: "All data sources are verified and cryptographically signed to ensure authenticity.",
                     icon: Activity,
-                    color: "text-loteraa-teal",
+                    color: "text-white",
                     delay: 300
                   },
                   {
                     title: "Blockchain Storage",
                     description: "Immutable storage on Loteraa blockchain ensures data integrity and historical access.",
                     icon: Database,
-                    color: "text-[#ff5e62]",
+                    color: "text-white",
                     delay: 400
                   },
                   {
                     title: "Global Coverage",
                     description: "Access IoT data from devices around the world with our extensive sensor network.",
                     icon: Globe,
-                    color: "text-loteraa-purple",
+                    color: "text-white",
                     delay: 500
                   },
                   {
                     title: "Advanced Analytics",
                     description: "Built-in analytics tools to visualize and gain insights from streaming data.",
                     icon: BarChart3,
-                    color: "text-loteraa-blue",
+                    color: "text-white",
                     delay: 600
                   }
                 ].map((feature, index) => (
@@ -384,7 +384,7 @@ export default function DataFeedPage() {
           <section className="mb-24">
             <div className="max-w-5xl mx-auto">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-center transition-all duration-700 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                <span className="text-loteraa-purple">Available Data Types</span>
+                <span className="text-white">Available Data Types</span>
               </h2>
               <p className={`text-xl text-white/80 max-w-3xl mx-auto mb-12 text-center transition-all duration-700 delay-100 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
                 Access a wide variety of IoT sensor data to power your dApps

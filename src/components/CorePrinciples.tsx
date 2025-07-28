@@ -46,7 +46,7 @@ export default function CorePrinciples() {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 transition-all duration-1000 uppercase ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="text-loteraa-purple">Core</span> Principles
+            <span className="text-white">Core</span> Principles
           </h2>
         </div>
         

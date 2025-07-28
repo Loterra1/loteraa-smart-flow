@@ -13,9 +13,9 @@ const VisionMissionSection = () => {
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-white">
-            <span className="text-loteraa-purple">LOTERAA'S</span>{' '}
+            <span className="text-white">LOTERAA'S</span>{' '}
             <span className="text-white">VISION &</span>{' '}
-            <span className="text-loteraa-purple">MISSION</span>
+            <span className="text-white">MISSION</span>
           </h2>
           
           <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-3xl mx-auto">

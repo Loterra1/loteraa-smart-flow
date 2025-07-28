@@ -31,9 +31,9 @@ export default function CTASection() {
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className={`text-3xl md:text-5xl lg:text-6xl font-bold mb-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="text-loteraa-purple">Future Built,</span> Real World Ready
-          </h2>
+            <h2 className={`text-3xl md:text-5xl lg:text-6xl font-bold mb-6 text-white transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <span className="text-white">Future Built,</span> Real World Ready
+            </h2>
           <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-3xl mx-auto">
             Loteraa is not just blockchain-enabled—it's built to be the backbone of the decentralized internet of everything.
           </p>

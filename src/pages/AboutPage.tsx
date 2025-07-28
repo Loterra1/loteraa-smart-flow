@@ -53,22 +53,22 @@ export default function AboutPage() {
 
   const goals = [
     {
-      icon: <Target className="h-8 w-8 text-loteraa-purple" />,
+      icon: <Target className="h-8 w-8 text-white" />,
       title: "Democratize IoT Data",
       description: "Make IoT data accessible and valuable for everyone through blockchain technology."
     },
     {
-      icon: <Zap className="h-8 w-8 text-loteraa-blue" />,
+      icon: <Zap className="h-8 w-8 text-white" />,
       title: "Enable Automation",
       description: "Connect real-world devices to smart contracts for seamless automation."
     },
     {
-      icon: <Shield className="h-8 w-8 text-loteraa-teal" />,
+      icon: <Shield className="h-8 w-8 text-white" />,
       title: "Ensure Security",
       description: "Provide unbreakable security and data integrity through blockchain encryption."
     },
     {
-      icon: <Globe className="h-8 w-8 text-loteraa-purple" />,
+      icon: <Globe className="h-8 w-8 text-white" />,
       title: "Global Infrastructure",
       description: "Build a worldwide network of connected IoT devices and smart contracts."
     }
@@ -76,22 +76,22 @@ export default function AboutPage() {
 
   const values = [
     {
-      icon: <Lightbulb className="h-6 w-6 text-loteraa-teal" />,
+      icon: <Lightbulb className="h-6 w-6 text-white" />,
       title: "Innovation",
       description: "We constantly push the boundaries of what's possible with IoT and blockchain."
     },
     {
-      icon: <Users className="h-6 w-6 text-loteraa-blue" />,
+      icon: <Users className="h-6 w-6 text-white" />,
       title: "Community",
       description: "We believe in the power of decentralized communities to drive change."
     },
     {
-      icon: <Lock className="h-6 w-6 text-loteraa-purple" />,
+      icon: <Lock className="h-6 w-6 text-white" />,
       title: "Security",
       description: "Security and privacy are at the core of everything we build."
     },
     {
-      icon: <Heart className="h-6 w-6 text-loteraa-teal" />,
+      icon: <Heart className="h-6 w-6 text-white" />,
       title: "Transparency",
       description: "We operate with complete transparency and open-source principles."
     }
@@ -109,9 +109,9 @@ export default function AboutPage() {
               About Loteraa
             </Badge>
             
-            <h1 className="text-5xl md:text-7xl font-bold mb-8">
-              <span className="text-loteraa-purple">Connecting IoT</span> <br />
-              <span className="text-loteraa-purple">to Blockchain</span>
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
+              <span className="text-white">Connecting IoT</span> <br />
+              <span className="text-white">to Blockchain</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -132,7 +132,7 @@ export default function AboutPage() {
           <div className="bg-gray-900/50 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-gray-400/20">
             <div className="text-center mb-12">
               <h2 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                <span className="text-loteraa-purple">Our Mission</span>
+                <span className="text-white">Our Mission</span>
               </h2>
               <p className={`text-xl text-white/80 max-w-3xl mx-auto leading-relaxed transition-all duration-1000 ease-out delay-300 ${visibleSections.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 To create a decentralized ecosystem where IoT devices can securely interact with 
@@ -173,7 +173,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             <h2 className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <span className="text-loteraa-purple">Our Technology</span>
+              <span className="text-white">Our Technology</span>
             </h2>
             <p className={`text-xl text-white/70 max-w-2xl mx-auto transition-all duration-1000 ease-out delay-300 ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               Built on cutting-edge blockchain technology with a focus on scalability and security
@@ -184,7 +184,7 @@ export default function AboutPage() {
             <Card className={`bg-gray-900/50 backdrop-blur-md border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '600ms' }}>
               <CardHeader>
                 <div className="p-4 bg-loteraa-purple/20 rounded-lg w-fit mb-4">
-                  <Network className="h-10 w-10 text-loteraa-purple" />
+                  <Network className="h-10 w-10 text-white" />
                 </div>
                 <CardTitle className="text-white text-xl">Decentralized Network</CardTitle>
               </CardHeader>
@@ -199,7 +199,7 @@ export default function AboutPage() {
             <Card className={`bg-gray-900/50 backdrop-blur-md border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '750ms' }}>
               <CardHeader>
                 <div className="p-4 bg-loteraa-blue/20 rounded-lg w-fit mb-4">
-                  <Shield className="h-10 w-10 text-loteraa-blue" />
+                  <Shield className="h-10 w-10 text-white" />
                 </div>
                 <CardTitle className="text-white text-xl">Quantum-Resistant Security</CardTitle>
               </CardHeader>
@@ -214,7 +214,7 @@ export default function AboutPage() {
             <Card className={`bg-gray-900/50 backdrop-blur-md border-gray-400/20 transition-all duration-700 ease-out ${visibleSections.technology ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '900ms' }}>
               <CardHeader>
                 <div className="p-4 bg-loteraa-teal/20 rounded-lg w-fit mb-4">
-                  <Rocket className="h-10 w-10 text-loteraa-teal" />
+                  <Rocket className="h-10 w-10 text-white" />
                 </div>
                 <CardTitle className="text-white text-xl">Scalable Infrastructure</CardTitle>
               </CardHeader>
@@ -239,7 +239,7 @@ export default function AboutPage() {
           <div className="bg-gray-500/10 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-gray-400/20">
             <div className="text-center mb-12">
               <h3 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.values ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                <span className="text-loteraa-purple">Our Values</span>
+                <span className="text-white">Our Values</span>
               </h3>
               <p className={`text-white/70 text-xl transition-all duration-1000 ease-out delay-300 ${visibleSections.values ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 The principles that guide everything we do
@@ -275,13 +275,13 @@ export default function AboutPage() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h3 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.cta ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="text-loteraa-purple">Join the Revolution</span>
+            <span className="text-white">Join the Revolution</span>
           </h3>
           <p className={`text-xl text-white/70 mb-8 max-w-2xl mx-auto transition-all duration-1000 ease-out delay-300 ${visibleSections.cta ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             Be part of the future where IoT and blockchain converge to create endless possibilities
           </p>
           <div className={`transition-all duration-1000 ease-out delay-600 ${visibleSections.cta ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
+            <Button size="lg" className="bg-black hover:bg-black/90 text-white px-8 py-6 text-lg">
               Get Started Today <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>

@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div className="col-span-2">
             <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-loteraa-purple">LOTERAA</span>
+              <span className="text-2xl font-bold text-white">LOTERAA</span>
             </Link>
             <p className="mt-4 text-white/70 max-w-xs">
               Building the future of IoT-Blockchain infrastructure.
@@ -48,8 +48,6 @@ export default function Footer() {
               <li><Link to="/use-cases" className="text-white/70 hover:text-white transition-colors">Use Cases</Link></li>
               <li><Link to="/developer-docs" className="text-white/70 hover:text-white transition-colors">Documentation</Link></li>
               <li><a href="https://app.gitbook.com/o/yQLsupOQPrXX2sJ0ONGD/s/J6IPMTOM2im5F4c4uSf7/loteraa-product-and-technical-documentation" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
-              <li><a href="#" className="text-white/70 hover:text-white transition-colors">Blockchain Explorer</a></li>
-              <li><Link to="/ecosystem" className="text-white/70 hover:text-white transition-colors">Ecosystem</Link></li>
             </ul>
           </div>
           
