@@ -4,24 +4,15 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle, Database } from "lucide-react";
 import DashboardNavbar from '@/components/DashboardNavbar';
 import DatasetsList from '@/components/datasets/DatasetsList';
-import DatasetForm from '@/components/datasets/DatasetForm';
+import DatasetFileUpload from '@/components/datasets/DatasetFileUpload';
 import DatasetGuidelines from '@/components/datasets/DatasetGuidelines';
-import VerificationSummary from '@/components/datasets/VerificationSummary';
-import { useDatasets } from '@/hooks/useDatasets';
-import { useSmartContracts } from '@/hooks/useSmartContracts';
+import { useSupabaseDatasets } from '@/hooks/useSupabaseDatasets';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function DatasetEntryPage() {
-  const {
-    datasets,
-    isAddingDataset,
-    setIsAddingDataset,
-    addDataset,
-    showVerificationSummary,
-    verifiedDataset,
-    closeVerificationSummary
-  } = useDatasets();
-  
-  const { contracts } = useSmartContracts();
+  const { datasets, loading } = useSupabaseDatasets();
+  const { user } = useAuth();
+  const [isAddingDataset, setIsAddingDataset] = useState(false);
   const [isNewAccount, setIsNewAccount] = useState(true);
 
   useEffect(() => {
@@ -70,10 +61,9 @@ export default function DatasetEntryPage() {
           </div>
           
           {isAddingDataset && (
-            <DatasetForm 
-              onSubmit={addDataset}
+            <DatasetFileUpload 
+              onUploadSuccess={() => setIsAddingDataset(false)}
               onCancel={() => setIsAddingDataset(false)}
-              availableContracts={contracts}
             />
           )}
           
@@ -103,22 +93,46 @@ export default function DatasetEntryPage() {
           </Button>
         </div>
         
-        {showVerificationSummary && verifiedDataset && (
-          <VerificationSummary 
-            dataset={verifiedDataset} 
-            onClose={closeVerificationSummary} 
+        {isAddingDataset && (
+          <DatasetFileUpload 
+            onUploadSuccess={() => setIsAddingDataset(false)}
+            onCancel={() => setIsAddingDataset(false)}
           />
         )}
         
-        {isAddingDataset ? (
-          <DatasetForm 
-            onSubmit={addDataset}
-            onCancel={() => setIsAddingDataset(false)}
-            availableContracts={contracts}
-          />
-        ) : null}
-        
-        <DatasetsList datasets={datasets} />
+        <div className="bg-loteraa-gray/20 rounded-lg border border-loteraa-gray/30 p-6 mb-6">
+          <h2 className="text-xl font-bold text-white mb-4">Your Datasets</h2>
+          {datasets.length === 0 ? (
+            <p className="text-white/70">No datasets uploaded yet.</p>
+          ) : (
+            <div className="space-y-4">
+              {datasets.map((dataset) => (
+                <div key={dataset.id} className="bg-loteraa-gray/10 rounded-lg p-4 border border-loteraa-gray/20">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-medium text-white">{dataset.name}</h3>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${
+                      dataset.status === 'verified' ? 'bg-green-500/20 text-green-400' :
+                      dataset.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {dataset.status}
+                    </span>
+                  </div>
+                  <p className="text-white/70 text-sm mb-2">{dataset.description}</p>
+                  <div className="flex justify-between text-xs text-white/50">
+                    <span>Type: {dataset.file_type}</span>
+                    <span>Uploaded: {new Date(dataset.created_at).toLocaleDateString()}</span>
+                  </div>
+                  {dataset.status === 'verified' && dataset.reward_amount > 0 && (
+                    <div className="mt-2 text-green-400 text-sm">
+                      Reward: {dataset.reward_amount} LOT tokens
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
         
         <div className="mt-6 sm:mt-8">
           <DatasetGuidelines />
