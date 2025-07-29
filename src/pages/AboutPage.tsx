@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import NavigationHeader from "@/components/NavigationHeader";
 import Footer from "@/components/Footer";
+import AboutHeroAnimation from "@/components/animations/AboutHeroAnimation";
 import { 
   Target, 
   Zap, 
@@ -99,16 +100,13 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-black">
+      <AboutHeroAnimation />
       <NavigationHeader />
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="mb-6 bg-loteraa-purple/20 text-loteraa-purple border-loteraa-purple/30 px-6 py-2 text-lg">
-              About Loteraa
-            </Badge>
-            
             <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
               <span className="text-white">Connecting IoT</span> <br />
               <span className="text-white">to Blockchain</span>

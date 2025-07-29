@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Building, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import SphereGridAnimation from "./animations/SphereGridAnimation";
 
 export default function AudienceSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -77,11 +78,9 @@ export default function AudienceSection() {
             </p>
           </div>
           <div className="flex justify-center lg:justify-end">
-            <img 
-              src="/lovable-uploads/cafe6ef9-d65b-4d78-add0-9a345a6fc12b.png" 
-              alt="Real-World to Web3 Integration" 
-              className="max-w-full h-auto object-contain"
-            />
+            <div className="w-[500px] h-[400px] relative overflow-hidden rounded-lg bg-black">
+              <SphereGridAnimation />
+            </div>
           </div>
         </div>
       </div>
