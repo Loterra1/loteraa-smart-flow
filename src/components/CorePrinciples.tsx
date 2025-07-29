@@ -33,7 +33,7 @@ export default function CorePrinciples() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 relative overflow-hidden">
+    <section ref={sectionRef} className="py-20 relative overflow-hidden bg-black">
       {/* P5.js animation covering entire section */}
       <AIModelAnimation />
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
