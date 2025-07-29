@@ -1,5 +1,4 @@
 
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Building, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -78,24 +77,37 @@ export default function AudienceSection() {
             <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
               Trust is everything in decentralized systems and Loteraa delivers it across the entire stack. From sensor identity to data hashing, from oracle relay to on-chain logic every step is cryptographically validated and publicly auditable.
             </p>
-            
-            {/* Future Built, Real World Ready Section */}
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
-              <span className="text-white">Future Built,</span>{' '}
-              <span className="text-white">Real World Ready</span>
-            </h2>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed">
-              Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
-            </p>
           </div>
           <div className="flex justify-center lg:justify-end">
             <div className="w-[500px] h-[400px] relative overflow-hidden rounded-lg bg-black">
+              <SphereGridAnimation />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Future Built, Real World Ready Section - Centered */}
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
+        <div className="text-center relative">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
+            <span className="text-white">Future Built,</span>{' '}
+            <span className="text-white">Real World Ready</span>
+          </h2>
+          
+          {/* Globe Animation Background */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+            <div className="w-[500px] h-[400px] relative overflow-hidden">
               <GlobeMapAnimation />
             </div>
+          </div>
+          
+          <div className="relative z-10">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto">
+              Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
+            </p>
           </div>
         </div>
       </div>
     </section>
   );
 }
-
