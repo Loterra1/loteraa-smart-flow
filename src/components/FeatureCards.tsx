@@ -127,12 +127,12 @@ export default function FeatureCards() {
           
           {/* For Developers Section */}
           <div className="mt-16 max-w-6xl mx-auto relative">
-            {/* Background Image */}
+            {/* Background Image - Much Larger */}
             <div className="w-full flex justify-center relative">
               <img 
                 src="/lovable-uploads/f506d009-7669-4f02-aa86-d72c1a1faa7c.png"
                 alt="Radial Development Shape" 
-                className="w-[800px] h-[640px] object-contain"
+                className="w-[1000px] h-[800px] object-contain"
               />
               
               {/* Content Overlay */}

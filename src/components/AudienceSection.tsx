@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import SphereGridAnimation from "./animations/SphereGridAnimation";
 import GlobeMapAnimation from "./animations/GlobeMapAnimation";
+import GrainyNoiseAnimation from "./animations/GrainyNoiseAnimation";
 
 export default function AudienceSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -59,9 +60,14 @@ export default function AudienceSection() {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
       </div>
       
-      {/* Real-World → Web3 Integration Section */}
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start">
+      {/* Real-World → Web3 Integration Section with Grainy Noise Background */}
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-8 md:py-12">
+        {/* Grainy Noise Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <GrainyNoiseAnimation />
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start relative z-10">
           <div>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
               <span className="text-white">Real-World → Web3</span> Integration
@@ -86,7 +92,7 @@ export default function AudienceSection() {
         </div>
       </div>
 
-      {/* Future Built, Real World Ready Section - Centered */}
+      {/* Future Built, Real World Ready Section - Centered with Larger Globe */}
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
         <div className="text-center relative">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
@@ -94,9 +100,9 @@ export default function AudienceSection() {
             <span className="text-white">Real World Ready</span>
           </h2>
           
-          {/* Globe Animation Background */}
+          {/* Globe Animation Background - Much Larger */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-            <div className="w-[500px] h-[400px] relative overflow-hidden">
+            <div className="w-[800px] h-[600px] relative overflow-hidden">
               <GlobeMapAnimation />
             </div>
           </div>
