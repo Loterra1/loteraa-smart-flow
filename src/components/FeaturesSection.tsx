@@ -61,15 +61,6 @@ export default function FeaturesSection() {
 
   return (
     <section ref={sectionRef} id="features" className="py-20 relative overflow-hidden">
-      {/* Purple Light Effects */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-10 right-1/4 w-96 h-96 bg-loteraa-purple/30 rounded-full blur-3xl animate-pulse animation-delay-700"></div>
-        <div className="absolute bottom-1/3 left-1/4 w-88 h-88 bg-loteraa-purple/25 rounded-full blur-3xl animate-pulse animation-delay-1200"></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-loteraa-purple/20 rounded-full blur-3xl animate-pulse animation-delay-500"></div>
-        <div className="absolute bottom-10 right-10 w-72 h-72 bg-loteraa-purple/25 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
-        <div className="absolute top-20 left-10 w-56 h-56 bg-loteraa-purple/15 rounded-full blur-3xl animate-pulse animation-delay-1500"></div>
-        <div className="absolute bottom-1/2 right-1/3 w-80 h-80 bg-loteraa-purple/20 rounded-full blur-3xl animate-pulse animation-delay-800"></div>
-      </div>
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="text-center mb-16">

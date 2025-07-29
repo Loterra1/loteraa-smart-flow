@@ -236,14 +236,14 @@ const StakingPanel = ({ walletConnected, setWalletConnected }: StakingPanelProps
           
           {!walletConnected ? (
             <Button 
-              className="w-full mt-6 bg-loteraa-purple hover:bg-loteraa-purple/90"
+              className="w-full mt-6 bg-black hover:bg-black/90 text-white"
               onClick={handleConnectWallet}
             >
               <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
             </Button>
           ) : (
             <Button 
-              className="w-full mt-6 bg-loteraa-purple hover:bg-loteraa-purple/90" 
+              className="w-full mt-6 bg-black hover:bg-black/90 text-white" 
               disabled={!amount || parseFloat(amount) <= 0 || isStaking}
               onClick={handleStake}
             >

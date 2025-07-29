@@ -76,12 +76,6 @@ export default function AudienceSection() {
               <div 
                 key={index}
                 className="bg-gray-500/10 backdrop-blur-md rounded-xl p-6 md:p-8 border border-gray-400/20 flex flex-col h-full relative overflow-hidden"
-                style={{
-                  backgroundImage: `url(${backgroundImages[index]})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat'
-                }}
               >
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
                 {/* Purple light effects for each card */}

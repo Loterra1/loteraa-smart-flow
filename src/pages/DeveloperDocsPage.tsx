@@ -84,13 +84,13 @@ export default function DeveloperDocsPage() {
       <section className="pt-32 pb-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="mb-6 bg-loteraa-purple/20 text-loteraa-purple border-loteraa-purple/30 px-6 py-2 text-lg">
+            <Badge className="mb-6 bg-white/20 text-white border-white/30 px-6 py-2 text-lg">
               Developer Documentation
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8 glow-text">
-              <span className="text-loteraa-purple">Build the Future</span> <span className="text-white">of</span> <br />
-              <span className="text-loteraa-purple">IoT & Blockchain</span>
+              <span className="text-white">Build the Future</span> <span className="text-white">of</span> <br />
+              <span className="text-white">IoT & Blockchain</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -99,8 +99,8 @@ export default function DeveloperDocsPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg hologram-card">
-                Access Documentation <BookOpen className="ml-2 h-5 w-5" />
+              <Button size="lg" className="bg-white hover:bg-white/90 text-black px-8 py-6 text-lg hologram-card">
+                Access Documentation <BookOpen className="ml-2 h-5 w-5 text-white" />
               </Button>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function DeveloperDocsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 glow-text">
-              <span className="text-loteraa-purple">Developer Toolkit</span>
+              <span className="text-white">Developer Toolkit</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Everything you need to build, test, and deploy IoT applications on the Loteraa blockchain
@@ -121,17 +121,17 @@ export default function DeveloperDocsPage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {developerTools.map((tool, index) => (
-              <Card key={index} className="bg-loteraa-gray/30 backdrop-blur-sm border-loteraa-gray/40 hover:border-loteraa-purple/50 transition-all duration-300 hologram-card group">
+              <Card key={index} className="bg-black backdrop-blur-sm border-white/40 hover:border-white/50 transition-all duration-300 hologram-card group">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 bg-loteraa-purple/20 rounded-lg">
-                      <tool.icon className="h-6 w-6 text-loteraa-purple" />
+                    <div className="p-3 bg-white/20 rounded-lg">
+                      <tool.icon className="h-6 w-6 text-white" />
                     </div>
-                    <Badge variant="outline" className="text-loteraa-blue border-loteraa-blue/40">
+                    <Badge variant="outline" className="text-white border-white/40">
                       {tool.badge}
                     </Badge>
                   </div>
-                  <CardTitle className="text-white text-xl group-hover:text-loteraa-purple transition-colors">
+                  <CardTitle className="text-white text-xl group-hover:text-white transition-colors">
                     {tool.title}
                   </CardTitle>
                 </CardHeader>
@@ -142,7 +142,7 @@ export default function DeveloperDocsPage() {
                   <div className="space-y-2">
                     {tool.features.map((feature, featureIndex) => (
                       <div key={featureIndex} className="flex items-center text-sm text-white/60">
-                        <ArrowRight className="h-3 w-3 text-loteraa-teal mr-2" />
+                        <ArrowRight className="h-3 w-3 text-white mr-2" />
                         {feature}
                       </div>
                     ))}
@@ -161,30 +161,30 @@ export default function DeveloperDocsPage() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-3xl md:text-4xl font-bold mb-6 glow-text">
-                  <span className="gradient-text">Start Building Today</span>
+                  <span className="text-white">Start Building Today</span>
                 </h3>
                 <p className="text-white/80 text-lg mb-8 leading-relaxed">
                   Get started with our comprehensive documentation, tutorials, and code samples. 
                   Join thousands of developers building the next generation of IoT applications.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white">
+                  <Button size="lg" className="bg-black hover:bg-black/90 text-white">
                     View Documentation <BookOpen className="ml-2 h-5 w-5" />
                   </Button>
                 </div>
               </div>
               
               <div className="relative">
-                <div className="bg-loteraa-black/50 rounded-lg p-6 font-mono text-sm">
-                  <div className="text-loteraa-purple mb-2">// Initialize Loteraa SDK</div>
+                <div className="bg-black/50 rounded-lg p-6 font-mono text-sm">
+                  <div className="text-white mb-2">// Initialize Loteraa SDK</div>
                   <div className="text-white">
-                    <span className="text-loteraa-blue">import</span> {`{ LoteraaSDK }`} <span className="text-loteraa-blue">from</span> <span className="text-loteraa-teal">'@loteraa/sdk'</span>
+                    <span className="text-white">import</span> {`{ LoteraaSDK }`} <span className="text-white">from</span> <span className="text-white">'@loteraa/sdk'</span>
                   </div>
                   <div className="text-white mt-2">
-                    <span className="text-loteraa-blue">const</span> <span className="text-white">sdk</span> = <span className="text-loteraa-blue">new</span> <span className="text-loteraa-purple">LoteraaSDK</span>()
+                    <span className="text-white">const</span> <span className="text-white">sdk</span> = <span className="text-white">new</span> <span className="text-white">LoteraaSDK</span>()
                   </div>
                   <div className="text-white mt-2">
-                    <span className="text-loteraa-blue">await</span> sdk.<span className="text-loteraa-purple">connect</span>()
+                    <span className="text-white">await</span> sdk.<span className="text-white">connect</span>()
                   </div>
                 </div>
               </div>

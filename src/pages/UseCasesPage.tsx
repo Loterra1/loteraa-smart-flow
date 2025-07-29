@@ -140,7 +140,7 @@ export default function UseCasesPage() {
           
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Loteraa Use Cases</span>
+              <span className="text-white">Loteraa Use Cases</span>
             </h1>
             <p className="text-xl text-white/70 max-w-4xl mx-auto leading-relaxed">
               Discover how Loteraa blockchain transforms IoT ecosystems across industries, 
@@ -157,8 +157,8 @@ export default function UseCasesPage() {
                   <CardHeader>
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center">
-                        <div className="bg-loteraa-purple/20 p-3 rounded-lg mr-4">
-                          <IconComponent className="h-6 w-6 text-loteraa-purple" />
+                        <div className="bg-white/20 p-3 rounded-lg mr-4">
+                          <IconComponent className="h-6 w-6 text-white" />
                         </div>
                         <div>
                           <CardTitle className="text-white text-xl">{useCase.title}</CardTitle>
@@ -175,8 +175,8 @@ export default function UseCasesPage() {
                   <CardContent>
                     <div className="space-y-4">
                       <div>
-                        <h4 className="text-loteraa-teal font-semibold mb-2 flex items-center">
-                          <BarChart3 className="h-4 w-4 mr-2" />
+                        <h4 className="text-white font-semibold mb-2 flex items-center">
+                          <BarChart3 className="h-4 w-4 mr-2 text-white" />
                           Key Benefits
                         </h4>
                         <ul className="space-y-1">
@@ -189,8 +189,8 @@ export default function UseCasesPage() {
                         </ul>
                       </div>
                       <div>
-                        <h4 className="text-loteraa-teal font-semibold mb-2 flex items-center">
-                          <Cpu className="h-4 w-4 mr-2" />
+                        <h4 className="text-white font-semibold mb-2 flex items-center">
+                          <Cpu className="h-4 w-4 mr-2 text-white" />
                           Example Applications
                         </h4>
                         <ul className="space-y-1">
@@ -214,22 +214,22 @@ export default function UseCasesPage() {
               <h2 className="text-3xl font-bold gradient-text mb-6">Why Choose Loteraa?</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="bg-loteraa-purple/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Shield className="h-8 w-8 text-loteraa-purple" />
+                  <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Shield className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-white font-semibold mb-2">Enterprise Security</h3>
                   <p className="text-white/70 text-sm">Military-grade encryption and decentralized architecture ensure your IoT data remains secure and tamper-proof.</p>
                 </div>
                 <div className="text-center">
-                  <div className="bg-loteraa-blue/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Zap className="h-8 w-8 text-loteraa-blue" />
+                  <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Zap className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-white font-semibold mb-2">Real-time Processing</h3>
                   <p className="text-white/70 text-sm">Process millions of IoT transactions per second with our optimized blockchain infrastructure.</p>
                 </div>
                 <div className="text-center">
-                  <div className="bg-loteraa-teal/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="h-8 w-8 text-loteraa-teal" />
+                  <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Users className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="text-white font-semibold mb-2">Developer Friendly</h3>
                   <p className="text-white/70 text-sm">Comprehensive SDKs, APIs, and documentation make building on Loteraa simple and efficient.</p>
@@ -241,13 +241,13 @@ export default function UseCasesPage() {
           <div className="text-center">
             <h2 className="text-2xl font-bold text-white mb-6">Ready to Build on Loteraa?</h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild className="bg-loteraa-purple hover:bg-loteraa-blue">
+              <Button asChild className="bg-white hover:bg-white/90 text-black">
                 <Link to="/developer-docs">
                   <Code className="h-4 w-4 mr-2" />
                   Developer Documentation
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="border-loteraa-gray/50 text-white hover:bg-loteraa-gray/20">
+              <Button asChild variant="outline" className="border-white/50 text-white hover:bg-white/20">
                 <Link to="/ecosystem">
                   <Globe className="h-4 w-4 mr-2" />
                   Explore Ecosystem

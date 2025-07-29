@@ -188,7 +188,7 @@ export default function SignupForm() {
               </div>
             </div>
             
-            <Button type="submit" className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-black hover:bg-black/90 text-white" disabled={isLoading}>
               {isLoading ? "Sending..." : "Send Reset Email"}
             </Button>
             
@@ -196,7 +196,7 @@ export default function SignupForm() {
               type="button" 
               variant="link" 
               onClick={() => setShowForgotPassword(false)} 
-              className="w-full text-loteraa-blue hover:text-loteraa-blue/90"
+              className="w-full text-white hover:text-white/90"
             >
               Back to Login
             </Button>
@@ -237,7 +237,7 @@ export default function SignupForm() {
               </div>
             </div>
             
-            <Button type="submit" className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-black hover:bg-black/90 text-white" disabled={isLoading}>
               {isLoading ? "Logging in..." : "Login"}
             </Button>
             
@@ -245,7 +245,7 @@ export default function SignupForm() {
               type="button" 
               variant="link" 
               onClick={() => setShowForgotPassword(true)} 
-              className="w-full text-loteraa-blue hover:text-loteraa-blue/90"
+              className="w-full text-white hover:text-white/90"
             >
               Forgot Password?
             </Button>
@@ -302,7 +302,7 @@ export default function SignupForm() {
               </div>
             </div>
             
-            <Button type="submit" className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-black hover:bg-black/90 text-white" disabled={isLoading}>
               {isLoading ? "Creating Account..." : "Create Account"}
             </Button>
           </form>
@@ -315,7 +315,7 @@ export default function SignupForm() {
               type="button" 
               variant="link" 
               onClick={() => setIsLoginMode(!isLoginMode)} 
-              className="text-loteraa-blue hover:text-loteraa-blue/90"
+              className="text-white hover:text-white/90"
             >
               {isLoginMode ? "Don't have an account? Sign up" : "Already have an account? Login"}
             </Button>

@@ -15,10 +15,10 @@ const StakePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <NavigationHeader />
-      <main className="flex-grow pt-24 pb-16 bg-gradient-to-br from-loteraa-black to-loteraa-gray/20">
+      <main className="flex-grow pt-24 pb-16 bg-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <h1 className="text-4xl font-bold text-center mb-4 gradient-text">
+            <h1 className="text-4xl font-bold text-center mb-4 text-white">
               LOTERAA Finance
             </h1>
             <p className="text-lg text-white/70 text-center mb-12 max-w-3xl mx-auto">
