@@ -151,18 +151,6 @@ export default function FeatureCards() {
               </div>
             </div>
           </div>
-          
-          {/* Globe Section */}
-          <div className="mt-16 max-w-6xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 uppercase">
-                FUTURE BUILT, REAL WORLD READY
-              </h2>
-            </div>
-            <div className="w-full h-[600px] relative overflow-hidden rounded-lg bg-black">
-              <WireframeSphereAnimation />
-            </div>
-          </div>
         </div>
       </div>
     </section>
