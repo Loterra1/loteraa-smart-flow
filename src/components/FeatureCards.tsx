@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import CubeAnimation from "./animations/CubeAnimation";
 import RadialAnimation from "./animations/RadialAnimation";
 import SpiralAnimation from "./animations/SpiralAnimation";
+import VortexAnimation from "./animations/VortexAnimation";
 
 interface FeatureCard {
   title: string;
@@ -51,7 +52,7 @@ export default function FeatureCards() {
   }, []);
 
 
-  const animations = [CubeAnimation, RadialAnimation, SpiralAnimation];
+  const animations = [CubeAnimation, RadialAnimation, VortexAnimation];
 
   return (
     <section ref={sectionRef} className="py-16">
@@ -82,7 +83,7 @@ export default function FeatureCards() {
                   <div 
                     className="flex-1 h-[280px] relative overflow-hidden rounded-lg"
                     style={{
-                      backgroundColor: '#111111'
+                      backgroundColor: '#000000'
                     }}
                   >
                     <div className="p-6 h-full flex flex-col justify-center">
@@ -98,6 +99,28 @@ export default function FeatureCards() {
               </div>
             );
           })}
+          
+          {/* New $LOT Token Section */}
+          <div className="mt-16 flex items-center gap-8 max-w-6xl mx-auto">
+            {/* Left Side - Text Content */}
+            <div className="flex-1">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                EARN REWARD WITH $LOT TOKEN
+              </h2>
+              <p className="text-white/80 leading-relaxed text-lg">
+                The Loteraa ecosystem is powered by the $Lot token, a utility and reward token designed to fuel sensor contributions, validate data quality, incentivize uptime, and govern the platform's evolution. Loteraa's tokenomics are built to reward users for real-world participation whether they host sensors, validate data, build automation apps, or contribute to network growth.
+              </p>
+            </div>
+            
+            {/* Right Side - Image */}
+            <div className="w-[400px] h-[320px] flex-shrink-0">
+              <img 
+                src="/lovable-uploads/6b854c07-51aa-4c3f-9bc1-f7e7cf205b69.png" 
+                alt="Cube Structure" 
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
