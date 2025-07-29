@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import p5 from 'p5';
+import CubeAnimation from "./animations/CubeAnimation";
+import RadialAnimation from "./animations/RadialAnimation";
+import SpiralAnimation from "./animations/SpiralAnimation";
 
 interface FeatureCard {
   title: string;
@@ -49,35 +51,53 @@ export default function FeatureCards() {
   }, []);
 
 
+  const animations = [CubeAnimation, RadialAnimation, SpiralAnimation];
+
   return (
     <section ref={sectionRef} className="py-16">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto space-y-8">
-          {/* All cards in single column layout */}
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className={`relative transition-all duration-1000 ${
-                visibleCards[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-            >
-              <div 
-                className="w-full max-w-[800px] h-[280px] mx-auto relative overflow-hidden rounded-lg"
-                style={{
-                  backgroundColor: '#111111'
-                }}
+        <div className="max-w-6xl mx-auto space-y-4">
+          {/* All cards with image animations */}
+          {features.map((feature, index) => {
+            const AnimationComponent = animations[index];
+            return (
+              <div
+                key={index}
+                className={`relative transition-all duration-1000 ${
+                  visibleCards[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
               >
-                <div className="p-6 h-full flex flex-col justify-center">
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    {feature.title}
-                  </h3>
-                  <p className="text-white/80 leading-relaxed">
-                    {feature.description}
-                  </p>
+                <div className="flex items-center gap-4 max-w-6xl mx-auto">
+                  {/* Animation Card */}
+                  <div 
+                    className="w-[300px] h-[280px] relative overflow-hidden rounded-lg flex-shrink-0"
+                    style={{
+                      backgroundColor: '#000000'
+                    }}
+                  >
+                    <AnimationComponent />
+                  </div>
+                  
+                  {/* Text Card */}
+                  <div 
+                    className="flex-1 h-[280px] relative overflow-hidden rounded-lg"
+                    style={{
+                      backgroundColor: '#111111'
+                    }}
+                  >
+                    <div className="p-6 h-full flex flex-col justify-center">
+                      <h3 className="text-xl font-bold text-white mb-4">
+                        {feature.title}
+                      </h3>
+                      <p className="text-white/80 leading-relaxed">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
