@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import CubeAnimation from "./animations/CubeAnimation";
 import RadialAnimation from "./animations/RadialAnimation";
 import SpiralAnimation from "./animations/SpiralAnimation";
 import VortexAnimation from "./animations/VortexAnimation";
+import WireframeAnimation from "./animations/WireframeAnimation";
 
 interface FeatureCard {
   title: string;
@@ -52,7 +54,7 @@ export default function FeatureCards() {
   }, []);
 
 
-  const animations = [CubeAnimation, RadialAnimation, VortexAnimation];
+  const animations = [CubeAnimation, RadialAnimation, WireframeAnimation];
 
   return (
     <section ref={sectionRef} className="py-16">
@@ -113,12 +115,61 @@ export default function FeatureCards() {
             </div>
             
             {/* Right Side - Image */}
-            <div className="w-[400px] h-[320px] flex-shrink-0">
+            <div className="w-[600px] h-[480px] flex-shrink-0">
               <img 
-                src="/lovable-uploads/6b854c07-51aa-4c3f-9bc1-f7e7cf205b69.png" 
-                alt="Cube Structure" 
+                src="/lovable-uploads/9f7441f3-0811-41a6-b4a1-ae91f4972a30.png"
+                alt="Black Spheres" 
                 className="w-full h-full object-contain"
               />
+            </div>
+          </div>
+          
+          {/* Real-World → Web3 Integration Section */}
+          <div className="mt-16 flex items-center gap-8 max-w-6xl mx-auto">
+            {/* Left Side - Text Content */}
+            <div className="flex-1">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                REAL-WORLD → WEB3 INTEGRATION
+              </h2>
+              <p className="text-white/80 leading-relaxed text-lg">
+                Loteraa bridges the gap between physical sensors and blockchain networks, enabling seamless data flow from IoT devices to smart contracts. This integration allows real-world events to trigger automated Web3 actions, creating a truly connected ecosystem.
+              </p>
+            </div>
+            
+            {/* Right Side - Image */}
+            <div className="w-[400px] h-[320px] flex-shrink-0">
+              <img 
+                src="/lovable-uploads/9f7441f3-0811-41a6-b4a1-ae91f4972a30.png"
+                alt="Black Spheres Integration" 
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+          
+          {/* For Developers Section */}
+          <div className="mt-16 max-w-6xl mx-auto">
+            {/* Image */}
+            <div className="w-full flex justify-center mb-8">
+              <img 
+                src="/lovable-uploads/f506d009-7669-4f02-aa86-d72c1a1faa7c.png"
+                alt="Radial Development Shape" 
+                className="w-[400px] h-[320px] object-contain"
+              />
+            </div>
+            
+            {/* Content */}
+            <div className="text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                FOR DEVELOPERS
+              </h2>
+              <p className="text-white/80 leading-relaxed text-lg mb-8 max-w-4xl mx-auto">
+                Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains.
+              </p>
+              <Button 
+                className="bg-white text-black hover:bg-white/90 font-semibold px-8 py-3"
+              >
+                Start building
+              </Button>
             </div>
           </div>
         </div>
