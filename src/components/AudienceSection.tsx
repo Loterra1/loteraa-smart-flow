@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import SphereGridAnimation from "./animations/SphereGridAnimation";
 import GlobeMapAnimation from "./animations/GlobeMapAnimation";
 import GrainyNoiseAnimation from "./animations/GrainyNoiseAnimation";
+import RadialBurstAnimation from "./animations/RadialBurstAnimation";
 
 export default function AudienceSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -75,8 +76,32 @@ export default function AudienceSection() {
             <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
               Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
             </p>
+            
+            {/* New Image with Animation and Centered Text */}
+            <div className="relative w-full h-[300px] rounded-lg overflow-hidden bg-black border border-white/10 mb-6">
+              {/* Background Image */}
+              <div className="absolute inset-0 opacity-20">
+                <img 
+                  src="/lovable-uploads/66e468dd-382e-46e1-a49b-bc686946c860.png"
+                  alt="Radial Burst Pattern"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              
+              {/* p5.js Animation Layer */}
+              <div className="absolute inset-0">
+                <RadialBurstAnimation />
+              </div>
+              
+              {/* Centered Text */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <h3 className="text-xl md:text-2xl font-bold text-white text-center">
+                  Automating the physical world
+                </h3>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-center lg:justify-end">
+          <div className="flex justify-center lg:justify-end items-start">
             <div className="w-[600px] h-[500px] relative overflow-hidden rounded-lg bg-black">
               <SphereGridAnimation />
             </div>
@@ -105,9 +130,14 @@ export default function AudienceSection() {
           </div>
           
           <div className="relative z-10">
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto mb-8">
               Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
             </p>
+            
+            {/* Sign Up Button with Lighter Background */}
+            <Button className="bg-gray-200 hover:bg-gray-300 text-black font-semibold px-8 py-3 rounded-lg">
+              Sign Up Now
+            </Button>
           </div>
         </div>
       </div>
