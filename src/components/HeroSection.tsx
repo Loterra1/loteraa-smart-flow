@@ -12,16 +12,18 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-black/30 z-1"></div>
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-12 uppercase text-white">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 uppercase text-white">
             <span className="animate-fade-in animation-delay-1000">Connecting IoT Datas</span> To <br /> 
             <span className="animate-fade-in animation-delay-2000">Blockchain</span> 
             <span className="animate-fade-in animation-delay-3000"> Seamlessly</span>
           </h1>
           
-          <div className="mb-8"></div>
+          <p className="text-lg md:text-xl text-white/80 mb-12 animate-fade-in animation-delay-4000 max-w-3xl">
+            The first AI-native blockchain powering real-time IoT, tokenized data rewards, and DePIN automation.
+          </p>
           
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in animation-delay-5000">
-            <Button asChild size="lg" className="bg-black hover:bg-black/90 text-white px-8 py-6 text-lg">
+            <Button asChild size="lg" className="bg-white hover:bg-white/90 text-black px-8 py-6 text-lg">
               <Link to="/signup">Start Building <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
           </div>

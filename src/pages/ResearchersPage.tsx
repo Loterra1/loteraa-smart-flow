@@ -124,8 +124,8 @@ export default function ResearchersPage() {
             </Badge>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8">
-              <span className="text-loteraa-purple">Explore Global</span> <br />
-              <span className="text-loteraa-purple">IoT Data</span>
+              <span className="text-white">Explore Global</span> <br />
+              <span className="text-white">IoT Data</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -134,7 +134,7 @@ export default function ResearchersPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
+              <Button size="lg" className="bg-black hover:bg-black/90 text-white px-8 py-6 text-lg">
                 Start Exploring Data <Database className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -148,7 +148,7 @@ export default function ResearchersPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-loteraa-purple">Research & Earn</span>
+              <span className="text-white">Research & Earn</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Contribute to the global IoT data ecosystem and earn rewards for your research contributions
@@ -157,14 +157,14 @@ export default function ResearchersPage() {
           
           <div className="grid md:grid-cols-2 gap-8">
             {researchBenefits.map((benefit, index) => (
-              <Card key={index} className="bg-loteraa-gray/30 backdrop-blur-sm border-loteraa-gray/40 hover:border-loteraa-teal/50 transition-all duration-300 group">
+              <Card key={index} className="bg-black backdrop-blur-sm border-white/20 hover:border-white/50 transition-all duration-300 group">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 bg-loteraa-teal/20 rounded-lg">
-                      <benefit.icon className="h-6 w-6 text-loteraa-teal" />
+                    <div className="p-3 bg-white/20 rounded-lg">
+                      <benefit.icon className="h-6 w-6 text-white" />
                     </div>
                   </div>
-                  <CardTitle className="text-white text-xl group-hover:text-loteraa-teal transition-colors">
+                  <CardTitle className="text-white text-xl group-hover:text-white transition-colors">
                     {benefit.title}
                   </CardTitle>
                 </CardHeader>
@@ -182,7 +182,7 @@ export default function ResearchersPage() {
       {/* How It Works Section */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-loteraa-purple backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-loteraa-purple/30">
+          <div className="bg-black backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/30">
             <div className="text-center mb-12">
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
                 <span className="text-white">How It Works</span>
@@ -191,32 +191,32 @@ export default function ResearchersPage() {
             
             <div className="grid md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="bg-loteraa-teal/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-8 w-8 text-loteraa-teal" />
+                <div className="bg-white/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-white" />
                 </div>
                 <h4 className="text-lg font-semibold text-white mb-2">1. Register</h4>
                 <p className="text-white/70 text-sm">Sign up as a researcher and verify your credentials</p>
               </div>
               
               <div className="text-center">
-                <div className="bg-loteraa-blue/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Database className="h-8 w-8 text-loteraa-blue" />
+                <div className="bg-white/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Database className="h-8 w-8 text-white" />
                 </div>
                 <h4 className="text-lg font-semibold text-white mb-2">2. Input Data</h4>
                 <p className="text-white/70 text-sm">Enter different types of IoT datas and researches and store them on Loterra blockchain to be used by innovative global products</p>
               </div>
               
               <div className="text-center">
-                <div className="bg-loteraa-purple/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="h-8 w-8 text-loteraa-purple" />
+                <div className="bg-white/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="h-8 w-8 text-white" />
                 </div>
                 <h4 className="text-lg font-semibold text-white mb-2">3. Verify</h4>
                 <p className="text-white/70 text-sm">Contribute to data verification and quality assurance</p>
               </div>
               
               <div className="text-center">
-                <div className="bg-loteraa-teal/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Coins className="h-8 w-8 text-loteraa-teal" />
+                <div className="bg-white/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Coins className="h-8 w-8 text-white" />
                 </div>
                 <h4 className="text-lg font-semibold text-white mb-2">4. Earn</h4>
                 <p className="text-white/70 text-sm">Receive $Terra tokens as rewards monthly basis for your contributions and other incentives</p>

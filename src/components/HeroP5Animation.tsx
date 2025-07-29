@@ -1,32 +1,20 @@
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
 
-interface Building {
+interface Circle3D {
   x: number;
   y: number;
-  width: number;
-  height: number;
-  activity: number;
-  connections: number[];
-  pulseIntensity: number;
-  data: number;
-}
-
-interface TrafficDot {
-  x: number;
-  y: number;
-  targetX: number;
-  targetY: number;
-  speed: number;
-  size: number;
+  z: number;
+  vx: number;
+  vy: number;
+  vz: number;
+  radius: number;
+  rotation: { x: number; y: number; z: number };
+  rotationSpeed: { x: number; y: number; z: number };
   color: p5.Color;
-  pathIndex: number;
-}
-
-interface Road {
-  from: number;
-  to: number;
-  points: Array<{ x: number; y: number }>;
+  hoverRadius: number;
+  targetRadius: number;
+  bounceCount: number;
 }
 
 export default function HeroP5Animation() {
@@ -37,278 +25,188 @@ export default function HeroP5Animation() {
     if (!containerRef.current) return;
 
     const sketch = (p: p5) => {
-      let circles: any[] = [];
-      let floatingElements: any[] = [];
-      let sineWaveOffset = 0;
+      let circles3D: Circle3D[] = [];
+      let polarWaveOffset = 0;
+      let cam: any;
       
       // Physics properties
-      let gravity = 0.3;
-      let bounce = 0.8;
-      let friction = 0.99;
+      let gravity = 0.2;
+      let bounce = 0.7;
+      let friction = 0.98;
 
       p.setup = () => {
-        const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+        const canvas = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
         canvas.parent(containerRef.current!);
         
-        // Create 2 big rolling circles
-        circles = [
+        // Create 2 big 3D rolling circles
+        circles3D = [
           {
-            x: p.width * 0.3,
-            y: p.height * 0.4,
-            vx: 1,
-            vy: 0,
+            x: -200,
+            y: -50,
+            z: 0,
+            vx: 2,
+            vy: 1,
+            vz: 0.5,
             radius: 80,
-            rotation: 0,
-            color: p.color(255, 255, 255, 100),
+            rotation: { x: 0, y: 0, z: 0 },
+            rotationSpeed: { x: 0.02, y: 0.01, z: 0.015 },
+            color: p.color(255, 255, 255, 150),
             hoverRadius: 80,
             targetRadius: 80,
-            isDropping: false,
-            dropStartY: 0,
             bounceCount: 0
           },
           {
-            x: p.width * 0.7,
-            y: p.height * 0.6,
-            vx: -0.8,
-            vy: 0,
+            x: 200,
+            y: 50,
+            z: -100,
+            vx: -1.5,
+            vy: -0.8,
+            vz: 0.3,
             radius: 100,
-            rotation: 0,
-            color: p.color(200, 200, 255, 120),
+            rotation: { x: 0, y: 0, z: 0 },
+            rotationSpeed: { x: -0.015, y: 0.02, z: -0.01 },
+            color: p.color(200, 200, 255, 180),
             hoverRadius: 100,
             targetRadius: 100,
-            isDropping: false,
-            dropStartY: 0,
             bounceCount: 0
           }
         ];
-
-        // Create floating elements
-        for (let i = 0; i < 15; i++) {
-          floatingElements.push({
-            x: p.random(p.width),
-            y: p.random(p.height),
-            vx: p.random(-0.5, 0.5),
-            vy: p.random(-0.5, 0.5),
-            radius: p.random(5, 15),
-            opacity: p.random(30, 80),
-            phase: p.random(p.TWO_PI)
-          });
-        }
       };
 
       p.draw = () => {
-        p.background(0, 20); // Slight trail effect
+        p.background(0, 30);
         
-        // Draw animated sine wave in the middle
-        p.stroke(100, 150, 255, 80);
-        p.strokeWeight(3);
-        p.noFill();
+        // Set up 3D camera
+        p.camera(
+          p.cos(p.millis() * 0.0005) * 800, 
+          -200, 
+          p.sin(p.millis() * 0.0005) * 800,
+          0, 0, 0,
+          0, 1, 0
+        );
         
-        p.beginShape();
-        for (let x = 0; x < p.width; x += 5) {
-          let y = p.height / 2 + p.sin((x * 0.01) + sineWaveOffset) * 50;
-          p.vertex(x, y);
+        // Draw 3D polar sine wave - circular oscillating rings
+        p.push();
+        p.rotateY(polarWaveOffset * 0.5);
+        
+        for (let ring = 0; ring < 8; ring++) {
+          let radius = 100 + ring * 60;
+          let height = p.sin(polarWaveOffset + ring * 0.8) * 30;
+          
+          p.stroke(255, 255, 255, 150 - ring * 15);
+          p.strokeWeight(2);
+          p.noFill();
+          
+          p.beginShape();
+          for (let angle = 0; angle < p.TWO_PI + 0.1; angle += 0.1) {
+            let x = p.cos(angle) * radius;
+            let z = p.sin(angle) * radius;
+            let y = height + p.sin(angle * 6 + polarWaveOffset * 2) * 20;
+            p.vertex(x, y, z);
+          }
+          p.endShape();
+          
+          // Add glowing effect
+          p.stroke(255, 255, 255, 50 - ring * 5);
+          p.strokeWeight(4);
+          p.beginShape();
+          for (let angle = 0; angle < p.TWO_PI + 0.1; angle += 0.2) {
+            let x = p.cos(angle) * radius;
+            let z = p.sin(angle) * radius;
+            let y = height + p.sin(angle * 6 + polarWaveOffset * 2) * 20;
+            p.vertex(x, y, z);
+          }
+          p.endShape();
         }
-        p.endShape();
+        p.pop();
         
-        // Second sine wave with different frequency
-        p.stroke(255, 100, 150, 60);
-        p.strokeWeight(2);
-        p.beginShape();
-        for (let x = 0; x < p.width; x += 5) {
-          let y = p.height / 2 + p.sin((x * 0.015) + sineWaveOffset * 1.5) * 30;
-          p.vertex(x, y);
-        }
-        p.endShape();
-        
-        sineWaveOffset += 0.02;
+        polarWaveOffset += 0.02;
 
-        // Update and draw floating elements
-        floatingElements.forEach((element) => {
-          // Physics
-          element.x += element.vx;
-          element.y += element.vy;
+        // Update and draw 3D rolling circles
+        circles3D.forEach((circle, index) => {
+          // Physics - bouncing ball behavior
+          circle.x += circle.vx;
+          circle.y += circle.vy;
+          circle.z += circle.vz;
           
-          // Bounce off walls
-          if (element.x <= element.radius || element.x >= p.width - element.radius) {
-            element.vx *= -0.8;
-            element.x = p.constrain(element.x, element.radius, p.width - element.radius);
-          }
-          if (element.y <= element.radius || element.y >= p.height - element.radius) {
-            element.vy *= -0.8;
-            element.y = p.constrain(element.y, element.radius, p.height - element.radius);
-          }
+          // Apply gravity
+          circle.vy += gravity;
           
-          // Gentle floating motion
-          element.vx += p.sin(p.millis() * 0.001 + element.phase) * 0.01;
-          element.vy += p.cos(p.millis() * 0.001 + element.phase) * 0.01;
+          // Bounce off boundaries
+          let boundaryX = 400;
+          let boundaryY = 300;
+          let boundaryZ = 200;
+          
+          if (circle.x <= -boundaryX || circle.x >= boundaryX) {
+            circle.vx *= -bounce;
+            circle.x = p.constrain(circle.x, -boundaryX, boundaryX);
+          }
+          if (circle.y <= -boundaryY || circle.y >= boundaryY) {
+            circle.vy *= -bounce;
+            circle.y = p.constrain(circle.y, -boundaryY, boundaryY);
+            circle.bounceCount++;
+          }
+          if (circle.z <= -boundaryZ || circle.z >= boundaryZ) {
+            circle.vz *= -bounce;
+            circle.z = p.constrain(circle.z, -boundaryZ, boundaryZ);
+          }
           
           // Apply friction
-          element.vx *= 0.99;
-          element.vy *= 0.99;
+          circle.vx *= friction;
+          circle.vz *= friction;
           
-          // Draw element
-          p.fill(255, 255, 255, element.opacity);
-          p.noStroke();
-          p.circle(element.x, element.y, element.radius * 2);
+          // Update rotation based on movement
+          circle.rotation.x += circle.rotationSpeed.x + circle.vy * 0.01;
+          circle.rotation.y += circle.rotationSpeed.y + circle.vx * 0.01;
+          circle.rotation.z += circle.rotationSpeed.z + circle.vz * 0.01;
           
-          // Glow effect
-          p.fill(255, 255, 255, element.opacity * 0.3);
-          p.circle(element.x, element.y, element.radius * 3);
-        });
-
-        // Update and draw big rolling circles
-        circles.forEach((circle, index) => {
-          // Check for mouse hover
-          let mouseDistance = p.dist(p.mouseX, p.mouseY, circle.x, circle.y);
-          if (mouseDistance < circle.radius + 50) {
-            circle.targetRadius = circle.hoverRadius * 1.3;
-            
-            // Add interactive physics - push away from mouse
-            let pushX = (circle.x - p.mouseX) * 0.02;
-            let pushY = (circle.y - p.mouseY) * 0.02;
-            circle.vx += pushX;
-            circle.vy += pushY;
-            
-            // Chance to trigger water drop effect
-            if (p.random() < 0.01 && !circle.isDropping) {
-              circle.isDropping = true;
-              circle.dropStartY = circle.y;
-              circle.vy = 0;
-              circle.bounceCount = 0;
-            }
-          } else {
-            circle.targetRadius = circle.hoverRadius;
-          }
-          
-          // Smooth radius transition
-          circle.radius = p.lerp(circle.radius, circle.targetRadius, 0.1);
-          
-          // Water drop physics
-          if (circle.isDropping) {
-            circle.vy += gravity;
-            circle.y += circle.vy;
-            
-            // Check if hit ground or bounce limit
-            if (circle.y > p.height - circle.radius || circle.bounceCount > 3) {
-              circle.vy *= -bounce;
-              circle.y = p.height - circle.radius;
-              circle.bounceCount++;
-              
-              if (circle.bounceCount > 3 || Math.abs(circle.vy) < 2) {
-                circle.isDropping = false;
-                circle.y = circle.dropStartY;
-                circle.vy = 0;
-              }
-            }
-          } else {
-            // Normal rolling physics
-            circle.x += circle.vx;
-            circle.y += circle.vy;
-            
-            // Rolling rotation
-            circle.rotation += circle.vx * 0.02;
-            
-            // Bounce off walls
-            if (circle.x <= circle.radius || circle.x >= p.width - circle.radius) {
-              circle.vx *= -bounce;
-              circle.x = p.constrain(circle.x, circle.radius, p.width - circle.radius);
-            }
-            if (circle.y <= circle.radius || circle.y >= p.height - circle.radius) {
-              circle.vy *= -bounce;
-              circle.y = p.constrain(circle.y, circle.radius, p.height - circle.radius);
-            }
-            
-            // Apply friction
-            circle.vx *= friction;
-            circle.vy *= friction;
-            
-            // Gentle sine wave motion
-            circle.vy += p.sin(p.millis() * 0.003 + index) * 0.1;
-          }
-          
-          // Draw circle with glow
+          // Draw 3D sphere
           p.push();
-          p.translate(circle.x, circle.y);
-          p.rotate(circle.rotation);
+          p.translate(circle.x, circle.y, circle.z);
+          p.rotateX(circle.rotation.x);
+          p.rotateY(circle.rotation.y);
+          p.rotateZ(circle.rotation.z);
           
           // Outer glow
           for (let i = 3; i >= 1; i--) {
-            p.fill(p.red(circle.color), p.green(circle.color), p.blue(circle.color), 20 / i);
+            p.fill(p.red(circle.color), p.green(circle.color), p.blue(circle.color), 30 / i);
             p.noStroke();
-            p.circle(0, 0, circle.radius * 2 * (1 + i * 0.2));
+            p.sphere(circle.radius * (1 + i * 0.2));
           }
           
-          // Main circle
+          // Main sphere
           p.fill(circle.color);
-          p.stroke(255, 150);
-          p.strokeWeight(2);
-          p.circle(0, 0, circle.radius * 2);
-          
-          // Rolling pattern
           p.stroke(255, 100);
           p.strokeWeight(1);
-          for (let i = 0; i < 8; i++) {
-            let angle = (i / 8) * p.TWO_PI;
-            let x1 = p.cos(angle) * circle.radius * 0.3;
-            let y1 = p.sin(angle) * circle.radius * 0.3;
-            let x2 = p.cos(angle) * circle.radius * 0.7;
-            let y2 = p.sin(angle) * circle.radius * 0.7;
-            p.line(x1, y1, x2, y2);
+          p.sphere(circle.radius);
+          
+          // Add wireframe pattern
+          p.stroke(255, 150);
+          p.strokeWeight(0.5);
+          p.noFill();
+          for (let i = 0; i < 6; i++) {
+            p.push();
+            p.rotateY((i / 6) * p.TWO_PI);
+            p.circle(0, 0, circle.radius * 1.5);
+            p.pop();
           }
           
           p.pop();
-          
-          // Particle trail for dropping effect
-          if (circle.isDropping && circle.vy > 5) {
-            for (let i = 0; i < 5; i++) {
-              p.fill(255, 255, 255, 80 - i * 15);
-              p.noStroke();
-              let trailX = circle.x + p.random(-circle.radius/2, circle.radius/2);
-              let trailY = circle.y - i * 10;
-              p.circle(trailX, trailY, 8 - i);
-            }
-          }
         });
-        
-        // Interaction between circles and floating elements
-        circles.forEach((circle) => {
-          floatingElements.forEach((element) => {
-            let distance = p.dist(circle.x, circle.y, element.x, element.y);
-            if (distance < circle.radius + element.radius) {
-              // Collision response
-              let angle = p.atan2(element.y - circle.y, element.x - circle.x);
-              let targetX = circle.x + p.cos(angle) * (circle.radius + element.radius);
-              let targetY = circle.y + p.sin(angle) * (circle.radius + element.radius);
-              
-              element.vx += (targetX - element.x) * 0.1;
-              element.vy += (targetY - element.y) * 0.1;
-            }
-          });
-        });
+
       };
 
       p.mousePressed = () => {
-        // Check if clicking on a circle to trigger drop effect
-        circles.forEach((circle) => {
-          let distance = p.dist(p.mouseX, p.mouseY, circle.x, circle.y);
-          if (distance < circle.radius && !circle.isDropping) {
-            circle.isDropping = true;
-            circle.dropStartY = circle.y;
-            circle.vy = 0;
-            circle.bounceCount = 0;
-          }
+        // Add impulse to circles when clicked
+        circles3D.forEach((circle) => {
+          circle.vx += p.random(-2, 2);
+          circle.vy += p.random(-3, -1);
+          circle.vz += p.random(-1, 1);
         });
       };
 
       p.windowResized = () => {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
-        
-        // Adjust circle positions for new canvas size
-        circles.forEach((circle) => {
-          circle.x = p.constrain(circle.x, circle.radius, p.width - circle.radius);
-          circle.y = p.constrain(circle.y, circle.radius, p.height - circle.radius);
-        });
       };
     };
 
