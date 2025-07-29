@@ -33,6 +33,8 @@ export default function CorePrinciples() {
 
   return (
     <section ref={sectionRef} className="py-20 relative overflow-hidden">
+      {/* P5.js animation covering entire section */}
+      <AIModelAnimation />
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
           {/* Left side - Text content */}
@@ -55,12 +57,8 @@ export default function CorePrinciples() {
               <img 
                 src="/lovable-uploads/abde815c-1ff0-4f96-af89-2322637fb540.png" 
                 alt="AI Model Training Visualization" 
-                className="absolute inset-0 w-full h-full object-contain opacity-70"
+                className="absolute inset-0 w-full h-full object-contain opacity-70 z-20"
               />
-              {/* P5.js animation overlay */}
-              <div className="absolute inset-0 z-10">
-                <AIModelAnimation />
-              </div>
             </div>
           </div>
         </div>
