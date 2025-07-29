@@ -1,5 +1,7 @@
+
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Circle3D {
   x: number;
@@ -21,6 +23,7 @@ interface Circle3D {
 export default function HeroP5Animation() {
   const containerRef = useRef<HTMLDivElement>(null);
   const p5Instance = useRef<p5 | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -28,209 +31,156 @@ export default function HeroP5Animation() {
     const sketch = (p: p5) => {
       let circles3D: Circle3D[] = [];
       let polarWaveOffset = 0;
-      let cam: any;
       
-      // Physics properties
-      let gravity = 0.2;
-      let bounce = 0.7;
-      let friction = 0.98;
+      // Reduced physics properties for better performance
+      let gravity = 0.15;
+      let bounce = 0.65;
+      let friction = 0.96;
 
       p.setup = () => {
-        const canvas = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
+        const canvas = p.createCanvas(
+          containerRef.current!.offsetWidth, 
+          containerRef.current!.offsetHeight, 
+          p.WEBGL
+        );
         canvas.parent(containerRef.current!);
         
-        // Create 2 big 3D rolling circles with specific bouncing pattern
-        circles3D = [
-          {
-            x: -p.windowWidth/3, // Start from left side
+        // Reduce number of circles on mobile for performance
+        const circleCount = isMobile ? 1 : 2;
+        
+        // Create optimized 3D rolling circles
+        circles3D = [];
+        for (let i = 0; i < circleCount; i++) {
+          circles3D.push({
+            x: i === 0 ? -p.width/4 : 0,
             y: 0,
-            z: 0,
-            vx: 4, // Moving towards center then right
+            z: i === 0 ? 0 : -50,
+            vx: 3,
             vy: 0,
             vz: 0,
-            radius: 80,
+            radius: isMobile ? 60 : (i === 0 ? 70 : 85),
             rotation: { x: 0, y: 0, z: 0 },
-            rotationSpeed: { x: 0.02, y: 0.01, z: 0.015 },
-            color: p.color(255, 255, 255, 150),
-            hoverRadius: 80,
-            targetRadius: 80,
+            rotationSpeed: { 
+              x: i === 0 ? 0.015 : -0.01, 
+              y: i === 0 ? 0.008 : 0.015, 
+              z: i === 0 ? 0.01 : -0.008 
+            },
+            color: p.color(255, 255, 255, 180),
+            hoverRadius: isMobile ? 60 : (i === 0 ? 70 : 85),
+            targetRadius: isMobile ? 60 : (i === 0 ? 70 : 85),
             bounceCount: 0,
-            direction: 1 // 1 for moving right, -1 for moving left
-          },
-          {
-            x: 0, // Start from center
-            y: 0,
-            z: -100,
-            vx: 4, // Moving towards right
-            vy: 0,
-            vz: 0,
-            radius: 100,
-            rotation: { x: 0, y: 0, z: 0 },
-            rotationSpeed: { x: -0.015, y: 0.02, z: -0.01 },
-            color: p.color(200, 200, 255, 180),
-            hoverRadius: 100,
-            targetRadius: 100,
-            bounceCount: 0,
-            direction: 1 // 1 for moving right, -1 for moving left
-          }
-        ];
+            direction: 1
+          });
+        }
       };
 
       p.draw = () => {
         p.background(0, 0);
         
-        // Set up 3D camera
+        // Optimized camera movement
+        const cameraRadius = isMobile ? 400 : 600;
+        const cameraSpeed = 0.0003;
         p.camera(
-          p.cos(p.millis() * 0.0005) * 800, 
-          -200, 
-          p.sin(p.millis() * 0.0005) * 800,
+          p.cos(p.millis() * cameraSpeed) * cameraRadius, 
+          -150, 
+          p.sin(p.millis() * cameraSpeed) * cameraRadius,
           0, 0, 0,
           0, 1, 0
         );
         
-        // Draw 3D polar sine wave - circular oscillating rings
+        // Simplified polar wave - fewer rings for performance
         p.push();
-        p.rotateY(polarWaveOffset * 0.5);
+        p.rotateY(polarWaveOffset * 0.3);
         
-        for (let ring = 0; ring < 8; ring++) {
-          let radius = 100 + ring * 60;
-          let height = p.sin(polarWaveOffset + ring * 0.8) * 30;
+        const ringCount = isMobile ? 4 : 6;
+        for (let ring = 0; ring < ringCount; ring++) {
+          let radius = 80 + ring * 50;
+          let height = p.sin(polarWaveOffset + ring * 0.6) * 20;
           
-          p.stroke(255, 255, 255, 150 - ring * 15);
-          p.strokeWeight(2);
+          p.stroke(255, 255, 255, 120 - ring * 15);
+          p.strokeWeight(isMobile ? 1 : 1.5);
           p.noFill();
           
           p.beginShape();
-          for (let angle = 0; angle < p.TWO_PI + 0.1; angle += 0.1) {
+          const angleStep = isMobile ? 0.15 : 0.1;
+          for (let angle = 0; angle < p.TWO_PI + angleStep; angle += angleStep) {
             let x = p.cos(angle) * radius;
             let z = p.sin(angle) * radius;
-            let y = height + p.sin(angle * 6 + polarWaveOffset * 2) * 20;
-            p.vertex(x, y, z);
-          }
-          p.endShape();
-          
-          // Add glowing effect
-          p.stroke(255, 255, 255, 50 - ring * 5);
-          p.strokeWeight(4);
-          p.beginShape();
-          for (let angle = 0; angle < p.TWO_PI + 0.1; angle += 0.2) {
-            let x = p.cos(angle) * radius;
-            let z = p.sin(angle) * radius;
-            let y = height + p.sin(angle * 6 + polarWaveOffset * 2) * 20;
+            let y = height + p.sin(angle * 4 + polarWaveOffset * 1.5) * 15;
             p.vertex(x, y, z);
           }
           p.endShape();
         }
         p.pop();
         
-        polarWaveOffset += 0.02;
+        polarWaveOffset += 0.015;
 
-        // Update and draw 3D rolling circles with specific bouncing pattern
+        // Update and draw optimized 3D rolling circles
         circles3D.forEach((circle, index) => {
-          // Specific bouncing pattern
+          // Simplified bouncing pattern
           circle.x += circle.vx * circle.direction;
           
-          // Define boundaries based on window width
-          let leftBoundary = -p.windowWidth/3;
-          let centerPosition = 0;
-          let rightBoundary = p.windowWidth/3;
-          
-          // First circle: starts from left, goes to center, then to right, then back
-          if (index === 0) {
-            if (circle.bounceCount === 0) {
-              // Moving from left to center
-              if (circle.x >= centerPosition) {
-                circle.direction = 1; // Continue to right
-                circle.bounceCount = 1;
-              }
-            } else if (circle.bounceCount === 1) {
-              // Moving from center to right
-              if (circle.x >= rightBoundary) {
-                circle.direction = -1; // Bounce back to left
-                circle.bounceCount = 2;
-              }
-            } else if (circle.bounceCount === 2) {
-              // Moving back from right to left
-              if (circle.x <= leftBoundary) {
-                circle.direction = 1; // Stop or continue pattern
-                circle.bounceCount = 3;
-              }
-            }
+          const boundary = p.width / 4;
+          if (circle.x > boundary || circle.x < -boundary) {
+            circle.direction *= -1;
           }
           
-          // Second circle: starts from center, goes to right, then to left
-          if (index === 1) {
-            if (circle.bounceCount === 0) {
-              // Moving from center to right
-              if (circle.x >= rightBoundary) {
-                circle.direction = -1; // Bounce back to left
-                circle.bounceCount = 1;
-              }
-            } else if (circle.bounceCount === 1) {
-              // Moving from right to left
-              if (circle.x <= leftBoundary) {
-                circle.direction = 1; // Bounce back to right
-                circle.bounceCount = 2;
-              }
-            }
-          }
+          // Update rotation
+          circle.rotation.x += circle.rotationSpeed.x;
+          circle.rotation.y += circle.rotationSpeed.y;
+          circle.rotation.z += circle.rotationSpeed.z;
           
-          // Reset position if goes too far
-          if (circle.x < -p.windowWidth/2) circle.x = -p.windowWidth/2;
-          if (circle.x > p.windowWidth/2) circle.x = p.windowWidth/2;
-          
-          // Update rotation based on movement
-          circle.rotation.x += circle.rotationSpeed.x + circle.vy * 0.01;
-          circle.rotation.y += circle.rotationSpeed.y + circle.vx * 0.01;
-          circle.rotation.z += circle.rotationSpeed.z + circle.vz * 0.01;
-          
-          // Draw 3D sphere
+          // Draw optimized 3D sphere
           p.push();
           p.translate(circle.x, circle.y, circle.z);
           p.rotateX(circle.rotation.x);
           p.rotateY(circle.rotation.y);
           p.rotateZ(circle.rotation.z);
           
-          // Outer glow - extremely bright and visible
-          for (let i = 3; i >= 1; i--) {
-            p.fill(255, 255, 255, 150 / i);
+          // Reduced glow layers for performance
+          const glowLayers = isMobile ? 2 : 3;
+          for (let i = glowLayers; i >= 1; i--) {
+            p.fill(255, 255, 255, 100 / i);
             p.noStroke();
-            p.sphere(circle.radius * (1 + i * 0.2));
+            p.sphere(circle.radius * (1 + i * 0.15));
           }
           
-          // Main sphere - extremely visible and bright
-          p.fill(255, 255, 255, 255);
-          p.stroke(255, 255, 255, 255);
-          p.strokeWeight(3);
+          // Main sphere
+          p.fill(255, 255, 255, 240);
+          p.stroke(255, 255, 255, 200);
+          p.strokeWeight(isMobile ? 1 : 2);
           p.sphere(circle.radius);
           
-          // Add bright wireframe pattern
-          p.stroke(255, 255, 255, 200);
-          p.strokeWeight(1.5);
-          p.noFill();
-          for (let i = 0; i < 6; i++) {
-            p.push();
-            p.rotateY((i / 6) * p.TWO_PI);
-            p.circle(0, 0, circle.radius * 1.5);
-            p.pop();
+          // Simplified wireframe
+          if (!isMobile) {
+            p.stroke(255, 255, 255, 150);
+            p.strokeWeight(1);
+            p.noFill();
+            for (let i = 0; i < 4; i++) {
+              p.push();
+              p.rotateY((i / 4) * p.TWO_PI);
+              p.circle(0, 0, circle.radius * 1.3);
+              p.pop();
+            }
           }
           
           p.pop();
         });
-
       };
 
       p.mousePressed = () => {
-        // Add impulse to circles when clicked
+        // Reduced impulse for smoother interaction
         circles3D.forEach((circle) => {
-          circle.vx += p.random(-2, 2);
-          circle.vy += p.random(-3, -1);
-          circle.vz += p.random(-1, 1);
+          circle.vx += p.random(-1, 1);
+          circle.vy += p.random(-2, -0.5);
+          circle.vz += p.random(-0.5, 0.5);
         });
       };
 
       p.windowResized = () => {
-        p.resizeCanvas(p.windowWidth, p.windowHeight);
+        if (containerRef.current) {
+          p.resizeCanvas(containerRef.current.offsetWidth, containerRef.current.offsetHeight);
+        }
       };
     };
 
@@ -241,13 +191,13 @@ export default function HeroP5Animation() {
         p5Instance.current.remove();
       }
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div 
       ref={containerRef} 
       className="absolute inset-0 w-full h-full z-1"
-      style={{ background: 'transparent', cursor: 'grab' }}
+      style={{ background: 'transparent' }}
     />
   );
 }

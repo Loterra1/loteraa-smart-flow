@@ -1,8 +1,10 @@
 
 import { useEffect, useRef } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function GrainyNoiseAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -26,39 +28,50 @@ export default function GrainyNoiseAnimation() {
     let time = 0;
 
     const render = () => {
-      time += 0.02;
+      time += isMobile ? 0.01 : 0.015;
       
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Create pure black grainy noise texture
-      const imageData = ctx.createImageData(canvas.width, canvas.height);
+      // Optimized noise generation - lower resolution on mobile
+      const pixelSize = isMobile ? 4 : 2;
+      const width = Math.ceil(canvas.width / pixelSize);
+      const height = Math.ceil(canvas.height / pixelSize);
+      
+      const imageData = ctx.createImageData(width, height);
       const data = imageData.data;
       
       for (let i = 0; i < data.length; i += 4) {
-        // Generate noise values
-        const x = (i / 4) % canvas.width;
-        const y = Math.floor((i / 4) / canvas.width);
+        // Generate optimized noise values
+        const x = (i / 4) % width;
+        const y = Math.floor((i / 4) / width);
         
-        // Create animated noise with pure black colors
-        const noise1 = Math.sin(x * 0.02 + time) * Math.cos(y * 0.02 + time);
-        const noise2 = Math.sin(x * 0.04 + time * 2) * Math.cos(y * 0.04 + time * 2);
-        const noise3 = Math.random() * 0.8; // Increased random noise
+        // Simplified noise calculation
+        const noise1 = Math.sin(x * 0.03 + time) * Math.cos(y * 0.03 + time);
+        const noise2 = Math.random() * 0.6;
         
-        const combined = (noise1 + noise2 + noise3) * 0.8;
+        const combined = (noise1 + noise2) * 0.6;
         
-        // Create pure black texture - no greys or whites
-        const intensity = Math.floor(Math.abs(combined) * 100); // Reduced intensity for darker effect
-        const blackIntensity = Math.min(intensity, 30); // Cap at very low values to keep it black
+        // Pure black texture
+        const intensity = Math.floor(Math.abs(combined) * 80);
+        const blackIntensity = Math.min(intensity, 25);
         
         // Set pixel color (pure black variations only)
         data[i] = blackIntensity;     // Red
         data[i + 1] = blackIntensity; // Green  
         data[i + 2] = blackIntensity; // Blue
-        data[i + 3] = Math.floor(blackIntensity * 0.6); // Alpha (visible but dark)
+        data[i + 3] = Math.floor(blackIntensity * 0.5); // Alpha
       }
       
-      ctx.putImageData(imageData, 0, 0);
+      // Scale up the low-res noise
+      const tempCanvas = document.createElement('canvas');
+      const tempCtx = tempCanvas.getContext('2d')!;
+      tempCanvas.width = width;
+      tempCanvas.height = height;
+      tempCtx.putImageData(imageData, 0, 0);
+      
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
       
       animationFrameId = requestAnimationFrame(render);
     };
@@ -69,7 +82,7 @@ export default function GrainyNoiseAnimation() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', setCanvasDimensions);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <canvas

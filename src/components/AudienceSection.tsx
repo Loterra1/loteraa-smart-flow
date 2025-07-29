@@ -33,21 +33,21 @@ export default function AudienceSection() {
 
   const audiences = [
     {
-      icon: <Code className="h-10 w-10 text-white" />,
+      icon: <Code className="h-8 w-8 md:h-10 md:w-10 text-white" />,
       title: "For Developers",
       description: "Build IoT-connected dApps with our comprehensive SDK and API. Integrate real-world data into your blockchain projects seamlessly.",
       cta: "View Documentation",
       link: "/developer-docs"
     },
     {
-      icon: <Building className="h-10 w-10 text-white" />,
+      icon: <Building className="h-8 w-8 md:h-10 md:w-10 text-white" />,
       title: "For Businesses",
       description: "Automate processes and reduce operational costs. Create new revenue streams through tokenized data and machine-to-machine transactions.",
       cta: "Book a Demo",
       link: "/business"
     },
     {
-      icon: <FileText className="h-10 w-10 text-white" />,
+      icon: <FileText className="h-8 w-8 md:h-10 md:w-10 text-white" />,
       title: "For Researchers",
       description: "Access trustworthy sensor data on a global scale. Leverage verified IoT data sources for your research and development initiatives.",
       cta: "Explore Data",
@@ -56,29 +56,28 @@ export default function AudienceSection() {
   ];
 
   return (
-    <section ref={sectionRef} className="py-20 bg-black relative overflow-hidden">
-
+    <section ref={sectionRef} className="py-12 md:py-20 bg-black relative overflow-hidden">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
       </div>
       
-      {/* Real-World → Web3 Integration Section with Enhanced Grainy Noise Background */}
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-2 md:py-4">
+      {/* Real-World → Web3 Integration Section */}
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-8 md:py-12">
         {/* Enhanced Grainy Noise Background */}
         <div className="absolute inset-0 w-full h-full opacity-90">
           <GrainyNoiseAnimation />
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start relative z-10">
-          <div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
+          <div className="order-2 lg:order-1">
+            <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
               <span className="text-white">Real-World → Web3</span> Integration
             </h2>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
+            <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed mb-6 md:mb-8">
               Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
             </p>
             
             {/* New Image with Animation and Centered Text */}
-            <div className="relative w-full h-[300px] rounded-lg overflow-hidden bg-black border border-white/10 mb-6">
+            <div className="relative w-full h-[200px] md:h-[300px] rounded-lg overflow-hidden bg-black border border-white/10 mb-6">
               {/* Background Image */}
               <div className="absolute inset-0 opacity-20">
                 <img 
@@ -95,21 +94,22 @@ export default function AudienceSection() {
               
               {/* Centered Text */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <h3 className="text-xl md:text-2xl font-bold text-white text-center">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white text-center px-4">
                   Automating the physical world
                 </h3>
               </div>
             </div>
           </div>
-          <div className="flex justify-center lg:justify-end items-start">
-            <div className="w-[600px] h-[500px] relative overflow-hidden rounded-lg bg-black">
+          
+          <div className="order-1 lg:order-2 flex justify-center lg:justify-end items-start">
+            <div className="w-full max-w-[400px] md:w-[500px] lg:w-[600px] h-[300px] md:h-[400px] lg:h-[500px] relative overflow-hidden rounded-lg bg-black">
               <SphereGridAnimation />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Future Built, Real World Ready Section with Much Larger Globe */}
+      {/* Future Built, Real World Ready Section */}
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
         {/* Grainy Noise Background */}
         <div className="absolute inset-0 w-full h-full opacity-90">
@@ -117,25 +117,25 @@ export default function AudienceSection() {
         </div>
         
         <div className="text-center relative z-10">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
+          <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
             <span className="text-white">Future Built,</span>{' '}
             <span className="text-white">Real World Ready</span>
           </h2>
           
-          {/* Globe Animation Background - Much Larger */}
+          {/* Globe Animation Background - Responsive Size */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-            <div className="w-[1200px] h-[800px] relative overflow-hidden">
+            <div className="w-[800px] md:w-[1000px] lg:w-[1200px] h-[500px] md:h-[600px] lg:h-[800px] relative overflow-hidden">
               <GlobeMapAnimation />
             </div>
           </div>
           
           <div className="relative z-10">
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto mb-8">
+            <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto mb-6 md:mb-8 px-4">
               Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
             </p>
             
             {/* Sign Up Button with Lighter Background */}
-            <Button className="bg-gray-200 hover:bg-gray-300 text-black font-semibold px-8 py-3 rounded-lg">
+            <Button className="bg-gray-200 hover:bg-gray-300 text-black font-semibold px-6 md:px-8 py-3 rounded-lg text-sm md:text-base">
               Sign Up Now
             </Button>
           </div>
