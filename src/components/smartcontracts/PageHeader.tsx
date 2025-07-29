@@ -22,7 +22,7 @@ const PageHeader = ({ isDialogOpen, setIsDialogOpen, onContractCreated }: PageHe
       </div>
       <Button 
         onClick={() => setIsDialogOpen(true)}
-        className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto"
+        className="bg-black hover:bg-black/90 w-full sm:w-auto"
       >
         <PlusCircle className="mr-2 h-4 w-4" />
         Create Contract

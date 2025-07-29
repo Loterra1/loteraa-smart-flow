@@ -103,7 +103,7 @@ export default function EarningsPage() {
         </div>
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 mb-8">
           <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
             <CardHeader>
               <CardTitle className="text-white">Monthly Earnings Trend</CardTitle>
@@ -111,17 +111,6 @@ export default function EarningsPage() {
             <CardContent>
               <div className="h-[300px] flex items-center justify-center">
                 <p className="text-white/50">No earnings data available yet</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
-            <CardHeader>
-              <CardTitle className="text-white">Device Performance (Weekly)</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-[300px] flex items-center justify-center">
-                <p className="text-white/50">No device performance data yet</p>
               </div>
             </CardContent>
           </Card>

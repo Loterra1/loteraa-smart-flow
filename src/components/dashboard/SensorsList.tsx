@@ -37,7 +37,7 @@ export default function SensorsList({ isNewAccount = false }: SensorsListProps) 
             </p>
             <Button 
               onClick={handleAddDevice}
-              className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+              className="bg-black hover:bg-black/90"
             >
               Add Your First Device
             </Button>

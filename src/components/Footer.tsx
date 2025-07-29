@@ -46,6 +46,7 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Product</h3>
             <ul className="mt-4 space-y-4">
               <li><Link to="/use-cases" className="text-white/70 hover:text-white transition-colors">Use Cases</Link></li>
+              <li><Link to="/researchers" className="text-white/70 hover:text-white transition-colors">For Researchers</Link></li>
               <li><Link to="/developer-docs" className="text-white/70 hover:text-white transition-colors">Documentation</Link></li>
               <li><a href="https://app.gitbook.com/o/yQLsupOQPrXX2sJ0ONGD/s/J6IPMTOM2im5F4c4uSf7/loteraa-product-and-technical-documentation" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
             </ul>

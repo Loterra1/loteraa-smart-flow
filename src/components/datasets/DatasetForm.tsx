@@ -327,7 +327,7 @@ export default function DatasetForm({ onSubmit, onCancel, availableContracts }: 
             </Button>
             <Button 
               type="submit"
-              className="bg-loteraa-purple hover:bg-loteraa-purple/90 order-4"
+              className="bg-black hover:bg-black/90 order-4"
             >
               Publish Dataset
             </Button>

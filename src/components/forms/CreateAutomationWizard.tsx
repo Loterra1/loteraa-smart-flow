@@ -25,7 +25,7 @@ const CreateAutomationWizard = ({ onAutomationCreated }: CreateAutomationWizardP
     <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
       <DialogTrigger asChild>
         <Button 
-          className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto"
+          className="bg-black hover:bg-black/90 w-full sm:w-auto"
         >
           <PlusCircle className="mr-2 h-5 w-5" /> Create Automation
         </Button>

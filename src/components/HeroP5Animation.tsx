@@ -37,302 +37,278 @@ export default function HeroP5Animation() {
     if (!containerRef.current) return;
 
     const sketch = (p: p5) => {
-      let buildings: Building[] = [];
-      let roads: Road[] = [];
-      let trafficDots: TrafficDot[] = [];
-      let zoom = 1;
-      let panX = 0;
-      let panY = 0;
-      let isDragging = false;
-      let lastMouseX = 0;
-      let lastMouseY = 0;
-      const numBuildings = 12;
-      const numTrafficDots = 25;
+      let circles: any[] = [];
+      let floatingElements: any[] = [];
+      let sineWaveOffset = 0;
+      
+      // Physics properties
+      let gravity = 0.3;
+      let bounce = 0.8;
+      let friction = 0.99;
 
       p.setup = () => {
         const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
         canvas.parent(containerRef.current!);
         
-        // Initialize buildings (smart city nodes)
-        for (let i = 0; i < numBuildings; i++) {
-          buildings.push({
-            x: p.random(100, p.width - 100),
-            y: p.random(100, p.height - 100),
-            width: p.random(40, 80),
-            height: p.random(60, 150),
-            activity: p.random(0.5, 1),
-            connections: [],
-            pulseIntensity: p.random(0.8, 1.2),
-            data: p.random(10, 100)
+        // Create 2 big rolling circles
+        circles = [
+          {
+            x: p.width * 0.3,
+            y: p.height * 0.4,
+            vx: 1,
+            vy: 0,
+            radius: 80,
+            rotation: 0,
+            color: p.color(255, 255, 255, 100),
+            hoverRadius: 80,
+            targetRadius: 80,
+            isDropping: false,
+            dropStartY: 0,
+            bounceCount: 0
+          },
+          {
+            x: p.width * 0.7,
+            y: p.height * 0.6,
+            vx: -0.8,
+            vy: 0,
+            radius: 100,
+            rotation: 0,
+            color: p.color(200, 200, 255, 120),
+            hoverRadius: 100,
+            targetRadius: 100,
+            isDropping: false,
+            dropStartY: 0,
+            bounceCount: 0
+          }
+        ];
+
+        // Create floating elements
+        for (let i = 0; i < 15; i++) {
+          floatingElements.push({
+            x: p.random(p.width),
+            y: p.random(p.height),
+            vx: p.random(-0.5, 0.5),
+            vy: p.random(-0.5, 0.5),
+            radius: p.random(5, 15),
+            opacity: p.random(30, 80),
+            phase: p.random(p.TWO_PI)
           });
         }
-
-        // Create connections between buildings (roads)
-        for (let i = 0; i < buildings.length; i++) {
-          for (let j = i + 1; j < buildings.length; j++) {
-            const distance = p.dist(buildings[i].x, buildings[i].y, buildings[j].x, buildings[j].y);
-            if (distance < 200 && p.random() > 0.6) {
-              buildings[i].connections.push(j);
-              roads.push({
-                from: i,
-                to: j,
-                points: generateRoadPoints(buildings[i], buildings[j])
-              });
-            }
-          }
-        }
-
-        // Initialize traffic dots
-        for (let i = 0; i < numTrafficDots; i++) {
-          if (roads.length > 0) {
-            const roadIndex = Math.floor(p.random(roads.length));
-            const road = roads[roadIndex];
-            const startPoint = road.points[0];
-            
-            trafficDots.push({
-              x: startPoint.x,
-              y: startPoint.y,
-              targetX: startPoint.x,
-              targetY: startPoint.y,
-              speed: p.random(0.5, 2),
-              size: p.random(3, 6),
-              color: p.color(255, 255, 255, 200),
-              pathIndex: 0
-            });
-          }
-        }
       };
-
-      function generateRoadPoints(building1: Building, building2: Building) {
-        const points = [];
-        const steps = 10;
-        
-        for (let i = 0; i <= steps; i++) {
-          const t = i / steps;
-          const x = p.lerp(building1.x, building2.x, t) + p.random(-20, 20);
-          const y = p.lerp(building1.y, building2.y, t) + p.random(-20, 20);
-          points.push({ x, y });
-        }
-        
-        return points;
-      }
 
       p.draw = () => {
-        p.background(0, 0, 0, 80);
+        p.background(0, 20); // Slight trail effect
         
-        // Apply zoom and pan transformations
-        p.push();
-        p.translate(panX, panY);
-        p.scale(zoom);
+        // Draw animated sine wave in the middle
+        p.stroke(100, 150, 255, 80);
+        p.strokeWeight(3);
+        p.noFill();
+        
+        p.beginShape();
+        for (let x = 0; x < p.width; x += 5) {
+          let y = p.height / 2 + p.sin((x * 0.01) + sineWaveOffset) * 50;
+          p.vertex(x, y);
+        }
+        p.endShape();
+        
+        // Second sine wave with different frequency
+        p.stroke(255, 100, 150, 60);
+        p.strokeWeight(2);
+        p.beginShape();
+        for (let x = 0; x < p.width; x += 5) {
+          let y = p.height / 2 + p.sin((x * 0.015) + sineWaveOffset * 1.5) * 30;
+          p.vertex(x, y);
+        }
+        p.endShape();
+        
+        sineWaveOffset += 0.02;
 
-        // Update building data activity
-        buildings.forEach(building => {
-          building.activity = p.lerp(building.activity, p.random(0.3, 1), 0.02);
-          building.data += p.random(-2, 3);
-          building.data = p.constrain(building.data, 0, 100);
-        });
-
-        // Draw roads (edges)
-        roads.forEach(road => {
-          const building1 = buildings[road.from];
-          const building2 = buildings[road.to];
+        // Update and draw floating elements
+        floatingElements.forEach((element) => {
+          // Physics
+          element.x += element.vx;
+          element.y += element.vy;
           
-          p.stroke(255, 255, 255, 60);
-          p.strokeWeight(2);
-          p.noFill();
-          
-          p.beginShape();
-          road.points.forEach(point => {
-            p.vertex(point.x, point.y);
-          });
-          p.endShape();
-          
-          // Draw road glow
-          p.stroke(255, 255, 255, 20);
-          p.strokeWeight(6);
-          p.beginShape();
-          road.points.forEach(point => {
-            p.vertex(point.x, point.y);
-          });
-          p.endShape();
-        });
-
-        // Update and draw traffic dots
-        trafficDots.forEach((dot, index) => {
-          if (roads.length > 0) {
-            const roadIndex = index % roads.length;
-            const road = roads[roadIndex];
-            
-            if (road && road.points.length > 0) {
-              // Move along the road path
-              dot.pathIndex += dot.speed * 0.02;
-              
-              if (dot.pathIndex >= road.points.length - 1) {
-                dot.pathIndex = 0;
-                // Switch to a random road
-                const newRoadIndex = Math.floor(p.random(roads.length));
-                const newRoad = roads[newRoadIndex];
-                if (newRoad && newRoad.points.length > 0) {
-                  dot.x = newRoad.points[0].x;
-                  dot.y = newRoad.points[0].y;
-                }
-              } else {
-                const currentIndex = Math.floor(dot.pathIndex);
-                const nextIndex = Math.min(currentIndex + 1, road.points.length - 1);
-                const t = dot.pathIndex - currentIndex;
-                
-                dot.x = p.lerp(road.points[currentIndex].x, road.points[nextIndex].x, t);
-                dot.y = p.lerp(road.points[currentIndex].y, road.points[nextIndex].y, t);
-              }
-            }
+          // Bounce off walls
+          if (element.x <= element.radius || element.x >= p.width - element.radius) {
+            element.vx *= -0.8;
+            element.x = p.constrain(element.x, element.radius, p.width - element.radius);
+          }
+          if (element.y <= element.radius || element.y >= p.height - element.radius) {
+            element.vy *= -0.8;
+            element.y = p.constrain(element.y, element.radius, p.height - element.radius);
           }
           
-          // Draw traffic dot with glow
-          p.push();
-          p.translate(dot.x, dot.y);
+          // Gentle floating motion
+          element.vx += p.sin(p.millis() * 0.001 + element.phase) * 0.01;
+          element.vy += p.cos(p.millis() * 0.001 + element.phase) * 0.01;
+          
+          // Apply friction
+          element.vx *= 0.99;
+          element.vy *= 0.99;
+          
+          // Draw element
+          p.fill(255, 255, 255, element.opacity);
+          p.noStroke();
+          p.circle(element.x, element.y, element.radius * 2);
           
           // Glow effect
-          for (let i = 0; i < 3; i++) {
-            p.fill(255, 255, 255, 40 - i * 10);
-            p.noStroke();
-            p.ellipse(0, 0, dot.size + i * 4);
-          }
-          
-          // Main dot
-          p.fill(255, 255, 255, 200);
-          p.noStroke();
-          p.ellipse(0, 0, dot.size);
-          
-          p.pop();
+          p.fill(255, 255, 255, element.opacity * 0.3);
+          p.circle(element.x, element.y, element.radius * 3);
         });
 
-        // Draw buildings (nodes) with data activity pulsing
-        buildings.forEach((building, index) => {
-          p.push();
-          p.translate(building.x, building.y);
-          
-          // Mouse interaction - highlight on hover
-          const mouseDistX = (p.mouseX - panX) / zoom - building.x;
-          const mouseDistY = (p.mouseY - panY) / zoom - building.y;
-          const isHovered = Math.abs(mouseDistX) < building.width/2 && Math.abs(mouseDistY) < building.height/2;
-          
-          // Building pulse based on data activity
-          const pulse = p.sin(p.frameCount * 0.1 + index) * building.activity * 0.3 + 1;
-          
-          // Building glow (data activity indicator)
-          const glowIntensity = building.activity * 60 + (isHovered ? 40 : 0);
-          for (let i = 0; i < 4; i++) {
-            p.fill(255, 255, 255, glowIntensity - i * 15);
-            p.noStroke();
-            p.rect(-building.width/2 - i*3, -building.height, building.width + i*6, building.height);
+        // Update and draw big rolling circles
+        circles.forEach((circle, index) => {
+          // Check for mouse hover
+          let mouseDistance = p.dist(p.mouseX, p.mouseY, circle.x, circle.y);
+          if (mouseDistance < circle.radius + 50) {
+            circle.targetRadius = circle.hoverRadius * 1.3;
+            
+            // Add interactive physics - push away from mouse
+            let pushX = (circle.x - p.mouseX) * 0.02;
+            let pushY = (circle.y - p.mouseY) * 0.02;
+            circle.vx += pushX;
+            circle.vy += pushY;
+            
+            // Chance to trigger water drop effect
+            if (p.random() < 0.01 && !circle.isDropping) {
+              circle.isDropping = true;
+              circle.dropStartY = circle.y;
+              circle.vy = 0;
+              circle.bounceCount = 0;
+            }
+          } else {
+            circle.targetRadius = circle.hoverRadius;
           }
           
-          // Main building structure
-          p.fill(255, 255, 255, isHovered ? 180 : 120);
-          p.stroke(255, 255, 255, 200);
-          p.strokeWeight(1);
-          p.rect(-building.width/2, -building.height, building.width, building.height);
+          // Smooth radius transition
+          circle.radius = p.lerp(circle.radius, circle.targetRadius, 0.1);
           
-          // Building windows (data visualization)
-          const windowRows = Math.floor(building.height / 15);
-          const windowCols = Math.floor(building.width / 12);
-          
-          for (let row = 0; row < windowRows; row++) {
-            for (let col = 0; col < windowCols; col++) {
-              if (p.random() > 0.3) {
-                const windowActivity = building.activity * p.random(0.5, 1);
-                const alpha = windowActivity * 255;
-                p.fill(255, 255, 255, alpha);
-                p.noStroke();
-                
-                const winX = -building.width/2 + col * 12 + 3;
-                const winY = -building.height + row * 15 + 3;
-                p.rect(winX, winY, 6, 8);
+          // Water drop physics
+          if (circle.isDropping) {
+            circle.vy += gravity;
+            circle.y += circle.vy;
+            
+            // Check if hit ground or bounce limit
+            if (circle.y > p.height - circle.radius || circle.bounceCount > 3) {
+              circle.vy *= -bounce;
+              circle.y = p.height - circle.radius;
+              circle.bounceCount++;
+              
+              if (circle.bounceCount > 3 || Math.abs(circle.vy) < 2) {
+                circle.isDropping = false;
+                circle.y = circle.dropStartY;
+                circle.vy = 0;
               }
             }
+          } else {
+            // Normal rolling physics
+            circle.x += circle.vx;
+            circle.y += circle.vy;
+            
+            // Rolling rotation
+            circle.rotation += circle.vx * 0.02;
+            
+            // Bounce off walls
+            if (circle.x <= circle.radius || circle.x >= p.width - circle.radius) {
+              circle.vx *= -bounce;
+              circle.x = p.constrain(circle.x, circle.radius, p.width - circle.radius);
+            }
+            if (circle.y <= circle.radius || circle.y >= p.height - circle.radius) {
+              circle.vy *= -bounce;
+              circle.y = p.constrain(circle.y, circle.radius, p.height - circle.radius);
+            }
+            
+            // Apply friction
+            circle.vx *= friction;
+            circle.vy *= friction;
+            
+            // Gentle sine wave motion
+            circle.vy += p.sin(p.millis() * 0.003 + index) * 0.1;
           }
           
-          // Data activity indicator on top
-          const barHeight = (building.data / 100) * 20;
-          p.fill(255, 255, 255, 150);
-          p.noStroke();
-          p.rect(-building.width/4, -building.height - barHeight - 5, building.width/2, barHeight);
+          // Draw circle with glow
+          p.push();
+          p.translate(circle.x, circle.y);
+          p.rotate(circle.rotation);
           
-          // Data pulse ring
-          if (building.activity > 0.8) {
-            p.noFill();
-            p.stroke(255, 255, 255, 100 * building.activity);
-            p.strokeWeight(2);
-            const ringSize = pulse * 30;
-            p.ellipse(0, -building.height/2, ringSize);
+          // Outer glow
+          for (let i = 3; i >= 1; i--) {
+            p.fill(p.red(circle.color), p.green(circle.color), p.blue(circle.color), 20 / i);
+            p.noStroke();
+            p.circle(0, 0, circle.radius * 2 * (1 + i * 0.2));
+          }
+          
+          // Main circle
+          p.fill(circle.color);
+          p.stroke(255, 150);
+          p.strokeWeight(2);
+          p.circle(0, 0, circle.radius * 2);
+          
+          // Rolling pattern
+          p.stroke(255, 100);
+          p.strokeWeight(1);
+          for (let i = 0; i < 8; i++) {
+            let angle = (i / 8) * p.TWO_PI;
+            let x1 = p.cos(angle) * circle.radius * 0.3;
+            let y1 = p.sin(angle) * circle.radius * 0.3;
+            let x2 = p.cos(angle) * circle.radius * 0.7;
+            let y2 = p.sin(angle) * circle.radius * 0.7;
+            p.line(x1, y1, x2, y2);
           }
           
           p.pop();
+          
+          // Particle trail for dropping effect
+          if (circle.isDropping && circle.vy > 5) {
+            for (let i = 0; i < 5; i++) {
+              p.fill(255, 255, 255, 80 - i * 15);
+              p.noStroke();
+              let trailX = circle.x + p.random(-circle.radius/2, circle.radius/2);
+              let trailY = circle.y - i * 10;
+              p.circle(trailX, trailY, 8 - i);
+            }
+          }
         });
-
-        // Draw connection lines between buildings
-        buildings.forEach((building, i) => {
-          building.connections.forEach(connectionIndex => {
-            const connectedBuilding = buildings[connectionIndex];
-            if (connectedBuilding) {
-              // Animated data flow lines
-              p.stroke(255, 255, 255, 40 + Math.sin(p.frameCount * 0.05 + i) * 20);
-              p.strokeWeight(1);
+        
+        // Interaction between circles and floating elements
+        circles.forEach((circle) => {
+          floatingElements.forEach((element) => {
+            let distance = p.dist(circle.x, circle.y, element.x, element.y);
+            if (distance < circle.radius + element.radius) {
+              // Collision response
+              let angle = p.atan2(element.y - circle.y, element.x - circle.x);
+              let targetX = circle.x + p.cos(angle) * (circle.radius + element.radius);
+              let targetY = circle.y + p.sin(angle) * (circle.radius + element.radius);
               
-              // Draw animated dots along connection
-              const numDots = 5;
-              for (let j = 0; j < numDots; j++) {
-                const t = (p.frameCount * 0.01 + j * 0.2) % 1;
-                const x = p.lerp(building.x, connectedBuilding.x, t);
-                const y = p.lerp(building.y, connectedBuilding.y, t);
-                
-                p.fill(255, 255, 255, 100);
-                p.noStroke();
-                p.ellipse(x, y, 3);
-              }
+              element.vx += (targetX - element.x) * 0.1;
+              element.vy += (targetY - element.y) * 0.1;
             }
           });
         });
-
-        p.pop();
       };
 
-      // Mouse interaction for zoom and pan
       p.mousePressed = () => {
-        isDragging = true;
-        lastMouseX = p.mouseX;
-        lastMouseY = p.mouseY;
-      };
-
-      p.mouseDragged = () => {
-        if (isDragging) {
-          panX += p.mouseX - lastMouseX;
-          panY += p.mouseY - lastMouseY;
-          lastMouseX = p.mouseX;
-          lastMouseY = p.mouseY;
-        }
-      };
-
-      p.mouseReleased = () => {
-        isDragging = false;
-      };
-
-      p.mouseWheel = (event: any) => {
-        const zoomFactor = event.delta > 0 ? 0.9 : 1.1;
-        zoom *= zoomFactor;
-        zoom = p.constrain(zoom, 0.5, 3);
-        
-        // Adjust pan to zoom towards mouse position
-        const mouseWorldX = (p.mouseX - panX) / zoom;
-        const mouseWorldY = (p.mouseY - panY) / zoom;
-        panX = p.mouseX - mouseWorldX * zoom;
-        panY = p.mouseY - mouseWorldY * zoom;
-        
-        return false;
+        // Check if clicking on a circle to trigger drop effect
+        circles.forEach((circle) => {
+          let distance = p.dist(p.mouseX, p.mouseY, circle.x, circle.y);
+          if (distance < circle.radius && !circle.isDropping) {
+            circle.isDropping = true;
+            circle.dropStartY = circle.y;
+            circle.vy = 0;
+            circle.bounceCount = 0;
+          }
+        });
       };
 
       p.windowResized = () => {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
+        
+        // Adjust circle positions for new canvas size
+        circles.forEach((circle) => {
+          circle.x = p.constrain(circle.x, circle.radius, p.width - circle.radius);
+          circle.y = p.constrain(circle.y, circle.radius, p.height - circle.radius);
+        });
       };
     };
 

@@ -62,40 +62,9 @@ export default function Dashboard() {
         
         <DashboardStats />
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          <div className="lg:col-span-2">
-            <SensorsList isNewAccount={isNewAccount} />
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 mb-8">
           <div>
-            <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-medium text-white">Smart Contract Triggers</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-white/70">Today</span>
-                    <span className="text-white font-semibold">0 triggers</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-white/70">Settlements</span>
-                    <span className="text-white font-semibold">0</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-white/70">Failures</span>
-                    <span className="text-white font-semibold">0</span>
-                  </div>
-                  <div className="pt-2">
-                    <button 
-                      onClick={handleViewSmartContractDetails}
-                      className="w-full text-sm text-loteraa-purple hover:text-loteraa-purple/80 transition-colors"
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <SensorsList isNewAccount={isNewAccount} />
           </div>
         </div>
         
