@@ -246,7 +246,7 @@ export default function HeroP5Animation() {
   return (
     <div 
       ref={containerRef} 
-      className="absolute inset-0 w-full h-full z-0"
+      className="absolute inset-0 w-full h-full z-1"
       style={{ background: 'transparent', cursor: 'grab' }}
     />
   );

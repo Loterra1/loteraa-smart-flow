@@ -242,7 +242,7 @@ export default function AIModelAnimation() {
   return (
     <div 
       ref={containerRef} 
-      className="absolute inset-0 w-full h-full z-0"
+      className="absolute inset-0 w-full h-full z-5"
       style={{ background: 'transparent' }}
     />
   );

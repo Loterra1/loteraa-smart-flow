@@ -58,7 +58,7 @@ export default function CorePrinciples() {
               <img 
                 src="/lovable-uploads/abde815c-1ff0-4f96-af89-2322637fb540.png" 
                 alt="AI Model Training Visualization" 
-                className="absolute inset-0 w-full h-full object-contain opacity-70 z-20"
+                className="absolute inset-0 w-full h-full object-contain opacity-50 z-10"
               />
             </div>
           </div>
