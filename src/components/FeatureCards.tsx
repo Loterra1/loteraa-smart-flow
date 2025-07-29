@@ -52,26 +52,59 @@ export default function FeatureCards() {
   return (
     <section ref={sectionRef} className="py-16">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className={`relative transition-all duration-1000 ${
-                visibleCards[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* First card - Real Time Data Feed */}
+          <div
+            className={`relative transition-all duration-1000 ${
+              visibleCards[0] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+          >
+            <div 
+              className="w-full max-w-[600px] h-[280px] mx-auto relative overflow-hidden"
+              style={{
+                backgroundColor: '#111111',
+                clipPath: 'polygon(0 15px, calc(100% - 15px) 0, 100% calc(100% - 15px), 15px 100%)'
+              }}
             >
-              <Card className="h-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-1 hover:shadow-xl group overflow-hidden relative">
-                <CardContent className="p-6 relative z-10">
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    {feature.title}
-                  </h3>
-                  <p className="text-white/80 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="p-6 h-full flex flex-col justify-center">
+                <h3 className="text-xl font-bold text-white mb-4">
+                  {features[0].title}
+                </h3>
+                <p className="text-white/80 leading-relaxed">
+                  {features[0].description}
+                </p>
+              </div>
             </div>
-          ))}
+          </div>
+          
+          {/* Second and third cards in 2-column layout */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {features.slice(1).map((feature, index) => (
+              <div
+                key={index + 1}
+                className={`relative transition-all duration-1000 ${
+                  visibleCards[index + 1] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+              >
+                <div 
+                  className="w-full max-w-[600px] h-[280px] mx-auto relative overflow-hidden"
+                  style={{
+                    backgroundColor: '#111111',
+                    clipPath: 'polygon(0 15px, calc(100% - 15px) 0, 100% calc(100% - 15px), 15px 100%)'
+                  }}
+                >
+                  <div className="p-6 h-full flex flex-col justify-center">
+                    <h3 className="text-xl font-bold text-white mb-4">
+                      {feature.title}
+                    </h3>
+                    <p className="text-white/80 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
