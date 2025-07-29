@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import NavigationHeader from "@/components/NavigationHeader";
 import Footer from "@/components/Footer";
+import DataFeedHeroAnimation from "@/components/animations/DataFeedHeroAnimation";
 import { Link } from "react-router-dom";
 import { 
   Activity, 
@@ -190,6 +191,7 @@ export default function DataFeedPage() {
 
   return (
     <div className="min-h-screen bg-black">
+      <DataFeedHeroAnimation />
       <NavigationHeader />
       
       <main className="flex-grow pt-28 pb-20 relative z-10">
