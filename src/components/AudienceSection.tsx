@@ -1,9 +1,11 @@
 
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Building, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import SphereGridAnimation from "./animations/SphereGridAnimation";
+import GlobeMapAnimation from "./animations/GlobeMapAnimation";
 
 export default function AudienceSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -73,13 +75,22 @@ export default function AudienceSection() {
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
               <span className="text-white">End to End Trust Layer</span> for IoT
             </h2>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
               Trust is everything in decentralized systems and Loteraa delivers it across the entire stack. From sensor identity to data hashing, from oracle relay to on-chain logic every step is cryptographically validated and publicly auditable.
+            </p>
+            
+            {/* Future Built, Real World Ready Section */}
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
+              <span className="text-white">Future Built,</span>{' '}
+              <span className="text-white">Real World Ready</span>
+            </h2>
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed">
+              Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
             </p>
           </div>
           <div className="flex justify-center lg:justify-end">
             <div className="w-[500px] h-[400px] relative overflow-hidden rounded-lg bg-black">
-              <SphereGridAnimation />
+              <GlobeMapAnimation />
             </div>
           </div>
         </div>
@@ -87,3 +98,4 @@ export default function AudienceSection() {
     </section>
   );
 }
+
