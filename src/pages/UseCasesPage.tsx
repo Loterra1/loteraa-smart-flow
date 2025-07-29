@@ -1,10 +1,10 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import NavigationHeader from "@/components/NavigationHeader";
 import Footer from "@/components/Footer";
 import { ArrowLeft, Code, Database, TrendingUp, Shield, Zap, Globe, Users, BarChart3, Cpu } from "lucide-react";
 import { Link } from "react-router-dom";
+import InteractiveDotFieldAnimation from "@/components/animations/InteractiveDotFieldAnimation";
 
 const useCases = [
   {
@@ -15,7 +15,7 @@ const useCases = [
     description: "Build decentralized applications that connect IoT devices directly to smart contracts for real-time automation.",
     benefits: [
       "Direct device-to-contract communication",
-      "Automated smart contract execution",
+      "Automated smart contract execution", 
       "Reduced infrastructure costs",
       "Enhanced security and transparency"
     ],
@@ -39,7 +39,7 @@ const useCases = [
     ],
     examples: [
       "Environmental monitoring research",
-      "Healthcare data studies",
+      "Healthcare data studies", 
       "Agricultural optimization"
     ]
   },
@@ -131,8 +131,14 @@ export default function UseCasesPage() {
     <div className="min-h-screen bg-black">
       <NavigationHeader />
       
-      <section className="pt-32 pb-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Connecting IoT to Blockchain Section with Interactive Background */}
+      <section className="pt-32 pb-10 relative overflow-hidden">
+        {/* Interactive Dot Field Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <InteractiveDotFieldAnimation />
+        </div>
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <Link to="/" className="inline-flex items-center text-loteraa-purple hover:text-loteraa-blue transition-colors mb-8">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
@@ -140,7 +146,7 @@ export default function UseCasesPage() {
           
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-white">Loteraa Use Cases</span>
+              <span className="text-white">Connecting IoT to Blockchain</span>
             </h1>
             <p className="text-xl text-white/70 max-w-4xl mx-auto leading-relaxed">
               Discover how Loteraa blockchain transforms IoT ecosystems across industries, 
@@ -148,7 +154,11 @@ export default function UseCasesPage() {
               with real-time data and automated smart contracts.
             </p>
           </div>
-
+        </div>
+      </section>
+      
+      <section className="pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             {useCases.map((useCase) => {
               const IconComponent = useCase.icon;
@@ -182,7 +192,7 @@ export default function UseCasesPage() {
                         <ul className="space-y-1">
                           {useCase.benefits.map((benefit, index) => (
                             <li key={index} className="text-white/70 text-sm flex items-center">
-                              <div className="w-1.5 h-1.5 bg-loteraa-purple rounded-full mr-2"></div>
+                              <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
                               {benefit}
                             </li>
                           ))}
@@ -196,7 +206,7 @@ export default function UseCasesPage() {
                         <ul className="space-y-1">
                           {useCase.examples.map((example, index) => (
                             <li key={index} className="text-white/70 text-sm flex items-center">
-                              <div className="w-1.5 h-1.5 bg-loteraa-blue rounded-full mr-2"></div>
+                              <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
                               {example}
                             </li>
                           ))}
@@ -211,7 +221,7 @@ export default function UseCasesPage() {
 
           <div className="bg-loteraa-gray/10 backdrop-blur-sm border border-loteraa-gray/20 rounded-2xl p-8 mb-12">
             <div className="text-center">
-              <h2 className="text-3xl font-bold gradient-text mb-6">Why Choose Loteraa?</h2>
+              <h2 className="text-3xl font-bold text-white mb-6">Why Choose Loteraa?</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
                   <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -247,7 +257,7 @@ export default function UseCasesPage() {
                   Developer Documentation
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="border-white/50 text-white hover:bg-white/20">
+              <Button asChild className="bg-white hover:bg-white/90 text-black border-white/50">
                 <Link to="/ecosystem">
                   <Globe className="h-4 w-4 mr-2" />
                   Explore Ecosystem

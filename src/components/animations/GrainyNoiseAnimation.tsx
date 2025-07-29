@@ -26,12 +26,12 @@ export default function GrainyNoiseAnimation() {
     let time = 0;
 
     const render = () => {
-      time += 0.01;
+      time += 0.02;
       
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Create grainy noise texture
+      // Create grainy noise texture with much higher visibility
       const imageData = ctx.createImageData(canvas.width, canvas.height);
       const data = imageData.data;
       
@@ -40,19 +40,19 @@ export default function GrainyNoiseAnimation() {
         const x = (i / 4) % canvas.width;
         const y = Math.floor((i / 4) / canvas.width);
         
-        // Create animated noise
-        const noise1 = Math.sin(x * 0.01 + time) * Math.cos(y * 0.01 + time);
-        const noise2 = Math.sin(x * 0.02 + time * 1.5) * Math.cos(y * 0.02 + time * 1.5);
-        const noise3 = Math.random() * 0.3;
+        // Create animated noise with higher intensity
+        const noise1 = Math.sin(x * 0.02 + time) * Math.cos(y * 0.02 + time);
+        const noise2 = Math.sin(x * 0.04 + time * 2) * Math.cos(y * 0.04 + time * 2);
+        const noise3 = Math.random() * 0.8; // Increased random noise
         
-        const combined = (noise1 + noise2 + noise3) * 0.3;
+        const combined = (noise1 + noise2 + noise3) * 0.8; // Increased overall intensity
         const intensity = Math.floor(Math.abs(combined) * 255);
         
-        // Set pixel color (grayscale with very low opacity)
+        // Set pixel color (grayscale with much higher opacity)
         data[i] = intensity;     // Red
         data[i + 1] = intensity; // Green  
         data[i + 2] = intensity; // Blue
-        data[i + 3] = Math.floor(intensity * 0.1); // Alpha (very transparent)
+        data[i + 3] = Math.floor(intensity * 0.4); // Alpha (much more visible)
       }
       
       ctx.putImageData(imageData, 0, 0);

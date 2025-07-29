@@ -60,10 +60,10 @@ export default function AudienceSection() {
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
       </div>
       
-      {/* Real-World → Web3 Integration Section with Grainy Noise Background */}
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-4 md:py-6">
-        {/* Grainy Noise Background */}
-        <div className="absolute inset-0 w-full h-full">
+      {/* Real-World → Web3 Integration Section with Enhanced Grainy Noise Background */}
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-2 md:py-4">
+        {/* Enhanced Grainy Noise Background */}
+        <div className="absolute inset-0 w-full h-full opacity-90">
           <GrainyNoiseAnimation />
         </div>
         
@@ -75,27 +75,19 @@ export default function AudienceSection() {
             <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
               Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
             </p>
-            
-            {/* End to End Trust Layer Section - moved here to be close */}
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
-              <span className="text-white">End to End Trust Layer</span> for IoT
-            </h2>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
-              Trust is everything in decentralized systems and Loteraa delivers it across the entire stack. From sensor identity to data hashing, from oracle relay to on-chain logic every step is cryptographically validated and publicly auditable.
-            </p>
           </div>
           <div className="flex justify-center lg:justify-end">
-            <div className="w-[500px] h-[400px] relative overflow-hidden rounded-lg bg-black">
+            <div className="w-[600px] h-[500px] relative overflow-hidden rounded-lg bg-black">
               <SphereGridAnimation />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Future Built, Real World Ready Section with Grainy Noise Background */}
+      {/* Future Built, Real World Ready Section with Much Larger Globe */}
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
         {/* Grainy Noise Background */}
-        <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 w-full h-full opacity-90">
           <GrainyNoiseAnimation />
         </div>
         
@@ -107,7 +99,7 @@ export default function AudienceSection() {
           
           {/* Globe Animation Background - Much Larger */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-            <div className="w-[800px] h-[600px] relative overflow-hidden">
+            <div className="w-[1200px] h-[800px] relative overflow-hidden">
               <GlobeMapAnimation />
             </div>
           </div>

@@ -1,5 +1,4 @@
 
-
 import React from 'react';
 
 const VisionMissionSection = () => {
@@ -8,7 +7,7 @@ const VisionMissionSection = () => {
       
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center bg-black rounded-2xl p-8 border border-white/20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-white">
             <span className="text-white">LOTERAA'S</span>{' '}
             <span className="text-white">VISION &</span>{' '}
@@ -26,4 +25,3 @@ const VisionMissionSection = () => {
 };
 
 export default VisionMissionSection;
-
