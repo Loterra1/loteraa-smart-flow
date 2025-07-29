@@ -31,7 +31,7 @@ export default function GrainyNoiseAnimation() {
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Create grainy noise texture with much higher visibility
+      // Create pure black grainy noise texture
       const imageData = ctx.createImageData(canvas.width, canvas.height);
       const data = imageData.data;
       
@@ -40,19 +40,22 @@ export default function GrainyNoiseAnimation() {
         const x = (i / 4) % canvas.width;
         const y = Math.floor((i / 4) / canvas.width);
         
-        // Create animated noise with higher intensity
+        // Create animated noise with pure black colors
         const noise1 = Math.sin(x * 0.02 + time) * Math.cos(y * 0.02 + time);
         const noise2 = Math.sin(x * 0.04 + time * 2) * Math.cos(y * 0.04 + time * 2);
         const noise3 = Math.random() * 0.8; // Increased random noise
         
-        const combined = (noise1 + noise2 + noise3) * 0.8; // Increased overall intensity
-        const intensity = Math.floor(Math.abs(combined) * 255);
+        const combined = (noise1 + noise2 + noise3) * 0.8;
         
-        // Set pixel color (grayscale with much higher opacity)
-        data[i] = intensity;     // Red
-        data[i + 1] = intensity; // Green  
-        data[i + 2] = intensity; // Blue
-        data[i + 3] = Math.floor(intensity * 0.4); // Alpha (much more visible)
+        // Create pure black texture - no greys or whites
+        const intensity = Math.floor(Math.abs(combined) * 100); // Reduced intensity for darker effect
+        const blackIntensity = Math.min(intensity, 30); // Cap at very low values to keep it black
+        
+        // Set pixel color (pure black variations only)
+        data[i] = blackIntensity;     // Red
+        data[i + 1] = blackIntensity; // Green  
+        data[i + 2] = blackIntensity; // Blue
+        data[i + 3] = Math.floor(blackIntensity * 0.6); // Alpha (visible but dark)
       }
       
       ctx.putImageData(imageData, 0, 0);
