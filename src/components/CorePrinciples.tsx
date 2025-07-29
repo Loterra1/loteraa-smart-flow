@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import AIModelAnimation from "./AIModelAnimation";
+import FeatureCards from "./FeatureCards";
 
 export default function CorePrinciples() {
   const [isVisible, setIsVisible] = useState(false);
@@ -62,6 +63,9 @@ export default function CorePrinciples() {
             </div>
           </div>
         </div>
+        
+        {/* Feature Cards Section */}
+        <FeatureCards />
       </div>
     </section>
   );
