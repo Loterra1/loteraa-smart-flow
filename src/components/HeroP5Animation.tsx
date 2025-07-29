@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -32,10 +31,10 @@ export default function HeroP5Animation() {
       let circles3D: Circle3D[] = [];
       let polarWaveOffset = 0;
       
-      // Reduced physics properties for better performance
-      let gravity = 0.15;
-      let bounce = 0.65;
-      let friction = 0.96;
+      // Faster physics properties
+      let gravity = 0.3;
+      let bounce = 0.7;
+      let friction = 0.98;
 
       p.setup = () => {
         const canvas = p.createCanvas(
@@ -45,25 +44,25 @@ export default function HeroP5Animation() {
         );
         canvas.parent(containerRef.current!);
         
-        // Reduce number of circles on mobile for performance
+        // Keep minimal circles for performance
         const circleCount = isMobile ? 1 : 2;
         
-        // Create optimized 3D rolling circles
+        // Create optimized 3D rolling circles with faster speeds
         circles3D = [];
         for (let i = 0; i < circleCount; i++) {
           circles3D.push({
             x: i === 0 ? -p.width/4 : 0,
             y: 0,
             z: i === 0 ? 0 : -50,
-            vx: 3,
+            vx: 5, // Increased speed
             vy: 0,
             vz: 0,
             radius: isMobile ? 60 : (i === 0 ? 70 : 85),
             rotation: { x: 0, y: 0, z: 0 },
             rotationSpeed: { 
-              x: i === 0 ? 0.015 : -0.01, 
-              y: i === 0 ? 0.008 : 0.015, 
-              z: i === 0 ? 0.01 : -0.008 
+              x: i === 0 ? 0.025 : -0.02, // Faster rotation
+              y: i === 0 ? 0.015 : 0.025, 
+              z: i === 0 ? 0.02 : -0.015 
             },
             color: p.color(255, 255, 255, 180),
             hoverRadius: isMobile ? 60 : (i === 0 ? 70 : 85),
@@ -77,9 +76,9 @@ export default function HeroP5Animation() {
       p.draw = () => {
         p.background(0, 0);
         
-        // Optimized camera movement
+        // Faster camera movement
         const cameraRadius = isMobile ? 400 : 600;
-        const cameraSpeed = 0.0003;
+        const cameraSpeed = 0.0008; // Increased speed
         p.camera(
           p.cos(p.millis() * cameraSpeed) * cameraRadius, 
           -150, 
@@ -88,36 +87,36 @@ export default function HeroP5Animation() {
           0, 1, 0
         );
         
-        // Simplified polar wave - fewer rings for performance
+        // Faster polar wave animation
         p.push();
-        p.rotateY(polarWaveOffset * 0.3);
+        p.rotateY(polarWaveOffset * 0.5); // Increased rotation speed
         
-        const ringCount = isMobile ? 4 : 6;
+        const ringCount = isMobile ? 3 : 5; // Reduced rings for performance
         for (let ring = 0; ring < ringCount; ring++) {
           let radius = 80 + ring * 50;
           let height = p.sin(polarWaveOffset + ring * 0.6) * 20;
           
-          p.stroke(255, 255, 255, 120 - ring * 15);
+          p.stroke(255, 255, 255, 120 - ring * 20);
           p.strokeWeight(isMobile ? 1 : 1.5);
           p.noFill();
           
           p.beginShape();
-          const angleStep = isMobile ? 0.15 : 0.1;
+          const angleStep = isMobile ? 0.2 : 0.15; // Larger steps for performance
           for (let angle = 0; angle < p.TWO_PI + angleStep; angle += angleStep) {
             let x = p.cos(angle) * radius;
             let z = p.sin(angle) * radius;
-            let y = height + p.sin(angle * 4 + polarWaveOffset * 1.5) * 15;
+            let y = height + p.sin(angle * 4 + polarWaveOffset * 2) * 15; // Faster wave
             p.vertex(x, y, z);
           }
           p.endShape();
         }
         p.pop();
         
-        polarWaveOffset += 0.015;
+        polarWaveOffset += 0.025; // Faster wave animation
 
-        // Update and draw optimized 3D rolling circles
+        // Update and draw optimized 3D rolling circles with faster movement
         circles3D.forEach((circle, index) => {
-          // Simplified bouncing pattern
+          // Faster bouncing pattern
           circle.x += circle.vx * circle.direction;
           
           const boundary = p.width / 4;
@@ -125,7 +124,7 @@ export default function HeroP5Animation() {
             circle.direction *= -1;
           }
           
-          // Update rotation
+          // Faster rotation
           circle.rotation.x += circle.rotationSpeed.x;
           circle.rotation.y += circle.rotationSpeed.y;
           circle.rotation.z += circle.rotationSpeed.z;
@@ -137,43 +136,30 @@ export default function HeroP5Animation() {
           p.rotateY(circle.rotation.y);
           p.rotateZ(circle.rotation.z);
           
-          // Reduced glow layers for performance
-          const glowLayers = isMobile ? 2 : 3;
+          // Minimal glow layers for performance
+          const glowLayers = isMobile ? 1 : 2;
           for (let i = glowLayers; i >= 1; i--) {
-            p.fill(255, 255, 255, 100 / i);
+            p.fill(255, 255, 255, 120 / i);
             p.noStroke();
-            p.sphere(circle.radius * (1 + i * 0.15));
+            p.sphere(circle.radius * (1 + i * 0.1));
           }
           
           // Main sphere
-          p.fill(255, 255, 255, 240);
+          p.fill(255, 255, 255, 250);
           p.stroke(255, 255, 255, 200);
           p.strokeWeight(isMobile ? 1 : 2);
           p.sphere(circle.radius);
-          
-          // Simplified wireframe
-          if (!isMobile) {
-            p.stroke(255, 255, 255, 150);
-            p.strokeWeight(1);
-            p.noFill();
-            for (let i = 0; i < 4; i++) {
-              p.push();
-              p.rotateY((i / 4) * p.TWO_PI);
-              p.circle(0, 0, circle.radius * 1.3);
-              p.pop();
-            }
-          }
           
           p.pop();
         });
       };
 
       p.mousePressed = () => {
-        // Reduced impulse for smoother interaction
+        // Stronger impulse for more responsive interaction
         circles3D.forEach((circle) => {
-          circle.vx += p.random(-1, 1);
-          circle.vy += p.random(-2, -0.5);
-          circle.vz += p.random(-0.5, 0.5);
+          circle.vx += p.random(-2, 2);
+          circle.vy += p.random(-3, -1);
+          circle.vz += p.random(-1, 1);
         });
       };
 

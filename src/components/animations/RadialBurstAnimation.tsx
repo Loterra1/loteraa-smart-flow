@@ -23,36 +23,36 @@ export default function RadialBurstAnimation() {
         const centerX = p.width / 2;
         const centerY = p.height / 2;
         
-        // Reduce particles on mobile
-        const centerDotsCount = isMobile ? 25 : 40;
+        // Reduced particles for better performance
+        const centerDotsCount = isMobile ? 15 : 25;
         for (let i = 0; i < centerDotsCount; i++) {
           const angle = p.random(0, p.TWO_PI);
-          const radius = p.random(8, isMobile ? 20 : 25);
+          const radius = p.random(8, isMobile ? 15 : 20);
           centerDots.push({
             x: centerX + p.cos(angle) * radius,
             y: centerY + p.sin(angle) * radius,
-            size: p.random(1, isMobile ? 2 : 2.5),
+            size: p.random(1, isMobile ? 1.5 : 2),
             alpha: p.random(0.4, 0.8),
             offset: p.random(0, p.TWO_PI)
           });
         }
         
-        // Optimized radial burst lines
-        const angleStep = isMobile ? p.PI / 16 : p.PI / 20;
+        // Fewer radial burst lines for performance
+        const angleStep = isMobile ? p.PI / 12 : p.PI / 16;
         for (let angle = 0; angle < p.TWO_PI; angle += angleStep) {
-          const lineLength = p.random(60, isMobile ? 100 : 120);
-          const segments = Math.floor(lineLength / (isMobile ? 8 : 6));
+          const lineLength = p.random(50, isMobile ? 80 : 100);
+          const segments = Math.floor(lineLength / (isMobile ? 10 : 8));
           
           for (let i = 0; i < segments; i++) {
-            const distance = 40 + (i * (isMobile ? 8 : 6));
+            const distance = 30 + (i * (isMobile ? 10 : 8));
             particles.push({
               x: centerX + p.cos(angle) * distance,
               y: centerY + p.sin(angle) * distance,
               angle: angle,
               distance: distance,
-              size: p.random(0.5, isMobile ? 1.5 : 1.8),
-              alpha: p.map(distance, 40, 160, 0.8, 0.2),
-              speed: p.random(0.003, 0.015),
+              size: p.random(0.5, isMobile ? 1.2 : 1.5),
+              alpha: p.map(distance, 30, 130, 0.8, 0.2),
+              speed: p.random(0.005, 0.025), // Faster animation
               offset: p.random(0, p.TWO_PI)
             });
           }
@@ -60,50 +60,33 @@ export default function RadialBurstAnimation() {
       };
 
       p.draw = () => {
-        p.background(0, 0, 0, isMobile ? 40 : 30);
-        time += 0.008;
+        p.background(0, 0, 0, isMobile ? 50 : 40);
+        time += 0.015; // Faster time progression
         
         const centerX = p.width / 2;
         const centerY = p.height / 2;
         
-        // Draw optimized center dots
+        // Draw faster center dots
         centerDots.forEach(dot => {
-          const pulse = p.sin(time * 1.5 + dot.offset) * 0.3 + 0.7;
+          const pulse = p.sin(time * 2 + dot.offset) * 0.3 + 0.7; // Faster pulse
           p.fill(255, 255, 255, (dot.alpha + pulse * 0.2) * 255);
           p.noStroke();
           p.circle(dot.x, dot.y, dot.size + pulse * 0.5);
         });
         
-        // Draw optimized radial particles
+        // Draw faster radial particles
         particles.forEach((particle, i) => {
-          const wave = p.sin(time + particle.offset) * 2;
+          const wave = p.sin(time + particle.offset) * 3; // Larger wave amplitude
           const x = centerX + p.cos(particle.angle) * (particle.distance + wave);
           const y = centerY + p.sin(particle.angle) * (particle.distance + wave);
           
           p.fill(255, 255, 255, particle.alpha * 255);
           p.noStroke();
           p.circle(x, y, particle.size);
-          
-          // Reduced connections for performance
-          if (!isMobile && i % 3 === 0) {
-            particles.forEach((other, j) => {
-              if (particle !== other && j % 3 === 0) {
-                const otherX = centerX + p.cos(other.angle) * (other.distance + p.sin(time + other.offset) * 2);
-                const otherY = centerY + p.sin(other.angle) * (other.distance + p.sin(time + other.offset) * 2);
-                const distance = p.dist(x, y, otherX, otherY);
-                
-                if (distance < 12) {
-                  p.stroke(255, 255, 255, 20);
-                  p.strokeWeight(0.3);
-                  p.line(x, y, otherX, otherY);
-                }
-              }
-            });
-          }
         });
         
-        // Simplified pulsing effect
-        const globalPulse = p.sin(time * 0.3) * 0.05 + 0.95;
+        // Faster pulsing effect
+        const globalPulse = p.sin(time * 0.5) * 0.1 + 0.9; // Faster global pulse
         p.tint(255, globalPulse * 255);
       };
 

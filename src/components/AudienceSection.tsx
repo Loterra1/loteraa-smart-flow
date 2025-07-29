@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Building, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import SphereGridAnimation from "./animations/SphereGridAnimation";
+import SphereGridIllustrativeAnimation from "./animations/SphereGridIllustrativeAnimation";
 import GlobeMapAnimation from "./animations/GlobeMapAnimation";
 import GrainyNoiseAnimation from "./animations/GrainyNoiseAnimation";
 import RadialBurstAnimation from "./animations/RadialBurstAnimation";
@@ -48,8 +48,8 @@ export default function AudienceSection() {
     },
     {
       icon: <FileText className="h-8 w-8 md:h-10 md:w-10 text-white" />,
-      title: "For Researchers",
-      description: "Access trustworthy sensor data on a global scale. Leverage verified IoT data sources for your research and development initiatives.",
+      title: "Verified IoT Data Access",
+      description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity.",
       cta: "Explore Data",
       link: "/researchers"
     }
@@ -102,8 +102,8 @@ export default function AudienceSection() {
           </div>
           
           <div className="order-1 lg:order-2 flex justify-center lg:justify-end items-start">
-            <div className="w-full max-w-[400px] md:w-[500px] lg:w-[600px] h-[300px] md:h-[400px] lg:h-[500px] relative overflow-hidden rounded-lg bg-black">
-              <SphereGridAnimation />
+            <div className="w-full max-w-[300px] md:w-[350px] lg:w-[400px] h-[250px] md:h-[300px] lg:h-[350px] relative overflow-hidden rounded-lg bg-black">
+              <SphereGridIllustrativeAnimation />
             </div>
           </div>
         </div>
@@ -134,8 +134,8 @@ export default function AudienceSection() {
               Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
             </p>
             
-            {/* Sign Up Button with Lighter Background */}
-            <Button className="bg-gray-200 hover:bg-gray-300 text-black font-semibold px-6 md:px-8 py-3 rounded-lg text-sm md:text-base">
+            {/* Sign Up Button with Light Background */}
+            <Button className="bg-gray-100 hover:bg-gray-200 text-black font-semibold px-6 md:px-8 py-3 rounded-lg text-sm md:text-base">
               Sign Up Now
             </Button>
           </div>
