@@ -14,7 +14,7 @@ export default function NavigationHeader() {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/lovable-uploads/578e8701-0144-4c93-9f41-277a468b5ee7.png" 
+                src="/lovable-uploads/11f2ee42-8141-4707-84c9-a0d05cec405c.png" 
                 alt="Loteraa Logo" 
                 className="w-10 h-10"
               />

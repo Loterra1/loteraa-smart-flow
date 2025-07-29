@@ -15,6 +15,7 @@ interface Circle3D {
   hoverRadius: number;
   targetRadius: number;
   bounceCount: number;
+  direction: number;
 }
 
 export default function HeroP5Animation() {
@@ -38,37 +39,39 @@ export default function HeroP5Animation() {
         const canvas = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
         canvas.parent(containerRef.current!);
         
-        // Create 2 big 3D rolling circles
+        // Create 2 big 3D rolling circles with specific bouncing pattern
         circles3D = [
           {
-            x: -200,
-            y: -50,
+            x: -p.windowWidth/3, // Start from left side
+            y: 0,
             z: 0,
-            vx: 2,
-            vy: 1,
-            vz: 0.5,
+            vx: 4, // Moving towards center then right
+            vy: 0,
+            vz: 0,
             radius: 80,
             rotation: { x: 0, y: 0, z: 0 },
             rotationSpeed: { x: 0.02, y: 0.01, z: 0.015 },
             color: p.color(255, 255, 255, 150),
             hoverRadius: 80,
             targetRadius: 80,
-            bounceCount: 0
+            bounceCount: 0,
+            direction: 1 // 1 for moving right, -1 for moving left
           },
           {
-            x: 200,
-            y: 50,
+            x: 0, // Start from center
+            y: 0,
             z: -100,
-            vx: -1.5,
-            vy: -0.8,
-            vz: 0.3,
+            vx: 4, // Moving towards right
+            vy: 0,
+            vz: 0,
             radius: 100,
             rotation: { x: 0, y: 0, z: 0 },
             rotationSpeed: { x: -0.015, y: 0.02, z: -0.01 },
             color: p.color(200, 200, 255, 180),
             hoverRadius: 100,
             targetRadius: 100,
-            bounceCount: 0
+            bounceCount: 0,
+            direction: 1 // 1 for moving right, -1 for moving left
           }
         ];
       };
@@ -122,38 +125,59 @@ export default function HeroP5Animation() {
         
         polarWaveOffset += 0.02;
 
-        // Update and draw 3D rolling circles
+        // Update and draw 3D rolling circles with specific bouncing pattern
         circles3D.forEach((circle, index) => {
-          // Physics - bouncing ball behavior
-          circle.x += circle.vx;
-          circle.y += circle.vy;
-          circle.z += circle.vz;
+          // Specific bouncing pattern
+          circle.x += circle.vx * circle.direction;
           
-          // Apply gravity
-          circle.vy += gravity;
+          // Define boundaries based on window width
+          let leftBoundary = -p.windowWidth/3;
+          let centerPosition = 0;
+          let rightBoundary = p.windowWidth/3;
           
-          // Bounce off boundaries
-          let boundaryX = 400;
-          let boundaryY = 300;
-          let boundaryZ = 200;
-          
-          if (circle.x <= -boundaryX || circle.x >= boundaryX) {
-            circle.vx *= -bounce;
-            circle.x = p.constrain(circle.x, -boundaryX, boundaryX);
+          // First circle: starts from left, goes to center, then to right, then back
+          if (index === 0) {
+            if (circle.bounceCount === 0) {
+              // Moving from left to center
+              if (circle.x >= centerPosition) {
+                circle.direction = 1; // Continue to right
+                circle.bounceCount = 1;
+              }
+            } else if (circle.bounceCount === 1) {
+              // Moving from center to right
+              if (circle.x >= rightBoundary) {
+                circle.direction = -1; // Bounce back to left
+                circle.bounceCount = 2;
+              }
+            } else if (circle.bounceCount === 2) {
+              // Moving back from right to left
+              if (circle.x <= leftBoundary) {
+                circle.direction = 1; // Stop or continue pattern
+                circle.bounceCount = 3;
+              }
+            }
           }
-          if (circle.y <= -boundaryY || circle.y >= boundaryY) {
-            circle.vy *= -bounce;
-            circle.y = p.constrain(circle.y, -boundaryY, boundaryY);
-            circle.bounceCount++;
-          }
-          if (circle.z <= -boundaryZ || circle.z >= boundaryZ) {
-            circle.vz *= -bounce;
-            circle.z = p.constrain(circle.z, -boundaryZ, boundaryZ);
+          
+          // Second circle: starts from center, goes to right, then to left
+          if (index === 1) {
+            if (circle.bounceCount === 0) {
+              // Moving from center to right
+              if (circle.x >= rightBoundary) {
+                circle.direction = -1; // Bounce back to left
+                circle.bounceCount = 1;
+              }
+            } else if (circle.bounceCount === 1) {
+              // Moving from right to left
+              if (circle.x <= leftBoundary) {
+                circle.direction = 1; // Bounce back to right
+                circle.bounceCount = 2;
+              }
+            }
           }
           
-          // Apply friction
-          circle.vx *= friction;
-          circle.vz *= friction;
+          // Reset position if goes too far
+          if (circle.x < -p.windowWidth/2) circle.x = -p.windowWidth/2;
+          if (circle.x > p.windowWidth/2) circle.x = p.windowWidth/2;
           
           // Update rotation based on movement
           circle.rotation.x += circle.rotationSpeed.x + circle.vy * 0.01;
