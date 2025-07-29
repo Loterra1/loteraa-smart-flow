@@ -3,11 +3,6 @@ import React from 'react';
 const VisionMissionSection = () => {
   return (
     <section className="relative py-20 overflow-hidden">
-      {/* Purple Light Effects */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/3 w-80 h-80 bg-loteraa-purple/20 rounded-full blur-3xl animate-pulse animation-delay-500"></div>
-        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-loteraa-purple/15 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
-      </div>
       
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4">

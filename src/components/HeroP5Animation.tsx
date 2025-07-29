@@ -77,7 +77,7 @@ export default function HeroP5Animation() {
       };
 
       p.draw = () => {
-        p.background(0, 30);
+        p.background(0, 0);
         
         // Set up 3D camera
         p.camera(
