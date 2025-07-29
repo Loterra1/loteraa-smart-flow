@@ -1,6 +1,6 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useRef, useState } from "react";
+import AIModelAnimation from "./AIModelAnimation";
 
 export default function CorePrinciples() {
   const [isVisible, setIsVisible] = useState(false);
@@ -34,28 +34,35 @@ export default function CorePrinciples() {
   return (
     <section ref={sectionRef} className="py-20 relative overflow-hidden">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 transition-all duration-1000 uppercase ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="text-white">Core</span> Principles
-          </h2>
-        </div>
-        
-        <div className="grid md:grid-cols-1 gap-8 max-w-7xl mx-auto">
-          <Card className={`bg-gray-500/10 backdrop-blur-md border-gray-400/20 hover:animate-bounce-ar relative overflow-hidden transition-all duration-1000 ${visibleCards[0] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <CardHeader className="relative z-10">
-              <CardTitle className="text-xl font-bold text-white">
-                AI Model Training via On-Chain Data
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <p className="text-white leading-relaxed">
-                AI projects can train their models using decentralized, verified data from Loteraa's IoT network. 
-                Researchers upload sensor feeds like weather, motion, CO2 levels validated by smart contracts and 
-                rewarded through token incentives. Models are trained using data or real-time feeds, creating a 
-                trustless AI pipeline.
-              </p>
-            </CardContent>
-          </Card>
+        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+          {/* Left side - Text content */}
+          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 uppercase">
+              AI Model Training via On-Chain Data
+            </h2>
+            <p className="text-white leading-relaxed text-lg">
+              AI projects can train their models using decentralized, verified data from Loteraa's IoT network. 
+              Researchers upload sensor feeds like weather, motion, CO2 levels validated by smart contracts and 
+              rewarded through token incentives. Models are trained using data or real-time feeds, creating a 
+              trustless AI pipeline.
+            </p>
+          </div>
+          
+          {/* Right side - Image with P5.js animation */}
+          <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+            <div className="relative w-full h-[600px] rounded-lg overflow-hidden">
+              {/* Background image */}
+              <img 
+                src="/lovable-uploads/abde815c-1ff0-4f96-af89-2322637fb540.png" 
+                alt="AI Model Training Visualization" 
+                className="absolute inset-0 w-full h-full object-contain opacity-70"
+              />
+              {/* P5.js animation overlay */}
+              <div className="absolute inset-0 z-10">
+                <AIModelAnimation />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

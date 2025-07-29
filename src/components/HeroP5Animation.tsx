@@ -191,17 +191,17 @@ export default function HeroP5Animation() {
           p.rotateY(circle.rotation.y);
           p.rotateZ(circle.rotation.z);
           
-          // Outer glow
+          // Outer glow - more visible
           for (let i = 3; i >= 1; i--) {
-            p.fill(p.red(circle.color), p.green(circle.color), p.blue(circle.color), 30 / i);
+            p.fill(p.red(circle.color), p.green(circle.color), p.blue(circle.color), 80 / i);
             p.noStroke();
-            p.sphere(circle.radius * (1 + i * 0.2));
+            p.sphere(circle.radius * (1 + i * 0.15));
           }
           
-          // Main sphere
-          p.fill(circle.color);
-          p.stroke(255, 100);
-          p.strokeWeight(1);
+          // Main sphere - much more visible
+          p.fill(p.red(circle.color), p.green(circle.color), p.blue(circle.color), 255);
+          p.stroke(255, 200);
+          p.strokeWeight(2);
           p.sphere(circle.radius);
           
           // Add wireframe pattern
