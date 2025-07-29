@@ -61,7 +61,7 @@ export default function AudienceSection() {
       </div>
       
       {/* Real-World → Web3 Integration Section with Grainy Noise Background */}
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-8 md:py-12">
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-4 md:py-6">
         {/* Grainy Noise Background */}
         <div className="absolute inset-0 w-full h-full">
           <GrainyNoiseAnimation />
@@ -92,9 +92,14 @@ export default function AudienceSection() {
         </div>
       </div>
 
-      {/* Future Built, Real World Ready Section - Centered with Larger Globe */}
+      {/* Future Built, Real World Ready Section with Grainy Noise Background */}
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10 py-12 md:py-20">
-        <div className="text-center relative">
+        {/* Grainy Noise Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <GrainyNoiseAnimation />
+        </div>
+        
+        <div className="text-center relative z-10">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
             <span className="text-white">Future Built,</span>{' '}
             <span className="text-white">Real World Ready</span>

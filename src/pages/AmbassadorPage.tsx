@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -187,9 +186,6 @@ const AmbassadorPage = () => {
           {/* Hero Section */}
           <div className="max-w-5xl mx-auto mb-16">
             <div className="text-center">
-              <span className="inline-block px-4 py-2 rounded-full bg-loteraa-purple/20 backdrop-blur-md border border-loteraa-purple/20 text-white/90 text-sm font-medium mb-4">
-                Join Our Global Community
-              </span>
               <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
                 Loteraa Ambassador Program
               </h1>
@@ -212,7 +208,7 @@ const AmbassadorPage = () => {
                 <div className="absolute inset-0 mesh-grid"></div>
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-40 h-40 md:w-56 md:h-56 rounded-full bg-gradient-to-r from-loteraa-purple via-loteraa-blue to-loteraa-teal animate-move-background bg-[length:400%_400%] relative">
+                <div className="w-40 h-40 md:w-56 md:h-56 rounded-full bg-black relative">
                   <div className="absolute inset-0 rounded-full border-2 border-loteraa-purple/50 animate-pulse"></div>
                   <div className="absolute inset-2 rounded-full border border-loteraa-blue/30"></div>
                   <div className="absolute inset-4 rounded-full border border-loteraa-teal/20"></div>
@@ -299,8 +295,8 @@ const AmbassadorPage = () => {
             
             <div className="space-y-8">
               <div className="flex flex-col md:flex-row items-start gap-6">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-loteraa-purple/20 backdrop-blur-md border border-loteraa-purple/30 flex-shrink-0">
-                  <span className="text-2xl font-bold gradient-text">1</span>
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-black backdrop-blur-md border border-loteraa-gray/30 hover:bg-white/10 transition-colors flex-shrink-0">
+                  <span className="text-2xl font-bold text-white">1</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-white/90">Apply to the Program</h3>
@@ -311,8 +307,8 @@ const AmbassadorPage = () => {
               </div>
               
               <div className="flex flex-col md:flex-row items-start gap-6">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-loteraa-blue/20 backdrop-blur-md border border-loteraa-blue/30 flex-shrink-0">
-                  <span className="text-2xl font-bold gradient-text">2</span>
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-black backdrop-blur-md border border-loteraa-gray/30 hover:bg-white/10 transition-colors flex-shrink-0">
+                  <span className="text-2xl font-bold text-white">2</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-white/90">Complete Training</h3>
@@ -323,8 +319,8 @@ const AmbassadorPage = () => {
               </div>
               
               <div className="flex flex-col md:flex-row items-start gap-6">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-loteraa-teal/20 backdrop-blur-md border border-loteraa-teal/30 flex-shrink-0">
-                  <span className="text-2xl font-bold gradient-text">3</span>
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-black backdrop-blur-md border border-loteraa-gray/30 hover:bg-white/10 transition-colors flex-shrink-0">
+                  <span className="text-2xl font-bold text-white">3</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-white/90">Build Your Community</h3>
@@ -335,8 +331,8 @@ const AmbassadorPage = () => {
               </div>
               
               <div className="flex flex-col md:flex-row items-start gap-6">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-loteraa-purple/20 backdrop-blur-md border border-loteraa-purple/30 flex-shrink-0">
-                  <span className="text-2xl font-bold gradient-text">4</span>
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-black backdrop-blur-md border border-loteraa-gray/30 hover:bg-white/10 transition-colors flex-shrink-0">
+                  <span className="text-2xl font-bold text-white">4</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2 text-white/90">Earn Rewards</h3>
@@ -415,7 +411,7 @@ const AmbassadorPage = () => {
           
           {/* Call to Action */}
           <div className="max-w-4xl mx-auto text-center">
-            <div className="bg-gradient-to-r from-loteraa-purple/30 via-loteraa-blue/30 to-loteraa-teal/30 backdrop-blur-md rounded-xl p-8 border border-loteraa-purple/20">
+            <div className="bg-black backdrop-blur-md rounded-xl p-8 border border-loteraa-purple/20">
               <h2 className="text-3xl font-bold mb-6">
                 <span className="text-white">Ready to Join the Revolution?</span>
               </h2>

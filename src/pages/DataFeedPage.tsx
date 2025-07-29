@@ -199,9 +199,6 @@ export default function DataFeedPage() {
           {/* Hero Section */}
           <section className="relative mb-24">
             <div className="max-w-5xl mx-auto text-center">
-              <span className={`inline-block px-4 py-2 rounded-full bg-loteraa-purple/20 backdrop-blur-md border border-loteraa-purple/20 text-white/90 text-sm font-medium mb-4 transition-all duration-700 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                Secure & Real-Time
-              </span>
               <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
                 <span className="text-white">Real-time IoT Data Feed</span>
               </h1>
@@ -394,31 +391,31 @@ export default function DataFeedPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className={`bg-loteraa-gray/20 backdrop-blur-md border border-loteraa-gray/30 rounded-xl p-6 transition-all duration-700 delay-200 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                  <h3 className="text-2xl font-semibold mb-4 gradient-text">Environmental Data</h3>
+                  <h3 className="text-2xl font-semibold mb-4 text-white">Environmental Data</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-purple mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Temperature & Humidity</span>
                         <span className="text-sm text-white/70">Precise readings from weather stations, indoor sensors, and industrial equipment</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-blue mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Air Quality</span>
                         <span className="text-sm text-white/70">CO2, particulate matter, VOCs, and other air quality metrics</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-teal mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Water Quality</span>
                         <span className="text-sm text-white/70">pH levels, turbidity, dissolved oxygen, and contaminant detection</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-[#ff5e62] mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Soil Conditions</span>
                         <span className="text-sm text-white/70">Moisture levels, nutrient content, and pH for agricultural applications</span>
@@ -428,31 +425,31 @@ export default function DataFeedPage() {
                 </div>
                 
                 <div className={`bg-loteraa-gray/20 backdrop-blur-md border border-loteraa-gray/30 rounded-xl p-6 transition-all duration-700 delay-300 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                  <h3 className="text-2xl font-semibold mb-4 gradient-text">Industrial & Infrastructure</h3>
+                  <h3 className="text-2xl font-semibold mb-4 text-white">Industrial & Infrastructure</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-purple mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Energy Consumption</span>
                         <span className="text-sm text-white/70">Real-time power usage from smart meters and grid sensors</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-blue mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Machine Status</span>
                         <span className="text-sm text-white/70">Operational data, vibration analysis, and predictive maintenance metrics</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-teal mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Supply Chain</span>
                         <span className="text-sm text-white/70">Location tracking, temperature logging, and condition monitoring for goods</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-[#ff5e62] mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Infrastructure Monitoring</span>
                         <span className="text-sm text-white/70">Bridge stress, building vibration, and structural integrity data</span>
@@ -462,31 +459,31 @@ export default function DataFeedPage() {
                 </div>
                 
                 <div className={`bg-loteraa-gray/20 backdrop-blur-md border border-loteraa-gray/30 rounded-xl p-6 transition-all duration-700 delay-400 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                  <h3 className="text-2xl font-semibold mb-4 gradient-text">Urban & Mobility</h3>
+                  <h3 className="text-2xl font-semibold mb-4 text-white">Urban & Mobility</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-purple mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Traffic Patterns</span>
                         <span className="text-sm text-white/70">Vehicle counts, speeds, and congestion metrics from urban sensors</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-blue mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Parking Availability</span>
                         <span className="text-sm text-white/70">Real-time parking space occupancy in cities and facilities</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-teal mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Public Transport</span>
                         <span className="text-sm text-white/70">Bus and train locations, passenger counts, and schedule adherence</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-[#ff5e62] mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Noise & Light Levels</span>
                         <span className="text-sm text-white/70">Urban environmental quality metrics for smart city applications</span>
@@ -496,31 +493,31 @@ export default function DataFeedPage() {
                 </div>
                 
                 <div className={`bg-loteraa-gray/20 backdrop-blur-md border border-loteraa-gray/30 rounded-xl p-6 transition-all duration-700 delay-500 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                  <h3 className="text-2xl font-semibold mb-4 gradient-text">Specialized Data</h3>
+                  <h3 className="text-2xl font-semibold mb-4 text-white">Specialized Data</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-purple mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Weather Prediction</span>
                         <span className="text-sm text-white/70">Advanced meteorological data for weather-dependent applications</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-blue mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Health & Wellness</span>
                         <span className="text-sm text-white/70">Anonymized aggregate data from wearable devices and health monitors</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-loteraa-teal mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Agricultural Yield</span>
                         <span className="text-sm text-white/70">Crop growth metrics, irrigation data, and harvest predictions</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2">
-                      <div className="w-2 h-2 rounded-full bg-[#ff5e62] mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 rounded-full bg-white mt-2 flex-shrink-0"></div>
                       <div>
                         <span className="block font-medium text-white/90">Custom Data Feeds</span>
                         <span className="text-sm text-white/70">Tailored data streams for specific industry or application needs</span>
@@ -536,13 +533,13 @@ export default function DataFeedPage() {
           <section className="mb-24">
             <div className="max-w-5xl mx-auto">
               <h2 className={`text-3xl md:text-4xl font-bold mb-12 text-center transition-all duration-700 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                <span className="text-loteraa-purple">How Loteraa Data Feed Works</span>
+                <span className="text-white">How Loteraa Data Feed Works</span>
               </h2>
               
               <div className="space-y-12">
                 <div className={`flex flex-col md:flex-row items-start gap-8 transition-all duration-700 delay-100 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                  <div className="w-16 h-16 rounded-full bg-loteraa-purple/20 backdrop-blur-sm border border-loteraa-purple/30 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl font-bold gradient-text">1</span>
+                  <div className="w-16 h-16 rounded-full bg-black backdrop-blur-sm border border-loteraa-gray/30 hover:border-white transition-colors flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl font-bold text-white">1</span>
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold mb-2 text-white/90">Data Collection</h3>
@@ -571,8 +568,8 @@ export default function DataFeedPage() {
                 </div>
                 
                 <div className={`flex flex-col md:flex-row items-start gap-8 transition-all duration-700 delay-200 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                  <div className="w-16 h-16 rounded-full bg-loteraa-blue/20 backdrop-blur-sm border border-loteraa-blue/30 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl font-bold gradient-text">2</span>
+                  <div className="w-16 h-16 rounded-full bg-black backdrop-blur-sm border border-loteraa-gray/30 hover:border-white transition-colors flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl font-bold text-white">2</span>
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold mb-2 text-white/90">Secure Transmission</h3>
@@ -596,8 +593,8 @@ export default function DataFeedPage() {
                 </div>
                 
                 <div className={`flex flex-col md:flex-row items-start gap-8 transition-all duration-700 delay-300 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                  <div className="w-16 h-16 rounded-full bg-loteraa-teal/20 backdrop-blur-sm border border-loteraa-teal/30 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl font-bold gradient-text">3</span>
+                  <div className="w-16 h-16 rounded-full bg-black backdrop-blur-sm border border-loteraa-gray/30 hover:border-white transition-colors flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl font-bold text-white">3</span>
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold mb-2 text-white/90">Blockchain Integration</h3>
@@ -629,8 +626,8 @@ export default function DataFeedPage() {
                 </div>
                 
                 <div className={`flex flex-col md:flex-row items-start gap-8 transition-all duration-700 delay-400 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
-                  <div className="w-16 h-16 rounded-full bg-[#ff5e62]/20 backdrop-blur-sm border border-[#ff5e62]/30 flex items-center justify-center flex-shrink-0">
-                    <span className="text-2xl font-bold gradient-text">4</span>
+                  <div className="w-16 h-16 rounded-full bg-black backdrop-blur-sm border border-loteraa-gray/30 hover:border-white transition-colors flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl font-bold text-white">4</span>
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold mb-2 text-white/90">Developer Access</h3>
@@ -667,9 +664,9 @@ tempStream.on("data", (reading) => {
           {/* Call to Action */}
           <section className="mb-16">
             <div className="max-w-4xl mx-auto">
-              <div className={`bg-gradient-to-r from-loteraa-purple/30 via-loteraa-blue/30 to-loteraa-teal/30 backdrop-blur-md rounded-xl p-8 border border-loteraa-purple/20 text-center transition-all duration-700 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
+              <div className={`bg-black backdrop-blur-md rounded-xl p-8 border border-loteraa-purple/20 text-center transition-all duration-700 ${isInView ? 'opacity-100 transform-none' : 'opacity-0 translate-y-4'}`}>
                 <h2 className="text-3xl font-bold mb-4">
-                  <span className="gradient-text">Ready to Build with Real-world Data?</span>
+                  <span className="text-white">Ready to Build with Real-world Data?</span>
                 </h2>
                 <p className="text-white/80 text-lg mb-8">
                   Get started with Loteraa's secure, low-latency IoT data feeds and build the next generation of blockchain applications.
@@ -677,12 +674,9 @@ tempStream.on("data", (reading) => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button 
                     size="lg" 
-                    className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8"
+                    className="bg-white hover:bg-white/90 text-black px-8"
                   >
                     Apply for Developer Access <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                  <Button asChild variant="outline" size="lg" className="bg-transparent border-loteraa-purple/50 text-white hover:bg-loteraa-purple/20">
-                    <Link to="/contact">Contact Sales</Link>
                   </Button>
                 </div>
               </div>
