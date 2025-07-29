@@ -71,11 +71,11 @@ export default function EarningsPage() {
   const performanceData: DevicePerformanceData[] = [];
 
   return (
-    <div className="min-h-screen bg-loteraa-black">
+    <div className="min-h-screen bg-black">
       <DashboardNavbar />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold gradient-text mb-2">Earnings</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Earnings</h1>
           <p className="text-white/70">Track your rewards from data contributions and smart contract interactions</p>
         </div>
         

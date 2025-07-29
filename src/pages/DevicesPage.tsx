@@ -77,12 +77,12 @@ const DevicesPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <DashboardNavbar />
-      <main className="flex-grow pt-24 pb-16 bg-gradient-to-br from-loteraa-black to-loteraa-gray/20">
+      <main className="flex-grow pt-24 pb-16 bg-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
               <div>
-                <h1 className="text-4xl font-bold gradient-text mb-2">
+                <h1 className="text-4xl font-bold text-white mb-2">
                   IoT Devices
                 </h1>
                 <p className="text-lg text-white/70">
@@ -114,9 +114,9 @@ const DevicesPage = () => {
                 
                 <Button 
                   onClick={() => setIsAddDeviceOpen(true)}
-                  className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+                  className="bg-black hover:bg-black/90 border border-white text-white"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="h-4 w-4 mr-2 text-white" />
                   Add Device
                 </Button>
               </div>
@@ -133,9 +133,9 @@ const DevicesPage = () => {
                 </p>
                 <Button 
                   onClick={() => setIsAddDeviceOpen(true)}
-                  className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+                  className="bg-black hover:bg-black/90 border border-white text-white"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="h-4 w-4 mr-2 text-white" />
                   Add Your First Device
                 </Button>
               </div>

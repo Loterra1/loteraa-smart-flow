@@ -15,24 +15,24 @@ export default function ActionButtons() {
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Button 
-          className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white gap-2 h-12 text-sm md:text-md"
+          className="bg-black hover:bg-black/90 border border-white text-white gap-2 h-12 text-sm md:text-md"
           onClick={() => setIsAddDeviceOpen(true)}
         >
-          <Plus className="h-4 w-4 md:h-5 md:w-5" />
+          <Plus className="h-4 w-4 md:h-5 md:w-5 text-white" />
           Add New IoT Device
         </Button>
         <Button 
-          className="bg-loteraa-blue hover:bg-loteraa-blue/90 text-white gap-2 h-12 text-sm md:text-md"
+          className="bg-black hover:bg-black/90 border border-white text-white gap-2 h-12 text-sm md:text-md"
           onClick={() => setIsCreateAutomationOpen(true)}
         >
-          <Plus className="h-4 w-4 md:h-5 md:w-5" />
+          <Plus className="h-4 w-4 md:h-5 md:w-5 text-white" />
           Create Automation
         </Button>
         <Button 
-          className="bg-loteraa-teal hover:bg-loteraa-teal/90 text-white gap-2 h-12 text-sm md:text-md"
+          className="bg-black hover:bg-black/90 border border-white text-white gap-2 h-12 text-sm md:text-md"
           onClick={() => setIsBindContractOpen(true)}
         >
-          <Plus className="h-4 w-4 md:h-5 md:w-5" />
+          <Plus className="h-4 w-4 md:h-5 md:w-5 text-white" />
           Bind Smart Contract
         </Button>
       </div>

@@ -61,11 +61,11 @@ export default function DataListingPage() {
 
   if (verifiedDatasets.length === 0) {
     return (
-      <div className="min-h-screen bg-loteraa-black">
+      <div className="min-h-screen bg-black">
         <DashboardNavbar />
         <div className="container mx-auto px-4 py-4 sm:py-8">
           <div className="mb-6 sm:mb-8">
-            <h1 className="text-xl sm:text-3xl font-bold gradient-text mb-2">IoT Data Listing</h1>
+            <h1 className="text-xl sm:text-3xl font-bold text-white mb-2">IoT Data Listing</h1>
             <p className="text-white/70 text-sm sm:text-base">Browse and download verified IoT datasets for your development projects</p>
           </div>
           
@@ -79,7 +79,7 @@ export default function DataListingPage() {
             </p>
             <Button 
               onClick={handleSubmitDataset}
-              className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+              className="bg-black hover:bg-black/90 border border-white text-white"
             >
               Submit Your Dataset
             </Button>
@@ -90,11 +90,11 @@ export default function DataListingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-loteraa-black">
+    <div className="min-h-screen bg-black">
       <DashboardNavbar />
       <div className="container mx-auto px-4 py-4 sm:py-8">
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-xl sm:text-3xl font-bold gradient-text mb-2">IoT Data Listing</h1>
+          <h1 className="text-xl sm:text-3xl font-bold text-white mb-2">IoT Data Listing</h1>
           <p className="text-white/70 text-sm sm:text-base">Browse and download verified IoT datasets for your development projects</p>
         </div>
         
@@ -193,9 +193,9 @@ export default function DataListingPage() {
                     <Button
                       size="sm"
                       onClick={() => handleDownload(dataset)}
-                      className="flex-1 bg-loteraa-purple hover:bg-loteraa-purple/90"
+                      className="flex-1 bg-black hover:bg-black/90 border border-white text-white"
                     >
-                      <Download className="h-4 w-4 mr-1" />
+                      <Download className="h-4 w-4 mr-1 text-white" />
                       Download
                     </Button>
                   </div>

@@ -50,11 +50,11 @@ export default function NotificationsPage() {
 
   if (isNewAccount) {
     return (
-      <div className="min-h-screen bg-loteraa-black">
+      <div className="min-h-screen bg-black">
         <DashboardNavbar />
         <div className="container mx-auto px-4 py-8">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold gradient-text mb-2">Notifications</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">Notifications</h1>
             <p className="text-white/70">
               Track your activity and important updates across the platform
             </p>
@@ -75,12 +75,12 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-loteraa-black">
+    <div className="min-h-screen bg-black">
       <DashboardNavbar />
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <div>
-            <h1 className="text-3xl font-bold gradient-text mb-2">Notifications</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">Notifications</h1>
             <p className="text-white/70">
               Track your activity and important updates across the platform
             </p>
@@ -92,7 +92,7 @@ export default function NotificationsPage() {
               className="bg-transparent border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30 flex items-center gap-2"
               onClick={clearAll}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4 text-white" />
               Clear All
             </Button>
           )}

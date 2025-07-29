@@ -26,19 +26,19 @@ export default function DatasetEntryPage() {
 
   if (isNewAccount) {
     return (
-      <div className="min-h-screen bg-loteraa-black">
+      <div className="min-h-screen bg-black">
         <DashboardNavbar />
         <div className="container mx-auto px-4 py-4 sm:py-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4 sm:gap-0">
             <div>
-              <h1 className="text-xl sm:text-3xl font-bold gradient-text mb-2">Dataset Entry</h1>
+              <h1 className="text-xl sm:text-3xl font-bold text-white mb-2">Dataset Entry</h1>
               <p className="text-white/70 text-sm sm:text-base">Submit and manage your datasets for Smart contract verification and onchain to earn rewards</p>
             </div>
             <Button 
-              className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto"
+              className="bg-black hover:bg-black/90 border border-white text-white w-full sm:w-auto"
               onClick={() => setIsAddingDataset(true)}
             >
-              <PlusCircle className="mr-2 h-4 w-4" />
+              <PlusCircle className="mr-2 h-4 w-4 text-white" />
               Add New Dataset
             </Button>
           </div>
@@ -52,10 +52,10 @@ export default function DatasetEntryPage() {
               Start by submitting your first dataset for verification and earn rewards through our decentralized verification system.
             </p>
             <Button 
-              className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+              className="bg-black hover:bg-black/90 border border-white text-white"
               onClick={() => setIsAddingDataset(true)}
             >
-              <PlusCircle className="mr-2 h-4 w-4" />
+              <PlusCircle className="mr-2 h-4 w-4 text-white" />
               Submit Your First Dataset
             </Button>
           </div>
@@ -76,19 +76,19 @@ export default function DatasetEntryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-loteraa-black">
+    <div className="min-h-screen bg-black">
       <DashboardNavbar />
       <div className="container mx-auto px-4 py-4 sm:py-8">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 gap-4 sm:gap-0">
           <div>
-            <h1 className="text-xl sm:text-3xl font-bold gradient-text mb-2">Dataset Entry</h1>
+            <h1 className="text-xl sm:text-3xl font-bold text-white mb-2">Dataset Entry</h1>
             <p className="text-white/70 text-sm sm:text-base">Submit and manage your datasets for Smart contract verification and onchain to earn rewards</p>
           </div>
           <Button 
-            className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto"
+            className="bg-black hover:bg-black/90 border border-white text-white w-full sm:w-auto"
             onClick={() => setIsAddingDataset(true)}
           >
-            <PlusCircle className="mr-2 h-4 w-4" />
+            <PlusCircle className="mr-2 h-4 w-4 text-white" />
             Add New Dataset
           </Button>
         </div>
