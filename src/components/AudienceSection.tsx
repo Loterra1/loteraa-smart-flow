@@ -55,11 +55,6 @@ export default function AudienceSection() {
     <section ref={sectionRef} className="py-20 bg-black relative overflow-hidden">
 
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-white transition-all duration-1000 uppercase ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="text-white">Who Is It For?</span>
-          </h2>
-        </div>
       </div>
       
       {/* Real-World → Web3 Integration Section */}

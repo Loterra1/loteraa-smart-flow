@@ -6,6 +6,7 @@ import RadialAnimation from "./animations/RadialAnimation";
 import SpiralAnimation from "./animations/SpiralAnimation";
 import VortexAnimation from "./animations/VortexAnimation";
 import WireframeAnimation from "./animations/WireframeAnimation";
+import GlobeAnimation from "./animations/GlobeAnimation";
 
 interface FeatureCard {
   title: string;
@@ -115,61 +116,51 @@ export default function FeatureCards() {
             </div>
             
             {/* Right Side - Image */}
-            <div className="w-[600px] h-[480px] flex-shrink-0">
+            <div className="w-[700px] h-[560px] flex-shrink-0">
               <img 
-                src="/lovable-uploads/9f7441f3-0811-41a6-b4a1-ae91f4972a30.png"
-                alt="Black Spheres" 
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </div>
-          
-          {/* Real-World → Web3 Integration Section */}
-          <div className="mt-16 flex items-center gap-8 max-w-6xl mx-auto">
-            {/* Left Side - Text Content */}
-            <div className="flex-1">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                REAL-WORLD → WEB3 INTEGRATION
-              </h2>
-              <p className="text-white/80 leading-relaxed text-lg">
-                Loteraa bridges the gap between physical sensors and blockchain networks, enabling seamless data flow from IoT devices to smart contracts. This integration allows real-world events to trigger automated Web3 actions, creating a truly connected ecosystem.
-              </p>
-            </div>
-            
-            {/* Right Side - Image */}
-            <div className="w-[400px] h-[320px] flex-shrink-0">
-              <img 
-                src="/lovable-uploads/9f7441f3-0811-41a6-b4a1-ae91f4972a30.png"
-                alt="Black Spheres Integration" 
+                src="/lovable-uploads/33e5a6d3-adda-403c-8f55-f33d54e6c234.png"
+                alt="Black and White Cubes" 
                 className="w-full h-full object-contain"
               />
             </div>
           </div>
           
           {/* For Developers Section */}
-          <div className="mt-16 max-w-6xl mx-auto">
-            {/* Image */}
-            <div className="w-full flex justify-center mb-8">
+          <div className="mt-16 max-w-6xl mx-auto relative">
+            {/* Background Image */}
+            <div className="w-full flex justify-center relative">
               <img 
                 src="/lovable-uploads/f506d009-7669-4f02-aa86-d72c1a1faa7c.png"
                 alt="Radial Development Shape" 
-                className="w-[400px] h-[320px] object-contain"
+                className="w-[600px] h-[480px] object-contain"
               />
+              
+              {/* Content Overlay */}
+              <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-8">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                  FOR DEVELOPERS
+                </h2>
+                <p className="text-white/80 leading-relaxed text-lg mb-8 max-w-3xl mx-auto">
+                  Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains.
+                </p>
+                <Button 
+                  className="bg-white text-black hover:bg-white/90 font-semibold px-8 py-3"
+                >
+                  Start building
+                </Button>
+              </div>
             </div>
-            
-            {/* Content */}
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                FOR DEVELOPERS
+          </div>
+          
+          {/* Globe Section */}
+          <div className="mt-16 max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 uppercase">
+                FUTURE BUILT, REAL WORLD READY
               </h2>
-              <p className="text-white/80 leading-relaxed text-lg mb-8 max-w-4xl mx-auto">
-                Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains.
-              </p>
-              <Button 
-                className="bg-white text-black hover:bg-white/90 font-semibold px-8 py-3"
-              >
-                Start building
-              </Button>
+            </div>
+            <div className="w-full h-[600px] relative overflow-hidden rounded-lg bg-black">
+              <GlobeAnimation />
             </div>
           </div>
         </div>
