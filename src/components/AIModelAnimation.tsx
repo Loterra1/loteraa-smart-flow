@@ -40,31 +40,32 @@ export default function AIModelAnimation() {
       let physicsObjects: PhysicsObject[] = [];
       let mouseForce = { x: 0, y: 0 };
       let time = 0;
+      let canvas: p5.Renderer;
       
       p.setup = () => {
         const rect = containerRef.current!.getBoundingClientRect();
         // Ensure canvas covers entire container with extra padding
-        const canvas = p.createCanvas(rect.width + 50, rect.height + 50, p.WEBGL);
+        canvas = p.createCanvas(rect.width + 50, rect.height + 50, p.WEBGL);
         canvas.parent(containerRef.current!);
         
         // Position canvas to cover entire container with overflow
-        canvas.style('position', 'absolute');
-        canvas.style('top', '-25px');
-        canvas.style('left', '-25px');
-        canvas.style('width', 'calc(100% + 50px)');
-        canvas.style('height', 'calc(100% + 50px)');
-        canvas.style('display', 'block');
-        canvas.style('background-color', '#000000');
-        canvas.style('background', '#000000');
-        canvas.style('z-index', '10');
-        canvas.style('overflow', 'hidden');
+        (canvas.canvas as HTMLCanvasElement).style.position = 'absolute';
+        (canvas.canvas as HTMLCanvasElement).style.top = '-25px';
+        (canvas.canvas as HTMLCanvasElement).style.left = '-25px';
+        (canvas.canvas as HTMLCanvasElement).style.width = 'calc(100% + 50px)';
+        (canvas.canvas as HTMLCanvasElement).style.height = 'calc(100% + 50px)';
+        (canvas.canvas as HTMLCanvasElement).style.display = 'block';
+        (canvas.canvas as HTMLCanvasElement).style.backgroundColor = '#000000';
+        (canvas.canvas as HTMLCanvasElement).style.background = '#000000';
+        (canvas.canvas as HTMLCanvasElement).style.zIndex = '10';
+        (canvas.canvas as HTMLCanvasElement).style.overflow = 'hidden';
         
         // Mobile-specific adjustments
         if (window.innerWidth < 768) {
-          canvas.style('width', 'calc(100vw + 100px)');
-          canvas.style('height', 'calc(100vh + 100px)');
-          canvas.style('left', '-50px');
-          canvas.style('top', '-50px');
+          (canvas.canvas as HTMLCanvasElement).style.width = 'calc(100vw + 100px)';
+          (canvas.canvas as HTMLCanvasElement).style.height = 'calc(100vh + 100px)';
+          (canvas.canvas as HTMLCanvasElement).style.left = '-50px';
+          (canvas.canvas as HTMLCanvasElement).style.top = '-50px';
         }
         
         // Initialize physics objects for the image layers
@@ -294,7 +295,7 @@ export default function AIModelAnimation() {
       };
       
       p.windowResized = () => {
-        if (containerRef.current) {
+        if (containerRef.current && canvas) {
           const rect = containerRef.current.getBoundingClientRect();
           p.resizeCanvas(rect.width + 50, rect.height + 50);
           // Force black background on resize
@@ -302,10 +303,10 @@ export default function AIModelAnimation() {
           
           // Reposition canvas for mobile
           if (window.innerWidth < 768) {
-            p.canvas.style('width', 'calc(100vw + 100px)');
-            p.canvas.style('height', 'calc(100vh + 100px)');
-            p.canvas.style('left', '-50px');
-            p.canvas.style('top', '-50px');
+            (canvas.canvas as HTMLCanvasElement).style.width = 'calc(100vw + 100px)';
+            (canvas.canvas as HTMLCanvasElement).style.height = 'calc(100vh + 100px)';
+            (canvas.canvas as HTMLCanvasElement).style.left = '-50px';
+            (canvas.canvas as HTMLCanvasElement).style.top = '-50px';
           }
         }
       };
