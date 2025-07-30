@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
 
@@ -42,19 +43,29 @@ export default function AIModelAnimation() {
       
       p.setup = () => {
         const rect = containerRef.current!.getBoundingClientRect();
-        const canvas = p.createCanvas(rect.width, rect.height, p.WEBGL);
+        // Ensure canvas covers entire container with extra padding
+        const canvas = p.createCanvas(rect.width + 50, rect.height + 50, p.WEBGL);
         canvas.parent(containerRef.current!);
         
-        // Force canvas to cover entire container with black background
+        // Position canvas to cover entire container with overflow
         canvas.style('position', 'absolute');
-        canvas.style('top', '0px');
-        canvas.style('left', '0px');
-        canvas.style('width', '100%');
-        canvas.style('height', '100%');
+        canvas.style('top', '-25px');
+        canvas.style('left', '-25px');
+        canvas.style('width', 'calc(100% + 50px)');
+        canvas.style('height', 'calc(100% + 50px)');
         canvas.style('display', 'block');
-        canvas.style('background-color', '#000000 !important');
-        canvas.style('background', '#000000 !important');
+        canvas.style('background-color', '#000000');
+        canvas.style('background', '#000000');
         canvas.style('z-index', '10');
+        canvas.style('overflow', 'hidden');
+        
+        // Mobile-specific adjustments
+        if (window.innerWidth < 768) {
+          canvas.style('width', 'calc(100vw + 100px)');
+          canvas.style('height', 'calc(100vh + 100px)');
+          canvas.style('left', '-50px');
+          canvas.style('top', '-50px');
+        }
         
         // Initialize physics objects for the image layers
         for (let i = 0; i < 3; i++) {
@@ -99,28 +110,39 @@ export default function AIModelAnimation() {
       };
 
       p.draw = () => {
-        // CRITICAL: Multiple layers of black background to prevent any white showing
-        p.background(0, 0, 0);
-        p.clear();
-        p.background(0, 0, 0);
+        // CRITICAL: Ensure solid black background covers everything
+        p.background(0, 0, 0, 255);
         
-        // Force black background fill covering entire canvas area
+        // Force black fill over entire canvas area with extra coverage
         p.push();
         p.resetMatrix();
         p.fill(0, 0, 0, 255);
         p.noStroke();
         p.rectMode(p.CORNER);
-        p.rect(-p.width, -p.height, p.width * 3, p.height * 3);
+        p.rect(-p.width * 2, -p.height * 2, p.width * 4, p.height * 4);
         p.pop();
         
-        // Additional black background coverage
-        p.push();
-        p.fill(0, 0, 0, 255);
-        p.noStroke();
-        p.translate(0, 0, -1000);
-        p.rectMode(p.CENTER);
-        p.rect(0, 0, p.width * 2, p.height * 2);
-        p.pop();
+        // Additional black background layers for mobile safety
+        for (let i = 0; i < 3; i++) {
+          p.push();
+          p.fill(0, 0, 0, 255);
+          p.noStroke();
+          p.translate(0, 0, -1000 - (i * 100));
+          p.rectMode(p.CENTER);
+          p.rect(0, 0, p.width * 3, p.height * 3);
+          p.pop();
+        }
+        
+        // Mobile-specific black background coverage
+        if (window.innerWidth < 768) {
+          p.push();
+          p.resetMatrix();
+          p.fill(0, 0, 0, 255);
+          p.noStroke();
+          p.rectMode(p.CORNER);
+          p.rect(-window.innerWidth, -window.innerHeight, window.innerWidth * 3, window.innerHeight * 3);
+          p.pop();
+        }
         
         p.lights();
         
@@ -245,6 +267,15 @@ export default function AIModelAnimation() {
           let obj2 = physicsObjects[i + 1];
           p.line(obj1.x, obj1.y, obj1.z, obj2.x, obj2.y, obj2.z);
         }
+        
+        // Final black background safety layer
+        p.push();
+        p.resetMatrix();
+        p.fill(0, 0, 0, 50);
+        p.noStroke();
+        p.rectMode(p.CORNER);
+        p.rect(-p.width * 2, -p.height * 2, p.width * 4, p.height * 4);
+        p.pop();
       };
       
       p.mousePressed = () => {
@@ -265,9 +296,17 @@ export default function AIModelAnimation() {
       p.windowResized = () => {
         if (containerRef.current) {
           const rect = containerRef.current.getBoundingClientRect();
-          p.resizeCanvas(rect.width, rect.height);
+          p.resizeCanvas(rect.width + 50, rect.height + 50);
           // Force black background on resize
-          p.background(0, 0, 0);
+          p.background(0, 0, 0, 255);
+          
+          // Reposition canvas for mobile
+          if (window.innerWidth < 768) {
+            p.canvas.style('width', 'calc(100vw + 100px)');
+            p.canvas.style('height', 'calc(100vh + 100px)');
+            p.canvas.style('left', '-50px');
+            p.canvas.style('top', '-50px');
+          }
         }
       };
     };
@@ -284,13 +323,12 @@ export default function AIModelAnimation() {
   return (
     <div 
       ref={containerRef} 
-      className="absolute inset-0 w-full h-full"
+      className="absolute inset-0 w-full h-full overflow-hidden"
       style={{ 
         backgroundColor: '#000000 !important',
         background: '#000000 !important',
         minHeight: '100%',
         minWidth: '100%',
-        overflow: 'hidden',
         zIndex: 2
       }}
     />

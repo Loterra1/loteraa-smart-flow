@@ -40,44 +40,37 @@ export default function CorePrinciples() {
         background: '#000000 !important'
       }}
     >
-      {/* Multiple critical layers of black background to prevent white showing */}
+      {/* Critical black background layers to prevent any white showing */}
+      {Array.from({ length: 5 }).map((_, index) => (
+        <div 
+          key={index}
+          className="fixed inset-0 w-full h-full"
+          style={{ 
+            backgroundColor: '#000000 !important',
+            background: '#000000 !important',
+            zIndex: index
+          }}
+        />
+      ))}
+      
+      {/* Mobile-specific black background coverage */}
       <div 
-        className="fixed inset-0 w-full h-full z-0" 
+        className="block md:hidden fixed -inset-20 w-[calc(100vw+10rem)] h-[calc(100vh+10rem)]"
         style={{ 
           backgroundColor: '#000000 !important',
-          background: '#000000 !important'
-        }}
-      />
-      <div 
-        className="absolute inset-0 w-full h-full z-0" 
-        style={{ 
-          backgroundColor: '#000000 !important',
-          background: '#000000 !important'
-        }}
-      />
-      <div 
-        className="absolute -inset-8 w-[calc(100%+4rem)] h-[calc(100%+4rem)] z-0" 
-        style={{ 
-          backgroundColor: '#000000 !important',
-          background: '#000000 !important'
+          background: '#000000 !important',
+          zIndex: 1
         }}
       />
       
-      {/* Additional black background specifically for mobile */}
+      {/* P5.js animation covering entire section with overflow */}
       <div 
-        className="block md:hidden absolute -inset-12 w-[calc(100%+6rem)] h-[calc(100%+6rem)] z-0" 
+        className="absolute -inset-10 w-[calc(100%+5rem)] h-[calc(100%+5rem)]"
         style={{ 
           backgroundColor: '#000000 !important',
-          background: '#000000 !important'
-        }}
-      />
-      
-      {/* P5.js animation covering entire section */}
-      <div 
-        className="absolute inset-0 w-full h-full z-1"
-        style={{ 
-          backgroundColor: '#000000 !important',
-          background: '#000000 !important'
+          background: '#000000 !important',
+          zIndex: 5,
+          overflow: 'hidden'
         }}
       >
         <AIModelAnimation />
@@ -107,14 +100,18 @@ export default function CorePrinciples() {
                 background: '#000000 !important'
               }}
             >
-              {/* Black background fallback */}
-              <div 
-                className="absolute inset-0 z-0" 
-                style={{ 
-                  backgroundColor: '#000000 !important',
-                  background: '#000000 !important'
-                }}
-              />
+              {/* Multiple black background fallback layers */}
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div 
+                  key={index}
+                  className="absolute inset-0"
+                  style={{ 
+                    backgroundColor: '#000000 !important',
+                    background: '#000000 !important',
+                    zIndex: index
+                  }}
+                />
+              ))}
               <img 
                 src="/lovable-uploads/abde815c-1ff0-4f96-af89-2322637fb540.png" 
                 alt="AI Model Training Visualization" 

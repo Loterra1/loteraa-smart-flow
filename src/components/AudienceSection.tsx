@@ -32,32 +32,59 @@ export default function AudienceSection() {
     <section 
       ref={sectionRef} 
       className="py-12 md:py-20 relative overflow-hidden min-h-screen"
-      style={{ backgroundColor: '#000000', background: '#000000' }}
+      style={{ backgroundColor: '#000000 !important', background: '#000000 !important' }}
     >
-      {/* Multiple layers of black background to prevent any white showing through */}
+      {/* Critical black background layers to prevent any white showing */}
+      {Array.from({ length: 8 }).map((_, index) => (
+        <div 
+          key={index}
+          className="absolute inset-0 w-full h-full"
+          style={{ 
+            backgroundColor: '#000000 !important', 
+            background: '#000000 !important',
+            zIndex: index
+          }}
+        />
+      ))}
+      
+      {/* Mobile-specific black background coverage with extra padding */}
       <div 
-        className="absolute inset-0 w-full h-full z-0"
-        style={{ backgroundColor: '#000000', background: '#000000' }}
-      ></div>
-      <div 
-        className="absolute inset-0 w-full h-full z-1"
-        style={{ backgroundColor: '#000000', background: '#000000' }}
-      ></div>
+        className="block md:hidden absolute -inset-32 w-[calc(100vw+16rem)] h-[calc(100vh+16rem)]"
+        style={{ 
+          backgroundColor: '#000000 !important',
+          background: '#000000 !important',
+          zIndex: 5
+        }}
+      />
       
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         {/* Real-World → Web3 Integration Section */}
         <div 
           className="py-8 md:py-12 relative"
-          style={{ backgroundColor: '#000000', background: '#000000' }}
+          style={{ backgroundColor: '#000000 !important', background: '#000000 !important' }}
         >
-          {/* Black background layer */}
-          <div 
-            className="absolute inset-0 w-full h-full z-0"
-            style={{ backgroundColor: '#000000', background: '#000000' }}
-          ></div>
+          {/* Multiple black background layers for this subsection */}
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div 
+              key={index}
+              className="absolute inset-0 w-full h-full"
+              style={{ 
+                backgroundColor: '#000000 !important',
+                background: '#000000 !important',
+                zIndex: index
+              }}
+            />
+          ))}
           
-          {/* Enhanced Grainy Noise Background */}
-          <div className="absolute inset-0 w-full h-full opacity-90 z-1">
+          {/* Enhanced Grainy Noise Background with black fallback */}
+          <div 
+            className="absolute inset-0 w-full h-full opacity-90"
+            style={{ 
+              backgroundColor: '#000000 !important',
+              background: '#000000 !important',
+              zIndex: 6
+            }}
+          >
             <GrainyNoiseAnimation />
           </div>
           
@@ -74,6 +101,14 @@ export default function AudienceSection() {
             
             {/* Right side - Responsive Image with P5.js Animation */}
             <div className="flex-shrink-0 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] relative">
+              {/* Black background for image container */}
+              <div 
+                className="absolute inset-0"
+                style={{ 
+                  backgroundColor: '#000000 !important',
+                  background: '#000000 !important'
+                }}
+              />
               <img 
                 src="/lovable-uploads/79201339-7541-40e0-a69d-321b49e8b86a.png" 
                 alt="Real-World Web3 Integration"
@@ -89,16 +124,30 @@ export default function AudienceSection() {
         {/* Future Built, Real World Ready Section */}
         <div 
           className="py-8 md:py-16 relative"
-          style={{ backgroundColor: '#000000', background: '#000000' }}
+          style={{ backgroundColor: '#000000 !important', background: '#000000 !important' }}
         >
-          {/* Black background layer */}
-          <div 
-            className="absolute inset-0 w-full h-full z-0"
-            style={{ backgroundColor: '#000000', background: '#000000' }}
-          ></div>
+          {/* Multiple black background layers for this subsection */}
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div 
+              key={index}
+              className="absolute inset-0 w-full h-full"
+              style={{ 
+                backgroundColor: '#000000 !important',
+                background: '#000000 !important',
+                zIndex: index
+              }}
+            />
+          ))}
           
-          {/* Grainy Noise Background */}
-          <div className="absolute inset-0 w-full h-full opacity-90 z-1">
+          {/* Grainy Noise Background with black fallback */}
+          <div 
+            className="absolute inset-0 w-full h-full opacity-90"
+            style={{ 
+              backgroundColor: '#000000 !important',
+              background: '#000000 !important',
+              zIndex: 6
+            }}
+          >
             <GrainyNoiseAnimation />
           </div>
           
@@ -108,9 +157,15 @@ export default function AudienceSection() {
               <span className="text-white">Real World Ready</span>
             </h2>
             
-            {/* Responsive Globe Animation Background */}
+            {/* Responsive Globe Animation Background with black fallback */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              <div className="w-[800px] sm:w-[1000px] md:w-[1400px] lg:w-[1800px] xl:w-[2200px] h-[600px] sm:h-[700px] md:h-[900px] lg:h-[1100px] xl:h-[1300px] relative overflow-hidden">
+              <div 
+                className="w-[800px] sm:w-[1000px] md:w-[1400px] lg:w-[1800px] xl:w-[2200px] h-[600px] sm:h-[700px] md:h-[900px] lg:h-[1100px] xl:h-[1300px] relative overflow-hidden"
+                style={{ 
+                  backgroundColor: '#000000 !important',
+                  background: '#000000 !important'
+                }}
+              >
                 <GlobeMapAnimation />
               </div>
             </div>
