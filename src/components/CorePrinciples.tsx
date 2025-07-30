@@ -33,9 +33,11 @@ export default function CorePrinciples() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 relative overflow-hidden bg-black">
-      {/* P5.js animation covering entire section */}
-      <AIModelAnimation />
+    <section ref={sectionRef} className="py-20 relative overflow-hidden bg-black min-h-screen">
+      {/* P5.js animation covering entire section - fixed positioning */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <AIModelAnimation />
+      </div>
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
           {/* Left side - Text content */}

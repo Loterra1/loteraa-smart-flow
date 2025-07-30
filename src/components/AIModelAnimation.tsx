@@ -41,7 +41,8 @@ export default function AIModelAnimation() {
       let time = 0;
       
       p.setup = () => {
-        const canvas = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
+        const rect = containerRef.current!.getBoundingClientRect();
+        const canvas = p.createCanvas(rect.width, rect.height, p.WEBGL);
         canvas.parent(containerRef.current!);
         
         // Initialize physics objects for the image layers
@@ -226,7 +227,10 @@ export default function AIModelAnimation() {
       };
       
       p.windowResized = () => {
-        p.resizeCanvas(p.windowWidth, p.windowHeight);
+        if (containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect();
+          p.resizeCanvas(rect.width, rect.height);
+        }
       };
     };
 
@@ -242,8 +246,11 @@ export default function AIModelAnimation() {
   return (
     <div 
       ref={containerRef} 
-      className="absolute inset-0 w-full h-full z-5"
-      style={{ background: 'transparent' }}
+      className="absolute inset-0 w-full h-full"
+      style={{ 
+        background: 'black',
+        zIndex: 1
+      }}
     />
   );
 }
