@@ -84,24 +84,64 @@ export default function FeatureCards() {
       {features.map((feature) => renderFeatureCard(feature))}
       
       {/* New Earn Rewards Section */}
-      <div className="mt-24 flex items-center justify-center gap-16">
+      <div className="mt-24 flex items-center justify-center gap-20">
         {/* Left side - Heading and Description */}
-        <div className="flex-1 max-w-2xl">
-          <h2 className="text-4xl font-bold text-white mb-8 uppercase tracking-wide">
+        <div className="flex-1 max-w-3xl">
+          <h2 className="text-6xl font-bold text-white mb-12 uppercase tracking-wide">
             EARN REWARD WITH $LOT TOKEN
           </h2>
-          <p className="text-white/70 text-xl leading-relaxed">
+          <p className="text-white/70 text-2xl leading-relaxed">
             The Loteraa ecosystem is powered by the $Lot token, a utility and reward token designed to fuel sensor contributions, validate data quality, incentivize uptime, and govern the platform's evolution.
           </p>
         </div>
         
-        {/* Right side - Large Image */}
+        {/* Right side - Very Large Image */}
         <div className="flex-shrink-0">
           <img 
             src="/lovable-uploads/a2f6c8cd-4a5e-421c-ad7c-865057026961.png" 
             alt="$LOT Token Reward System"
-            className="w-96 h-96 object-contain"
+            className="w-[500px] h-[500px] object-contain"
           />
+        </div>
+      </div>
+
+      {/* Three Square Cards Section */}
+      <div className="mt-24 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 gap-8 mb-8">
+          {/* Card 1 */}
+          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="w-full h-80 mb-6">
+              <img 
+                src="/lovable-uploads/b735b677-3ceb-4e10-9297-7a791a86fdfe.png" 
+                alt="Sphere"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+          
+          {/* Card 2 */}
+          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:bg-white/10 transition-colors">
+            <div className="w-full h-80 mb-6">
+              <img 
+                src="/lovable-uploads/13293393-b3d8-4bee-97e7-03c1063cfb41.png" 
+                alt="Abstract Form"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+        </div>
+        
+        {/* Card 3 - Centered below */}
+        <div className="flex justify-center">
+          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:bg-white/10 transition-colors w-1/2">
+            <div className="w-full h-80 mb-6">
+              <img 
+                src="/lovable-uploads/07cc36d1-fe8c-48eb-bc48-c6d4478f4428.png" 
+                alt="Spiral Disk"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
