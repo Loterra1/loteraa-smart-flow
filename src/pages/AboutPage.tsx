@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import NavigationHeader from "@/components/NavigationHeader";
 import Footer from "@/components/Footer";
 import AboutHeroAnimation from "@/components/animations/AboutHeroAnimation";
+import RadialBurstAnimation from "@/components/animations/RadialBurstAnimation";
 import { 
   Target, 
   Zap, 
@@ -112,6 +113,21 @@ export default function AboutPage() {
               <span className="text-white">to Blockchain</span>
             </h1>
             
+            {/* Large Image with P5.js Animation Overlay */}
+            <div className="relative mx-auto mb-12 w-[400px] h-[400px] md:w-[500px] md:h-[500px]">
+              {/* Background Image */}
+              <img 
+                src="/lovable-uploads/8643e5bb-b534-4077-ac53-edb38eb13163.png" 
+                alt="IoT to Blockchain Connection" 
+                className="w-full h-full object-contain absolute inset-0 z-10"
+              />
+              
+              {/* P5.js Animation Overlay */}
+              <div className="absolute inset-0 z-20 opacity-70">
+                <RadialBurstAnimation />
+              </div>
+            </div>
+            
             <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
               Loteraa is building the future of IoT-blockchain infrastructure, enabling seamless 
               integration between real-world devices and decentralized smart contracts.
@@ -127,7 +143,7 @@ export default function AboutPage() {
         className="py-20 relative"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-gray-900/50 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-gray-400/20">
+          <div className="bg-black rounded-2xl p-8 md:p-12 border border-gray-400/20">
             <div className="text-center mb-12">
               <h2 className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1000 ease-out ${visibleSections.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 <span className="text-white">Our Mission</span>
