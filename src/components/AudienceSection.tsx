@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import GlobeMapAnimation from "./animations/GlobeMapAnimation";
 import GrainyNoiseAnimation from "./animations/GrainyNoiseAnimation";
+import InteractiveDotFieldAnimation from "./animations/InteractiveDotFieldAnimation";
 
 export default function AudienceSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -46,8 +47,8 @@ export default function AudienceSection() {
     },
     {
       icon: <FileText className="h-8 w-8 md:h-10 md:w-10 text-white" />,
-      title: "Verified IoT Data Access",
-      description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity.",
+      title: "For Researchers",
+      description: "Access verified IoT datasets for academic research, AI model training, and data analysis with transparent provenance tracking.",
       cta: "Explore Data",
       link: "/researchers"
     }
@@ -56,6 +57,34 @@ export default function AudienceSection() {
   return (
     <section ref={sectionRef} className="py-12 md:py-20 bg-black relative overflow-hidden">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
+        {/* Audience Cards */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {audiences.map((audience, index) => (
+            <div
+              key={audience.title}
+              className={`bg-white/5 backdrop-blur-sm rounded-lg p-8 border border-white/10 hover:bg-white/10 transition-all duration-500 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: `${index * 200}ms` }}
+            >
+              <div className="mb-6">
+                {audience.icon}
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-4">
+                {audience.title}
+              </h3>
+              <p className="text-white/70 mb-6 leading-relaxed">
+                {audience.description}
+              </p>
+              <Link to={audience.link}>
+                <Button className="bg-loteraa-teal hover:bg-loteraa-teal/90 text-black font-semibold group">
+                  {audience.cta}
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
       
       {/* Real-World → Web3 Integration Section */}
@@ -72,6 +101,11 @@ export default function AudienceSection() {
           <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed mb-6 md:mb-8">
             Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
           </p>
+          
+          {/* Interactive Animation */}
+          <div className="w-full h-[400px] rounded-lg overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10">
+            <InteractiveDotFieldAnimation />
+          </div>
         </div>
       </div>
 
