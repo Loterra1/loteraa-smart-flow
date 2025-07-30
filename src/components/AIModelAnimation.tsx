@@ -45,8 +45,16 @@ export default function AIModelAnimation() {
         const canvas = p.createCanvas(rect.width, rect.height, p.WEBGL);
         canvas.parent(containerRef.current!);
         
-        // Force black background
-        p.background(0);
+        // Set canvas styles to ensure proper rendering
+        canvas.style('position', 'absolute');
+        canvas.style('top', '0');
+        canvas.style('left', '0');
+        canvas.style('width', '100%');
+        canvas.style('height', '100%');
+        canvas.style('background-color', '#000000');
+        
+        // Force black background immediately
+        p.background(0, 0, 0, 255);
         
         // Initialize physics objects for the image layers
         for (let i = 0; i < 3; i++) {
@@ -91,8 +99,17 @@ export default function AIModelAnimation() {
       };
 
       p.draw = () => {
-        // Ensure solid black background every frame
-        p.background(0);
+        // Force solid black background every single frame
+        p.background(0, 0, 0, 255);
+        
+        // Draw additional black rectangle to ensure coverage
+        p.push();
+        p.resetMatrix();
+        p.fill(0, 0, 0, 255);
+        p.noStroke();
+        p.rect(-p.width/2, -p.height/2, p.width, p.height);
+        p.pop();
+        
         p.lights();
         
         time += 0.02;
@@ -234,7 +251,7 @@ export default function AIModelAnimation() {
         if (containerRef.current) {
           const rect = containerRef.current.getBoundingClientRect();
           p.resizeCanvas(rect.width, rect.height);
-          p.background(0); // Ensure black background on resize
+          p.background(0, 0, 0, 255);
         }
       };
     };
@@ -254,7 +271,9 @@ export default function AIModelAnimation() {
       className="absolute inset-0 w-full h-full"
       style={{ 
         backgroundColor: '#000000',
+        background: '#000000',
         minHeight: '100%',
+        minWidth: '100%',
         zIndex: 1
       }}
     />

@@ -14,7 +14,6 @@ export default function CorePrinciples() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-            // Animate cards in sequence with delays
             setTimeout(() => setVisibleCards(prev => [true, ...prev.slice(1)]), 600);
             setTimeout(() => setVisibleCards(prev => [prev[0], true, ...prev.slice(2)]), 900);
             setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 2), true, prev[3]]), 1200);
@@ -33,9 +32,22 @@ export default function CorePrinciples() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-black min-h-screen">
+    <section 
+      ref={sectionRef} 
+      className="py-12 sm:py-16 lg:py-20 relative overflow-hidden min-h-screen"
+      style={{ backgroundColor: '#000000', background: '#000000' }}
+    >
+      {/* Multiple layers of black background to prevent any white showing */}
+      <div 
+        className="absolute inset-0 w-full h-full z-0" 
+        style={{ backgroundColor: '#000000', background: '#000000' }}
+      ></div>
+      
       {/* P5.js animation covering entire section */}
-      <div className="absolute inset-0 w-full h-full" style={{ backgroundColor: '#000000' }}>
+      <div 
+        className="absolute inset-0 w-full h-full z-1" 
+        style={{ backgroundColor: '#000000', background: '#000000' }}
+      >
         <AIModelAnimation />
       </div>
       

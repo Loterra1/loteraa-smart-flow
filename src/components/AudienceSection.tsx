@@ -29,13 +29,33 @@ export default function AudienceSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-20 bg-black relative overflow-hidden min-h-screen">
-      {/* Global black background overlay to prevent any white showing through */}
-      <div className="absolute inset-0 bg-black w-full h-full z-0"></div>
+    <section 
+      ref={sectionRef} 
+      className="py-12 md:py-20 relative overflow-hidden min-h-screen"
+      style={{ backgroundColor: '#000000', background: '#000000' }}
+    >
+      {/* Multiple layers of black background to prevent any white showing through */}
+      <div 
+        className="absolute inset-0 w-full h-full z-0"
+        style={{ backgroundColor: '#000000', background: '#000000' }}
+      ></div>
+      <div 
+        className="absolute inset-0 w-full h-full z-1"
+        style={{ backgroundColor: '#000000', background: '#000000' }}
+      ></div>
       
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         {/* Real-World → Web3 Integration Section */}
-        <div className="py-8 md:py-12 relative bg-black">
+        <div 
+          className="py-8 md:py-12 relative"
+          style={{ backgroundColor: '#000000', background: '#000000' }}
+        >
+          {/* Black background layer */}
+          <div 
+            className="absolute inset-0 w-full h-full z-0"
+            style={{ backgroundColor: '#000000', background: '#000000' }}
+          ></div>
+          
           {/* Enhanced Grainy Noise Background */}
           <div className="absolute inset-0 w-full h-full opacity-90 z-1">
             <GrainyNoiseAnimation />
@@ -67,7 +87,16 @@ export default function AudienceSection() {
         </div>
 
         {/* Future Built, Real World Ready Section */}
-        <div className="py-8 md:py-16 relative bg-black">
+        <div 
+          className="py-8 md:py-16 relative"
+          style={{ backgroundColor: '#000000', background: '#000000' }}
+        >
+          {/* Black background layer */}
+          <div 
+            className="absolute inset-0 w-full h-full z-0"
+            style={{ backgroundColor: '#000000', background: '#000000' }}
+          ></div>
+          
           {/* Grainy Noise Background */}
           <div className="absolute inset-0 w-full h-full opacity-90 z-1">
             <GrainyNoiseAnimation />
