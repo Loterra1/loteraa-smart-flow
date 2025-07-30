@@ -1,37 +1,35 @@
 
-import { Shield, Database, Zap, Award } from "lucide-react";
+import { Shield, Database, Zap } from "lucide-react";
 
 export default function FeatureCards() {
   const features = [
     {
       icon: <Shield className="h-8 w-8 text-white" />,
       title: "Decentralized Verification",
-      description: "Multi-node consensus ensures data authenticity and prevents tampering through cryptographic proofs."
-    },
-    {
-      icon: <Database className="h-8 w-8 text-white" />,
-      title: "Verified IoT Data Access",
-      description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity."
-    },
-    {
-      icon: <Zap className="h-8 w-8 text-white" />,
-      title: "Real-time Processing",
-      description: "Stream live sensor data directly to smart contracts with minimal latency for time-sensitive applications."
-    },
-    {
-      icon: <Award className="h-8 w-8 text-white" />,
-      title: "Automated Rewards",
-      description: "Earn $LOT tokens automatically for contributing verified data, validating information, and maintaining network integrity."
+      description: "Multi-node consensus ensures data authenticity and prevents tampering through cryptographic proofs.",
+      children: [
+        {
+          icon: <Database className="h-8 w-8 text-white" />,
+          title: "Verified IoT Data Access",
+          description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity.",
+          children: [
+            {
+              icon: <Zap className="h-8 w-8 text-white" />,
+              title: "Real-time Processing",
+              description: "Stream live sensor data directly to smart contracts with minimal latency for time-sensitive applications."
+            }
+          ]
+        }
+      ]
     }
   ];
 
-  return (
-    <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {features.map((feature, index) => (
-        <div
-          key={feature.title}
-          className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-colors"
-        >
+  const renderFeatureCard = (feature: any, level: number = 0) => {
+    const marginLeft = level * 8; // 32px (8 * 4) per level
+    
+    return (
+      <div key={feature.title} className={`ml-${marginLeft}`}>
+        <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-colors mb-6">
           <div className="mb-4">
             {feature.icon}
           </div>
@@ -42,7 +40,19 @@ export default function FeatureCards() {
             {feature.description}
           </p>
         </div>
-      ))}
+        
+        {feature.children && (
+          <div className="space-y-6">
+            {feature.children.map((child: any) => renderFeatureCard(child, level + 1))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="mt-16">
+      {features.map((feature) => renderFeatureCard(feature))}
     </div>
   );
 }
