@@ -106,10 +106,10 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
+          <div className="text-center max-w-6xl mx-auto">
             
             {/* Large Image with Centered Text and P5.js Animation Overlay */}
-            <div className="relative mx-auto mb-12 w-[400px] h-[400px] md:w-[600px] md:h-[600px]">
+            <div className="relative mx-auto mb-12 w-[500px] h-[500px] md:w-[800px] md:h-[800px] lg:w-[1000px] lg:h-[1000px]">
               {/* Background Image */}
               <img 
                 src="/lovable-uploads/8643e5bb-b534-4077-ac53-edb38eb13163.png" 
@@ -124,12 +124,12 @@ export default function AboutPage() {
               
               {/* Centered Text Overlay */}
               <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-4">
-                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 text-white drop-shadow-2xl">
+                <h1 className="text-4xl md:text-6xl lg:text-8xl xl:text-9xl font-bold mb-8 text-white drop-shadow-2xl leading-tight">
                   <span className="text-white">Connecting IoT</span> <br />
                   <span className="text-white">to Blockchain</span>
                 </h1>
                 
-                <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
+                <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl text-white/90 max-w-4xl mx-auto leading-relaxed drop-shadow-lg font-medium">
                   Loteraa is building the future of IoT-blockchain infrastructure, enabling seamless 
                   integration between real-world devices and decentralized smart contracts.
                 </p>
