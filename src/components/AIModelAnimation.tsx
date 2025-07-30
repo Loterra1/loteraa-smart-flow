@@ -45,6 +45,9 @@ export default function AIModelAnimation() {
         const canvas = p.createCanvas(rect.width, rect.height, p.WEBGL);
         canvas.parent(containerRef.current!);
         
+        // Force black background
+        p.background(0);
+        
         // Initialize physics objects for the image layers
         for (let i = 0; i < 3; i++) {
           physicsObjects.push({
@@ -88,7 +91,8 @@ export default function AIModelAnimation() {
       };
 
       p.draw = () => {
-        p.background(0, 0);
+        // Ensure solid black background every frame
+        p.background(0);
         p.lights();
         
         time += 0.02;
@@ -230,6 +234,7 @@ export default function AIModelAnimation() {
         if (containerRef.current) {
           const rect = containerRef.current.getBoundingClientRect();
           p.resizeCanvas(rect.width, rect.height);
+          p.background(0); // Ensure black background on resize
         }
       };
     };
@@ -248,7 +253,8 @@ export default function AIModelAnimation() {
       ref={containerRef} 
       className="absolute inset-0 w-full h-full"
       style={{ 
-        background: 'black',
+        backgroundColor: '#000000',
+        minHeight: '100%',
         zIndex: 1
       }}
     />

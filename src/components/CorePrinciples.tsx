@@ -33,19 +33,20 @@ export default function CorePrinciples() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 relative overflow-hidden bg-black min-h-screen">
-      {/* P5.js animation covering entire section - fixed positioning */}
-      <div className="absolute inset-0 w-full h-full z-0">
+    <section ref={sectionRef} className="py-12 sm:py-16 lg:py-20 relative overflow-hidden bg-black min-h-screen">
+      {/* P5.js animation covering entire section */}
+      <div className="absolute inset-0 w-full h-full" style={{ backgroundColor: '#000000' }}>
         <AIModelAnimation />
       </div>
+      
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
           {/* Left side - Text content */}
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 sm:mb-6 uppercase leading-tight">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white mb-3 sm:mb-4 lg:mb-6 uppercase leading-tight">
               AI Model Training via On-Chain Data
             </h2>
-            <p className="text-white leading-relaxed text-sm sm:text-base lg:text-lg">
+            <p className="text-white leading-relaxed text-sm sm:text-base lg:text-lg xl:text-xl">
               AI projects can train their models using decentralized, verified data from Loteraa's IoT network. 
               Researchers upload sensor feeds like weather, motion, CO2 levels validated by smart contracts and 
               rewarded through token incentives. Models are trained using data or real-time feeds, creating a 
@@ -55,12 +56,12 @@ export default function CorePrinciples() {
           
           {/* Right side - Image with P5.js animation */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-lg overflow-hidden">
-              {/* Background image */}
+            <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden">
+              {/* Background image - more visible on mobile */}
               <img 
                 src="/lovable-uploads/abde815c-1ff0-4f96-af89-2322637fb540.png" 
                 alt="AI Model Training Visualization" 
-                className="absolute inset-0 w-full h-full object-contain opacity-50 z-10"
+                className="absolute inset-0 w-full h-full object-contain opacity-30 sm:opacity-40 lg:opacity-50 z-10"
               />
             </div>
           </div>
