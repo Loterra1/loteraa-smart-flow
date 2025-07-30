@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import GlobeMapAnimation from "./animations/GlobeMapAnimation";
 import GrainyNoiseAnimation from "./animations/GrainyNoiseAnimation";
-import InteractiveDotFieldAnimation from "./animations/InteractiveDotFieldAnimation";
 
 export default function AudienceSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -73,21 +72,6 @@ export default function AudienceSection() {
           <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed mb-6 md:mb-8">
             Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
           </p>
-          
-          {/* P5.js Animation for Automating the Physical World */}
-          <div className="relative w-full h-[300px] md:h-[400px] rounded-lg overflow-hidden bg-black border border-white/10 mb-6">
-            {/* p5.js Animation Layer */}
-            <div className="absolute inset-0">
-              <InteractiveDotFieldAnimation />
-            </div>
-            
-            {/* Centered Text */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white text-center px-4">
-                Automating the physical world
-              </h3>
-            </div>
-          </div>
         </div>
       </div>
 

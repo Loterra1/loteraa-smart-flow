@@ -1,158 +1,48 @@
-import { useEffect, useRef, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import CubeAnimation from "./animations/CubeAnimation";
-import RadialAnimation from "./animations/RadialAnimation";
-import SpiralAnimation from "./animations/SpiralAnimation";
-import VortexAnimation from "./animations/VortexAnimation";
-import WireframeAnimation from "./animations/WireframeAnimation";
-import WireframeSphereAnimation from "./animations/WireframeSphereAnimation";
 
-interface FeatureCard {
-  title: string;
-  description: string;
-}
+import { Shield, Database, Zap, Award } from "lucide-react";
 
 export default function FeatureCards() {
-  const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false]);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  const features: FeatureCard[] = [
+  const features = [
     {
-      title: "Real-Time Data Feed",
-      description: "Loteraa enables continuous, secure, and low-latency streaming of sensor and real world datas from physical environments such as GPS, or usage metrics directly to its blockchain network. This real-time pipeline ensures high-frequency data flows are verifiable, timestamped, and immutable, enabling on-chain actions to reflect dynamic, real-world conditions with unprecedented precision and speed."
+      icon: <Shield className="h-8 w-8 text-white" />,
+      title: "Decentralized Verification",
+      description: "Multi-node consensus ensures data authenticity and prevents tampering through cryptographic proofs."
     },
     {
-      title: "Web3 Connected Contracts",
-      description: "Loteraa smart contracts respond autonomously to live sensor inputs—enabling logic-based automation across DeFi, logistics, energy, and AI sectors. Data triggers from IoT devices execute cross-chain operations such as payments, alerts, insurance payouts, or asset transfers, establishing an intelligent link between off-chain activities and on-chain decision-making without intermediaries."
+      icon: <Database className="h-8 w-8 text-white" />,
+      title: "Verified IoT Data Access",
+      description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity."
     },
     {
-      title: "Tokenized Rewards",
-      description: "Every participant whether data provider, validator, or consumer is incentivized through $LOT token rewards. Verified data uploads, accurate validations, and meaningful interactions trigger automated, on-chain compensation."
+      icon: <Zap className="h-8 w-8 text-white" />,
+      title: "Real-time Processing",
+      description: "Stream live sensor data directly to smart contracts with minimal latency for time-sensitive applications."
+    },
+    {
+      icon: <Award className="h-8 w-8 text-white" />,
+      title: "Automated Rewards",
+      description: "Earn $LOT tokens automatically for contributing verified data, validating information, and maintaining network integrity."
     }
   ];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Animate cards in sequence
-            setTimeout(() => setVisibleCards(prev => [true, ...prev.slice(1)]), 300);
-            setTimeout(() => setVisibleCards(prev => [prev[0], true, ...prev.slice(2)]), 600);
-            setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 2), true]), 900);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-
-  const animations = [CubeAnimation, RadialAnimation, WireframeAnimation];
-
   return (
-    <section ref={sectionRef} className="py-16">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto space-y-4">
-          {/* All cards with image animations */}
-          {features.map((feature, index) => {
-            const AnimationComponent = animations[index];
-            return (
-              <div
-                key={index}
-                className={`relative transition-all duration-1000 ${
-                  visibleCards[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-              >
-                <div className="flex items-center gap-4 max-w-6xl mx-auto">
-                  {/* Animation Card */}
-                  <div 
-                    className="w-[300px] h-[280px] relative overflow-hidden rounded-lg flex-shrink-0"
-                    style={{
-                      backgroundColor: '#000000'
-                    }}
-                  >
-                    <AnimationComponent />
-                  </div>
-                  
-                  {/* Text Card */}
-                  <div 
-                    className="flex-1 h-[280px] relative overflow-hidden rounded-lg"
-                    style={{
-                      backgroundColor: '#000000'
-                    }}
-                  >
-                    <div className="p-6 h-full flex flex-col justify-center">
-                      <h3 className="text-xl font-bold text-white mb-4">
-                        {feature.title}
-                      </h3>
-                      <p className="text-white/80 leading-relaxed">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-          
-          {/* New $LOT Token Section */}
-          <div className="mt-16 flex items-center gap-8 max-w-6xl mx-auto">
-            {/* Left Side - Text Content */}
-            <div className="flex-1">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                EARN REWARD WITH $LOT TOKEN
-              </h2>
-              <p className="text-white/80 leading-relaxed text-lg">
-                The Loteraa ecosystem is powered by the $Lot token, a utility and reward token designed to fuel sensor contributions, validate data quality, incentivize uptime, and govern the platform's evolution. Loteraa's tokenomics are built to reward users for real-world participation whether they host sensors, validate data, build automation apps, or contribute to network growth.
-              </p>
-            </div>
-            
-            {/* Right Side - Image */}
-            <div className="w-[800px] h-[700px] flex-shrink-0">
-              <img 
-                src="/lovable-uploads/33e5a6d3-adda-403c-8f55-f33d54e6c234.png"
-                alt="Black and White Cubes" 
-                className="w-full h-full object-contain"
-              />
-            </div>
+    <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {features.map((feature, index) => (
+        <div
+          key={feature.title}
+          className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-colors"
+        >
+          <div className="mb-4">
+            {feature.icon}
           </div>
-          
-          {/* For Developers Section */}
-          <div className="mt-16 max-w-6xl mx-auto relative">
-            {/* Background Image - Much Larger */}
-            <div className="w-full flex justify-center relative">
-              <img 
-                src="/lovable-uploads/f506d009-7669-4f02-aa86-d72c1a1faa7c.png"
-                alt="Radial Development Shape" 
-                className="w-[1000px] h-[800px] object-contain"
-              />
-              
-              {/* Content Overlay */}
-              <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-8">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                  FOR DEVELOPERS
-                </h2>
-                <p className="text-white/80 leading-relaxed text-lg mb-8 max-w-3xl mx-auto">
-                  Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains.
-                </p>
-                <Button 
-                  className="bg-white text-black hover:bg-white/90 font-semibold px-8 py-3"
-                >
-                  Start building
-                </Button>
-              </div>
-            </div>
-          </div>
+          <h3 className="text-lg font-semibold text-white mb-3">
+            {feature.title}
+          </h3>
+          <p className="text-white/70 text-sm leading-relaxed">
+            {feature.description}
+          </p>
         </div>
-      </div>
-    </section>
+      ))}
+    </div>
   );
 }
