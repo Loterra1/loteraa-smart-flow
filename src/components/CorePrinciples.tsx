@@ -85,7 +85,7 @@ export default function CorePrinciples() {
             </p>
           </div>
           
-          {/* Right side - New Image */}
+          {/* Right side - Animated Image with reduced brightness */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div 
               className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden"
@@ -101,11 +101,31 @@ export default function CorePrinciples() {
                   background: '#000000 !important'
                 }}
               />
-              <img 
-                src="/lovable-uploads/be2062d6-238d-49d9-bd0a-893d74c74d88.png" 
-                alt="AI Model Training Sphere Visualization" 
-                className="absolute inset-0 w-full h-full object-contain brightness-125 contrast-110 z-10"
-                style={{ filter: 'brightness(1.3) contrast(1.1)' }}
+              
+              {/* Animated container with smooth motion */}
+              <div 
+                className="absolute inset-0 animate-gentle-sway"
+                style={{
+                  animation: 'gentle-sway 10s ease-in-out infinite'
+                }}
+              >
+                <img 
+                  src="/lovable-uploads/be2062d6-238d-49d9-bd0a-893d74c74d88.png" 
+                  alt="AI Model Training Sphere Visualization" 
+                  className="absolute inset-0 w-full h-full object-contain transition-all duration-1000 ease-in-out hover:scale-105 z-10"
+                  style={{ 
+                    filter: 'brightness(0.9) contrast(1.05)',
+                    animation: 'float 8s ease-in-out infinite'
+                  }}
+                />
+              </div>
+              
+              {/* Subtle static glow effect without blinking */}
+              <div 
+                className="absolute inset-0 opacity-10 z-5"
+                style={{
+                  background: 'radial-gradient(circle at center, rgba(113, 66, 246, 0.2), transparent 70%)',
+                }}
               />
             </div>
           </div>
