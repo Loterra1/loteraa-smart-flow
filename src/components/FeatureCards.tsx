@@ -38,9 +38,9 @@ export default function FeatureCards() {
     const marginLeft = level * 12; // Increased spacing between levels
     const AnimationComponent = feature.animation;
     
-    // Special positioning for the first level (decentralized verification)
+    // Special positioning for the first level (decentralized verification) - pushed down much more
     const isFirstLevel = level === 0;
-    const marginTop = isFirstLevel ? 48 : 12; // Pushed first level down much more (3 steps down)
+    const marginTop = isFirstLevel ? 80 : 12; // Increased from 48 to 80 for more space from background animation
     
     return (
       <div key={feature.title} className={`ml-${marginLeft} mt-${marginTop}`}>

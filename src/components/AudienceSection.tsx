@@ -63,28 +63,28 @@ export default function AudienceSection() {
           </div>
         </div>
 
-        {/* Future Built, Real World Ready Section */}
-        <div className="py-12 md:py-20">
+        {/* Future Built, Real World Ready Section - Increased spacing from footer */}
+        <div className="py-16 md:py-32">
           {/* Grainy Noise Background */}
           <div className="absolute inset-0 w-full h-full opacity-90">
             <GrainyNoiseAnimation />
           </div>
           
           <div className="text-center relative z-10">
-            <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-8 md:mb-12 text-white uppercase">
               <span className="text-white">Future Built,</span>{' '}
               <span className="text-white">Real World Ready</span>
             </h2>
             
-            {/* Much Larger Globe Animation Background */}
+            {/* Much Much Larger Globe Animation Background */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              <div className="w-[1200px] md:w-[1400px] lg:w-[1600px] h-[700px] md:h-[800px] lg:h-[1000px] relative overflow-hidden">
+              <div className="w-[1600px] md:w-[1800px] lg:w-[2200px] h-[900px] md:h-[1100px] lg:h-[1300px] relative overflow-hidden">
                 <GlobeMapAnimation />
               </div>
             </div>
             
             <div className="relative z-10">
-              <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto mb-6 md:mb-8 px-4">
+              <p className="text-xl md:text-2xl lg:text-3xl text-white/70 leading-relaxed max-w-4xl mx-auto mb-8 md:mb-12 px-4">
                 Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
               </p>
               
