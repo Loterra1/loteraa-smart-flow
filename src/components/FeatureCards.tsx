@@ -10,7 +10,7 @@ export default function FeatureCards() {
     {
       icon: <Shield className="h-12 w-12 text-white" />,
       title: "Decentralized Verification",
-      description: "Multi-node consensus ensures data authenticity and prevents tampering through cryptographic proofs.",
+      description: "Multi-node consensus ensures data authenticity and prevents tampering through cryptographic proofs. Loteraa enables continuous, secure, and low-latency streaming of sensor data from physical environments such as temperature, GPS, or usage metrics directly to its blockchain network.",
       image: "/lovable-uploads/93530648-e8c9-4d3d-8634-90300112ef81.png",
       animation: CubeIllustrationAnimation,
       children: [
@@ -57,11 +57,8 @@ export default function FeatureCards() {
             </div>
           </div>
           
-          {/* Larger card */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-12 border border-white/10 hover:bg-white/10 transition-colors flex-1 max-w-xl">
-            <div className="mb-6">
-              {feature.icon}
-            </div>
+          {/* Text content without card styling */}
+          <div className="flex-1 max-w-xl">
             <h3 className="text-3xl font-semibold text-white mb-6">
               {feature.title}
             </h3>
