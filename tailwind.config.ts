@@ -86,12 +86,32 @@ export default {
 					to: { height: '0' }
 				},
 				'float': {
-					'0%, 100%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(-10px)' }
+					'0%, 100%': { 
+						transform: 'translateY(0px) translateX(0px) rotate(0deg) scale(1)',
+						filter: 'brightness(1.3) contrast(1.1)'
+					},
+					'25%': { 
+						transform: 'translateY(-8px) translateX(3px) rotate(0.5deg) scale(1.02)',
+						filter: 'brightness(1.35) contrast(1.15)'
+					},
+					'50%': { 
+						transform: 'translateY(-12px) translateX(-2px) rotate(-0.3deg) scale(1.03)',
+						filter: 'brightness(1.4) contrast(1.2)'
+					},
+					'75%': { 
+						transform: 'translateY(-6px) translateX(4px) rotate(0.8deg) scale(1.01)',
+						filter: 'brightness(1.32) contrast(1.12)'
+					}
 				},
 				'pulse-soft': {
-					'0%, 100%': { opacity: '1' },
-					'50%': { opacity: '0.7' }
+					'0%, 100%': { 
+						opacity: '1',
+						transform: 'scale(1)'
+					},
+					'50%': { 
+						opacity: '0.7',
+						transform: 'scale(1.02)'
+					}
 				},
 				'move-background': {
 					'0%': { backgroundPosition: '0% 50%' },
@@ -161,13 +181,25 @@ export default {
 						transform: 'translateY(-10px) scale(1.05)',
 						animationTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
 					}
+				},
+				'gentle-sway': {
+					'0%, 100%': { 
+						transform: 'translateX(0px) rotate(0deg) scale(1)'
+					},
+					'33%': { 
+						transform: 'translateX(2px) rotate(0.2deg) scale(1.005)'
+					},
+					'66%': { 
+						transform: 'translateX(-1px) rotate(-0.1deg) scale(0.995)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'float': 'float 5s ease-in-out infinite',
-				'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
+				'float': 'float 6s ease-in-out infinite',
+				'gentle-sway': 'gentle-sway 8s ease-in-out infinite',
+				'pulse-soft': 'pulse-soft 4s ease-in-out infinite',
 				'move-background': 'move-background 10s ease infinite',
 				'blob-rotate': 'blob-rotate 20s linear infinite',
 				'fade-in': 'fade-in 2s ease-out',
