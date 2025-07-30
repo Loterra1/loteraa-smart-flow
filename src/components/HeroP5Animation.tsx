@@ -2,21 +2,33 @@ import { useEffect, useRef } from 'react';
 import p5 from 'p5';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-interface Circle3D {
+interface GlobePoint {
   x: number;
   y: number;
   z: number;
-  vx: number;
-  vy: number;
-  vz: number;
+  lat: number;
+  lng: number;
   radius: number;
-  rotation: { x: number; y: number; z: number };
-  rotationSpeed: { x: number; y: number; z: number };
-  color: p5.Color;
-  hoverRadius: number;
-  targetRadius: number;
-  bounceCount: number;
-  direction: number;
+}
+
+interface DataPoint {
+  x: number;
+  y: number;
+  z: number;
+  lat: number;
+  lng: number;
+  label: string;
+  value: number;
+  pulse: number;
+  type: 'sensor' | 'device' | 'data' | 'network';
+  color: { r: number; g: number; b: number; };
+}
+
+interface Connection {
+  from: DataPoint;
+  to: DataPoint;
+  progress: number;
+  particles: Array<{ progress: number; speed: number; }>;
 }
 
 export default function HeroP5Animation() {
@@ -28,13 +40,12 @@ export default function HeroP5Animation() {
     if (!containerRef.current) return;
 
     const sketch = (p: p5) => {
-      let circles3D: Circle3D[] = [];
-      let polarWaveOffset = 0;
-      
-      // Faster physics properties
-      let gravity = 0.3;
-      let bounce = 0.7;
-      let friction = 0.98;
+      let globePoints: GlobePoint[] = [];
+      let dataPoints: DataPoint[] = [];
+      let connections: Connection[] = [];
+      let globeRadius = 200;
+      let rotationY = 0;
+      let transitionOffset = 0;
 
       p.setup = () => {
         const canvas = p.createCanvas(
@@ -52,126 +63,229 @@ export default function HeroP5Animation() {
         canvas.style('background-color', '#000000');
         canvas.style('background', '#000000');
         
-        // Keep minimal circles for performance
-        const circleCount = isMobile ? 1 : 2;
+        globeRadius = isMobile ? 150 : 200;
         
-        // Create optimized 3D rolling circles with faster speeds
-        circles3D = [];
-        for (let i = 0; i < circleCount; i++) {
-          circles3D.push({
-            x: i === 0 ? -p.width/4 : 0,
-            y: 0,
-            z: i === 0 ? 0 : -50,
-            vx: 5, // Increased speed
-            vy: 0,
-            vz: 0,
-            radius: isMobile ? 60 : (i === 0 ? 70 : 85),
-            rotation: { x: 0, y: 0, z: 0 },
-            rotationSpeed: { 
-              x: i === 0 ? 0.025 : -0.02, // Faster rotation
-              y: i === 0 ? 0.015 : 0.025, 
-              z: i === 0 ? 0.02 : -0.015 
-            },
-            color: p.color(255, 255, 255, 180),
-            hoverRadius: isMobile ? 60 : (i === 0 ? 70 : 85),
-            targetRadius: isMobile ? 60 : (i === 0 ? 70 : 85),
-            bounceCount: 0,
-            direction: 1
-          });
+        // Generate globe wireframe points
+        const detail = isMobile ? 15 : 20;
+        globePoints = [];
+        for (let lat = -90; lat <= 90; lat += detail) {
+          for (let lng = -180; lng <= 180; lng += detail) {
+            const phi = (90 - lat) * (p.PI / 180);
+            const theta = (lng + 180) * (p.PI / 180);
+            
+            const x = globeRadius * p.sin(phi) * p.cos(theta);
+            const y = globeRadius * p.cos(phi);
+            const z = globeRadius * p.sin(phi) * p.sin(theta);
+            
+            globePoints.push({ x, y, z, lat, lng, radius: globeRadius });
+          }
+        }
+        
+        // Create data points with labels
+        const locations = [
+          { lat: 40.7128, lng: -74.0060, label: "NYC IoT Hub", type: "network" },
+          { lat: 51.5074, lng: -0.1278, label: "London Data", type: "data" },
+          { lat: 35.6762, lng: 139.6503, label: "Tokyo Sensors", type: "sensor" },
+          { lat: -33.8688, lng: 151.2093, label: "Sydney Devices", type: "device" },
+          { lat: 37.7749, lng: -122.4194, label: "SF Network", type: "network" },
+          { lat: 55.7558, lng: 37.6176, label: "Moscow Data", type: "data" },
+          { lat: -23.5505, lng: -46.6333, label: "São Paulo IoT", type: "sensor" },
+          { lat: 19.0760, lng: 72.8777, label: "Mumbai Hub", type: "device" }
+        ];
+        
+        dataPoints = locations.map(loc => {
+          const phi = (90 - loc.lat) * (p.PI / 180);
+          const theta = (loc.lng + 180) * (p.PI / 180);
+          
+          const x = (globeRadius + 10) * p.sin(phi) * p.cos(theta);
+          const y = (globeRadius + 10) * p.cos(phi);
+          const z = (globeRadius + 10) * p.sin(phi) * p.sin(theta);
+          
+          const colors = {
+            sensor: { r: 0, g: 255, b: 100 },
+            device: { r: 255, g: 100, b: 0 },
+            data: { r: 100, g: 150, b: 255 },
+            network: { r: 255, g: 0, b: 150 }
+          };
+          
+          return {
+            x, y, z, lat: loc.lat, lng: loc.lng,
+            label: loc.label,
+            value: p.random(50, 100),
+            pulse: p.random(p.TWO_PI),
+            type: loc.type as 'sensor' | 'device' | 'data' | 'network',
+            color: colors[loc.type as keyof typeof colors]
+          };
+        });
+        
+        // Create connections between nearby points
+        connections = [];
+        for (let i = 0; i < dataPoints.length; i++) {
+          for (let j = i + 1; j < dataPoints.length; j++) {
+            if (p.random() < 0.3) { // 30% chance of connection
+              connections.push({
+                from: dataPoints[i],
+                to: dataPoints[j],
+                progress: 0,
+                particles: Array.from({ length: 3 }, () => ({
+                  progress: p.random(),
+                  speed: p.random(0.005, 0.02)
+                }))
+              });
+            }
+          }
         }
       };
 
       p.draw = () => {
-        // Ensure solid black background - multiple layers for reliability
+        // Ensure solid black background
         p.background(0, 0, 0, 255);
         p.fill(0, 0, 0, 255);
         p.rect(-p.width/2, -p.height/2, p.width, p.height);
         
-        // Faster camera movement
-        const cameraRadius = isMobile ? 400 : 600;
-        const cameraSpeed = 0.0008; // Increased speed
+        // Smooth camera orbit with transition effects
+        const cameraDistance = isMobile ? 450 : 600;
+        const cameraSpeed = 0.0005;
+        const cameraY = -50 + p.sin(transitionOffset * 0.3) * 30;
+        
         p.camera(
-          p.cos(p.millis() * cameraSpeed) * cameraRadius, 
-          -150, 
-          p.sin(p.millis() * cameraSpeed) * cameraRadius,
+          p.cos(p.millis() * cameraSpeed) * cameraDistance,
+          cameraY,
+          p.sin(p.millis() * cameraSpeed) * cameraDistance,
           0, 0, 0,
           0, 1, 0
         );
         
-        // Faster polar wave animation
-        p.push();
-        p.rotateY(polarWaveOffset * 0.5); // Increased rotation speed
+        // Lighting
+        p.ambientLight(50, 50, 50);
+        p.directionalLight(255, 255, 255, -1, 1, -1);
         
-        const ringCount = isMobile ? 3 : 5; // Reduced rings for performance
-        for (let ring = 0; ring < ringCount; ring++) {
-          let radius = 80 + ring * 50;
-          let height = p.sin(polarWaveOffset + ring * 0.6) * 20;
-          
-          p.stroke(255, 255, 255, 120 - ring * 20);
-          p.strokeWeight(isMobile ? 1 : 1.5);
-          p.noFill();
-          
+        // Globe rotation with smooth transitions
+        rotationY += 0.003;
+        transitionOffset += 0.02;
+        
+        p.push();
+        p.rotateY(rotationY);
+        
+        // Draw globe wireframe with latitude/longitude lines
+        p.stroke(255, 255, 255, 60);
+        p.strokeWeight(0.5);
+        p.noFill();
+        
+        // Latitude lines
+        for (let lat = -90; lat <= 90; lat += 30) {
           p.beginShape();
-          const angleStep = isMobile ? 0.2 : 0.15; // Larger steps for performance
-          for (let angle = 0; angle < p.TWO_PI + angleStep; angle += angleStep) {
-            let x = p.cos(angle) * radius;
-            let z = p.sin(angle) * radius;
-            let y = height + p.sin(angle * 4 + polarWaveOffset * 2) * 15; // Faster wave
+          for (let lng = -180; lng <= 180; lng += 10) {
+            const phi = (90 - lat) * (p.PI / 180);
+            const theta = (lng + 180) * (p.PI / 180);
+            const x = globeRadius * p.sin(phi) * p.cos(theta);
+            const y = globeRadius * p.cos(phi);
+            const z = globeRadius * p.sin(phi) * p.sin(theta);
             p.vertex(x, y, z);
           }
           p.endShape();
         }
-        p.pop();
         
-        polarWaveOffset += 0.025; // Faster wave animation
-
-        // Update and draw optimized 3D rolling circles with faster movement
-        circles3D.forEach((circle, index) => {
-          // Faster bouncing pattern
-          circle.x += circle.vx * circle.direction;
-          
-          const boundary = p.width / 4;
-          if (circle.x > boundary || circle.x < -boundary) {
-            circle.direction *= -1;
+        // Longitude lines
+        for (let lng = -180; lng <= 180; lng += 30) {
+          p.beginShape();
+          for (let lat = -90; lat <= 90; lat += 10) {
+            const phi = (90 - lat) * (p.PI / 180);
+            const theta = (lng + 180) * (p.PI / 180);
+            const x = globeRadius * p.sin(phi) * p.cos(theta);
+            const y = globeRadius * p.cos(phi);
+            const z = globeRadius * p.sin(phi) * p.sin(theta);
+            p.vertex(x, y, z);
           }
+          p.endShape();
+        }
+        
+        // Draw data connections with animated particles
+        connections.forEach(conn => {
+          p.stroke(255, 255, 255, 100);
+          p.strokeWeight(1);
+          p.line(conn.from.x, conn.from.y, conn.from.z, 
+                 conn.to.x, conn.to.y, conn.to.z);
           
-          // Faster rotation
-          circle.rotation.x += circle.rotationSpeed.x;
-          circle.rotation.y += circle.rotationSpeed.y;
-          circle.rotation.z += circle.rotationSpeed.z;
-          
-          // Draw optimized 3D sphere
-          p.push();
-          p.translate(circle.x, circle.y, circle.z);
-          p.rotateX(circle.rotation.x);
-          p.rotateY(circle.rotation.y);
-          p.rotateZ(circle.rotation.z);
-          
-          // Minimal glow layers for performance
-          const glowLayers = isMobile ? 1 : 2;
-          for (let i = glowLayers; i >= 1; i--) {
-            p.fill(255, 255, 255, 120 / i);
+          // Animate particles along connections
+          conn.particles.forEach(particle => {
+            particle.progress += particle.speed;
+            if (particle.progress > 1) particle.progress = 0;
+            
+            const x = p.lerp(conn.from.x, conn.to.x, particle.progress);
+            const y = p.lerp(conn.from.y, conn.to.y, particle.progress);
+            const z = p.lerp(conn.from.z, conn.to.z, particle.progress);
+            
+            p.push();
+            p.translate(x, y, z);
+            p.fill(255, 255, 255, 200);
             p.noStroke();
-            p.sphere(circle.radius * (1 + i * 0.1));
-          }
+            p.sphere(2);
+            p.pop();
+          });
+        });
+        
+        // Draw pulsing data points with labels
+        dataPoints.forEach(point => {
+          point.pulse += 0.1;
+          const pulseSize = 1 + p.sin(point.pulse) * 0.3;
           
-          // Main sphere
-          p.fill(255, 255, 255, 250);
-          p.stroke(255, 255, 255, 200);
-          p.strokeWeight(isMobile ? 1 : 2);
-          p.sphere(circle.radius);
+          p.push();
+          p.translate(point.x, point.y, point.z);
+          
+          // Glow effect
+          p.fill(point.color.r, point.color.g, point.color.b, 100);
+          p.noStroke();
+          p.sphere(8 * pulseSize);
+          
+          // Core point
+          p.fill(point.color.r, point.color.g, point.color.b, 255);
+          p.sphere(4 * pulseSize);
+          
+          // Data value indicator
+          p.stroke(255, 255, 255, 150);
+          p.strokeWeight(1);
+          p.line(0, 0, 0, 0, -20 - point.value * 0.3, 0);
           
           p.pop();
         });
+        
+        p.pop();
+        
+        // Add subtle background particles for depth
+        for (let i = 0; i < (isMobile ? 30 : 50); i++) {
+          const x = p.random(-p.width, p.width);
+          const y = p.random(-p.height, p.height);
+          const z = p.random(-500, 500);
+          const alpha = p.map(z, -500, 500, 10, 100);
+          
+          p.push();
+          p.translate(x, y, z);
+          p.fill(255, 255, 255, alpha);
+          p.noStroke();
+          p.sphere(1);
+          p.pop();
+        }
       };
 
       p.mousePressed = () => {
-        // Stronger impulse for more responsive interaction
-        circles3D.forEach((circle) => {
-          circle.vx += p.random(-2, 2);
-          circle.vy += p.random(-3, -1);
-          circle.vz += p.random(-1, 1);
-        });
+        // Add new connection between random data points
+        if (dataPoints.length > 1) {
+          const from = dataPoints[Math.floor(p.random(dataPoints.length))];
+          const to = dataPoints[Math.floor(p.random(dataPoints.length))];
+          
+          if (from !== to && connections.length < 15) {
+            connections.push({
+              from,
+              to,
+              progress: 0,
+              particles: Array.from({ length: 2 }, () => ({
+                progress: p.random(),
+                speed: p.random(0.01, 0.03)
+              }))
+            });
+          }
+        }
       };
 
       p.windowResized = () => {
