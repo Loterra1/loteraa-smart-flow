@@ -49,6 +49,7 @@ export default function HeroP5Animation() {
         canvas.style('width', '100%');
         canvas.style('height', '100%');
         canvas.style('z-index', '1');
+        canvas.style('background', '#000000');
         
         // Keep minimal circles for performance
         const circleCount = isMobile ? 1 : 2;
@@ -80,8 +81,10 @@ export default function HeroP5Animation() {
       };
 
       p.draw = () => {
-        // Set black background with full opacity
-        p.background(0, 0, 0, 255);
+        // Force solid black background
+        p.background(0, 0, 0);
+        p.clear();
+        p.background(0, 0, 0);
         
         // Faster camera movement
         const cameraRadius = isMobile ? 400 : 600;
@@ -190,7 +193,7 @@ export default function HeroP5Animation() {
     <div 
       ref={containerRef} 
       className="absolute inset-0 w-full h-full z-1"
-      style={{ background: 'black' }}
+      style={{ backgroundColor: '#000000' }}
     />
   );
 }
