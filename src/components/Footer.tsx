@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -48,7 +49,7 @@ export default function Footer() {
               <li><Link to="/use-cases" className="text-white/70 hover:text-white transition-colors">Use Cases</Link></li>
               <li><Link to="/researchers" className="text-white/70 hover:text-white transition-colors">For Researchers</Link></li>
               <li><Link to="/developer-docs" className="text-white/70 hover:text-white transition-colors">Documentation</Link></li>
-              <li><a href="https://app.gitbook.com/o/yQLsupOQPrXX2sJ0ONGD/s/J6IPMTOM2im5F4c4uSf7/loteraa-product-and-technical-documentation" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
+              <li><a href="file:///C:/Users/USER/Downloads/LOTERAA%20_%20THE%20CHAIN%20THAT%20CAN%20CONNECT%20IOT%20TO%20BLOCKCHAIN%20SEAMLESSLY%20(1).pdf" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
             </ul>
           </div>
           

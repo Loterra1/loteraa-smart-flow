@@ -1,11 +1,9 @@
 
-
-
 import { Shield, Database, Zap } from "lucide-react";
 import CubeIllustrationAnimation from "./animations/CubeIllustrationAnimation";
 import RadialBurstIllustrationAnimation from "./animations/RadialBurstIllustrationAnimation";
 import VortexIllustrationAnimation from "./animations/VortexIllustrationAnimation";
-import WireframeSphereIllustrationAnimation from "./animations/WireframeSphereIllustrationAnimation";
+import SpikeBallAnimation from "./animations/SpikeBallAnimation";
 import RadialBurstIllustrationAnimation2 from "./animations/RadialBurstIllustrationAnimation2";
 import { Button } from "@/components/ui/button";
 
@@ -147,7 +145,7 @@ export default function FeatureCards() {
         </div>
       </div>
 
-      {/* For Developers Section - Reduced image size */}
+      {/* For Developers Section - Reduced text size */}
       <div className="mt-24 flex justify-center">
         <div 
           className="relative w-[700px] h-[600px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
@@ -166,7 +164,7 @@ export default function FeatureCards() {
             <h2 className="text-6xl font-bold text-white mb-10 uppercase tracking-wide">
               FOR DEVELOPERS
             </h2>
-            <p className="text-white/90 text-2xl leading-relaxed mb-12">
+            <p className="text-white/90 text-lg leading-relaxed mb-12">
               Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains.
             </p>
             <Button className="bg-white hover:bg-white/90 text-black px-10 py-5 text-xl font-semibold rounded-lg">
@@ -183,7 +181,7 @@ export default function FeatureCards() {
           <div className="flex items-center gap-12 h-full">
             {/* Left side - Animation */}
             <div className="w-80 h-full">
-              <WireframeSphereIllustrationAnimation />
+              <SpikeBallAnimation />
             </div>
             
             {/* Right side - Content */}
@@ -221,5 +219,3 @@ export default function FeatureCards() {
     </div>
   );
 }
-
-
