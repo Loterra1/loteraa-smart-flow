@@ -45,7 +45,7 @@ export default function FeatureCards() {
       <div key={feature.title} className={`ml-${marginLeft} mt-${marginTop}`}>
         <div className="flex items-center justify-center gap-12 mb-12">
           {/* Larger Image with P5.js Animation */}
-          <div className="flex-shrink-0 w-48 h-48 relative">
+          <div className="flex-shrink-0 w-64 h-64 relative">
             <img 
               src={feature.image} 
               alt={feature.title}
@@ -57,14 +57,14 @@ export default function FeatureCards() {
           </div>
           
           {/* Larger card */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-10 border border-white/10 hover:bg-white/10 transition-colors flex-1 max-w-lg">
+          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-12 border border-white/10 hover:bg-white/10 transition-colors flex-1 max-w-xl">
             <div className="mb-6">
               {feature.icon}
             </div>
-            <h3 className="text-2xl font-semibold text-white mb-4">
+            <h3 className="text-3xl font-semibold text-white mb-6">
               {feature.title}
             </h3>
-            <p className="text-white/70 text-base leading-relaxed">
+            <p className="text-white/70 text-lg leading-relaxed">
               {feature.description}
             </p>
           </div>
@@ -82,6 +82,28 @@ export default function FeatureCards() {
   return (
     <div className="mt-24">
       {features.map((feature) => renderFeatureCard(feature))}
+      
+      {/* New Earn Rewards Section */}
+      <div className="mt-24 flex items-center justify-center gap-16">
+        {/* Left side - Heading and Description */}
+        <div className="flex-1 max-w-2xl">
+          <h2 className="text-4xl font-bold text-white mb-8 uppercase tracking-wide">
+            EARN REWARD WITH $LOT TOKEN
+          </h2>
+          <p className="text-white/70 text-xl leading-relaxed">
+            The Loteraa ecosystem is powered by the $Lot token, a utility and reward token designed to fuel sensor contributions, validate data quality, incentivize uptime, and govern the platform's evolution.
+          </p>
+        </div>
+        
+        {/* Right side - Large Image */}
+        <div className="flex-shrink-0">
+          <img 
+            src="/lovable-uploads/a2f6c8cd-4a5e-421c-ad7c-865057026961.png" 
+            alt="$LOT Token Reward System"
+            className="w-96 h-96 object-contain"
+          />
+        </div>
+      </div>
     </div>
   );
 }
