@@ -85,7 +85,7 @@ export default function CorePrinciples() {
             </p>
           </div>
           
-          {/* Right side - Image */}
+          {/* Right side - New Image */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div 
               className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden"
@@ -102,9 +102,10 @@ export default function CorePrinciples() {
                 }}
               />
               <img 
-                src="/lovable-uploads/abde815c-1ff0-4f96-af89-2322637fb540.png" 
-                alt="AI Model Training Visualization" 
-                className="absolute inset-0 w-full h-full object-contain opacity-30 sm:opacity-40 lg:opacity-50 z-10"
+                src="/lovable-uploads/be2062d6-238d-49d9-bd0a-893d74c74d88.png" 
+                alt="AI Model Training Sphere Visualization" 
+                className="absolute inset-0 w-full h-full object-contain brightness-125 contrast-110 z-10"
+                style={{ filter: 'brightness(1.3) contrast(1.1)' }}
               />
             </div>
           </div>
