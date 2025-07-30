@@ -1,4 +1,3 @@
-
 import { Shield, Database, Zap } from "lucide-react";
 import CubeIllustrationAnimation from "./animations/CubeIllustrationAnimation";
 import RadialBurstIllustrationAnimation from "./animations/RadialBurstIllustrationAnimation";
@@ -16,15 +15,15 @@ export default function FeatureCards() {
       children: [
         {
           icon: <Database className="h-12 w-12 text-white" />,
-          title: "Verified IoT Data Access",
-          description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity.",
+          title: "Web3 Connected Contracts",
+          description: "Loteraa smart contracts respond autonomously to live sensor inputs enabling logic-based automation across DeFi, logistics, energy, and AI sectors. Data triggers from IoT devices execute cross-chain operations such as payments, alerts, insurance payouts, or asset transfers, establishing an intelligent link between off-chain activities and on-chain decision-making without intermediaries.",
           image: "/lovable-uploads/880ce30d-fe30-44dc-bd14-1cc7f4a471b1.png",
           animation: RadialBurstIllustrationAnimation,
           children: [
             {
               icon: <Zap className="h-12 w-12 text-white" />,
-              title: "Real-time Processing",
-              description: "Stream live sensor data directly to smart contracts with minimal latency for time-sensitive applications.",
+              title: "Advanced Analytics Platform",
+              description: "Built-in tools for data visualization, statistical analysis, and machine learning model development. Access live sensor data from thousands of IoT devices worldwide for real-time analysis and research applications.",
               image: "/lovable-uploads/5b8abd22-3a3b-43fe-a8c3-6e1a30a1b758.png",
               animation: VortexIllustrationAnimation
             }
