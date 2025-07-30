@@ -2,22 +2,23 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import HeroP5Animation from "./HeroP5Animation";
+// import HeroP5Animation from "./HeroP5Animation";
 
 export default function HeroSection() {
   return (
     <section 
-      className="pt-20 md:pt-24 pb-12 md:pb-16 min-h-[80vh] md:min-h-[90vh] flex items-center relative overflow-hidden" 
-      style={{ 
-        backgroundColor: '#000000',
-        background: '#000000'
-      }}
+      className="pt-20 md:pt-24 pb-12 md:pb-16 min-h-[80vh] md:min-h-[90vh] flex items-center relative overflow-hidden bg-black"
     >
-      {/* Ensure black background as base layer */}
+      {/* Multiple layers of black background to ensure no white shows */}
       <div className="absolute inset-0 bg-black z-0"></div>
+      <div className="absolute inset-0" style={{ backgroundColor: '#000000' }}></div>
+      <div className="absolute inset-0 bg-loteraa-black z-1"></div>
       
-      {/* P5.js Globe Animation Background */}
-      <HeroP5Animation />
+      {/* P5.js Globe Animation Background - Temporarily disabled for debugging */}
+      {/* <HeroP5Animation /> */}
+      
+      {/* Solid black background overlay */}
+      <div className="absolute inset-0 bg-black z-5"></div>
       
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">

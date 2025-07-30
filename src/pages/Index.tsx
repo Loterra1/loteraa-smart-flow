@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-black">
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#000000', background: '#000000' }}>
       <NavigationHeader />
       <main>
         <HeroSection />
