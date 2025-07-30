@@ -1,4 +1,5 @@
 
+
 import { Shield, Database, Zap } from "lucide-react";
 import CubeIllustrationAnimation from "./animations/CubeIllustrationAnimation";
 import RadialBurstIllustrationAnimation from "./animations/RadialBurstIllustrationAnimation";
@@ -171,6 +172,32 @@ export default function FeatureCards() {
           </div>
         </div>
       </div>
+
+      {/* Two Rectangular Cards After Start Building Button */}
+      <div className="mt-16 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Card 1 - Platform Architecture */}
+          <div className="bg-black border border-white/20 hover:bg-white hover:text-black transition-colors duration-300 rounded-lg p-8 h-80">
+            <h3 className="text-2xl font-bold mb-6 uppercase tracking-wide">
+              PLATFORM ARCHITECTURE
+            </h3>
+            <p className="text-lg leading-relaxed">
+              The Loteraa platform is built on a modular and scalable architecture designed to securely connect real-world sensor data to on-chain smart contracts. This architecture bridges five core components: the Device Layer, the Backend Data Ingestion Layer, the Oracle Layer, the Smart Contract Layer, and the Storage Layer. Together, these layers form a robust, tamper-proof pipeline that transforms raw physical inputs into verified blockchain transactions and automation.
+            </p>
+          </div>
+          
+          {/* Card 2 - Use Cases and Impact */}
+          <div className="bg-black border border-white/20 hover:bg-white hover:text-black transition-colors duration-300 rounded-lg p-8 h-80">
+            <h3 className="text-2xl font-bold mb-6 uppercase tracking-wide">
+              USE CASES AND IMPACT
+            </h3>
+            <p className="text-lg leading-relaxed">
+              Loteraa creates a new paradigm for how physical data can power decentralized applications, enabling automation, transparency, and equitable reward systems. Through Loteraa, real-time sensor data can trigger smart contracts, train AI models, or settle digital agreements with no need for centralized intermediaries.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+
