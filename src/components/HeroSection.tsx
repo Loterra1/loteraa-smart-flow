@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import HeroP5Animation from "./HeroP5Animation";
+// import HeroP5Animation from "./HeroP5Animation";
 
 export default function HeroSection() {
   return (
@@ -16,11 +16,11 @@ export default function HeroSection() {
       {/* Ensure black background as base layer */}
       <div className="absolute inset-0 bg-black z-0"></div>
       
-      {/* P5.js Interactive Animation Background */}
-      <HeroP5Animation />
+      {/* P5.js Interactive Animation Background - Temporarily disabled */}
+      {/* <HeroP5Animation /> */}
       
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/20 z-5"></div>
+      {/* Solid black background for testing */}
+      <div className="absolute inset-0 bg-black z-2"></div>
       
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
