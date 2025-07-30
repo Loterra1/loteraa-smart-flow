@@ -7,21 +7,21 @@ import VortexIllustrationAnimation from "./animations/VortexIllustrationAnimatio
 export default function FeatureCards() {
   const features = [
     {
-      icon: <Shield className="h-8 w-8 text-white" />,
+      icon: <Shield className="h-12 w-12 text-white" />,
       title: "Decentralized Verification",
       description: "Multi-node consensus ensures data authenticity and prevents tampering through cryptographic proofs.",
       image: "/lovable-uploads/93530648-e8c9-4d3d-8634-90300112ef81.png",
       animation: CubeIllustrationAnimation,
       children: [
         {
-          icon: <Database className="h-8 w-8 text-white" />,
+          icon: <Database className="h-12 w-12 text-white" />,
           title: "Verified IoT Data Access",
           description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity.",
           image: "/lovable-uploads/880ce30d-fe30-44dc-bd14-1cc7f4a471b1.png",
           animation: RadialBurstIllustrationAnimation,
           children: [
             {
-              icon: <Zap className="h-8 w-8 text-white" />,
+              icon: <Zap className="h-12 w-12 text-white" />,
               title: "Real-time Processing",
               description: "Stream live sensor data directly to smart contracts with minimal latency for time-sensitive applications.",
               image: "/lovable-uploads/5b8abd22-3a3b-43fe-a8c3-6e1a30a1b758.png",
@@ -34,14 +34,18 @@ export default function FeatureCards() {
   ];
 
   const renderFeatureCard = (feature: any, level: number = 0) => {
-    const marginLeft = level * 8; // 32px (8 * 4) per level
+    const marginLeft = level * 12; // Increased spacing between levels
     const AnimationComponent = feature.animation;
     
+    // Special positioning for the first level (decentralized verification)
+    const isFirstLevel = level === 0;
+    const marginTop = isFirstLevel ? 24 : 12; // Push first level down significantly
+    
     return (
-      <div key={feature.title} className={`ml-${marginLeft}`}>
-        <div className="flex items-center justify-center gap-6 mb-6">
-          {/* Image with P5.js Animation */}
-          <div className="flex-shrink-0 w-32 h-32 relative">
+      <div key={feature.title} className={`ml-${marginLeft} mt-${marginTop}`}>
+        <div className="flex items-center justify-center gap-12 mb-12">
+          {/* Larger Image with P5.js Animation */}
+          <div className="flex-shrink-0 w-48 h-48 relative">
             <img 
               src={feature.image} 
               alt={feature.title}
@@ -52,22 +56,22 @@ export default function FeatureCards() {
             </div>
           </div>
           
-          {/* Reduced width card */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 hover:bg-white/10 transition-colors flex-1 max-w-md">
-            <div className="mb-4">
+          {/* Larger card */}
+          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-10 border border-white/10 hover:bg-white/10 transition-colors flex-1 max-w-lg">
+            <div className="mb-6">
               {feature.icon}
             </div>
-            <h3 className="text-lg font-semibold text-white mb-3">
+            <h3 className="text-2xl font-semibold text-white mb-4">
               {feature.title}
             </h3>
-            <p className="text-white/70 text-sm leading-relaxed">
+            <p className="text-white/70 text-base leading-relaxed">
               {feature.description}
             </p>
           </div>
         </div>
         
         {feature.children && (
-          <div className="space-y-6">
+          <div className="space-y-12">
             {feature.children.map((child: any) => renderFeatureCard(child, level + 1))}
           </div>
         )}
@@ -76,7 +80,7 @@ export default function FeatureCards() {
   };
 
   return (
-    <div className="mt-16">
+    <div className="mt-24">
       {features.map((feature) => renderFeatureCard(feature))}
     </div>
   );
