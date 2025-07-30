@@ -1,6 +1,6 @@
-
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Particle {
   x: number;
@@ -31,9 +31,11 @@ interface PhysicsObject {
 export default function AIModelAnimation() {
   const containerRef = useRef<HTMLDivElement>(null);
   const p5Instance = useRef<p5 | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    // Don't render p5.js animation on mobile to prevent white background issues
+    if (isMobile || !containerRef.current) return;
 
     const sketch = (p: p5) => {
       let particles: Particle[] = [];
@@ -44,29 +46,21 @@ export default function AIModelAnimation() {
       
       p.setup = () => {
         const rect = containerRef.current!.getBoundingClientRect();
-        // Ensure canvas covers entire container with extra padding
         canvas = p.createCanvas(rect.width + 50, rect.height + 50, p.WEBGL);
         canvas.parent(containerRef.current!);
         
         // Position canvas to cover entire container with overflow
-        (canvas.canvas as HTMLCanvasElement).style.position = 'absolute';
-        (canvas.canvas as HTMLCanvasElement).style.top = '-25px';
-        (canvas.canvas as HTMLCanvasElement).style.left = '-25px';
-        (canvas.canvas as HTMLCanvasElement).style.width = 'calc(100% + 50px)';
-        (canvas.canvas as HTMLCanvasElement).style.height = 'calc(100% + 50px)';
-        (canvas.canvas as HTMLCanvasElement).style.display = 'block';
-        (canvas.canvas as HTMLCanvasElement).style.backgroundColor = '#000000';
-        (canvas.canvas as HTMLCanvasElement).style.background = '#000000';
-        (canvas.canvas as HTMLCanvasElement).style.zIndex = '10';
-        (canvas.canvas as HTMLCanvasElement).style.overflow = 'hidden';
-        
-        // Mobile-specific adjustments
-        if (window.innerWidth < 768) {
-          (canvas.canvas as HTMLCanvasElement).style.width = 'calc(100vw + 100px)';
-          (canvas.canvas as HTMLCanvasElement).style.height = 'calc(100vh + 100px)';
-          (canvas.canvas as HTMLCanvasElement).style.left = '-50px';
-          (canvas.canvas as HTMLCanvasElement).style.top = '-50px';
-        }
+        const canvasElement = canvas.canvas as HTMLCanvasElement;
+        canvasElement.style.position = 'absolute';
+        canvasElement.style.top = '-25px';
+        canvasElement.style.left = '-25px';
+        canvasElement.style.width = 'calc(100% + 50px)';
+        canvasElement.style.height = 'calc(100% + 50px)';
+        canvasElement.style.display = 'block';
+        canvasElement.style.backgroundColor = '#000000';
+        canvasElement.style.background = '#000000';
+        canvasElement.style.zIndex = '10';
+        canvasElement.style.overflow = 'hidden';
         
         // Initialize physics objects for the image layers
         for (let i = 0; i < 3; i++) {
@@ -134,23 +128,12 @@ export default function AIModelAnimation() {
           p.pop();
         }
         
-        // Mobile-specific black background coverage
-        if (window.innerWidth < 768) {
-          p.push();
-          p.resetMatrix();
-          p.fill(0, 0, 0, 255);
-          p.noStroke();
-          p.rectMode(p.CORNER);
-          p.rect(-window.innerWidth, -window.innerHeight, window.innerWidth * 3, window.innerHeight * 3);
-          p.pop();
-        }
-        
         p.lights();
         
         time += 0.02;
         
-        // Camera rotation - adjusted for mobile
-        const cameraDistance = p.width < 768 ? 300 : 400;
+        // Camera rotation
+        const cameraDistance = 400;
         p.camera(
           p.cos(time * 0.3) * cameraDistance,
           -100,
@@ -199,8 +182,8 @@ export default function AIModelAnimation() {
           p.stroke(255, 200);
           p.strokeWeight(1);
           
-          // Create diamond/rhombus shape like in the image - scaled for mobile
-          const size = p.width < 768 ? 40 : 60;
+          // Create diamond/rhombus shape like in the image
+          const size = 60;
           p.beginShape(p.TRIANGLES);
           // Top diamond
           p.vertex(-size, -size, 0);
@@ -222,10 +205,10 @@ export default function AIModelAnimation() {
           p.vertex(0, 0, -20);
           p.endShape();
           
-          // Add glowing sphere in center - scaled for mobile
+          // Add glowing sphere in center
           p.fill(255, 255, 255, 200);
           p.noStroke();
-          const sphereSize = p.width < 768 ? 20 : 30;
+          const sphereSize = 30;
           p.sphere(sphereSize + p.sin(time + index) * 5);
           
           p.pop();
@@ -300,14 +283,6 @@ export default function AIModelAnimation() {
           p.resizeCanvas(rect.width + 50, rect.height + 50);
           // Force black background on resize
           p.background(0, 0, 0, 255);
-          
-          // Reposition canvas for mobile
-          if (window.innerWidth < 768) {
-            (canvas.canvas as HTMLCanvasElement).style.width = 'calc(100vw + 100px)';
-            (canvas.canvas as HTMLCanvasElement).style.height = 'calc(100vh + 100px)';
-            (canvas.canvas as HTMLCanvasElement).style.left = '-50px';
-            (canvas.canvas as HTMLCanvasElement).style.top = '-50px';
-          }
         }
       };
     };
@@ -319,7 +294,7 @@ export default function AIModelAnimation() {
         p5Instance.current.remove();
       }
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div 

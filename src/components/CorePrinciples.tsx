@@ -2,11 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import AIModelAnimation from "./AIModelAnimation";
 import FeatureCards from "./FeatureCards";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function CorePrinciples() {
   const [isVisible, setIsVisible] = useState(false);
   const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false, false]);
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -40,11 +42,11 @@ export default function CorePrinciples() {
         background: '#000000 !important'
       }}
     >
-      {/* Critical black background layers to prevent any white showing */}
+      {/* Black background layers */}
       {Array.from({ length: 5 }).map((_, index) => (
         <div 
           key={index}
-          className="fixed inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full"
           style={{ 
             backgroundColor: '#000000 !important',
             background: '#000000 !important',
@@ -53,28 +55,20 @@ export default function CorePrinciples() {
         />
       ))}
       
-      {/* Mobile-specific black background coverage */}
-      <div 
-        className="block md:hidden fixed -inset-20 w-[calc(100vw+10rem)] h-[calc(100vh+10rem)]"
-        style={{ 
-          backgroundColor: '#000000 !important',
-          background: '#000000 !important',
-          zIndex: 1
-        }}
-      />
-      
-      {/* P5.js animation covering entire section with overflow */}
-      <div 
-        className="absolute -inset-10 w-[calc(100%+5rem)] h-[calc(100%+5rem)]"
-        style={{ 
-          backgroundColor: '#000000 !important',
-          background: '#000000 !important',
-          zIndex: 5,
-          overflow: 'hidden'
-        }}
-      >
-        <AIModelAnimation />
-      </div>
+      {/* Only render P5.js animation on desktop */}
+      {!isMobile && (
+        <div 
+          className="absolute -inset-10 w-[calc(100%+5rem)] h-[calc(100%+5rem)]"
+          style={{ 
+            backgroundColor: '#000000 !important',
+            background: '#000000 !important',
+            zIndex: 5,
+            overflow: 'hidden'
+          }}
+        >
+          <AIModelAnimation />
+        </div>
+      )}
       
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
@@ -91,7 +85,7 @@ export default function CorePrinciples() {
             </p>
           </div>
           
-          {/* Right side - Image with P5.js animation */}
+          {/* Right side - Image */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div 
               className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden"
@@ -100,18 +94,13 @@ export default function CorePrinciples() {
                 background: '#000000 !important'
               }}
             >
-              {/* Multiple black background fallback layers */}
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div 
-                  key={index}
-                  className="absolute inset-0"
-                  style={{ 
-                    backgroundColor: '#000000 !important',
-                    background: '#000000 !important',
-                    zIndex: index
-                  }}
-                />
-              ))}
+              <div 
+                className="absolute inset-0"
+                style={{ 
+                  backgroundColor: '#000000 !important',
+                  background: '#000000 !important'
+                }}
+              />
               <img 
                 src="/lovable-uploads/abde815c-1ff0-4f96-af89-2322637fb540.png" 
                 alt="AI Model Training Visualization" 
@@ -121,7 +110,6 @@ export default function CorePrinciples() {
           </div>
         </div>
         
-        {/* Feature Cards Section */}
         <FeatureCards />
       </div>
     </section>
