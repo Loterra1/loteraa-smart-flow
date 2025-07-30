@@ -146,10 +146,10 @@ export default function FeatureCards() {
         </div>
       </div>
 
-      {/* For Developers Section */}
+      {/* For Developers Section - Much Larger */}
       <div className="mt-24 flex justify-center">
         <div 
-          className="relative w-[800px] h-[800px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
+          className="relative w-[1200px] h-[1000px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
           style={{
             backgroundImage: `url('/lovable-uploads/5892d5a1-463b-4189-9015-cb021db22c40.png')`,
             backgroundSize: 'cover',
@@ -161,14 +161,14 @@ export default function FeatureCards() {
           <div className="absolute inset-0 bg-black/40"></div>
           
           {/* Content */}
-          <div className="relative z-10 px-12 max-w-2xl">
-            <h2 className="text-5xl font-bold text-white mb-8 uppercase tracking-wide">
+          <div className="relative z-10 px-16 max-w-4xl">
+            <h2 className="text-6xl font-bold text-white mb-10 uppercase tracking-wide">
               FOR DEVELOPERS
             </h2>
-            <p className="text-white/90 text-xl leading-relaxed mb-10">
+            <p className="text-white/90 text-2xl leading-relaxed mb-12">
               Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains.
             </p>
-            <Button className="bg-white hover:bg-white/90 text-black px-8 py-4 text-lg font-semibold rounded-lg">
+            <Button className="bg-white hover:bg-white/90 text-black px-10 py-5 text-xl font-semibold rounded-lg">
               START BUILDING
             </Button>
           </div>

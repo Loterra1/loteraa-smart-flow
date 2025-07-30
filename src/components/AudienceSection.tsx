@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import GlobeMapAnimation from "./animations/GlobeMapAnimation";
 import GrainyNoiseAnimation from "./animations/GrainyNoiseAnimation";
+import CubeGenerativeAnimation from "./animations/CubeGenerativeAnimation";
 
 export default function AudienceSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,13 +38,28 @@ export default function AudienceSection() {
             <GrainyNoiseAnimation />
           </div>
           
-          <div className="relative z-10">
-            <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
-              <span className="text-white">Real-World → Web3</span> Integration
-            </h2>
-            <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed mb-6 md:mb-8">
-              Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
-            </p>
+          <div className="relative z-10 flex items-center justify-center gap-12">
+            {/* Left side - Heading and Description */}
+            <div className="flex-1 max-w-2xl">
+              <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
+                <span className="text-white">Real-World → Web3</span> Integration
+              </h2>
+              <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed mb-6 md:mb-8">
+                Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
+              </p>
+            </div>
+            
+            {/* Right side - Image with P5.js Animation */}
+            <div className="flex-shrink-0 w-96 h-96 relative">
+              <img 
+                src="/lovable-uploads/79201339-7541-40e0-a69d-321b49e8b86a.png" 
+                alt="Real-World Web3 Integration"
+                className="w-full h-full object-contain opacity-40 absolute inset-0 z-10"
+              />
+              <div className="absolute inset-0 z-20">
+                <CubeGenerativeAnimation />
+              </div>
+            </div>
           </div>
         </div>
 
