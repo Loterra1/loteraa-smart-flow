@@ -3,6 +3,7 @@ import { Shield, Database, Zap } from "lucide-react";
 import CubeIllustrationAnimation from "./animations/CubeIllustrationAnimation";
 import RadialBurstIllustrationAnimation from "./animations/RadialBurstIllustrationAnimation";
 import VortexIllustrationAnimation from "./animations/VortexIllustrationAnimation";
+import { Button } from "@/components/ui/button";
 
 export default function FeatureCards() {
   const features = [
@@ -84,7 +85,7 @@ export default function FeatureCards() {
       {features.map((feature) => renderFeatureCard(feature))}
       
       {/* New Earn Rewards Section */}
-      <div className="mt-24 flex items-center justify-center gap-12">
+      <div className="mt-24 flex items-center justify-center gap-6">
         {/* Left side - Heading and Description */}
         <div className="flex-1 max-w-3xl">
           <h2 className="text-6xl font-bold text-white mb-12 uppercase tracking-wide">
@@ -100,17 +101,17 @@ export default function FeatureCards() {
           <img 
             src="/lovable-uploads/a2f6c8cd-4a5e-421c-ad7c-865057026961.png" 
             alt="$LOT Token Reward System"
-            className="w-[600px] h-[600px] object-contain"
+            className="w-[650px] h-[650px] object-contain"
           />
         </div>
       </div>
 
-      {/* Three Square Cards Section */}
-      <div className="mt-24 max-w-6xl mx-auto">
+      {/* Three Square Cards Section - Increased sizes */}
+      <div className="mt-24 max-w-7xl mx-auto">
         <div className="grid grid-cols-2 gap-8 mb-8">
-          {/* Card 1 */}
+          {/* Card 1 - Increased size */}
           <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors overflow-hidden">
-            <div className="w-full h-80">
+            <div className="w-full h-96">
               <img 
                 src="/lovable-uploads/fcf61d68-e0b0-43c5-be0e-73816884379c.png" 
                 alt="Sphere"
@@ -119,9 +120,9 @@ export default function FeatureCards() {
             </div>
           </div>
           
-          {/* Card 2 */}
+          {/* Card 2 - Increased size */}
           <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors overflow-hidden">
-            <div className="w-full h-80">
+            <div className="w-full h-96">
               <img 
                 src="/lovable-uploads/837a4976-6ca2-4340-ad3a-e63df1a93783.png" 
                 alt="Abstract Form"
@@ -131,16 +132,45 @@ export default function FeatureCards() {
           </div>
         </div>
         
-        {/* Card 3 - Centered below */}
+        {/* Card 3 - Centered below, increased size */}
         <div className="flex justify-center">
           <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors w-1/2 overflow-hidden">
-            <div className="w-full h-80">
+            <div className="w-full h-96">
               <img 
                 src="/lovable-uploads/cdbb3b1e-c51a-4f69-8e64-5f0e520fcaed.png" 
                 alt="Spiral Disk"
                 className="w-full h-full object-cover"
               />
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* For Developers Section */}
+      <div className="mt-24 flex justify-center">
+        <div 
+          className="relative w-[800px] h-[800px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
+          style={{
+            backgroundImage: `url('/lovable-uploads/5892d5a1-463b-4189-9015-cb021db22c40.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
+          {/* Dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/40"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 px-12 max-w-2xl">
+            <h2 className="text-5xl font-bold text-white mb-8 uppercase tracking-wide">
+              FOR DEVELOPERS
+            </h2>
+            <p className="text-white/90 text-xl leading-relaxed mb-10">
+              Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains.
+            </p>
+            <Button className="bg-white hover:bg-white/90 text-black px-8 py-4 text-lg font-semibold rounded-lg">
+              START BUILDING
+            </Button>
           </div>
         </div>
       </div>
