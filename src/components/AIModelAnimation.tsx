@@ -50,7 +50,7 @@ export default function AIModelAnimation() {
         canvas.parent(containerRef.current!);
         
         // Position canvas to cover entire container with overflow
-        const canvasElement = canvas.canvas as HTMLCanvasElement;
+        const canvasElement = canvas.elt as HTMLCanvasElement;
         canvasElement.style.position = 'absolute';
         canvasElement.style.top = '-25px';
         canvasElement.style.left = '-25px';

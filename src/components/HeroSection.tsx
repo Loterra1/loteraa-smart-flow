@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-// import HeroP5Animation from "./HeroP5Animation";
+import HeroImageAnimation from "./animations/HeroImageAnimation";
 
 export default function HeroSection() {
   return (
@@ -14,19 +14,21 @@ export default function HeroSection() {
       <div className="absolute inset-0" style={{ backgroundColor: '#000000' }}></div>
       <div className="absolute inset-0 bg-loteraa-black z-1"></div>
       
-      {/* P5.js Globe Animation Background - Temporarily disabled for debugging */}
-      {/* <HeroP5Animation /> */}
-      
       {/* Solid black background overlay */}
       <div className="absolute inset-0 bg-black z-5"></div>
       
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+        <div className="flex flex-col items-center text-center max-w-6xl mx-auto">
           <h1 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 md:mb-6 uppercase text-white">
             <span className="animate-fade-in animation-delay-1000">Connecting IoT Datas</span> To <br className="hidden sm:block" /> 
             <span className="animate-fade-in animation-delay-2000">Blockchain</span> 
             <span className="animate-fade-in animation-delay-3000"> Seamlessly</span>
           </h1>
+          
+          {/* Animated Hero Image */}
+          <div className="relative w-full max-w-md h-64 md:max-w-lg md:h-80 lg:max-w-xl lg:h-96 my-8 md:my-12 animate-fade-in animation-delay-2500">
+            <HeroImageAnimation />
+          </div>
           
           <p className="text-base md:text-lg lg:text-xl text-white/80 mb-8 md:mb-12 animate-fade-in animation-delay-4000 max-w-3xl px-4">
             The first AI-native blockchain powering real-time IoT, tokenized data rewards, and DePIN automation.
