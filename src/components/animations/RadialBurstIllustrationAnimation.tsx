@@ -12,29 +12,40 @@ export default function RadialBurstIllustrationAnimation() {
     if (!containerRef.current) return;
 
     const sketch = (p: p5) => {
+      let spheres: any[] = [];
       let time = 0;
-      let lines: any[] = [];
+      let rotationX = 0;
+      let rotationY = 0;
 
       p.setup = () => {
-        const canvas = p.createCanvas(containerRef.current!.offsetWidth, containerRef.current!.offsetHeight);
+        const canvas = p.createCanvas(
+          containerRef.current!.offsetWidth, 
+          containerRef.current!.offsetHeight, 
+          p.WEBGL
+        );
         canvas.parent(containerRef.current!);
         
-        const centerX = p.width / 2;
-        const centerY = p.height / 2;
+        // Create radial arrangement of spheres
+        const numRings = isMobile ? 3 : 4;
+        const spheresPerRing = isMobile ? 6 : 8;
         
-        // Create radial lines similar to the uploaded image
-        const numLines = isMobile ? 60 : 100;
-        for (let i = 0; i < numLines; i++) {
-          const angle = (i / numLines) * p.TWO_PI;
-          const length = p.random(isMobile ? 40 : 60, isMobile ? 80 : 120);
-          
-          lines.push({
-            angle: angle,
-            length: length,
-            baseLength: length,
-            thickness: p.random(1, 3),
-            offset: p.random(0, p.TWO_PI)
-          });
+        spheres = [];
+        for (let ring = 0; ring < numRings; ring++) {
+          const radius = (ring + 1) * (isMobile ? 30 : 40);
+          for (let i = 0; i < spheresPerRing; i++) {
+            const angle = (i / spheresPerRing) * p.TWO_PI;
+            spheres.push({
+              x: p.cos(angle) * radius,
+              y: p.sin(angle) * radius,
+              z: p.random(-20, 20),
+              baseX: p.cos(angle) * radius,
+              baseY: p.sin(angle) * radius,
+              baseZ: p.random(-20, 20),
+              radius: p.random(isMobile ? 6 : 8, isMobile ? 12 : 16),
+              phase: p.random(0, p.TWO_PI),
+              ring: ring
+            });
+          }
         }
       };
 
@@ -42,55 +53,69 @@ export default function RadialBurstIllustrationAnimation() {
         p.background(0, 0, 0, 0);
         time += 0.02;
         
-        const centerX = p.width / 2;
-        const centerY = p.height / 2;
+        // Smooth automatic rotation
+        rotationX += 0.006;
+        rotationY += 0.009;
         
-        // Draw central black circle
-        p.fill(0, 0, 0, 200);
-        p.noStroke();
-        p.circle(centerX, centerY, isMobile ? 30 : 40);
+        // Set up lighting
+        p.ambientLight(60, 60, 60);
+        p.directionalLight(255, 255, 255, -1, 0.5, -1);
         
-        // Draw animated radial lines
-        lines.forEach((line, i) => {
-          const wave = p.sin(time * 2 + line.offset) * 10;
-          const currentLength = line.baseLength + wave;
+        // Apply rotations
+        p.rotateX(rotationX);
+        p.rotateY(rotationY);
+        
+        // Draw animated spheres in radial burst pattern
+        spheres.forEach((sphere, index) => {
+          p.push();
           
-          const startRadius = isMobile ? 15 : 20;
-          const startX = centerX + p.cos(line.angle) * startRadius;
-          const startY = centerY + p.sin(line.angle) * startRadius;
+          // Radial burst animation
+          const burstEffect = p.sin(time * 2 + sphere.ring * 0.5) * 10;
+          const radialDistance = p.dist(0, 0, sphere.baseX, sphere.baseY);
+          const normalizedX = sphere.baseX / radialDistance;
+          const normalizedY = sphere.baseY / radialDistance;
           
-          const endX = centerX + p.cos(line.angle) * currentLength;
-          const endY = centerY + p.sin(line.angle) * currentLength;
+          p.translate(
+            sphere.baseX + normalizedX * burstEffect,
+            sphere.baseY + normalizedY * burstEffect,
+            sphere.baseZ + p.sin(time + sphere.phase) * 15
+          );
           
-          // Varying opacity based on position
-          const alpha = p.map(currentLength, 40, 120, 255, 100);
+          // Pulsing size based on ring
+          const pulse = p.sin(time * 3 + sphere.ring) * 0.2 + 1;
+          const currentRadius = sphere.radius * pulse;
           
-          p.stroke(255, 255, 255, alpha);
-          p.strokeWeight(line.thickness);
+          // Draw sphere with varying opacity based on distance from center
+          const alpha = p.map(sphere.ring, 0, 3, 255, 150);
+          p.fill(255, 255, 255, alpha);
+          p.stroke(255, 255, 255, alpha * 0.7);
+          p.strokeWeight(1);
+          p.sphere(currentRadius);
           
-          // Draw main line
-          p.line(startX, startY, endX, endY);
-          
-          // Add branching lines for organic feel
-          if (i % 3 === 0) {
-            const branchAngle = line.angle + p.sin(time + i) * 0.2;
-            const branchLength = currentLength * 0.7;
-            const branchEndX = centerX + p.cos(branchAngle) * branchLength;
-            const branchEndY = centerY + p.sin(branchAngle) * branchLength;
-            
-            p.stroke(255, 255, 255, alpha * 0.6);
-            p.strokeWeight(line.thickness * 0.5);
-            p.line(startX, startY, branchEndX, branchEndY);
-          }
+          p.pop();
         });
         
-        // Add subtle glow effect around center
-        for (let radius = 20; radius < 50; radius += 5) {
-          const alpha = p.map(radius, 20, 50, 30, 5);
-          p.stroke(255, 255, 255, alpha);
-          p.strokeWeight(1);
-          p.noFill();
-          p.circle(centerX, centerY, radius);
+        // Draw connecting lines for burst effect
+        if (!isMobile) {
+          p.stroke(255, 255, 255, 60);
+          p.strokeWeight(0.5);
+          
+          // Draw lines from center to outer spheres
+          spheres.forEach((sphere) => {
+            if (sphere.ring > 0) {
+              const burstEffect = p.sin(time * 2 + sphere.ring * 0.5) * 10;
+              const radialDistance = p.dist(0, 0, sphere.baseX, sphere.baseY);
+              const normalizedX = sphere.baseX / radialDistance;
+              const normalizedY = sphere.baseY / radialDistance;
+              
+              p.line(
+                0, 0, 0,
+                sphere.baseX + normalizedX * burstEffect,
+                sphere.baseY + normalizedY * burstEffect,
+                sphere.baseZ + p.sin(time + sphere.phase) * 15
+              );
+            }
+          });
         }
       };
 

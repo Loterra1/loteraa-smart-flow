@@ -39,7 +39,7 @@ export default function FeatureCards() {
     
     return (
       <div key={feature.title} className={`ml-${marginLeft}`}>
-        <div className="flex items-start gap-6 mb-6">
+        <div className="flex items-center justify-center gap-6 mb-6">
           {/* Image with P5.js Animation */}
           <div className="flex-shrink-0 w-32 h-32 relative">
             <img 
