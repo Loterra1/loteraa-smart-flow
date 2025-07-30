@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -157,7 +158,7 @@ export default function DeveloperDocsPage() {
       {/* Getting Started Section */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-loteraa-purple/20 to-loteraa-blue/20 rounded-2xl p-8 md:p-12 border border-loteraa-purple/30 hologram-card">
+          <div className="bg-black rounded-2xl p-8 md:p-12 border border-white/30 hologram-card">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-3xl md:text-4xl font-bold mb-6 glow-text">
@@ -168,7 +169,7 @@ export default function DeveloperDocsPage() {
                   Join thousands of developers building the next generation of IoT applications.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-black hover:bg-black/90 text-white">
+                  <Button size="lg" className="bg-white hover:bg-white/90 text-black">
                     View Documentation <BookOpen className="ml-2 h-5 w-5" />
                   </Button>
                 </div>

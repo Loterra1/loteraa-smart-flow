@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,172 +7,146 @@ import NavigationHeader from "@/components/NavigationHeader";
 import Footer from "@/components/Footer";
 import { 
   Database, 
-  MapPin, 
-  TrendingUp, 
-  DollarSign, 
   Shield, 
-  BarChart3, 
-  ArrowRight,
-  Globe,
-  Coins,
+  TrendingUp, 
+  Users, 
+  Clock, 
   CheckCircle,
-  Activity,
-  Users,
-  Zap,
-  FileText
+  ArrowRight,
+  BarChart3,
+  Globe,
+  Zap
 } from "lucide-react";
 
 export default function ResearchersPage() {
-  const [animatedDataPoints, setAnimatedDataPoints] = useState<Array<{ id: number; x: number; y: number; delay: number; type: string }>>([]);
+  const [animatedElements, setAnimatedElements] = useState<Array<{ id: number; x: number; y: number; delay: number }>>([]);
 
   useEffect(() => {
-    const dataPoints = Array.from({ length: 30 }, (_, i) => ({
+    const elements = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      delay: Math.random() * 10,
-      type: ['temperature', 'humidity', 'pressure', 'motion'][Math.floor(Math.random() * 4)]
+      delay: Math.random() * 5
     }));
-    setAnimatedDataPoints(dataPoints);
+    setAnimatedElements(elements);
   }, []);
 
-  const researchBenefits = [
+  const researchFeatures = [
     {
+      title: "Real-Time IoT Data Streams",
+      description: "Access live sensor data from thousands of IoT devices worldwide for real-time analysis and research applications.",
       icon: Database,
-      title: "Verified IoT Data Access",
-      description: "Access to millions of verified IoT data points from devices worldwide, ensuring data integrity and authenticity."
+      features: ["Live Data Streaming", "Multiple Device Types", "Global Coverage", "High-Frequency Updates"],
+      badge: "Live Data"
     },
     {
-      icon: DollarSign,
-      title: "Passive Income Generation",
-      description: "Earn passive income by contributing to data verification and analysis. Get rewarded for every validated data entry."
-    },
-    {
+      title: "Blockchain-Verified Datasets",
+      description: "Ensure data integrity with cryptographically signed datasets that are tamper-proof and traceable to their source.",
       icon: Shield,
-      title: "Blockchain-Secured Data",
-      description: "All data is cryptographically secured and stored on blockchain, providing immutable research datasets."
+      features: ["Cryptographic Signatures", "Tamper-Proof Records", "Source Verification", "Audit Trail"],
+      badge: "Verified"
     },
     {
-      icon: BarChart3,
-      title: "Advanced Analytics Tools",
-      description: "Access powerful analytics dashboard and tools to process and analyze IoT data at scale."
+      title: "Advanced Analytics Platform",
+      description: "Built-in tools for data visualization, statistical analysis, and machine learning model development.",
+      icon: TrendingUp,
+      features: ["Data Visualization", "Statistical Tools", "ML Integration", "Custom Dashboards"],
+      badge: "Analytics"
+    },
+    {
+      title: "Collaborative Research Environment",
+      description: "Share datasets, collaborate on projects, and publish findings within a decentralized research community.",
+      icon: Users,
+      features: ["Dataset Sharing", "Project Collaboration", "Peer Review", "Publication Tools"],
+      badge: "Community"
+    },
+    {
+      title: "Historical Data Archives",
+      description: "Access years of historical IoT data for trend analysis, pattern recognition, and longitudinal studies.",
+      icon: Clock,
+      features: ["Historical Records", "Time Series Analysis", "Pattern Recognition", "Long-term Studies"],
+      badge: "Archives"
+    },
+    {
+      title: "Quality Assurance Framework",
+      description: "Automated data quality checks and validation processes ensure research-grade data reliability.",
+      icon: CheckCircle,
+      features: ["Quality Metrics", "Validation Rules", "Error Detection", "Data Cleaning"],
+      badge: "Quality"
     }
   ];
 
-  const dataCategories = [
-    { name: "Environmental", count: "2.3M", color: "text-green-400", icon: "🌿" },
-    { name: "Industrial", count: "1.8M", color: "text-blue-400", icon: "🏭" },
-    { name: "Smart Cities", count: "1.2M", color: "text-purple-400", icon: "🏙️" },
-    { name: "Agriculture", count: "950K", color: "text-yellow-400", icon: "🌾" },
-    { name: "Healthcare", count: "780K", color: "text-red-400", icon: "🏥" },
-    { name: "Transport", count: "650K", color: "text-cyan-400", icon: "🚗" }
-  ];
-
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
-      <style>
-        {`
-          @keyframes dataOrbit {
-            0% { transform: rotate(0deg) translateX(60px) rotate(0deg); opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { transform: rotate(360deg) translateX(60px) rotate(-360deg); opacity: 0.3; }
-          }
-          
-          @keyframes mapPulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.05); opacity: 1; }
-          }
-          
-          @keyframes dataStream {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% { transform: translateY(-100vh) rotate(180deg); opacity: 0; }
-          }
-          
-          @keyframes hologramFlicker {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.02); }
-          }
-          
-          .data-orbit {
-            animation: dataOrbit 20s linear infinite;
-          }
-          
-          .map-pulse {
-            animation: mapPulse 4s ease-in-out infinite;
-          }
-          
-          .data-stream {
-            animation: dataStream 8s linear infinite;
-          }
-          
-          .hologram-effect {
-            animation: hologramFlicker 3s ease-in-out infinite;
-          }
-        `}
-      </style>
-
-
+    <div className="min-h-screen bg-black">
       <NavigationHeader />
       
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge className="mb-6 bg-loteraa-purple text-white border-loteraa-purple px-6 py-2 text-lg">
-              <span className="text-white">For Researchers & Data Analysts</span>
+            <Badge className="mb-6 bg-white/20 text-white border-white/30 px-6 py-2 text-lg">
+              Research Platform
             </Badge>
             
-            <h1 className="text-5xl md:text-7xl font-bold mb-8">
-              <span className="text-white">Explore Global</span> <br />
-              <span className="text-white">IoT Data</span>
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 glow-text">
+              <span className="text-white">Unlock IoT Data</span> <br />
+              <span className="text-white">for Research</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Access verified IoT datasets from around the world. Contribute to data verification 
-              and earn passive income while advancing research and innovation.
+              Access the world's largest decentralized IoT dataset. Conduct groundbreaking research 
+              with verified, real-time sensor data from devices across the globe.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="bg-black hover:bg-black/90 text-white px-8 py-6 text-lg">
-                Start Exploring Data <Database className="ml-2 h-5 w-5" />
+              <Button size="lg" className="bg-white hover:bg-white/90 text-black px-8 py-6 text-lg hologram-card">
+                Access Research Data <Database className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-
-      {/* Research Benefits Section */}
+      {/* Research Features Grid */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-white">Research & Earn</span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 glow-text">
+              <span className="text-white">Research-Grade Data Platform</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Contribute to the global IoT data ecosystem and earn rewards for your research contributions
+              Everything researchers need to conduct world-class IoT and sensor data analysis
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
-            {researchBenefits.map((benefit, index) => (
-              <Card key={index} className="bg-black backdrop-blur-sm border-white/20 hover:border-white/50 transition-all duration-300 group">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {researchFeatures.map((feature, index) => (
+              <Card key={index} className="bg-black backdrop-blur-sm border-white/40 hover:border-white/50 transition-all duration-300 hologram-card group">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
                     <div className="p-3 bg-white/20 rounded-lg">
-                      <benefit.icon className="h-6 w-6 text-white" />
+                      <feature.icon className="h-6 w-6 text-white" />
                     </div>
+                    <Badge variant="outline" className="text-white border-white/40">
+                      {feature.badge}
+                    </Badge>
                   </div>
                   <CardTitle className="text-white text-xl group-hover:text-white transition-colors">
-                    {benefit.title}
+                    {feature.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-white/70 leading-relaxed">
-                    {benefit.description}
+                  <p className="text-white/70 mb-6 leading-relaxed">
+                    {feature.description}
                   </p>
+                  <div className="space-y-2">
+                    {feature.features.map((item, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center text-sm text-white/60">
+                        <ArrowRight className="h-3 w-3 text-white mr-2" />
+                        {item}
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -179,47 +154,48 @@ export default function ResearchersPage() {
         </div>
       </section>
 
-      {/* How It Works Section */}
+      {/* Data Access Section */}
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-black backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/30">
-            <div className="text-center mb-12">
-              <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="text-white">How It Works</span>
-              </h3>
-            </div>
-            
-            <div className="grid md:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="bg-white/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-8 w-8 text-white" />
+          <div className="bg-gradient-to-r from-loteraa-purple/20 to-loteraa-blue/20 rounded-2xl p-8 md:p-12 border border-loteraa-purple/30 hologram-card">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h3 className="text-3xl md:text-4xl font-bold mb-6 glow-text">
+                  <span className="text-white">Start Your Research Today</span>
+                </h3>
+                <p className="text-white/80 text-lg mb-8 leading-relaxed">
+                  Join thousands of researchers already using Loteraa's platform to conduct 
+                  cutting-edge IoT and sensor data research. Get instant access to verified, 
+                  real-time data streams.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button size="lg" className="bg-white hover:bg-white/90 text-black">
+                    Access Data Platform <Database className="ml-2 h-5 w-5" />
+                  </Button>
                 </div>
-                <h4 className="text-lg font-semibold text-white mb-2">1. Register</h4>
-                <p className="text-white/70 text-sm">Sign up as a researcher and verify your credentials</p>
               </div>
               
-              <div className="text-center">
-                <div className="bg-white/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Database className="h-8 w-8 text-white" />
+              <div className="relative">
+                <div className="bg-black/50 rounded-lg p-6">
+                  <div className="grid grid-cols-2 gap-4 text-center">
+                    <div className="p-4">
+                      <div className="text-3xl font-bold text-white mb-2">10M+</div>
+                      <div className="text-white/70">Data Points</div>
+                    </div>
+                    <div className="p-4">
+                      <div className="text-3xl font-bold text-white mb-2">50+</div>
+                      <div className="text-white/70">Device Types</div>
+                    </div>
+                    <div className="p-4">
+                      <div className="text-3xl font-bold text-white mb-2">99.9%</div>
+                      <div className="text-white/70">Uptime</div>
+                    </div>
+                    <div className="p-4">
+                      <div className="text-3xl font-bold text-white mb-2">24/7</div>
+                      <div className="text-white/70">Real-time</div>
+                    </div>
+                  </div>
                 </div>
-                <h4 className="text-lg font-semibold text-white mb-2">2. Input Data</h4>
-                <p className="text-white/70 text-sm">Enter different types of IoT datas and researches and store them on Loterra blockchain to be used by innovative global products</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="bg-white/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="h-8 w-8 text-white" />
-                </div>
-                <h4 className="text-lg font-semibold text-white mb-2">3. Verify</h4>
-                <p className="text-white/70 text-sm">Contribute to data verification and quality assurance</p>
-              </div>
-              
-              <div className="text-center">
-                <div className="bg-white/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Coins className="h-8 w-8 text-white" />
-                </div>
-                <h4 className="text-lg font-semibold text-white mb-2">4. Earn</h4>
-                <p className="text-white/70 text-sm">Receive $Terra tokens as rewards monthly basis for your contributions and other incentives</p>
               </div>
             </div>
           </div>
