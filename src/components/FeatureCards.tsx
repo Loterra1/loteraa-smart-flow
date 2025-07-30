@@ -39,7 +39,7 @@ export default function FeatureCards() {
     
     // Special positioning for the first level (decentralized verification)
     const isFirstLevel = level === 0;
-    const marginTop = isFirstLevel ? 24 : 12; // Push first level down significantly
+    const marginTop = isFirstLevel ? 48 : 12; // Pushed first level down much more (3 steps down)
     
     return (
       <div key={feature.title} className={`ml-${marginLeft} mt-${marginTop}`}>
