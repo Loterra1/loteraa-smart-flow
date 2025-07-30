@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import GlobeMapAnimation from "./animations/GlobeMapAnimation";
 import GrainyNoiseAnimation from "./animations/GrainyNoiseAnimation";
-import InteractiveDotFieldAnimation from "./animations/InteractiveDotFieldAnimation";
 
 export default function AudienceSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -45,11 +44,6 @@ export default function AudienceSection() {
             <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed mb-6 md:mb-8">
               Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
             </p>
-            
-            {/* Interactive Animation */}
-            <div className="w-full h-[400px] rounded-lg overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10">
-              <InteractiveDotFieldAnimation />
-            </div>
           </div>
         </div>
 
