@@ -17,6 +17,13 @@ export default function HeroSection() {
       {/* Solid black background overlay */}
       <div className="absolute inset-0 bg-black z-5"></div>
       
+      {/* Hero Image as Background */}
+      <div className="absolute inset-0 z-6 flex items-center justify-center">
+        <div className="w-full max-w-4xl h-96 md:h-[500px] lg:h-[600px] opacity-30">
+          <HeroImageAnimation />
+        </div>
+      </div>
+      
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="flex flex-col items-center text-center max-w-6xl mx-auto">
           <h1 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 md:mb-6 uppercase text-white">
@@ -24,11 +31,6 @@ export default function HeroSection() {
             <span className="animate-fade-in animation-delay-2000">Blockchain</span> 
             <span className="animate-fade-in animation-delay-3000"> Seamlessly</span>
           </h1>
-          
-          {/* Animated Hero Image */}
-          <div className="relative w-full max-w-md h-64 md:max-w-lg md:h-80 lg:max-w-xl lg:h-96 my-8 md:my-12 animate-fade-in animation-delay-2500">
-            <HeroImageAnimation />
-          </div>
           
           <p className="text-base md:text-lg lg:text-xl text-white/80 mb-8 md:mb-12 animate-fade-in animation-delay-4000 max-w-3xl px-4">
             The first AI-native blockchain powering real-time IoT, tokenized data rewards, and DePIN automation.
