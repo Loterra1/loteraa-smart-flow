@@ -6,10 +6,22 @@ import HeroP5Animation from "./HeroP5Animation";
 
 export default function HeroSection() {
   return (
-    <section className="pt-20 md:pt-24 pb-12 md:pb-16 min-h-[80vh] md:min-h-[90vh] flex items-center relative overflow-hidden" style={{ backgroundColor: '#000000' }}>
+    <section 
+      className="pt-20 md:pt-24 pb-12 md:pb-16 min-h-[80vh] md:min-h-[90vh] flex items-center relative overflow-hidden" 
+      style={{ 
+        backgroundColor: '#000000',
+        background: '#000000'
+      }}
+    >
+      {/* Ensure black background as base layer */}
+      <div className="absolute inset-0 bg-black z-0"></div>
+      
       {/* P5.js Interactive Animation Background */}
       <HeroP5Animation />
-      <div className="absolute inset-0 bg-black/40 z-5"></div>
+      
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/20 z-5"></div>
+      
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           <h1 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 md:mb-6 uppercase text-white">
