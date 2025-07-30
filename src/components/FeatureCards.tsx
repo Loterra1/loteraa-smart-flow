@@ -1,3 +1,4 @@
+
 import { Shield, Database, Zap } from "lucide-react";
 import CubeIllustrationAnimation from "./animations/CubeIllustrationAnimation";
 import RadialBurstIllustrationAnimation from "./animations/RadialBurstIllustrationAnimation";
@@ -142,10 +143,10 @@ export default function FeatureCards() {
         </div>
       </div>
 
-      {/* For Developers Section - Much Larger */}
+      {/* For Developers Section - Reduced image size */}
       <div className="mt-24 flex justify-center">
         <div 
-          className="relative w-[1200px] h-[1000px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
+          className="relative w-[900px] h-[750px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
           style={{
             backgroundImage: `url('/lovable-uploads/5892d5a1-463b-4189-9015-cb021db22c40.png')`,
             backgroundSize: 'cover',

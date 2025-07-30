@@ -63,8 +63,8 @@ export default function AudienceSection() {
           </div>
         </div>
 
-        {/* Future Built, Real World Ready Section - Increased spacing from footer */}
-        <div className="py-16 md:py-32">
+        {/* Future Built, Real World Ready Section - Moved up to be closer to previous section */}
+        <div className="py-8 md:py-16">
           {/* Grainy Noise Background */}
           <div className="absolute inset-0 w-full h-full opacity-90">
             <GrainyNoiseAnimation />
