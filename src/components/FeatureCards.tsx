@@ -37,18 +37,18 @@ export default function FeatureCards() {
   ];
 
   const renderFeatureCard = (feature: any, level: number = 0) => {
-    const marginLeft = level * 12; // Increased spacing between levels
+    const marginLeft = level * 4; // Reduced spacing for mobile
     const AnimationComponent = feature.animation;
     
     // Special positioning for the first level (decentralized verification) - pushed down much more
     const isFirstLevel = level === 0;
-    const marginTop = isFirstLevel ? 80 : 12; // Increased from 48 to 80 for more space from background animation
+    const marginTop = isFirstLevel ? 20 : 8; // Reduced margins for mobile
     
     return (
       <div key={feature.title} className={`ml-${marginLeft} mt-${marginTop}`}>
-        <div className="flex items-center justify-center gap-12 mb-12">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-12 mb-8 lg:mb-12">
           {/* Larger Image with P5.js Animation */}
-          <div className="flex-shrink-0 w-64 h-64 relative">
+          <div className="flex-shrink-0 w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 relative">
             <img 
               src={feature.image} 
               alt={feature.title}
@@ -60,18 +60,18 @@ export default function FeatureCards() {
           </div>
           
           {/* Text content without card styling */}
-          <div className="flex-1 max-w-xl">
-            <h3 className="text-3xl font-semibold text-white mb-6">
+          <div className="flex-1 max-w-xl text-center lg:text-left">
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-white mb-4 lg:mb-6">
               {feature.title}
             </h3>
-            <p className="text-white/70 text-lg leading-relaxed">
+            <p className="text-white/70 text-sm sm:text-base lg:text-lg leading-relaxed">
               {feature.description}
             </p>
           </div>
         </div>
         
         {feature.children && (
-          <div className="space-y-12">
+          <div className="space-y-8 lg:space-y-12">
             {feature.children.map((child: any) => renderFeatureCard(child, level + 1))}
           </div>
         )}
@@ -84,13 +84,13 @@ export default function FeatureCards() {
       {features.map((feature) => renderFeatureCard(feature))}
       
       {/* New Earn Rewards Section */}
-      <div className="mt-24 flex items-center justify-center gap-6">
+      <div className="mt-16 lg:mt-24 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-6">
         {/* Left side - Heading and Description */}
-        <div className="flex-1 max-w-3xl">
-          <h2 className="text-6xl font-bold text-white mb-12 uppercase tracking-wide">
+        <div className="flex-1 max-w-3xl text-center lg:text-left">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 lg:mb-12 uppercase tracking-wide leading-tight">
             EARN REWARD WITH $LOT TOKEN
           </h2>
-          <p className="text-white/70 text-2xl leading-relaxed">
+          <p className="text-white/70 text-base sm:text-lg lg:text-2xl leading-relaxed">
             The Loteraa ecosystem is powered by the $Lot token, a utility and reward token designed to fuel sensor contributions, validate data quality, incentivize uptime, and govern the platform's evolution.
           </p>
         </div>
@@ -100,17 +100,17 @@ export default function FeatureCards() {
           <img 
             src="/lovable-uploads/a2f6c8cd-4a5e-421c-ad7c-865057026961.png" 
             alt="$LOT Token Reward System"
-            className="w-[650px] h-[650px] object-contain"
+            className="w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[650px] lg:h-[650px] object-contain"
           />
         </div>
       </div>
 
-      {/* Three Square Cards Section - Increased sizes */}
-      <div className="mt-24 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 gap-8 mb-8">
-          {/* Card 1 - Increased size */}
+      {/* Three Square Cards Section - Mobile Responsive */}
+      <div className="mt-16 lg:mt-24 max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-8 mb-4 lg:mb-8">
+          {/* Card 1 - Responsive size */}
           <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors overflow-hidden">
-            <div className="w-full h-96">
+            <div className="w-full h-48 sm:h-64 lg:h-96">
               <img 
                 src="/lovable-uploads/fcf61d68-e0b0-43c5-be0e-73816884379c.png" 
                 alt="Sphere"
@@ -119,9 +119,9 @@ export default function FeatureCards() {
             </div>
           </div>
           
-          {/* Card 2 - Increased size */}
+          {/* Card 2 - Responsive size */}
           <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors overflow-hidden">
-            <div className="w-full h-96">
+            <div className="w-full h-48 sm:h-64 lg:h-96">
               <img 
                 src="/lovable-uploads/837a4976-6ca2-4340-ad3a-e63df1a93783.png" 
                 alt="Abstract Form"
@@ -131,10 +131,10 @@ export default function FeatureCards() {
           </div>
         </div>
         
-        {/* Card 3 - Centered below, increased size */}
+        {/* Card 3 - Centered below, responsive size */}
         <div className="flex justify-center">
-          <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors w-1/2 overflow-hidden">
-            <div className="w-full h-96">
+          <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors w-full sm:w-2/3 lg:w-1/2 overflow-hidden">
+            <div className="w-full h-48 sm:h-64 lg:h-96">
               <img 
                 src="/lovable-uploads/cdbb3b1e-c51a-4f69-8e64-5f0e520fcaed.png" 
                 alt="Spiral Disk"
@@ -145,10 +145,10 @@ export default function FeatureCards() {
         </div>
       </div>
 
-      {/* For Developers Section - Reduced text size */}
-      <div className="mt-24 flex justify-center">
+      {/* For Developers Section - Mobile Responsive */}
+      <div className="mt-16 lg:mt-24 flex justify-center px-4">
         <div 
-          className="relative w-[700px] h-[600px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
+          className="relative w-full max-w-[700px] h-[400px] sm:h-[500px] lg:h-[600px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
           style={{
             backgroundImage: `url('/lovable-uploads/5892d5a1-463b-4189-9015-cb021db22c40.png')`,
             backgroundSize: 'cover',
@@ -160,56 +160,56 @@ export default function FeatureCards() {
           <div className="absolute inset-0 bg-black/40"></div>
           
           {/* Content */}
-          <div className="relative z-10 px-16 max-w-4xl">
-            <h2 className="text-6xl font-bold text-white mb-10 uppercase tracking-wide">
+          <div className="relative z-10 px-4 sm:px-8 lg:px-16 max-w-4xl">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-6 lg:mb-10 uppercase tracking-wide">
               FOR DEVELOPERS
             </h2>
-            <p className="text-white/90 text-lg leading-relaxed mb-12">
+            <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed mb-8 lg:mb-12">
               Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains.
             </p>
-            <Button className="bg-white hover:bg-white/90 text-black px-10 py-5 text-xl font-semibold rounded-lg">
+            <Button className="bg-white hover:bg-white/90 text-black px-6 lg:px-10 py-3 lg:py-5 text-sm sm:text-lg lg:text-xl font-semibold rounded-lg">
               START BUILDING
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Updated Two Cards Layout - Stacked */}
-      <div className="mt-16 max-w-7xl mx-auto">
-        {/* Card 1 - Platform Architecture - Full width, increased height */}
-        <div className="bg-black border border-white/20 rounded-lg p-12 h-96 mb-8">
-          <div className="flex items-center gap-12 h-full">
+      {/* Updated Two Cards Layout - Mobile Responsive */}
+      <div className="mt-16 max-w-7xl mx-auto px-4">
+        {/* Card 1 - Platform Architecture - Mobile Responsive */}
+        <div className="bg-black border border-white/20 rounded-lg p-4 sm:p-6 lg:p-12 min-h-[300px] lg:h-96 mb-6 lg:mb-8">
+          <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 h-full">
             {/* Left side - Animation */}
-            <div className="w-80 h-full">
+            <div className="w-48 h-48 sm:w-60 sm:h-60 lg:w-80 lg:h-full flex-shrink-0">
               <SpikeBallAnimation />
             </div>
             
             {/* Right side - Content */}
-            <div className="flex-1">
-              <h3 className="text-3xl font-bold mb-8 uppercase tracking-wide text-white">
+            <div className="flex-1 text-center lg:text-left">
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 lg:mb-8 uppercase tracking-wide text-white">
                 PLATFORM ARCHITECTURE
               </h3>
-              <p className="text-white/80 text-xl leading-relaxed">
+              <p className="text-white/80 text-sm sm:text-base lg:text-xl leading-relaxed">
                 The Loteraa platform is built on a modular and scalable architecture designed to securely connect real-world sensor data to on-chain smart contracts. This architecture bridges five core components: the Device Layer, the Backend Data Ingestion Layer, the Oracle Layer, the Smart Contract Layer, and the Storage Layer. Together, these layers form a robust, tamper-proof pipeline that transforms raw physical inputs into verified blockchain transactions and automation.
               </p>
             </div>
           </div>
         </div>
         
-        {/* Card 2 - Use Cases and Impact - Full width, increased height */}
-        <div className="bg-black border border-white/20 rounded-lg p-12 h-96">
-          <div className="flex items-center gap-12 h-full">
+        {/* Card 2 - Use Cases and Impact - Mobile Responsive */}
+        <div className="bg-black border border-white/20 rounded-lg p-4 sm:p-6 lg:p-12 min-h-[300px] lg:h-96">
+          <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 h-full">
             {/* Left side - Animation */}
-            <div className="w-80 h-full">
+            <div className="w-48 h-48 sm:w-60 sm:h-60 lg:w-80 lg:h-full flex-shrink-0">
               <RadialBurstIllustrationAnimation2 />
             </div>
             
             {/* Right side - Content */}
-            <div className="flex-1">
-              <h3 className="text-3xl font-bold mb-8 uppercase tracking-wide text-white">
+            <div className="flex-1 text-center lg:text-left">
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 lg:mb-8 uppercase tracking-wide text-white">
                 USE CASES AND IMPACT
               </h3>
-              <p className="text-white/80 text-xl leading-relaxed">
+              <p className="text-white/80 text-sm sm:text-base lg:text-xl leading-relaxed">
                 Loteraa creates a new paradigm for how physical data can power decentralized applications, enabling automation, transparency, and equitable reward systems. Through Loteraa, real-time sensor data can trigger smart contracts, train AI models, or settle digital agreements with no need for centralized intermediaries.
               </p>
             </div>
