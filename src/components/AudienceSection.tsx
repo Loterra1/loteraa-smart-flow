@@ -38,19 +38,19 @@ export default function AudienceSection() {
             <GrainyNoiseAnimation />
           </div>
           
-          <div className="relative z-10 flex items-center justify-center gap-12">
-            {/* Left side - Heading and Description */}
-            <div className="flex-1 max-w-2xl">
-              <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 md:mb-6 text-white uppercase">
+          <div className="relative z-10 flex items-center justify-between gap-16">
+            {/* Left side - Heading and Description - Better positioned and larger */}
+            <div className="flex-1 max-w-4xl pr-8">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-8 md:mb-10 text-white uppercase leading-tight">
                 <span className="text-white">Real-World → Web3</span> Integration
               </h2>
-              <p className="text-base md:text-lg lg:text-xl text-white/70 leading-relaxed mb-6 md:mb-8">
+              <p className="text-xl md:text-2xl lg:text-3xl text-white/70 leading-relaxed mb-6 md:mb-8">
                 Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
               </p>
             </div>
             
-            {/* Right side - Image with P5.js Animation */}
-            <div className="flex-shrink-0 w-96 h-96 relative">
+            {/* Right side - Much Larger Image with P5.js Animation */}
+            <div className="flex-shrink-0 w-[600px] h-[600px] relative">
               <img 
                 src="/lovable-uploads/79201339-7541-40e0-a69d-321b49e8b86a.png" 
                 alt="Real-World Web3 Integration"
@@ -76,9 +76,9 @@ export default function AudienceSection() {
               <span className="text-white">Real World Ready</span>
             </h2>
             
-            {/* Globe Animation Background - Responsive Size */}
+            {/* Much Larger Globe Animation Background */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              <div className="w-[800px] md:w-[1000px] lg:w-[1200px] h-[500px] md:h-[600px] lg:h-[800px] relative overflow-hidden">
+              <div className="w-[1200px] md:w-[1400px] lg:w-[1600px] h-[700px] md:h-[800px] lg:h-[1000px] relative overflow-hidden">
                 <GlobeMapAnimation />
               </div>
             </div>
