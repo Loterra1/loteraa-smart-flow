@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -108,13 +107,9 @@ export default function AboutPage() {
       <section className="pt-32 pb-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
-              <span className="text-white">Connecting IoT</span> <br />
-              <span className="text-white">to Blockchain</span>
-            </h1>
             
-            {/* Large Image with P5.js Animation Overlay */}
-            <div className="relative mx-auto mb-12 w-[400px] h-[400px] md:w-[500px] md:h-[500px]">
+            {/* Large Image with Centered Text and P5.js Animation Overlay */}
+            <div className="relative mx-auto mb-12 w-[400px] h-[400px] md:w-[600px] md:h-[600px]">
               {/* Background Image */}
               <img 
                 src="/lovable-uploads/8643e5bb-b534-4077-ac53-edb38eb13163.png" 
@@ -123,15 +118,23 @@ export default function AboutPage() {
               />
               
               {/* P5.js Animation Overlay */}
-              <div className="absolute inset-0 z-20 opacity-70">
+              <div className="absolute inset-0 z-20 opacity-60">
                 <RadialBurstAnimation />
               </div>
+              
+              {/* Centered Text Overlay */}
+              <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-4">
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 text-white drop-shadow-2xl">
+                  <span className="text-white">Connecting IoT</span> <br />
+                  <span className="text-white">to Blockchain</span>
+                </h1>
+                
+                <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
+                  Loteraa is building the future of IoT-blockchain infrastructure, enabling seamless 
+                  integration between real-world devices and decentralized smart contracts.
+                </p>
+              </div>
             </div>
-            
-            <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Loteraa is building the future of IoT-blockchain infrastructure, enabling seamless 
-              integration between real-world devices and decentralized smart contracts.
-            </p>
           </div>
         </div>
       </section>
