@@ -1,9 +1,12 @@
 
 
+
 import { Shield, Database, Zap } from "lucide-react";
 import CubeIllustrationAnimation from "./animations/CubeIllustrationAnimation";
 import RadialBurstIllustrationAnimation from "./animations/RadialBurstIllustrationAnimation";
 import VortexIllustrationAnimation from "./animations/VortexIllustrationAnimation";
+import WireframeSphereIllustrationAnimation from "./animations/WireframeSphereIllustrationAnimation";
+import RadialBurstIllustrationAnimation2 from "./animations/RadialBurstIllustrationAnimation2";
 import { Button } from "@/components/ui/button";
 
 export default function FeatureCards() {
@@ -147,7 +150,7 @@ export default function FeatureCards() {
       {/* For Developers Section - Reduced image size */}
       <div className="mt-24 flex justify-center">
         <div 
-          className="relative w-[900px] h-[750px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
+          className="relative w-[700px] h-[600px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
           style={{
             backgroundImage: `url('/lovable-uploads/5892d5a1-463b-4189-9015-cb021db22c40.png')`,
             backgroundSize: 'cover',
@@ -173,31 +176,50 @@ export default function FeatureCards() {
         </div>
       </div>
 
-      {/* Two Rectangular Cards After Start Building Button */}
-      <div className="mt-16 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Card 1 - Platform Architecture */}
-          <div className="bg-black border border-white/20 hover:bg-white hover:text-black transition-colors duration-300 rounded-lg p-8 h-80">
-            <h3 className="text-2xl font-bold mb-6 uppercase tracking-wide">
-              PLATFORM ARCHITECTURE
-            </h3>
-            <p className="text-lg leading-relaxed">
-              The Loteraa platform is built on a modular and scalable architecture designed to securely connect real-world sensor data to on-chain smart contracts. This architecture bridges five core components: the Device Layer, the Backend Data Ingestion Layer, the Oracle Layer, the Smart Contract Layer, and the Storage Layer. Together, these layers form a robust, tamper-proof pipeline that transforms raw physical inputs into verified blockchain transactions and automation.
-            </p>
+      {/* Updated Two Cards Layout - Stacked */}
+      <div className="mt-16 max-w-7xl mx-auto">
+        {/* Card 1 - Platform Architecture - Full width, increased height */}
+        <div className="bg-black border border-white/20 rounded-lg p-12 h-96 mb-8">
+          <div className="flex items-center gap-12 h-full">
+            {/* Left side - Animation */}
+            <div className="w-80 h-full">
+              <WireframeSphereIllustrationAnimation />
+            </div>
+            
+            {/* Right side - Content */}
+            <div className="flex-1">
+              <h3 className="text-3xl font-bold mb-8 uppercase tracking-wide text-white">
+                PLATFORM ARCHITECTURE
+              </h3>
+              <p className="text-white/80 text-xl leading-relaxed">
+                The Loteraa platform is built on a modular and scalable architecture designed to securely connect real-world sensor data to on-chain smart contracts. This architecture bridges five core components: the Device Layer, the Backend Data Ingestion Layer, the Oracle Layer, the Smart Contract Layer, and the Storage Layer. Together, these layers form a robust, tamper-proof pipeline that transforms raw physical inputs into verified blockchain transactions and automation.
+              </p>
+            </div>
           </div>
-          
-          {/* Card 2 - Use Cases and Impact */}
-          <div className="bg-black border border-white/20 hover:bg-white hover:text-black transition-colors duration-300 rounded-lg p-8 h-80">
-            <h3 className="text-2xl font-bold mb-6 uppercase tracking-wide">
-              USE CASES AND IMPACT
-            </h3>
-            <p className="text-lg leading-relaxed">
-              Loteraa creates a new paradigm for how physical data can power decentralized applications, enabling automation, transparency, and equitable reward systems. Through Loteraa, real-time sensor data can trigger smart contracts, train AI models, or settle digital agreements with no need for centralized intermediaries.
-            </p>
+        </div>
+        
+        {/* Card 2 - Use Cases and Impact - Full width, increased height */}
+        <div className="bg-black border border-white/20 rounded-lg p-12 h-96">
+          <div className="flex items-center gap-12 h-full">
+            {/* Left side - Animation */}
+            <div className="w-80 h-full">
+              <RadialBurstIllustrationAnimation2 />
+            </div>
+            
+            {/* Right side - Content */}
+            <div className="flex-1">
+              <h3 className="text-3xl font-bold mb-8 uppercase tracking-wide text-white">
+                USE CASES AND IMPACT
+              </h3>
+              <p className="text-white/80 text-xl leading-relaxed">
+                Loteraa creates a new paradigm for how physical data can power decentralized applications, enabling automation, transparency, and equitable reward systems. Through Loteraa, real-time sensor data can trigger smart contracts, train AI models, or settle digital agreements with no need for centralized intermediaries.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 
