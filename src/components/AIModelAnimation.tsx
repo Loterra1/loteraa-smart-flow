@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
 
@@ -46,15 +45,16 @@ export default function AIModelAnimation() {
         const canvas = p.createCanvas(rect.width, rect.height, p.WEBGL);
         canvas.parent(containerRef.current!);
         
-        // Ensure canvas covers entire container on mobile
+        // Force canvas to cover entire container with black background
         canvas.style('position', 'absolute');
-        canvas.style('top', '0');
-        canvas.style('left', '0');
+        canvas.style('top', '0px');
+        canvas.style('left', '0px');
         canvas.style('width', '100%');
         canvas.style('height', '100%');
-        canvas.style('background', '#000000');
-        canvas.style('backgroundColor', '#000000');
-        canvas.style('z-index', '2');
+        canvas.style('display', 'block');
+        canvas.style('background-color', '#000000 !important');
+        canvas.style('background', '#000000 !important');
+        canvas.style('z-index', '10');
         
         // Initialize physics objects for the image layers
         for (let i = 0; i < 3; i++) {
@@ -99,14 +99,25 @@ export default function AIModelAnimation() {
       };
 
       p.draw = () => {
-        // Force solid black background on every frame - critical for mobile
-        p.background(0);
+        // CRITICAL: Multiple layers of black background to prevent any white showing
+        p.background(0, 0, 0);
+        p.clear();
+        p.background(0, 0, 0);
         
-        // Additional black rectangle to ensure full coverage on mobile
+        // Force black background fill covering entire canvas area
         p.push();
         p.resetMatrix();
-        p.fill(0);
+        p.fill(0, 0, 0, 255);
         p.noStroke();
+        p.rectMode(p.CORNER);
+        p.rect(-p.width, -p.height, p.width * 3, p.height * 3);
+        p.pop();
+        
+        // Additional black background coverage
+        p.push();
+        p.fill(0, 0, 0, 255);
+        p.noStroke();
+        p.translate(0, 0, -1000);
         p.rectMode(p.CENTER);
         p.rect(0, 0, p.width * 2, p.height * 2);
         p.pop();
@@ -256,7 +267,7 @@ export default function AIModelAnimation() {
           const rect = containerRef.current.getBoundingClientRect();
           p.resizeCanvas(rect.width, rect.height);
           // Force black background on resize
-          p.background(0);
+          p.background(0, 0, 0);
         }
       };
     };
@@ -275,10 +286,11 @@ export default function AIModelAnimation() {
       ref={containerRef} 
       className="absolute inset-0 w-full h-full"
       style={{ 
-        backgroundColor: '#000000',
-        background: '#000000',
+        backgroundColor: '#000000 !important',
+        background: '#000000 !important',
         minHeight: '100%',
         minWidth: '100%',
+        overflow: 'hidden',
         zIndex: 2
       }}
     />
