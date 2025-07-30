@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
 
@@ -45,16 +46,15 @@ export default function AIModelAnimation() {
         const canvas = p.createCanvas(rect.width, rect.height, p.WEBGL);
         canvas.parent(containerRef.current!);
         
-        // Set canvas styles to ensure proper rendering
+        // Ensure canvas covers entire container on mobile
         canvas.style('position', 'absolute');
         canvas.style('top', '0');
         canvas.style('left', '0');
         canvas.style('width', '100%');
         canvas.style('height', '100%');
-        canvas.style('background-color', '#000000');
-        
-        // Force black background immediately
-        p.background(0, 0, 0, 255);
+        canvas.style('background', '#000000');
+        canvas.style('backgroundColor', '#000000');
+        canvas.style('z-index', '2');
         
         // Initialize physics objects for the image layers
         for (let i = 0; i < 3; i++) {
@@ -99,26 +99,28 @@ export default function AIModelAnimation() {
       };
 
       p.draw = () => {
-        // Force solid black background every single frame
-        p.background(0, 0, 0, 255);
+        // Force solid black background on every frame - critical for mobile
+        p.background(0);
         
-        // Draw additional black rectangle to ensure coverage
+        // Additional black rectangle to ensure full coverage on mobile
         p.push();
         p.resetMatrix();
-        p.fill(0, 0, 0, 255);
+        p.fill(0);
         p.noStroke();
-        p.rect(-p.width/2, -p.height/2, p.width, p.height);
+        p.rectMode(p.CENTER);
+        p.rect(0, 0, p.width * 2, p.height * 2);
         p.pop();
         
         p.lights();
         
         time += 0.02;
         
-        // Camera rotation
+        // Camera rotation - adjusted for mobile
+        const cameraDistance = p.width < 768 ? 300 : 400;
         p.camera(
-          p.cos(time * 0.3) * 400,
+          p.cos(time * 0.3) * cameraDistance,
           -100,
-          p.sin(time * 0.3) * 400,
+          p.sin(time * 0.3) * cameraDistance,
           0, 0, 0,
           0, 1, 0
         );
@@ -163,32 +165,34 @@ export default function AIModelAnimation() {
           p.stroke(255, 200);
           p.strokeWeight(1);
           
-          // Create diamond/rhombus shape like in the image
+          // Create diamond/rhombus shape like in the image - scaled for mobile
+          const size = p.width < 768 ? 40 : 60;
           p.beginShape(p.TRIANGLES);
           // Top diamond
-          p.vertex(-60, -60, 0);
-          p.vertex(60, -60, 0);
+          p.vertex(-size, -size, 0);
+          p.vertex(size, -size, 0);
           p.vertex(0, 0, 20);
           
           // Bottom diamond
-          p.vertex(-60, 60, 0);
-          p.vertex(60, 60, 0);
+          p.vertex(-size, size, 0);
+          p.vertex(size, size, 0);
           p.vertex(0, 0, -20);
           
           // Side diamonds
-          p.vertex(-60, -60, 0);
-          p.vertex(-60, 60, 0);
+          p.vertex(-size, -size, 0);
+          p.vertex(-size, size, 0);
           p.vertex(0, 0, 20);
           
-          p.vertex(60, -60, 0);
-          p.vertex(60, 60, 0);
+          p.vertex(size, -size, 0);
+          p.vertex(size, size, 0);
           p.vertex(0, 0, -20);
           p.endShape();
           
-          // Add glowing sphere in center
+          // Add glowing sphere in center - scaled for mobile
           p.fill(255, 255, 255, 200);
           p.noStroke();
-          p.sphere(30 + p.sin(time + index) * 5);
+          const sphereSize = p.width < 768 ? 20 : 30;
+          p.sphere(sphereSize + p.sin(time + index) * 5);
           
           p.pop();
         });
@@ -251,7 +255,8 @@ export default function AIModelAnimation() {
         if (containerRef.current) {
           const rect = containerRef.current.getBoundingClientRect();
           p.resizeCanvas(rect.width, rect.height);
-          p.background(0, 0, 0, 255);
+          // Force black background on resize
+          p.background(0);
         }
       };
     };
@@ -274,7 +279,7 @@ export default function AIModelAnimation() {
         background: '#000000',
         minHeight: '100%',
         minWidth: '100%',
-        zIndex: 1
+        zIndex: 2
       }}
     />
   );

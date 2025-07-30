@@ -34,20 +34,25 @@ export default function CorePrinciples() {
   return (
     <section 
       ref={sectionRef} 
-      className="py-12 sm:py-16 lg:py-20 relative overflow-hidden min-h-screen"
-      style={{ backgroundColor: '#000000', background: '#000000' }}
+      className="py-12 sm:py-16 lg:py-20 relative overflow-hidden min-h-screen bg-black"
+      style={{ backgroundColor: '#000000' }}
     >
-      {/* Multiple layers of black background to prevent any white showing */}
+      {/* Multiple layers of black background - critical for mobile */}
       <div 
-        className="absolute inset-0 w-full h-full z-0" 
-        style={{ backgroundColor: '#000000', background: '#000000' }}
-      ></div>
+        className="fixed inset-0 w-full h-full bg-black z-0" 
+        style={{ backgroundColor: '#000000' }}
+      />
+      <div 
+        className="absolute inset-0 w-full h-full bg-black z-0" 
+        style={{ backgroundColor: '#000000' }}
+      />
+      <div 
+        className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)] bg-black z-0" 
+        style={{ backgroundColor: '#000000' }}
+      />
       
       {/* P5.js animation covering entire section */}
-      <div 
-        className="absolute inset-0 w-full h-full z-1" 
-        style={{ backgroundColor: '#000000', background: '#000000' }}
-      >
+      <div className="absolute inset-0 w-full h-full z-1">
         <AIModelAnimation />
       </div>
       
@@ -68,8 +73,9 @@ export default function CorePrinciples() {
           
           {/* Right side - Image with P5.js animation */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden">
-              {/* Background image - more visible on mobile */}
+            <div className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden bg-black">
+              {/* Background image - more visible on mobile with black background fallback */}
+              <div className="absolute inset-0 bg-black z-0" />
               <img 
                 src="/lovable-uploads/abde815c-1ff0-4f96-af89-2322637fb540.png" 
                 alt="AI Model Training Visualization" 
