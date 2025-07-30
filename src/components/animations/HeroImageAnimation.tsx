@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -20,7 +19,7 @@ export default function HeroImageAnimation() {
 
       p.preload = () => {
         try {
-          img = p.loadImage('/lovable-uploads/110de42b-52bd-4d19-a99f-1ecb8134639d.png', 
+          img = p.loadImage('/lovable-uploads/9b4d24b9-a5d2-453f-a718-60fd0eed2a6b.png', 
             () => {
               console.log('Image loaded successfully');
               imageLoaded = true;
