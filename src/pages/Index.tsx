@@ -1,7 +1,6 @@
 
 import NavigationHeader from "@/components/NavigationHeader";
 import HeroSection from "@/components/HeroSection";
-import VisionMissionSection from "@/components/VisionMissionSection";
 import CorePrinciples from "@/components/CorePrinciples";
 import FeaturesSection from "@/components/FeaturesSection";
 import AudienceSection from "@/components/AudienceSection";
@@ -14,7 +13,6 @@ const Index = () => {
       <NavigationHeader />
       <main>
         <HeroSection />
-        <VisionMissionSection />
         <CorePrinciples />
         <FeaturesSection />
         <AudienceSection />

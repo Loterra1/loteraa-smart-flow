@@ -17,9 +17,9 @@ export default function HeroSection() {
       {/* Solid black background overlay */}
       <div className="absolute inset-0 bg-black z-5"></div>
       
-      {/* Hero Image as Background - Made brighter and more visible */}
+      {/* Hero Three.js Animation as Background */}
       <div className="absolute inset-0 z-6 flex items-center justify-center">
-        <div className="w-full max-w-4xl h-96 md:h-[500px] lg:h-[600px] opacity-70">
+        <div className="w-full max-w-4xl h-96 md:h-[500px] lg:h-[600px] opacity-80">
           <HeroImageAnimation />
         </div>
       </div>
