@@ -156,11 +156,12 @@ function FloatingParticles() {
 
 export default function GenerativeArtAnimation() {
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div className="relative w-full h-full flex items-center justify-center bg-transparent">
       <Canvas
         className="w-full h-full"
         camera={{ position: [0, 0, 8], fov: 50 }}
         style={{ background: 'transparent' }}
+        gl={{ alpha: true, antialias: true }}
       >
         <ambientLight intensity={0.3} />
         <directionalLight 

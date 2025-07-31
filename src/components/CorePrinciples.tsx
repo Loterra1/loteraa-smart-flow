@@ -37,29 +37,26 @@ export default function CorePrinciples() {
   return (
     <section 
       ref={sectionRef} 
-      className="py-8 sm:py-12 lg:py-16 relative overflow-hidden min-h-screen"
+      className="py-8 sm:py-12 lg:py-16 relative overflow-hidden min-h-screen bg-black"
       style={{ 
         backgroundColor: '#000000 !important',
         background: '#000000 !important'
       }}
     >
-      {/* Black background layers */}
-      {Array.from({ length: 5 }).map((_, index) => (
-        <div 
-          key={index}
-          className="absolute inset-0 w-full h-full"
-          style={{ 
-            backgroundColor: '#000000 !important',
-            background: '#000000 !important',
-            zIndex: index
-          }}
-        />
-      ))}
+      {/* Enhanced black background enforcement */}
+      <div 
+        className="absolute inset-0 w-full h-full bg-black"
+        style={{ 
+          backgroundColor: '#000000 !important',
+          background: '#000000 !important',
+          zIndex: 1
+        }}
+      />
       
       {/* Only render P5.js animation on desktop */}
       {!isMobile && (
         <div 
-          className="absolute -inset-10 w-[calc(100%+5rem)] h-[calc(100%+5rem)]"
+          className="absolute -inset-10 w-[calc(100%+5rem)] h-[calc(100%+5rem)] bg-black"
           style={{ 
             backgroundColor: '#000000 !important',
             background: '#000000 !important',
@@ -89,7 +86,7 @@ export default function CorePrinciples() {
           {/* Right side - Three.js Generative Art Animation */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div 
-              className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden"
+              className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden bg-black"
               style={{ 
                 backgroundColor: '#000000 !important',
                 background: '#000000 !important'
