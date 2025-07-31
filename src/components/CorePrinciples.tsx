@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import AIModelAnimation from "./AIModelAnimation";
 import FeatureCards from "./FeatureCards";
+import GenerativeArtAnimation from "./animations/GenerativeArtAnimation";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function CorePrinciples() {
@@ -36,7 +37,7 @@ export default function CorePrinciples() {
   return (
     <section 
       ref={sectionRef} 
-      className="py-12 sm:py-16 lg:py-20 relative overflow-hidden min-h-screen"
+      className="py-8 sm:py-12 lg:py-16 relative overflow-hidden min-h-screen"
       style={{ 
         backgroundColor: '#000000 !important',
         background: '#000000 !important'
@@ -85,7 +86,7 @@ export default function CorePrinciples() {
             </p>
           </div>
           
-          {/* Right side - Animated Image with reduced brightness */}
+          {/* Right side - Three.js Generative Art Animation */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div 
               className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden"
@@ -94,39 +95,7 @@ export default function CorePrinciples() {
                 background: '#000000 !important'
               }}
             >
-              <div 
-                className="absolute inset-0"
-                style={{ 
-                  backgroundColor: '#000000 !important',
-                  background: '#000000 !important'
-                }}
-              />
-              
-              {/* Animated container with smooth motion */}
-              <div 
-                className="absolute inset-0 animate-gentle-sway"
-                style={{
-                  animation: 'gentle-sway 10s ease-in-out infinite'
-                }}
-              >
-                <img 
-                  src="/lovable-uploads/be2062d6-238d-49d9-bd0a-893d74c74d88.png" 
-                  alt="AI Model Training Sphere Visualization" 
-                  className="absolute inset-0 w-full h-full object-contain transition-all duration-1000 ease-in-out hover:scale-105 z-10"
-                  style={{ 
-                    filter: 'brightness(0.9) contrast(1.05)',
-                    animation: 'float 8s ease-in-out infinite'
-                  }}
-                />
-              </div>
-              
-              {/* Subtle static glow effect without blinking */}
-              <div 
-                className="absolute inset-0 opacity-10 z-5"
-                style={{
-                  background: 'radial-gradient(circle at center, rgba(113, 66, 246, 0.2), transparent 70%)',
-                }}
-              />
+              <GenerativeArtAnimation />
             </div>
           </div>
         </div>
