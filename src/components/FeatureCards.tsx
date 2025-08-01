@@ -6,7 +6,9 @@ import VortexIllustrationAnimation from "./animations/VortexIllustrationAnimatio
 import SpikeBallAnimation from "./animations/SpikeBallAnimation";
 import RadialBurstIllustrationAnimation2 from "./animations/RadialBurstIllustrationAnimation2";
 import MassAdoptionAnimation from "./animations/MassAdoptionAnimation";
+import FeatureUseCasesAnimation from "./animations/FeatureUseCasesAnimation";
 import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
 
 export default function FeatureCards() {
   const features = [
@@ -158,6 +160,9 @@ export default function FeatureCards() {
         </div>
       </div>
 
+      {/* Feature Use Cases Section */}
+      <FeatureUseCasesSection />
+
       {/* Three Square Cards Section - Mobile Responsive */}
       <div className="mt-16 lg:mt-24 max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-8 mb-4 lg:mb-8">
@@ -255,6 +260,112 @@ export default function FeatureCards() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function FeatureUseCasesSection() {
+  const [visibleSections, setVisibleSections] = useState<boolean[]>([false, false, false, false]);
+  const sectionRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null)
+  ];
+
+  useEffect(() => {
+    const observers = sectionRefs.map((ref, index) => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setVisibleSections(prev => {
+                const newState = [...prev];
+                newState[index] = true;
+                return newState;
+              });
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+
+      return observer;
+    });
+
+    return () => observers.forEach(observer => observer.disconnect());
+  }, []);
+
+  const useCases = [
+    {
+      title: "AI DEVELOPMENT & MODEL TRAINING",
+      description: "Loteraa supplies real-world, verified IoT data to train and refine AI/ML models on-chain, while enabling AI devs to monetize models, automate logic, and verify outputs via tokenized smart contract feedback loops.",
+      side: "left"
+    },
+    {
+      title: "WEB3 & DEPIN ECOSYSTEMS", 
+      description: "Loteraa powers decentralized physical infrastructure (DePIN) by connecting sensors, devices, and data streams to smart contracts, enabling trustless automation, incentivized participation, and token rewards for builders and operators.",
+      side: "right"
+    },
+    {
+      title: "BANKING & FINTECH",
+      description: "Loteraa is built to power financial institutions to automate insurance claims, loan triggers, and risk assessments using real-world IoT inputs like GPS, biometrics, or environmental data — reducing fraud, manual processing, and latency.",
+      side: "left"
+    },
+    {
+      title: "NETWORKING & TELECOM",
+      description: "Loteraa is built to enables telecoms to tokenize bandwidth usage, track network quality via sensors, and incentivize community-built infrastructure with programmable rewards, while providing immutable data logs for audits and quality assurance.",
+      side: "right"
+    }
+  ];
+
+  return (
+    <div className="mt-16 lg:mt-24 max-w-7xl mx-auto px-4">
+      {/* Center heading */}
+      <div className="text-center mb-12 lg:mb-16">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 lg:mb-12 uppercase tracking-wide">
+          FEATURE USE CASES
+        </h2>
+        {/* Long line in the middle */}
+        <div className="w-full h-px bg-white/30 mb-12 lg:mb-16"></div>
+      </div>
+
+      {/* Three.js Animation Background */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none">
+        <FeatureUseCasesAnimation />
+      </div>
+
+      {/* Use cases with alternating layout */}
+      <div className="space-y-12 lg:space-y-20 relative z-10">
+        {useCases.map((useCase, index) => (
+          <div
+            key={index}
+            ref={sectionRefs[index]}
+            className={`flex flex-col lg:flex-row items-center gap-8 lg:gap-16 transition-all duration-1000 ${
+              visibleSections[index] 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-8'
+            } ${useCase.side === 'right' ? 'lg:flex-row-reverse' : ''}`}
+          >
+            {/* Content */}
+            <div className="flex-1 text-center lg:text-left">
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6 lg:mb-8 uppercase tracking-wide">
+                {useCase.title}
+              </h3>
+              <p className="text-white/70 text-base sm:text-lg lg:text-xl leading-relaxed">
+                {useCase.description}
+              </p>
+            </div>
+            
+            {/* Spacer for visual balance */}
+            <div className="flex-1 hidden lg:block"></div>
+          </div>
+        ))}
       </div>
     </div>
   );
