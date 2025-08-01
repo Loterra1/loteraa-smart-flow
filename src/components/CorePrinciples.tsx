@@ -1,6 +1,5 @@
 
 import { useEffect, useRef, useState } from "react";
-import AIModelAnimation from "./AIModelAnimation";
 import FeatureCards from "./FeatureCards";
 import GenerativeArtAnimation from "./animations/GenerativeArtAnimation";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -52,21 +51,6 @@ export default function CorePrinciples() {
           zIndex: 1
         }}
       />
-      
-      {/* Only render P5.js animation on desktop */}
-      {!isMobile && (
-        <div 
-          className="absolute -inset-10 w-[calc(100%+5rem)] h-[calc(100%+5rem)] bg-black"
-          style={{ 
-            backgroundColor: '#000000 !important',
-            background: '#000000 !important',
-            zIndex: 5,
-            overflow: 'hidden'
-          }}
-        >
-          <AIModelAnimation />
-        </div>
-      )}
       
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
