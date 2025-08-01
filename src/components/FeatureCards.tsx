@@ -5,6 +5,7 @@ import RadialBurstIllustrationAnimation from "./animations/RadialBurstIllustrati
 import VortexIllustrationAnimation from "./animations/VortexIllustrationAnimation";
 import SpikeBallAnimation from "./animations/SpikeBallAnimation";
 import RadialBurstIllustrationAnimation2 from "./animations/RadialBurstIllustrationAnimation2";
+import MassAdoptionAnimation from "./animations/MassAdoptionAnimation";
 import { Button } from "@/components/ui/button";
 
 export default function FeatureCards() {
@@ -83,6 +84,59 @@ export default function FeatureCards() {
     <div className="mt-24">
       {features.map((feature) => renderFeatureCard(feature))}
       
+      {/* Made for Mass Adoption Section */}
+      <div className="mt-16 lg:mt-24">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+          {/* Left side - Heading and Image */}
+          <div className="flex-1 max-w-lg">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 lg:mb-8 uppercase tracking-wide text-center lg:text-left">
+              MADE FOR MASS ADOPTION
+            </h2>
+            <div className="w-full h-[300px] sm:h-[400px] lg:h-[500px]">
+              <MassAdoptionAnimation />
+            </div>
+          </div>
+          
+          {/* Right side - Cards */}
+          <div className="flex-1 max-w-2xl">
+            {/* Top row - Card 1 and Card 2 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              {/* Card 1 */}
+              <div className="bg-black border border-white/20 rounded-lg p-6 min-h-[200px] flex flex-col">
+                <h3 className="text-lg font-bold text-white mb-4 uppercase tracking-wide">
+                  REAL-WORLD UTILITY, NOT HYPE
+                </h3>
+                <p className="text-white/70 text-sm leading-relaxed flex-1">
+                  From data-driven automations to sensor-powered rewards, Loteraa delivers immediate and understandable value to industries, researchers, and individuals. It's not about speculation — it's about solving real problems with on-chain logic.
+                </p>
+              </div>
+              
+              {/* Card 2 */}
+              <div className="bg-black border border-white/20 rounded-lg p-6 min-h-[200px] flex flex-col">
+                <h3 className="text-lg font-bold text-white mb-4 uppercase tracking-wide">
+                  TOKENOMICS BUILT FOR PARTICIPATION
+                </h3>
+                <p className="text-white/70 text-sm leading-relaxed flex-1">
+                  Users earn $LOT by contributing data, staking, or building on the platform — not just holding tokens. This model brings everyone into the economy: developers, businesses, researchers, and everyday users.
+                </p>
+              </div>
+            </div>
+            
+            {/* Bottom row - Card 3 centered */}
+            <div className="flex justify-center">
+              <div className="bg-black border border-white/20 rounded-lg p-6 w-full sm:w-2/3 lg:w-3/4 min-h-[200px] flex flex-col">
+                <h3 className="text-lg font-bold text-white mb-4 uppercase tracking-wide">
+                  DATA-FIRST DESIGN FOR THE REAL WORLD
+                </h3>
+                <p className="text-white/70 text-sm leading-relaxed flex-1">
+                  Loteraa is built around real-time sensor data, making it the first blockchain where data isn't just stored — it's monetized, automated, and rewarded. From supply chain to healthcare to smart cities, this approach transforms everyday data into economic activity, unlocking mass adoption beyond crypto-native users.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* New Earn Rewards Section */}
       <div className="mt-16 lg:mt-24 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-6">
         {/* Left side - Heading and Description */}
@@ -95,7 +149,6 @@ export default function FeatureCards() {
           </p>
         </div>
         
-        {/* Right side - Very Large Image - Closer */}
         <div className="flex-shrink-0">
           <img 
             src="/lovable-uploads/a2f6c8cd-4a5e-421c-ad7c-865057026961.png" 
@@ -108,7 +161,6 @@ export default function FeatureCards() {
       {/* Three Square Cards Section - Mobile Responsive */}
       <div className="mt-16 lg:mt-24 max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-8 mb-4 lg:mb-8">
-          {/* Card 1 - Responsive size */}
           <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors overflow-hidden">
             <div className="w-full h-48 sm:h-64 lg:h-96">
               <img 
@@ -119,7 +171,6 @@ export default function FeatureCards() {
             </div>
           </div>
           
-          {/* Card 2 - Responsive size */}
           <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors overflow-hidden">
             <div className="w-full h-48 sm:h-64 lg:h-96">
               <img 
@@ -131,7 +182,6 @@ export default function FeatureCards() {
           </div>
         </div>
         
-        {/* Card 3 - Centered below, responsive size */}
         <div className="flex justify-center">
           <div className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 hover:bg-white/10 transition-colors w-full sm:w-2/3 lg:w-1/2 overflow-hidden">
             <div className="w-full h-48 sm:h-64 lg:h-96">
@@ -145,7 +195,6 @@ export default function FeatureCards() {
         </div>
       </div>
 
-      {/* For Developers Section - Mobile Responsive */}
       <div className="mt-16 lg:mt-24 flex justify-center px-4">
         <div 
           className="relative w-full max-w-[700px] h-[400px] sm:h-[500px] lg:h-[600px] flex flex-col items-center justify-center text-center rounded-lg overflow-hidden"
@@ -156,10 +205,8 @@ export default function FeatureCards() {
             backgroundRepeat: 'no-repeat'
           }}
         >
-          {/* Dark overlay for better text readability */}
           <div className="absolute inset-0 bg-black/40"></div>
           
-          {/* Content */}
           <div className="relative z-10 px-4 sm:px-8 lg:px-16 max-w-4xl">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-6 lg:mb-10 uppercase tracking-wide">
               FOR DEVELOPERS
@@ -174,17 +221,13 @@ export default function FeatureCards() {
         </div>
       </div>
 
-      {/* Updated Two Cards Layout - Mobile Responsive */}
       <div className="mt-16 max-w-7xl mx-auto px-4">
-        {/* Card 1 - Platform Architecture - Mobile Responsive */}
         <div className="bg-black border border-white/20 rounded-lg p-4 sm:p-6 lg:p-12 min-h-[300px] lg:h-96 mb-6 lg:mb-8">
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 h-full">
-            {/* Left side - Animation */}
             <div className="w-48 h-48 sm:w-60 sm:h-60 lg:w-80 lg:h-full flex-shrink-0">
               <SpikeBallAnimation />
             </div>
             
-            {/* Right side - Content */}
             <div className="flex-1 text-center lg:text-left">
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 lg:mb-8 uppercase tracking-wide text-white">
                 PLATFORM ARCHITECTURE
@@ -196,15 +239,12 @@ export default function FeatureCards() {
           </div>
         </div>
         
-        {/* Card 2 - Use Cases and Impact - Mobile Responsive */}
         <div className="bg-black border border-white/20 rounded-lg p-4 sm:p-6 lg:p-12 min-h-[300px] lg:h-96">
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 h-full">
-            {/* Left side - Animation */}
             <div className="w-48 h-48 sm:w-60 sm:h-60 lg:w-80 lg:h-full flex-shrink-0">
               <RadialBurstIllustrationAnimation2 />
             </div>
             
-            {/* Right side - Content */}
             <div className="flex-1 text-center lg:text-left">
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 lg:mb-8 uppercase tracking-wide text-white">
                 USE CASES AND IMPACT
