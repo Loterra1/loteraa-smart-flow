@@ -6,6 +6,7 @@ import * as THREE from 'three';
 function AnimatedOverlay() {
   const meshRef = useRef<THREE.Mesh>(null);
   const particlesRef = useRef<THREE.Points>(null);
+  const linesGroupRef = useRef<THREE.Group>(null);
   
   // Create flowing particles
   const particlePositions = useMemo(() => {
@@ -20,9 +21,9 @@ function AnimatedOverlay() {
     return positions;
   }, []);
   
-  // Create flowing lines
-  const lines = useMemo(() => {
-    const lineArray = [];
+  // Create flowing lines using proper Three.js Line geometry
+  const lineGeometries = useMemo(() => {
+    const geometries = [];
     for (let i = 0; i < 15; i++) {
       const points = [];
       for (let j = 0; j < 20; j++) {
@@ -34,9 +35,10 @@ function AnimatedOverlay() {
           Math.sin(j * 0.5) * 0.5
         ));
       }
-      lineArray.push(points);
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      geometries.push(geometry);
     }
-    return lineArray;
+    return geometries;
   }, []);
   
   useFrame((state) => {
@@ -54,6 +56,13 @@ function AnimatedOverlay() {
     
     if (meshRef.current) {
       meshRef.current.rotation.z += 0.001;
+      // Add pulsing effect
+      const scale = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.2;
+      meshRef.current.scale.setScalar(scale);
+    }
+
+    if (linesGroupRef.current) {
+      linesGroupRef.current.rotation.y += 0.001;
     }
   });
 
@@ -78,24 +87,19 @@ function AnimatedOverlay() {
         />
       </points>
       
-      {/* Flowing lines */}
-      {lines.map((points, index) => (
-        <line key={index}>
-          <bufferGeometry>
-            <bufferAttribute
-              attach="attributes-position"
-              count={points.length}
-              array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))}
-              itemSize={3}
+      {/* Flowing lines using proper Line components */}
+      <group ref={linesGroupRef}>
+        {lineGeometries.map((geometry, index) => (
+          <line key={index}>
+            <primitive object={geometry} attach="geometry" />
+            <lineBasicMaterial 
+              color="#cccccc" 
+              transparent={true} 
+              opacity={0.3}
             />
-          </bufferGeometry>
-          <lineBasicMaterial 
-            color="#cccccc" 
-            transparent={true} 
-            opacity={0.3}
-          />
-        </line>
-      ))}
+          </line>
+        ))}
+      </group>
       
       {/* Central pulsing sphere */}
       <mesh ref={meshRef} position={[0, 0, 0]}>
