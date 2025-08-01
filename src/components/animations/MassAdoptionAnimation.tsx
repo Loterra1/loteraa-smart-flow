@@ -6,7 +6,7 @@ import * as THREE from 'three';
 function AnimatedOverlay() {
   const meshRef = useRef<THREE.Mesh>(null);
   const particlesRef = useRef<THREE.Points>(null);
-  const linesGroupRef = useRef<THREE.Group>(null);
+  const linesRef = useRef<THREE.LineSegments>(null);
   
   // Create flowing particles
   const particlePositions = useMemo(() => {
@@ -21,24 +21,28 @@ function AnimatedOverlay() {
     return positions;
   }, []);
   
-  // Create flowing lines using proper Three.js Line geometry
-  const lineGeometries = useMemo(() => {
-    const geometries = [];
-    for (let i = 0; i < 15; i++) {
-      const points = [];
-      for (let j = 0; j < 20; j++) {
-        const angle = (j / 20) * Math.PI * 2;
-        const radius = 1 + i * 0.2;
-        points.push(new THREE.Vector3(
-          Math.cos(angle) * radius,
-          Math.sin(angle) * radius * 0.5 + (i - 7.5) * 0.3,
-          Math.sin(j * 0.5) * 0.5
-        ));
-      }
-      const geometry = new THREE.BufferGeometry().setFromPoints(points);
-      geometries.push(geometry);
+  // Create flowing lines using LineSegments
+  const linePositions = useMemo(() => {
+    const positions = [];
+    for (let i = 0; i < 30; i++) {
+      const angle = (i / 30) * Math.PI * 2;
+      const radius = 1 + Math.random() * 2;
+      
+      // Start point
+      positions.push(
+        Math.cos(angle) * radius,
+        Math.sin(angle) * radius * 0.5,
+        Math.sin(i * 0.5) * 0.5
+      );
+      
+      // End point
+      positions.push(
+        Math.cos(angle + 0.1) * (radius + 0.5),
+        Math.sin(angle + 0.1) * (radius + 0.5) * 0.5,
+        Math.sin((i + 1) * 0.5) * 0.5
+      );
     }
-    return geometries;
+    return new Float32Array(positions);
   }, []);
   
   useFrame((state) => {
@@ -61,8 +65,9 @@ function AnimatedOverlay() {
       meshRef.current.scale.setScalar(scale);
     }
 
-    if (linesGroupRef.current) {
-      linesGroupRef.current.rotation.y += 0.001;
+    if (linesRef.current) {
+      linesRef.current.rotation.y += 0.001;
+      linesRef.current.rotation.z += 0.0005;
     }
   });
 
@@ -87,19 +92,22 @@ function AnimatedOverlay() {
         />
       </points>
       
-      {/* Flowing lines using proper Line components */}
-      <group ref={linesGroupRef}>
-        {lineGeometries.map((geometry, index) => (
-          <line key={index}>
-            <primitive object={geometry} attach="geometry" />
-            <lineBasicMaterial 
-              color="#cccccc" 
-              transparent={true} 
-              opacity={0.3}
-            />
-          </line>
-        ))}
-      </group>
+      {/* Flowing lines using LineSegments */}
+      <lineSegments ref={linesRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={linePositions.length / 3}
+            array={linePositions}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <lineBasicMaterial 
+          color="#cccccc" 
+          transparent={true} 
+          opacity={0.3}
+        />
+      </lineSegments>
       
       {/* Central pulsing sphere */}
       <mesh ref={meshRef} position={[0, 0, 0]}>
