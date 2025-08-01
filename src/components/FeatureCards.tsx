@@ -1,4 +1,3 @@
-
 import { Shield, Database, Zap } from "lucide-react";
 import CubeIllustrationAnimation from "./animations/CubeIllustrationAnimation";
 import RadialBurstIllustrationAnimation from "./animations/RadialBurstIllustrationAnimation";
@@ -9,6 +8,10 @@ import MassAdoptionAnimation from "./animations/MassAdoptionAnimation";
 import FeatureUseCasesAnimation from "./animations/FeatureUseCasesAnimation";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
+import AIModelTrainingAnimation from "./animations/AIModelTrainingAnimation";
+import NetworkingTelecomAnimation from "./animations/NetworkingTelecomAnimation";
+import Web3DepinAnimation from "./animations/Web3DepinAnimation";
+import BankingFintechAnimation from "./animations/BankingFintechAnimation";
 
 export default function FeatureCards() {
   const features = [
@@ -305,22 +308,30 @@ function FeatureUseCasesSection() {
     {
       title: "AI DEVELOPMENT & MODEL TRAINING",
       description: "Loteraa supplies real-world, verified IoT data to train and refine AI/ML models on-chain, while enabling AI devs to monetize models, automate logic, and verify outputs via tokenized smart contract feedback loops.",
-      side: "left"
+      side: "left",
+      image: "/lovable-uploads/d14187be-06ac-4912-947d-c7b196e75fb6.png",
+      AnimationComponent: AIModelTrainingAnimation
     },
     {
       title: "WEB3 & DEPIN ECOSYSTEMS", 
       description: "Loteraa powers decentralized physical infrastructure (DePIN) by connecting sensors, devices, and data streams to smart contracts, enabling trustless automation, incentivized participation, and token rewards for builders and operators.",
-      side: "right"
+      side: "right",
+      image: "/lovable-uploads/5eef2d8f-f7fb-471a-8e18-a21591088eb9.png",
+      AnimationComponent: Web3DepinAnimation
     },
     {
       title: "BANKING & FINTECH",
       description: "Loteraa is built to power financial institutions to automate insurance claims, loan triggers, and risk assessments using real-world IoT inputs like GPS, biometrics, or environmental data — reducing fraud, manual processing, and latency.",
-      side: "left"
+      side: "left",
+      image: "/lovable-uploads/48913529-d818-4314-ae6e-3027f3cdd915.png",
+      AnimationComponent: BankingFintechAnimation
     },
     {
       title: "NETWORKING & TELECOM",
       description: "Loteraa is built to enables telecoms to tokenize bandwidth usage, track network quality via sensors, and incentivize community-built infrastructure with programmable rewards, while providing immutable data logs for audits and quality assurance.",
-      side: "right"
+      side: "right",
+      image: "/lovable-uploads/6c58f93b-a8d4-46f6-a516-0e90e05f3fec.png",
+      AnimationComponent: NetworkingTelecomAnimation
     }
   ];
 
@@ -340,7 +351,7 @@ function FeatureUseCasesSection() {
         <FeatureUseCasesAnimation />
       </div>
 
-      {/* Use cases with alternating layout */}
+      {/* Use cases with alternating layout and images */}
       <div className="space-y-12 lg:space-y-20 relative z-10">
         {useCases.map((useCase, index) => (
           <div
@@ -362,8 +373,17 @@ function FeatureUseCasesSection() {
               </p>
             </div>
             
-            {/* Spacer for visual balance */}
-            <div className="flex-1 hidden lg:block"></div>
+            {/* Image with Three.js Animation */}
+            <div className="flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 relative">
+              <img 
+                src={useCase.image} 
+                alt={useCase.title}
+                className="w-full h-full object-contain opacity-30 absolute inset-0 z-10"
+              />
+              <div className="absolute inset-0 z-20">
+                <useCase.AnimationComponent />
+              </div>
+            </div>
           </div>
         ))}
       </div>
