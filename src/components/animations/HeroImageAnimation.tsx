@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import * as THREE from 'three';
@@ -83,13 +83,53 @@ function NetworkParticles() {
 }
 
 export default function HeroImageAnimation() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Set loading to false after a brief delay to ensure Canvas is ready
+    const timer = setTimeout(() => setIsLoading(false), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div 
+      className="relative w-full h-full flex items-center justify-center"
+      style={{ 
+        backgroundColor: '#000000',
+        background: '#000000'
+      }}
+    >
+      {/* Loading state with black background */}
+      {isLoading && (
+        <div 
+          className="absolute inset-0 w-full h-full flex items-center justify-center"
+          style={{ 
+            backgroundColor: '#000000',
+            background: '#000000',
+            zIndex: 10
+          }}
+        >
+          <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+      
       <Canvas
         className="w-full h-full"
         camera={{ position: [0, 0, 8], fov: 75 }}
-        style={{ background: 'transparent' }}
+        style={{ 
+          backgroundColor: '#000000',
+          background: '#000000'
+        }}
+        gl={{ 
+          alpha: false, 
+          antialias: true,
+          clearColor: '#000000'
+        }}
+        onCreated={({ gl }) => {
+          gl.setClearColor('#000000', 1.0);
+        }}
       >
+        <color attach="background" args={['#000000']} />
         <ambientLight intensity={0.4} />
         <directionalLight 
           position={[5, 5, 5]} 

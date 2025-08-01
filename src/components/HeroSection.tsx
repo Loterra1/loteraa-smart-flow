@@ -7,19 +7,54 @@ import HeroImageAnimation from "./animations/HeroImageAnimation";
 export default function HeroSection() {
   return (
     <section 
-      className="pt-20 md:pt-24 pb-12 md:pb-16 min-h-[80vh] md:min-h-[90vh] flex items-center relative overflow-hidden bg-black"
+      className="pt-20 md:pt-24 pb-12 md:pb-16 min-h-[80vh] md:min-h-[90vh] flex items-center relative overflow-hidden"
+      style={{ 
+        backgroundColor: '#000000',
+        background: '#000000'
+      }}
     >
-      {/* Multiple layers of black background to ensure no white shows */}
-      <div className="absolute inset-0 bg-black z-0"></div>
-      <div className="absolute inset-0" style={{ backgroundColor: '#000000' }}></div>
-      <div className="absolute inset-0 bg-loteraa-black z-1"></div>
+      {/* Enhanced black background enforcement with multiple layers */}
+      <div 
+        className="absolute inset-0 w-full h-full bg-black"
+        style={{ 
+          backgroundColor: '#000000 !important',
+          background: '#000000 !important',
+          zIndex: 0 
+        }}
+      />
+      <div 
+        className="absolute inset-0 w-full h-full"
+        style={{ 
+          backgroundColor: '#000000 !important',
+          background: '#000000 !important',
+          zIndex: 1 
+        }}
+      />
+      <div 
+        className="absolute inset-0 w-full h-full bg-loteraa-black"
+        style={{ 
+          backgroundColor: '#000000 !important',
+          background: '#000000 !important',
+          zIndex: 2 
+        }}
+      />
       
-      {/* Solid black background overlay */}
-      <div className="absolute inset-0 bg-black z-5"></div>
-      
-      {/* Hero Three.js Animation as Background */}
-      <div className="absolute inset-0 z-6 flex items-center justify-center">
-        <div className="w-full max-w-4xl h-96 md:h-[500px] lg:h-[600px] opacity-80">
+      {/* Hero Three.js Animation Container with black background */}
+      <div 
+        className="absolute inset-0 flex items-center justify-center bg-black"
+        style={{ 
+          backgroundColor: '#000000 !important',
+          background: '#000000 !important',
+          zIndex: 3 
+        }}
+      >
+        <div 
+          className="w-full max-w-4xl h-96 md:h-[500px] lg:h-[600px] opacity-80 bg-black"
+          style={{ 
+            backgroundColor: '#000000 !important',
+            background: '#000000 !important'
+          }}
+        >
           <HeroImageAnimation />
         </div>
       </div>
