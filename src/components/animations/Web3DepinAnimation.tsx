@@ -7,11 +7,11 @@ function MultipleFigures() {
   const groupRef = useRef<THREE.Group>(null);
   
   const figures = React.useMemo(() => [
-    { position: [-1.5, -0.3, 0], scale: 0.8, pose: 'standing' },
-    { position: [0, 0, -0.5], scale: 1, pose: 'standing' },
-    { position: [1.2, -0.5, 0.3], scale: 0.9, pose: 'sitting' },
-    { position: [-0.8, 0.2, 1], scale: 0.7, pose: 'standing' },
-    { position: [1.8, 0.1, -0.8], scale: 0.6, pose: 'sitting' }
+    { position: [[-1.5, -0.3, 0]] as const, scale: 0.8, pose: 'standing' },
+    { position: [[0, 0, -0.5]] as const, scale: 1, pose: 'standing' },
+    { position: [[1.2, -0.5, 0.3]] as const, scale: 0.9, pose: 'sitting' },
+    { position: [[-0.8, 0.2, 1]] as const, scale: 0.7, pose: 'standing' },
+    { position: [[1.8, 0.1, -0.8]] as const, scale: 0.6, pose: 'sitting' }
   ], []);
   
   useFrame((state) => {
@@ -29,7 +29,7 @@ function MultipleFigures() {
   return (
     <group ref={groupRef}>
       {figures.map((fig, index) => (
-        <group key={index} position={fig.position} scale={fig.scale}>
+        <group key={index} position={fig.position[0]} scale={fig.scale}>
           {/* Body */}
           <mesh position={[0, fig.pose === 'sitting' ? -0.2 : 0, 0]}>
             <capsuleGeometry 

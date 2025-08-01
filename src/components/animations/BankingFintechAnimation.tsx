@@ -7,13 +7,13 @@ function ScatteredFigures() {
   const groupRef = useRef<THREE.Group>(null);
   
   const figures = React.useMemo(() => [
-    { position: [-2, 0.5, 0], hasCircle: true, circleRadius: 0.8 },
-    { position: [1.5, -0.3, 0.5], hasCircle: false, circleRadius: 0 },
-    { position: [-0.5, -0.8, -0.3], hasCircle: true, circleRadius: 0.6 },
-    { position: [2.2, 0.8, -0.8], hasCircle: true, circleRadius: 0.7 },
-    { position: [0.3, 1.2, 0.2], hasCircle: false, circleRadius: 0 },
-    { position: [-1.8, -0.6, 0.8], hasCircle: true, circleRadius: 0.5 },
-    { position: [0.8, 0.2, -0.6], hasCircle: false, circleRadius: 0 }
+    { position: [[-2, 0.5, 0]] as const, hasCircle: true, circleRadius: 0.8 },
+    { position: [[1.5, -0.3, 0.5]] as const, hasCircle: false, circleRadius: 0 },
+    { position: [[-0.5, -0.8, -0.3]] as const, hasCircle: true, circleRadius: 0.6 },
+    { position: [[2.2, 0.8, -0.8]] as const, hasCircle: true, circleRadius: 0.7 },
+    { position: [[0.3, 1.2, 0.2]] as const, hasCircle: false, circleRadius: 0 },
+    { position: [[-1.8, -0.6, 0.8]] as const, hasCircle: true, circleRadius: 0.5 },
+    { position: [[0.8, 0.2, -0.6]] as const, hasCircle: false, circleRadius: 0 }
   ], []);
   
   useFrame((state) => {
@@ -37,7 +37,7 @@ function ScatteredFigures() {
   return (
     <group ref={groupRef}>
       {figures.map((fig, index) => (
-        <group key={index} position={fig.position}>
+        <group key={index} position={fig.position[0]}>
           {/* Wireframe figure */}
           <mesh>
             <capsuleGeometry args={[0.12, 0.8, 6, 12]} />

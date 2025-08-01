@@ -7,54 +7,11 @@ import HeroImageAnimation from "./animations/HeroImageAnimation";
 export default function HeroSection() {
   return (
     <section 
-      className="pt-20 md:pt-24 pb-12 md:pb-16 min-h-[80vh] md:min-h-[90vh] flex items-center relative overflow-hidden"
-      style={{ 
-        backgroundColor: '#000000',
-        background: '#000000'
-      }}
+      className="pt-20 md:pt-24 pb-12 md:pb-16 min-h-[80vh] md:min-h-[90vh] flex items-center relative overflow-hidden bg-black"
     >
-      {/* Enhanced black background enforcement with multiple layers */}
-      <div 
-        className="absolute inset-0 w-full h-full bg-black"
-        style={{ 
-          backgroundColor: '#000000 !important',
-          background: '#000000 !important',
-          zIndex: 0 
-        }}
-      />
-      <div 
-        className="absolute inset-0 w-full h-full"
-        style={{ 
-          backgroundColor: '#000000 !important',
-          background: '#000000 !important',
-          zIndex: 1 
-        }}
-      />
-      <div 
-        className="absolute inset-0 w-full h-full bg-loteraa-black"
-        style={{ 
-          backgroundColor: '#000000 !important',
-          background: '#000000 !important',
-          zIndex: 2 
-        }}
-      />
-      
-      {/* Hero Three.js Animation Container with black background */}
-      <div 
-        className="absolute inset-0 flex items-center justify-center bg-black"
-        style={{ 
-          backgroundColor: '#000000 !important',
-          background: '#000000 !important',
-          zIndex: 3 
-        }}
-      >
-        <div 
-          className="w-full max-w-4xl h-96 md:h-[500px] lg:h-[600px] opacity-80 bg-black"
-          style={{ 
-            backgroundColor: '#000000 !important',
-            background: '#000000 !important'
-          }}
-        >
+      {/* Hero Three.js Animation Container */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-full max-w-4xl h-96 md:h-[500px] lg:h-[600px] opacity-80">
           <HeroImageAnimation />
         </div>
       </div>
