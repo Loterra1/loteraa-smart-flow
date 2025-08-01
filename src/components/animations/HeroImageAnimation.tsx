@@ -122,8 +122,7 @@ export default function HeroImageAnimation() {
         }}
         gl={{ 
           alpha: false, 
-          antialias: true,
-          clearColor: '#000000'
+          antialias: true
         }}
         onCreated={({ gl }) => {
           gl.setClearColor('#000000', 1.0);
