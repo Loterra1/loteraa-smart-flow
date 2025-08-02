@@ -36,7 +36,7 @@ export default function CorePrinciples() {
   return (
     <section 
       ref={sectionRef} 
-      className="py-8 sm:py-12 lg:py-16 relative overflow-hidden min-h-screen"
+      className="py-12 sm:py-16 lg:py-20 relative overflow-hidden min-h-screen"
       style={{ 
         backgroundColor: '#000000 !important',
         background: '#000000 !important',
@@ -62,34 +62,47 @@ export default function CorePrinciples() {
       />
       
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
-          {/* Left side - Text content */}
-          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white mb-3 sm:mb-4 lg:mb-6 uppercase leading-tight">
-              AI Model Training via On-Chain Data
-            </h2>
-            <p className="text-white leading-relaxed text-sm sm:text-base lg:text-lg xl:text-xl">
-              AI projects can train their models using decentralized, verified data from Loteraa's IoT network. 
-              Researchers upload sensor feeds like weather, motion, CO2 levels validated by smart contracts and 
-              rewarded through token incentives. Models are trained using data or real-time feeds, creating a 
-              trustless AI pipeline.
-            </p>
-          </div>
-          
-          {/* Right side - Three.js Generative Art Animation */}
-          <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
-            <div 
-              className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden"
-              style={{ 
-                backgroundColor: '#000000 !important',
-                background: '#000000 !important'
-              }}
-            >
-              <GenerativeArtAnimation />
+        {/* Main AI Model Training Section - Made more prominent */}
+        <div className="max-w-7xl mx-auto mb-16 lg:mb-24">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Left side - Text content - Enhanced visibility */}
+            <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-6 lg:mb-8 uppercase leading-tight tracking-wide">
+                AI MODEL TRAINING VIA ON-CHAIN DATA
+              </h2>
+              <div className="space-y-4 lg:space-y-6">
+                <p className="text-white/90 leading-relaxed text-base sm:text-lg lg:text-xl xl:text-2xl font-medium">
+                  AI projects can train their models using decentralized, verified data from Loteraa's IoT network.
+                </p>
+                <p className="text-white/80 leading-relaxed text-sm sm:text-base lg:text-lg xl:text-xl">
+                  Researchers upload sensor feeds like weather, motion, CO2 levels validated by smart contracts and 
+                  rewarded through token incentives.
+                </p>
+                <p className="text-white/80 leading-relaxed text-sm sm:text-base lg:text-lg xl:text-xl">
+                  Models are trained using data or real-time feeds, creating a trustless AI pipeline that revolutionizes 
+                  how artificial intelligence systems access and utilize real-world data.
+                </p>
+              </div>
+            </div>
+            
+            {/* Right side - Enhanced animation container */}
+            <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+              <div 
+                className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] rounded-xl overflow-hidden border border-white/10"
+                style={{ 
+                  backgroundColor: '#000000 !important',
+                  background: '#000000 !important'
+                }}
+              >
+                <GenerativeArtAnimation />
+                {/* Optional overlay for better contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+              </div>
             </div>
           </div>
         </div>
         
+        {/* Feature Cards Section */}
         <FeatureCards />
       </div>
     </section>
