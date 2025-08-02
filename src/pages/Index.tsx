@@ -9,23 +9,40 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div 
-      className="min-h-screen relative overflow-hidden bg-black" 
-      style={{ 
-        backgroundColor: '#000000 !important',
-        background: '#000000 !important'
-      }}
-    >
-      <NavigationHeader />
-      <main className="bg-black" style={{ backgroundColor: '#000000 !important' }}>
-        <HeroSection />
-        <CorePrinciples />
-        <FeaturesSection />
-        <AudienceSection />
-        <CTASection />
-      </main>
-      <Footer />
-    </div>
+    <>
+      {/* Additional black background layer */}
+      <div 
+        className="fixed inset-0 w-full h-full"
+        style={{ 
+          backgroundColor: '#000000 !important',
+          background: '#000000 !important',
+          zIndex: -999
+        }}
+      />
+      <div 
+        className="min-h-screen relative overflow-hidden" 
+        style={{ 
+          backgroundColor: '#000000 !important',
+          background: '#000000 !important'
+        }}
+      >
+        <NavigationHeader />
+        <main 
+          className="relative" 
+          style={{ 
+            backgroundColor: '#000000 !important',
+            background: '#000000 !important'
+          }}
+        >
+          <HeroSection />
+          <CorePrinciples />
+          <FeaturesSection />
+          <AudienceSection />
+          <CTASection />
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 };
 

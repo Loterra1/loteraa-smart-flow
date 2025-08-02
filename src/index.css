@@ -49,8 +49,28 @@
     @apply border-border;
   }
 
+  /* Force black background everywhere */
+  html, body, #root {
+    background-color: #000000 !important;
+    background: #000000 !important;
+  }
+
   body {
     @apply bg-loteraa-black text-foreground overflow-x-hidden;
+    background-color: #000000 !important;
+    background: #000000 !important;
+  }
+
+  /* Prevent any white flashes */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000 !important;
+    z-index: -9999;
   }
 
   .gradient-text {

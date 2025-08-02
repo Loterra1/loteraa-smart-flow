@@ -36,19 +36,28 @@ export default function CorePrinciples() {
   return (
     <section 
       ref={sectionRef} 
-      className="py-8 sm:py-12 lg:py-16 relative overflow-hidden min-h-screen bg-black"
+      className="py-8 sm:py-12 lg:py-16 relative overflow-hidden min-h-screen"
       style={{ 
         backgroundColor: '#000000 !important',
-        background: '#000000 !important'
+        background: '#000000 !important',
+        color: '#ffffff'
       }}
     >
-      {/* Enhanced black background enforcement */}
+      {/* Multiple layer black background enforcement */}
       <div 
-        className="absolute inset-0 w-full h-full bg-black"
+        className="fixed inset-0 w-full h-full"
         style={{ 
           backgroundColor: '#000000 !important',
           background: '#000000 !important',
-          zIndex: 1
+          zIndex: -100
+        }}
+      />
+      <div 
+        className="absolute inset-0 w-full h-full"
+        style={{ 
+          backgroundColor: '#000000 !important',
+          background: '#000000 !important',
+          zIndex: -10
         }}
       />
       
@@ -70,7 +79,7 @@ export default function CorePrinciples() {
           {/* Right side - Three.js Generative Art Animation */}
           <div className={`relative transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
             <div 
-              className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden bg-black"
+              className="relative w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden"
               style={{ 
                 backgroundColor: '#000000 !important',
                 background: '#000000 !important'
