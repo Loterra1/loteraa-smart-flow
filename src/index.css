@@ -49,16 +49,30 @@
     @apply border-border;
   }
 
-  /* Force black background everywhere */
-  html, body, #root {
+  /* Force black background everywhere and enable smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
     background-color: #000000 !important;
-    background: #000000 !important;
   }
 
   body {
-    @apply bg-loteraa-black text-foreground overflow-x-hidden;
+    @apply bg-loteraa-black text-foreground;
     background-color: #000000 !important;
     background: #000000 !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  #root {
+    background-color: #000000 !important;
+    background: #000000 !important;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
   /* Prevent any white flashes */
@@ -71,6 +85,22 @@
     height: 100%;
     background-color: #000000 !important;
     z-index: -9999;
+  }
+
+  /* Mobile scrolling improvements */
+  @media (max-width: 768px) {
+    html, body {
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+    }
   }
 
   .gradient-text {

@@ -6,9 +6,7 @@ import HeroImageAnimation from "./animations/HeroImageAnimation";
 
 export default function HeroSection() {
   return (
-    <section 
-      className="pt-20 md:pt-24 pb-12 md:pb-16 min-h-[80vh] md:min-h-[90vh] flex items-center relative overflow-hidden bg-black"
-    >
+    <section className="pt-20 md:pt-24 pb-12 md:pb-16 w-full bg-black relative">
       {/* Hero Three.js Animation Container */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="w-full max-w-4xl h-96 md:h-[500px] lg:h-[600px] opacity-80">
@@ -17,7 +15,7 @@ export default function HeroSection() {
       </div>
       
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
-        <div className="flex flex-col items-center text-center max-w-6xl mx-auto">
+        <div className="flex flex-col items-center text-center max-w-6xl mx-auto min-h-[70vh] md:min-h-[80vh] flex items-center justify-center">
           <h1 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 md:mb-6 uppercase text-white">
             <span className="animate-fade-in animation-delay-1000">Connecting IoT Datas</span> To <br className="hidden sm:block" /> 
             <span className="animate-fade-in animation-delay-2000">Blockchain</span> 
