@@ -33,32 +33,32 @@ export default function AudienceSection() {
   return (
     <section 
       ref={sectionRef} 
-      className="py-12 md:py-20 bg-black w-full"
+      className="py-12 md:py-20 bg-black w-full overflow-hidden"
     >
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         {/* Real-World → Web3 Integration Section */}
         <div className="py-8 md:py-12 relative">
           {/* Only render Grainy Noise Background on desktop */}
           {!isMobile && (
-            <div className="absolute inset-0 w-full h-full opacity-30 bg-black">
+            <div className="absolute inset-0 w-full h-full opacity-20 bg-black pointer-events-none">
               <GrainyNoiseAnimation />
             </div>
           )}
           
-          <div className="relative z-20 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
+          <div className="relative z-30 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
             {/* Left side - Heading and Description */}
-            <div className="flex-1 max-w-4xl lg:pr-8 text-center lg:text-left">
+            <div className="flex-1 max-w-4xl lg:pr-8 text-center lg:text-left relative z-40">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 md:mb-8 lg:mb-10 text-white uppercase leading-tight">
                 <span className="text-white">Real-World → Web3</span> Integration
               </h2>
-              <div className="space-y-4 md:space-y-6">
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white leading-relaxed font-medium">
+              <div className="space-y-4 md:space-y-6 relative z-50">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white leading-relaxed font-medium opacity-100">
                   Loteraa is engineered to make the transition from physical device to smart contract seamless.
                 </p>
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed opacity-100">
                   Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
                 </p>
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed opacity-100">
                   This revolutionary approach bridges the gap between IoT devices and blockchain technology, enabling real-world data to seamlessly flow into decentralized applications.
                 </p>
               </div>
@@ -69,11 +69,11 @@ export default function AudienceSection() {
               <img 
                 src="/lovable-uploads/79201339-7541-40e0-a69d-321b49e8b86a.png" 
                 alt="Real-World Web3 Integration"
-                className="w-full h-full object-contain absolute inset-0 z-10"
+                className="w-full h-full object-contain absolute inset-0 z-30"
               />
               {/* Only render CubeGenerativeAnimation on desktop */}
               {!isMobile && (
-                <div className="absolute inset-0 z-5 opacity-60">
+                <div className="absolute inset-0 z-10 opacity-40">
                   <CubeGenerativeAnimation />
                 </div>
               )}
