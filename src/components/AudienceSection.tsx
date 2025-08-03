@@ -33,51 +33,14 @@ export default function AudienceSection() {
   return (
     <section 
       ref={sectionRef} 
-      className="py-12 md:py-20 relative overflow-hidden min-h-screen"
-      style={{ backgroundColor: '#000000 !important', background: '#000000 !important' }}
+      className="py-12 md:py-20 bg-black w-full"
     >
-      {/* Black background layers */}
-      {Array.from({ length: 8 }).map((_, index) => (
-        <div 
-          key={index}
-          className="absolute inset-0 w-full h-full"
-          style={{ 
-            backgroundColor: '#000000 !important', 
-            background: '#000000 !important',
-            zIndex: index
-          }}
-        />
-      ))}
-      
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
+      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         {/* Real-World → Web3 Integration Section */}
-        <div 
-          className="py-8 md:py-12 relative"
-          style={{ backgroundColor: '#000000 !important', background: '#000000 !important' }}
-        >
-          {/* Black background layers for this subsection */}
-          {Array.from({ length: 5 }).map((_, index) => (
-            <div 
-              key={index}
-              className="absolute inset-0 w-full h-full"
-              style={{ 
-                backgroundColor: '#000000 !important',
-                background: '#000000 !important',
-                zIndex: index
-              }}
-            />
-          ))}
-          
+        <div className="py-8 md:py-12 relative">
           {/* Only render Grainy Noise Background on desktop */}
           {!isMobile && (
-            <div 
-              className="absolute inset-0 w-full h-full opacity-90"
-              style={{ 
-                backgroundColor: '#000000 !important',
-                background: '#000000 !important',
-                zIndex: 6
-              }}
-            >
+            <div className="absolute inset-0 w-full h-full opacity-90 bg-black">
               <GrainyNoiseAnimation />
             </div>
           )}
@@ -95,13 +58,7 @@ export default function AudienceSection() {
             
             {/* Right side - Image with optional animation */}
             <div className="flex-shrink-0 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] relative">
-              <div 
-                className="absolute inset-0"
-                style={{ 
-                  backgroundColor: '#000000 !important',
-                  background: '#000000 !important'
-                }}
-              />
+              <div className="absolute inset-0 bg-black" />
               <img 
                 src="/lovable-uploads/79201339-7541-40e0-a69d-321b49e8b86a.png" 
                 alt="Real-World Web3 Integration"
@@ -118,33 +75,10 @@ export default function AudienceSection() {
         </div>
 
         {/* Future Built, Real World Ready Section */}
-        <div 
-          className="py-8 md:py-16 relative"
-          style={{ backgroundColor: '#000000 !important', background: '#000000 !important' }}
-        >
-          {/* Black background layers for this subsection */}
-          {Array.from({ length: 5 }).map((_, index) => (
-            <div 
-              key={index}
-              className="absolute inset-0 w-full h-full"
-              style={{ 
-                backgroundColor: '#000000 !important',
-                background: '#000000 !important',
-                zIndex: index
-              }}
-            />
-          ))}
-          
+        <div className="py-8 md:py-16 relative">
           {/* Only render Grainy Noise Background on desktop */}
           {!isMobile && (
-            <div 
-              className="absolute inset-0 w-full h-full opacity-90"
-              style={{ 
-                backgroundColor: '#000000 !important',
-                background: '#000000 !important',
-                zIndex: 6
-              }}
-            >
+            <div className="absolute inset-0 w-full h-full opacity-90 bg-black">
               <GrainyNoiseAnimation />
             </div>
           )}
@@ -158,13 +92,7 @@ export default function AudienceSection() {
             {/* Only render Globe Animation Background on desktop */}
             {!isMobile && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-                <div 
-                  className="w-[800px] sm:w-[1000px] md:w-[1400px] lg:w-[1800px] xl:w-[2200px] h-[600px] sm:h-[700px] md:h-[900px] lg:h-[1100px] xl:h-[1300px] relative overflow-hidden"
-                  style={{ 
-                    backgroundColor: '#000000 !important',
-                    background: '#000000 !important'
-                  }}
-                >
+                <div className="w-[800px] sm:w-[1000px] md:w-[1400px] lg:w-[1800px] xl:w-[2200px] h-[600px] sm:h-[700px] md:h-[900px] lg:h-[1100px] xl:h-[1300px] relative overflow-hidden bg-black">
                   <GlobeMapAnimation />
                 </div>
               </div>
