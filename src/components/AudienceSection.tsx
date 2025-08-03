@@ -40,33 +40,40 @@ export default function AudienceSection() {
         <div className="py-8 md:py-12 relative">
           {/* Only render Grainy Noise Background on desktop */}
           {!isMobile && (
-            <div className="absolute inset-0 w-full h-full opacity-90 bg-black">
+            <div className="absolute inset-0 w-full h-full opacity-30 bg-black">
               <GrainyNoiseAnimation />
             </div>
           )}
           
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
+          <div className="relative z-20 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
             {/* Left side - Heading and Description */}
             <div className="flex-1 max-w-4xl lg:pr-8 text-center lg:text-left">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 md:mb-8 lg:mb-10 text-white uppercase leading-tight">
                 <span className="text-white">Real-World → Web3</span> Integration
               </h2>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/70 leading-relaxed mb-6 md:mb-8">
-                Loteraa is engineered to make the transition from physical device to smart contract seamless. Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
-              </p>
+              <div className="space-y-4 md:space-y-6">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white leading-relaxed font-medium">
+                  Loteraa is engineered to make the transition from physical device to smart contract seamless.
+                </p>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed">
+                  Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
+                </p>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed">
+                  This revolutionary approach bridges the gap between IoT devices and blockchain technology, enabling real-world data to seamlessly flow into decentralized applications.
+                </p>
+              </div>
             </div>
             
             {/* Right side - Image with optional animation */}
-            <div className="flex-shrink-0 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] relative">
-              <div className="absolute inset-0 bg-black" />
+            <div className="flex-shrink-0 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px] relative bg-black rounded-lg overflow-hidden">
               <img 
                 src="/lovable-uploads/79201339-7541-40e0-a69d-321b49e8b86a.png" 
                 alt="Real-World Web3 Integration"
-                className="w-full h-full object-contain opacity-40 absolute inset-0 z-10"
+                className="w-full h-full object-contain absolute inset-0 z-10"
               />
               {/* Only render CubeGenerativeAnimation on desktop */}
               {!isMobile && (
-                <div className="absolute inset-0 z-20">
+                <div className="absolute inset-0 z-5 opacity-60">
                   <CubeGenerativeAnimation />
                 </div>
               )}
@@ -78,12 +85,12 @@ export default function AudienceSection() {
         <div className="py-8 md:py-16 relative">
           {/* Only render Grainy Noise Background on desktop */}
           {!isMobile && (
-            <div className="absolute inset-0 w-full h-full opacity-90 bg-black">
+            <div className="absolute inset-0 w-full h-full opacity-30 bg-black">
               <GrainyNoiseAnimation />
             </div>
           )}
           
-          <div className="text-center relative z-10">
+          <div className="text-center relative z-20">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 md:mb-8 lg:mb-12 text-white uppercase leading-tight">
               <span className="text-white">Future Built,</span>{' '}
               <span className="text-white">Real World Ready</span>
@@ -98,8 +105,8 @@ export default function AudienceSection() {
               </div>
             )}
             
-            <div className="relative z-10">
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/70 leading-relaxed max-w-4xl mx-auto mb-6 md:mb-8 lg:mb-12 px-4">
+            <div className="relative z-20">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white leading-relaxed max-w-4xl mx-auto mb-6 md:mb-8 lg:mb-12 px-4 font-medium">
                 Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
               </p>
               
