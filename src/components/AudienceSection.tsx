@@ -1,6 +1,6 @@
+
 import { useEffect, useRef, useState } from 'react';
-import { useInView } from 'framer-motion';
-import { useIsMobile } from '@/hooks/use-mobile';
+import p5 from 'p5';
 
 interface Principle {
   title: string;
@@ -27,29 +27,92 @@ const principles: Principle[] = [
 ];
 
 export default function AudienceSection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
-  const isMobile = useIsMobile();
+  const p5ContainerRef = useRef<HTMLDivElement>(null);
+  const p5Instance = useRef<p5 | null>(null);
   const [activePrinciple, setActivePrinciple] = useState<number>(0);
 
+  useEffect(() => {
+    if (!p5ContainerRef.current) return;
+
+    const sketch = (p: p5) => {
+      let particles: any[] = [];
+      let time = 0;
+
+      p.setup = () => {
+        const canvas = p.createCanvas(p5ContainerRef.current!.clientWidth, p5ContainerRef.current!.clientHeight);
+        canvas.parent(p5ContainerRef.current!);
+        
+        // Create floating particles
+        for (let i = 0; i < 50; i++) {
+          particles.push({
+            x: p.random(p.width),
+            y: p.random(p.height),
+            vx: p.random(-0.5, 0.5),
+            vy: p.random(-0.5, 0.5),
+            size: p.random(2, 4),
+            alpha: p.random(0.2, 0.8)
+          });
+        }
+      };
+
+      p.draw = () => {
+        p.clear();
+        time += 0.01;
+        
+        // Update and draw particles
+        particles.forEach((particle, i) => {
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+          
+          // Wrap around edges
+          if (particle.x < 0) particle.x = p.width;
+          if (particle.x > p.width) particle.x = 0;
+          if (particle.y < 0) particle.y = p.height;
+          if (particle.y > p.height) particle.y = 0;
+          
+          // Draw particle
+          p.fill(255, 255, 255, particle.alpha * 255 * (0.5 + p.sin(time + i) * 0.5));
+          p.noStroke();
+          p.ellipse(particle.x, particle.y, particle.size);
+          
+          // Draw connections
+          particles.forEach((other, j) => {
+            if (i !== j) {
+              const dist = p.dist(particle.x, particle.y, other.x, other.y);
+              if (dist < 100) {
+                const alpha = p.map(dist, 0, 100, 50, 0);
+                p.stroke(255, 255, 255, alpha);
+                p.strokeWeight(0.5);
+                p.line(particle.x, particle.y, other.x, other.y);
+              }
+            }
+          });
+        });
+      };
+
+      p.windowResized = () => {
+        if (p5ContainerRef.current) {
+          p.resizeCanvas(p5ContainerRef.current.clientWidth, p5ContainerRef.current.clientHeight);
+        }
+      };
+    };
+
+    p5Instance.current = new p5(sketch);
+
+    return () => {
+      if (p5Instance.current) {
+        p5Instance.current.remove();
+      }
+    };
+  }, []);
+
   return (
-    <section 
-      ref={sectionRef} 
-      className="py-12 md:py-20 bg-black w-full overflow-hidden"
-    >
+    <section className="py-12 md:py-20 bg-black w-full overflow-hidden">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         {/* Real-World → Web3 Integration Section */}
         <div className="py-8 md:py-12 relative">
-          {/* CSS-based background pattern instead of p5.js */}
-          {!isMobile && (
-            <div className="absolute inset-0 w-full h-full opacity-20 bg-black pointer-events-none">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-blue-500/5 to-teal-500/5"></div>
-              <div className="absolute inset-0" style={{
-                backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0)`,
-                backgroundSize: '50px 50px'
-              }}></div>
-            </div>
-          )}
+          {/* P5.js Animation Background */}
+          <div ref={p5ContainerRef} className="absolute inset-0 w-full h-full opacity-20 bg-black pointer-events-none"></div>
           
           <div className="relative z-30 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
             {/* Left side - Heading and Description */}
@@ -58,46 +121,25 @@ export default function AudienceSection() {
                 <span className="text-white">Real-World → Web3</span> Integration
               </h2>
               <div className="space-y-4 md:space-y-6 relative z-50">
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white leading-relaxed font-medium opacity-100">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white leading-relaxed font-medium">
                   Loteraa is engineered to make the transition from physical device to smart contract seamless.
                 </p>
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed opacity-100">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed">
                   Through REST APIs, low-code scripts, and SDKs, developers can integrate off-chain data sources into on-chain logic without building complex middleware.
                 </p>
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed opacity-100">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed">
                   This revolutionary approach bridges the gap between IoT devices and blockchain technology, enabling real-world data to seamlessly flow into decentralized applications.
                 </p>
               </div>
             </div>
             
-            {/* Right side - Image with CSS animation */}
+            {/* Right side - Image with p5.js animation */}
             <div className="flex-1 relative w-full h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px]">
               <img 
                 src="/lovable-uploads/79201339-7541-40e0-a69d-321b49e8b86a.png" 
                 alt="Real-World Web3 Integration"
                 className="w-full h-full object-contain absolute inset-0 z-30"
               />
-              {/* CSS-based cube animation instead of p5.js */}
-              {!isMobile && (
-                <div className="absolute inset-0 z-10 opacity-40 overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="relative w-32 h-32">
-                      {[...Array(9)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="absolute w-8 h-8 border border-white/20 animate-pulse"
-                          style={{
-                            left: `${(i % 3) * 40}px`,
-                            top: `${Math.floor(i / 3) * 40}px`,
-                            animationDelay: `${i * 0.2}s`,
-                            animationDuration: '2s'
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -176,7 +218,7 @@ export default function AudienceSection() {
                         </p>
                       </div>
 
-                      {/* CSS-based background animation */}
+                      {/* Background animation effect */}
                       {isActive && (
                         <div className="absolute inset-0 opacity-30">
                           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/10 to-teal-500/20 animate-pulse"></div>

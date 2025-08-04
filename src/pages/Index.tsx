@@ -1,5 +1,6 @@
 
-import Hero from "@/components/Hero";
+import NavigationHeader from "@/components/NavigationHeader";
+import HeroSection from "@/components/HeroSection";
 import AudienceSection from "@/components/AudienceSection";
 import FeaturesShowcase from "@/components/FeaturesShowcase";
 import Footer from "@/components/Footer";
@@ -7,7 +8,8 @@ import Footer from "@/components/Footer";
 export default function Index() {
   return (
     <div className="min-h-screen bg-black">
-      <Hero />
+      <NavigationHeader />
+      <HeroSection />
       <AudienceSection />
       <FeaturesShowcase />
       <Footer />
