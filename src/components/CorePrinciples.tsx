@@ -1,118 +1,62 @@
 
-import { useState } from 'react';
-
-interface Principle {
-  title: string;
-  description: string;
-}
-
-const principles: Principle[] = [
-  {
-    title: "Seamless Integration",
-    description: "Connect physical devices to blockchain networks without complex middleware or technical barriers."
-  },
-  {
-    title: "Real-Time Data",
-    description: "Process and validate IoT sensor data in real-time for immediate blockchain transactions."
-  },
-  {
-    title: "Decentralized Trust",
-    description: "Build trust through cryptographic proofs and decentralized validation of device data."
-  },
-  {
-    title: "Developer-Friendly",
-    description: "Simple APIs and SDKs that make Web3 integration accessible to developers of all skill levels."
-  }
-];
-
 export default function CorePrinciples() {
-  const [activePrinciple, setActivePrinciple] = useState<number>(0);
-
   return (
-    <section className="py-12 md:py-20 bg-black">
+    <section className="py-16 md:py-20 bg-black">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-8 md:mb-12 lg:mb-16 text-center text-white uppercase">
-          Core Principles
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-12 text-center text-white uppercase">
+          Core Development Principles
         </h2>
         
-        {/* Mobile layout - stack vertically */}
-        <div className="block md:hidden space-y-8">
-          {principles.map((principle, index) => (
-            <div key={index} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-loteraa-purple to-loteraa-blue rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                  {index + 1}
-                </div>
-                <h3 className="text-lg font-bold text-white">{principle.title}</h3>
-              </div>
-              <p className="text-gray-300 text-sm leading-relaxed">{principle.description}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 max-w-6xl mx-auto">
+          {/* Card 1 - Decentralized Verification */}
+          <div className="bg-black border border-gray-800 p-6 md:p-8 h-auto min-h-[500px] flex flex-col">
+            <div className="mb-6">
+              <img 
+                src="/lovable-uploads/70c0b3c4-dfb2-47a6-8fe5-684b32e91409.png" 
+                alt="Decentralized Verification" 
+                className="w-full h-32 md:h-40 object-contain"
+              />
             </div>
-          ))}
-        </div>
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-4 uppercase">
+              Decentralized Verification
+            </h3>
+            <p className="text-gray-300 text-sm md:text-base leading-relaxed">
+              Multi node consensus ensures data authenticity and prevents tampering through cryptographic proofs. Loteraa enables continuous, secure and low latency streaming of sensor data from physical environments such as GPS or usage metrics directly to its blockchain network.
+            </p>
+          </div>
 
-        {/* Desktop layout - interactive grid */}
-        <div className="hidden md:block">
-          <div className="grid grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
-            {principles.map((principle, index) => {
-              const isActive = activePrinciple === index;
-              const isOdd = index % 2 === 1;
-              
-              return (
-                <div
-                  key={index}
-                  className={`
-                    relative group cursor-pointer transition-all duration-500
-                    ${isActive ? 'scale-105 z-10' : 'scale-100 z-0'}
-                    ${isOdd ? 'mt-8 lg:mt-12' : ''}
-                  `}
-                  onMouseEnter={() => setActivePrinciple(index)}
-                >
-                  {/* Background card */}
-                  <div className={`
-                    relative overflow-hidden rounded-2xl lg:rounded-3xl border transition-all duration-500
-                    ${isActive 
-                      ? 'bg-gray-900/80 border-loteraa-purple/50 shadow-2xl shadow-loteraa-purple/20' 
-                      : 'bg-gray-900/50 border-gray-800 hover:border-gray-700'
-                    }
-                  `}>
-                    {/* Content */}
-                    <div className="relative z-20 p-6 lg:p-8">
-                      <div className="flex items-center gap-4 mb-4 lg:mb-6">
-                        <div className={`
-                          w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg lg:text-xl transition-all duration-500
-                          ${isActive 
-                            ? 'bg-gradient-to-br from-loteraa-purple to-loteraa-blue shadow-lg' 
-                            : 'bg-gradient-to-br from-gray-700 to-gray-600'
-                          }
-                        `}>
-                          {index + 1}
-                        </div>
-                        <h3 className={`
-                          text-xl lg:text-2xl font-bold transition-colors duration-500
-                          ${isActive ? 'text-white' : 'text-gray-300'}
-                        `}>
-                          {principle.title}
-                        </h3>
-                      </div>
-                      
-                      <p className={`
-                        text-base lg:text-lg leading-relaxed transition-all duration-500
-                        ${isActive ? 'text-gray-200 opacity-100' : 'text-gray-400 opacity-80'}
-                      `}>
-                        {principle.description}
-                      </p>
-                    </div>
+          {/* Card 2 - Web3 Connected Contracts */}
+          <div className="bg-black border-l-0 md:border-l border-r-0 md:border-r border-t-0 md:border-t border-b-0 md:border-b border-gray-800 p-6 md:p-8 h-auto min-h-[500px] flex flex-col">
+            <div className="mb-6">
+              <img 
+                src="/lovable-uploads/1afc8000-8c67-4cbc-83b7-f287e45c650a.png" 
+                alt="Web3 Connected Contracts" 
+                className="w-full h-32 md:h-40 object-contain"
+              />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-4 uppercase">
+              Web3 Connected Contracts
+            </h3>
+            <p className="text-gray-300 text-sm md:text-base leading-relaxed">
+              Loteraa smart contracts respond autonomously to live sensor inputs enabling logic based automation across DeFi, logistics, energy, data and AI sectors. Data triggers from IoT devices execute cross chain payments, alerts or asset transfers establishing an intelligent link between off chain activities and on chain decision making without intermediaries.
+            </p>
+          </div>
 
-                    {/* CSS-based background animation */}
-                    {isActive && (
-                      <div className="absolute inset-0 opacity-30">
-                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/10 to-teal-500/20 animate-pulse"></div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+          {/* Card 3 - Advanced Analytics Platform */}
+          <div className="bg-black border border-gray-800 p-6 md:p-8 h-auto min-h-[500px] flex flex-col">
+            <div className="mb-6">
+              <img 
+                src="/lovable-uploads/0651cda4-5c7a-4273-abee-63fba484c8e5.png" 
+                alt="Advanced Analytics Platform" 
+                className="w-full h-32 md:h-40 object-contain"
+              />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-4 uppercase">
+              Advanced Analytics Platform
+            </h3>
+            <p className="text-gray-300 text-sm md:text-base leading-relaxed">
+              Built in tools for data visualization, statistical analysis, and machine learning model development. Access live sensor data from thousands of IoT devices worldwide for real time analysis and research applications.
+            </p>
           </div>
         </div>
       </div>
