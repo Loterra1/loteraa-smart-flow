@@ -1,83 +1,119 @@
 
-import { useEffect, useRef, useState } from "react";
-import FeatureCards from "./FeatureCards";
-import GenerativeArtAnimation from "./animations/GenerativeArtAnimation";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useState } from 'react';
+
+interface Principle {
+  title: string;
+  description: string;
+}
+
+const principles: Principle[] = [
+  {
+    title: "Seamless Integration",
+    description: "Connect physical devices to blockchain networks without complex middleware or technical barriers."
+  },
+  {
+    title: "Real-Time Data",
+    description: "Process and validate IoT sensor data in real-time for immediate blockchain transactions."
+  },
+  {
+    title: "Decentralized Trust",
+    description: "Build trust through cryptographic proofs and decentralized validation of device data."
+  },
+  {
+    title: "Developer-Friendly",
+    description: "Simple APIs and SDKs that make Web3 integration accessible to developers of all skill levels."
+  }
+];
 
 export default function CorePrinciples() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [visibleCards, setVisibleCards] = useState<boolean[]>([false, false, false, false]);
-  const sectionRef = useRef<HTMLElement>(null);
-  const isMobile = useIsMobile();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            setTimeout(() => setVisibleCards(prev => [true, ...prev.slice(1)]), 600);
-            setTimeout(() => setVisibleCards(prev => [prev[0], true, ...prev.slice(2)]), 900);
-            setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 2), true, prev[3]]), 1200);
-            setTimeout(() => setVisibleCards(prev => [...prev.slice(0, 3), true]), 1500);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const [activePrinciple, setActivePrinciple] = useState<number>(0);
 
   return (
-    <section 
-      ref={sectionRef} 
-      className="py-12 sm:py-16 lg:py-20 bg-black w-full"
-    >
+    <section className="py-12 md:py-20 bg-black">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        {/* AI Model Training Section */}
-        <div className="max-w-7xl mx-auto mb-16 lg:mb-24">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            {/* Left side - Text content */}
-            <div className="space-y-6 lg:space-y-8">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-8 lg:mb-12 uppercase leading-tight tracking-wide">
-                AI MODEL TRAINING VIA ON-CHAIN DATA
-              </h2>
-              
-              <div className="space-y-6">
-                <p className="text-white text-lg sm:text-xl lg:text-2xl xl:text-3xl leading-relaxed font-medium">
-                  AI projects can train their models using decentralized, verified data from Loteraa's IoT network.
-                </p>
-                
-                <p className="text-white text-base sm:text-lg lg:text-xl xl:text-2xl leading-relaxed">
-                  Researchers upload sensor feeds like weather, motion, CO2 levels validated by smart contracts and 
-                  rewarded through token incentives.
-                </p>
-                
-                <p className="text-white text-base sm:text-lg lg:text-xl xl:text-2xl leading-relaxed">
-                  Models are trained using data or real-time feeds, creating a trustless AI pipeline that revolutionizes 
-                  how artificial intelligence systems access and utilize real-world data.
-                </p>
-              </div>
-            </div>
-            
-            {/* Right side - Animation */}
-            <div className="relative">
-              <div className="relative w-full h-[350px] sm:h-[450px] md:h-[550px] lg:h-[650px] xl:h-[750px] rounded-xl overflow-hidden border border-white/20 bg-black">
-                <GenerativeArtAnimation />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-8 md:mb-12 lg:mb-16 text-center text-white uppercase">
+          Core Principles
+        </h2>
         
-        {/* Feature Cards Section */}
-        <div>
-          <FeatureCards />
+        {/* Mobile layout - stack vertically */}
+        <div className="block md:hidden space-y-8">
+          {principles.map((principle, index) => (
+            <div key={index} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-loteraa-purple to-loteraa-blue rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                  {index + 1}
+                </div>
+                <h3 className="text-lg font-bold text-white">{principle.title}</h3>
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed">{principle.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop layout - interactive grid */}
+        <div className="hidden md:block">
+          <div className="grid grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
+            {principles.map((principle, index) => {
+              const isActive = activePrinciple === index;
+              const isOdd = index % 2 === 1;
+              
+              return (
+                <div
+                  key={index}
+                  className={`
+                    relative group cursor-pointer transition-all duration-500
+                    ${isActive ? 'scale-105 z-10' : 'scale-100 z-0'}
+                    ${isOdd ? 'mt-8 lg:mt-12' : ''}
+                  `}
+                  onMouseEnter={() => setActivePrinciple(index)}
+                >
+                  {/* Background card */}
+                  <div className={`
+                    relative overflow-hidden rounded-2xl lg:rounded-3xl border transition-all duration-500
+                    ${isActive 
+                      ? 'bg-gray-900/80 border-loteraa-purple/50 shadow-2xl shadow-loteraa-purple/20' 
+                      : 'bg-gray-900/50 border-gray-800 hover:border-gray-700'
+                    }
+                  `}>
+                    {/* Content */}
+                    <div className="relative z-20 p-6 lg:p-8">
+                      <div className="flex items-center gap-4 mb-4 lg:mb-6">
+                        <div className={`
+                          w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg lg:text-xl transition-all duration-500
+                          ${isActive 
+                            ? 'bg-gradient-to-br from-loteraa-purple to-loteraa-blue shadow-lg' 
+                            : 'bg-gradient-to-br from-gray-700 to-gray-600'
+                          }
+                        `}>
+                          {index + 1}
+                        </div>
+                        <h3 className={`
+                          text-xl lg:text-2xl font-bold transition-colors duration-500
+                          ${isActive ? 'text-white' : 'text-gray-300'}
+                        `}>
+                          {principle.title}
+                        </h3>
+                      </div>
+                      
+                      <p className={`
+                        text-base lg:text-lg leading-relaxed transition-all duration-500
+                        ${isActive ? 'text-gray-200 opacity-100' : 'text-gray-400 opacity-80'}
+                      `}>
+                        {principle.description}
+                      </p>
+                    </div>
+
+                    {/* CSS-based background animation */}
+                    {isActive && (
+                      <div className="absolute inset-0 opacity-30">
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-blue-500/10 to-teal-500/20 animate-pulse"></div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
