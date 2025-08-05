@@ -6,7 +6,7 @@ import * as THREE from 'three';
 
 function GenerativeSpikes() {
   const groupRef = useRef<THREE.Group>(null);
-  const texture = useLoader(TextureLoader, '/lovable-uploads/ac8f8bfc-acdd-4dd7-a0b0-76b0eca5f802.png');
+  const texture = useLoader(TextureLoader, '/lovable-uploads/d5cb4b4f-5116-4f9a-8cbf-9ddde5da2808.png');
   
   // Create spike positions in a radial pattern
   const spikes = useMemo(() => {

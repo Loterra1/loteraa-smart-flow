@@ -2,8 +2,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import GlobeMapAnimation from "./animations/GlobeMapAnimation";
 import AnimatedCircleThreeJS from "./animations/AnimatedCircleThreeJS";
+import GenerativeArtAnimation from "./animations/GenerativeArtAnimation";
 
 export default function StartBuildingSection() {
   const handleLearnMore = () => {
@@ -17,7 +19,7 @@ export default function StartBuildingSection() {
           {/* Left Side - Start Building Content */}
           <div className="space-y-8 flex flex-col justify-center">
             <div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white uppercase mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase mb-6">
                 Start Building
               </h2>
               <p className="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">
@@ -92,6 +94,71 @@ async function submitUserData() {
           <div className="relative h-96">
             <AnimatedCircleThreeJS />
           </div>
+        </div>
+
+        {/* Made for Mass Adoption Section */}
+        <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Left Side - Made for Mass Adoption with Image */}
+          <div className="space-y-8">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase mb-8">
+              Made for Mass Adoption
+            </h2>
+            <div className="relative h-96 w-full">
+              <GenerativeArtAnimation />
+            </div>
+          </div>
+
+          {/* Right Side - Three Cards */}
+          <div className="grid grid-cols-2 gap-4">
+            {/* Card 1 */}
+            <Card className="bg-black border border-gray-800 p-6">
+              <CardContent className="p-0">
+                <h3 className="text-lg font-bold text-white uppercase mb-4">
+                  Real-World Utility, Not Hype
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  From data-driven automations to sensor-powered rewards, Loteraa delivers immediate and understandable value to industries, researchers, and individuals. It's not about speculation — it's about solving real problems with on-chain logic.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Card 2 */}
+            <Card className="bg-black border border-gray-800 p-6">
+              <CardContent className="p-0">
+                <h3 className="text-lg font-bold text-white uppercase mb-4">
+                  Tokenomics Built for Participation
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Users earn $LOT by contributing data, staking, or building on the platform — not just holding tokens. This model brings everyone into the economy: developers, businesses, researchers, and everyday users.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Card 3 - Spans full width below the first two */}
+            <Card className="bg-black border border-gray-800 p-6 col-span-2">
+              <CardContent className="p-0">
+                <h3 className="text-lg font-bold text-white uppercase mb-4">
+                  Data-First Design for the Real World
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Loteraa is built around real-time sensor data, making it the first blockchain where data isn't just stored — it's monetized, automated, and rewarded. From supply chain to healthcare to smart cities, this approach transforms everyday data into economic activity, unlocking mass adoption beyond crypto-native users.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Call to Action Section */}
+        <div className="mt-20 text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white uppercase mb-8 leading-tight">
+            Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
+          </h2>
+          <Button asChild size="lg" className="bg-white hover:bg-white/90 text-black px-8 py-6 text-lg">
+            <Link to="/signup">
+              Sign Up
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
