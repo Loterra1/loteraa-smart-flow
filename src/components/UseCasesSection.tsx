@@ -52,7 +52,7 @@ export default function UseCasesSection() {
       title: "Web3 & DePIN Ecosystems",
       description: "Loteraa powers decentralized physical infrastructure (DePIN) by connecting sensors, devices, and data streams to smart contracts, enabling trustless automation, incentivized participation, and token rewards for builders and operators.",
       animation: <Web3DepinAnimation />,
-      position: "right"
+      position: "left"
     },
     {
       title: "Banking & Fintech",
@@ -64,7 +64,7 @@ export default function UseCasesSection() {
       title: "Networking & Telecom",
       description: "Loteraa is built to enables telecoms to tokenize bandwidth usage, track network quality via sensors, and incentivize community-built infrastructure with programmable rewards, while providing immutable data logs for audits and quality assurance.",
       animation: <NetworkingTelecomAnimation />,
-      position: "right"
+      position: "left"
     }
   ];
 
@@ -87,7 +87,7 @@ export default function UseCasesSection() {
               {/* Content */}
               <div
                 className={`${
-                  useCase.position === "right" ? "lg:order-2" : ""
+                  (index === 1 || index === 3) ? "lg:order-2" : ""
                 } transform transition-all duration-1000 ${
                   visibleItems[index]
                     ? "translate-y-0 opacity-100"
@@ -105,7 +105,7 @@ export default function UseCasesSection() {
               {/* Animation */}
               <div
                 className={`${
-                  useCase.position === "right" ? "lg:order-1" : ""
+                  (index === 1 || index === 3) ? "lg:order-1" : ""
                 } relative h-80 transform transition-all duration-1000 delay-300 ${
                   visibleItems[index]
                     ? "translate-y-0 opacity-100"

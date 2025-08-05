@@ -11,11 +11,11 @@ export default function StartBuildingSection() {
   return (
     <section className="py-16 md:py-20 bg-black">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left Side - Start Building Content */}
-          <div className="space-y-8">
+          <div className="space-y-8 flex flex-col justify-center">
             <div>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white uppercase mb-6">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white uppercase mb-6">
                 Start Building
               </h2>
               <p className="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">
@@ -31,22 +31,11 @@ export default function StartBuildingSection() {
             </div>
           </div>
 
-          {/* Right Side - Cards */}
-          <div className="flex gap-0">
-            {/* Center Card */}
-            <Card className="bg-black border border-gray-800 flex-1 min-h-[400px]">
-              <CardContent className="p-8 h-full flex items-center">
-                <p className="text-gray-300 text-base leading-relaxed">
-                  Loteraa offers a robust set of APIs and software development kits (SDKs) that allow developers to quickly integrate IoT data into decentralized apps. With built-in security, compatibility layers, documentation, and pre-configured modules, it removes technical complexity empowering developers to build IoT-Web3 applications that scale across devices and blockchains.
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Right Card - Code Example */}
-            <Card className="bg-black border border-gray-800 flex-1 min-h-[400px]">
-              <CardContent className="p-8 h-full">
-                <div className="bg-gray-900 rounded-lg p-6 font-mono text-sm text-white h-full overflow-auto">
-                  <pre className="whitespace-pre-wrap">
+          {/* Right Side - Code Example Card */}
+          <Card className="bg-black border border-gray-800 min-h-[400px]">
+            <CardContent className="p-8 h-full">
+              <div className="bg-gray-900 rounded-lg p-6 font-mono text-sm text-white h-full overflow-auto">
+                <pre className="whitespace-pre-wrap">
 {`<script src="loteraa-sdk.js"></script>
 <script>
   const sdk = new LoteraaSDK({
@@ -64,11 +53,10 @@ async function submitUserData() {
   }
   submitUserData();
 </script>`}
-                  </pre>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                </pre>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>
