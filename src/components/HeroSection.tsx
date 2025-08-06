@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import HeroImageAnimation from "./animations/HeroImageAnimation";
+import EconomyImageAnimation from "./animations/EconomyImageAnimation";
 
 export default function HeroSection() {
   return (
     <section className="pt-20 md:pt-24 pb-12 md:pb-16 w-full bg-black relative">
-      {/* Hero Three.js Animation Container */}
+      {/* Hero Three.js Animation Container - Moved up to center */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="w-full max-w-4xl h-96 md:h-[500px] lg:h-[600px] opacity-80">
           <HeroImageAnimation />
@@ -32,7 +33,7 @@ export default function HeroSection() {
             </Button>
           </div>
 
-          {/* New Economy Section */}
+          {/* New Economy Section with Three.js Animation */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-6xl w-full animate-fade-in animation-delay-6000">
             <div className="text-left">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-6 uppercase">
@@ -44,11 +45,9 @@ export default function HeroSection() {
             </div>
             
             <div className="flex justify-center lg:justify-end">
-              <img 
-                src="/lovable-uploads/857efa3a-7f7d-49b2-a2d8-a2fd2a0b1e34.png" 
-                alt="Economy visualization" 
-                className="w-full max-w-sm md:max-w-md lg:max-w-lg h-auto"
-              />
+              <div className="w-full max-w-sm md:max-w-md lg:max-w-lg h-auto aspect-square">
+                <EconomyImageAnimation />
+              </div>
             </div>
           </div>
         </div>
