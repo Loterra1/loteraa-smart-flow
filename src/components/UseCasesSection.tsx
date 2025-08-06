@@ -102,11 +102,11 @@ export default function UseCasesSection() {
                 </p>
               </div>
               
-              {/* Animation */}
+              {/* Animation - Increased height significantly */}
               <div
                 className={`${
                   (index === 1 || index === 3) ? "lg:order-1" : ""
-                } relative h-80 transform transition-all duration-1000 delay-300 ${
+                } relative h-[500px] md:h-[600px] lg:h-[700px] transform transition-all duration-1000 delay-300 ${
                   visibleItems[index]
                     ? "translate-y-0 opacity-100"
                     : "translate-y-10 opacity-0"

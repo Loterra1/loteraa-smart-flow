@@ -34,7 +34,7 @@ export default function CorePrinciples() {
               Web3 Connected Contracts
             </h3>
             <p className="text-gray-300 text-base md:text-lg leading-relaxed">
-              Loteraa smart contracts respond autonomously to live sensor inputs enabling logic based automation across DeFi, logistics, energy, data and AI sectors. Data triggers from IoT devices execute cross chain payments, alerts or asset transfers establishing an intelligent link between off chain activities and on chain decision making without intermediaries.
+              Data triggers from IoT devices execute cross chain payments, alerts or asset transfers establishing an intelligent link between off chain activities and on chain decision making without intermediaries.
             </p>
           </div>
 
