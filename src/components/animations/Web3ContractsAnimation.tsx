@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
-import * * THREE from 'three';
+import * as THREE from 'three';
 
 function AnimatedContractsImage() {
   const meshRef = useRef<THREE.Mesh>(null);
