@@ -75,7 +75,7 @@ export default function UseCasesSection() {
           Use Cases
         </h2>
         
-        <div className="max-w-6xl mx-auto space-y-20">
+        <div className="max-w-6xl mx-auto space-y-8">
           {useCases.map((useCase, index) => (
             <div
               key={index}
