@@ -75,7 +75,7 @@ export default function UseCasesSection() {
           Use Cases
         </h2>
         
-        <div className="max-w-6xl mx-auto space-y-8">
+        <div className="max-w-6xl mx-auto space-y-2">
           {useCases.map((useCase, index) => (
             <div
               key={index}
@@ -106,7 +106,7 @@ export default function UseCasesSection() {
               <div
                 className={`${
                   (index === 1 || index === 3) ? "lg:order-1" : ""
-                } relative h-[500px] md:h-[600px] lg:h-[700px] transform transition-all duration-1000 delay-300 ${
+                } relative h-[700px] md:h-[800px] lg:h-[900px] transform transition-all duration-1000 delay-300 ${
                   visibleItems[index]
                     ? "translate-y-0 opacity-100"
                     : "translate-y-10 opacity-0"
