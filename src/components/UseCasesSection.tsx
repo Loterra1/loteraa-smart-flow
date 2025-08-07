@@ -1,12 +1,10 @@
+
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import AIModelTrainingAnimation from "./animations/AIModelTrainingAnimation";
-import Web3DepinAnimation from "./animations/Web3DepinAnimation";
-import BankingFintechAnimation from "./animations/BankingFintechAnimation";
-import NetworkingTelecomAnimation from "./animations/NetworkingTelecomAnimation";
 
 export default function UseCasesSection() {
-  const [visibleItems, setVisibleItems] = useState<boolean[]>([false, false, false, false]);
+  const [visibleItems, setVisibleItems] = useState<boolean[]>([false]);
   const sectionRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -46,24 +44,6 @@ export default function UseCasesSection() {
       title: "AI Development & Model Training",
       description: "Loteraa supplies real-world, verified IoT data to train and refine AI/ML models on-chain, while enabling AI devs to monetize models, automate logic, and verify outputs via tokenized smart contract feedback loops.",
       animation: <AIModelTrainingAnimation />,
-      position: "left"
-    },
-    {
-      title: "Web3 & DePIN Ecosystems",
-      description: "Loteraa powers decentralized physical infrastructure (DePIN) by connecting sensors, devices, and data streams to smart contracts, enabling trustless automation, incentivized participation, and token rewards for builders and operators.",
-      animation: <Web3DepinAnimation />,
-      position: "left"
-    },
-    {
-      title: "Banking & Fintech",
-      description: "Loteraa is built to power financial institutions to automate insurance claims, loan triggers, and risk assessments using real-world IoT inputs like GPS, biometrics, or environmental data reducing fraud, manual processing, and latency.",
-      animation: <BankingFintechAnimation />,
-      position: "left"
-    },
-    {
-      title: "Networking & Telecom",
-      description: "Loteraa is built to enables telecoms to tokenize bandwidth usage, track network quality via sensors, and incentivize community-built infrastructure with programmable rewards, while providing immutable data logs for audits and quality assurance.",
-      animation: <NetworkingTelecomAnimation />,
       position: "left"
     }
   ];
