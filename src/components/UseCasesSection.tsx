@@ -1,5 +1,5 @@
-
 import { useEffect, useRef, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import AIModelTrainingAnimation from "./animations/AIModelTrainingAnimation";
 import Web3DepinAnimation from "./animations/Web3DepinAnimation";
 import BankingFintechAnimation from "./animations/BankingFintechAnimation";
@@ -74,6 +74,59 @@ export default function UseCasesSection() {
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-16 text-center text-white uppercase">
           Use Cases
         </h2>
+
+        {/* Two New Cards */}
+        <div className="max-w-6xl mx-auto mb-16">
+          {/* Card 1 */}
+          <Card className="bg-black border border-gray-800 mb-0">
+            <CardContent className="p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                {/* Image on left */}
+                <div className="relative h-64 lg:h-80">
+                  <img 
+                    src="/lovable-uploads/7ce35ffa-5559-4e31-9178-eafcb79785ec.png" 
+                    alt="Real uses and impact illustration" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                {/* Content on right */}
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 uppercase">
+                    Real uses and impact
+                  </h3>
+                  <p className="text-gray-300 text-base md:text-lg leading-relaxed">
+                    Loteraa connects real-world data to blockchain, enabling AI model training, decentralized finance triggers, IoT automation, and DePIN economies. It powers fintech, telecom, logistics, and smart device networks by turning real-time sensor data into tokenized assets, unlocking new data-driven apps and rewarding users for data contribution and utility.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Card 2 - Directly below Card 1 with no spacing */}
+          <Card className="bg-black border border-gray-800 border-t-0">
+            <CardContent className="p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                {/* Image on left */}
+                <div className="relative h-64 lg:h-80">
+                  <img 
+                    src="/lovable-uploads/f03533d0-e6cd-4d0f-8a48-615d93d8fbb3.png" 
+                    alt="Loteraa as a Core Infrastructure illustration" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                {/* Content on right */}
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 uppercase">
+                    Loteraa as a Core Infrastructure
+                  </h3>
+                  <p className="text-gray-300 text-base md:text-lg leading-relaxed">
+                    Loteraa is the foundational layer power, DePIN-powered sensor networks translating real-world signals into on-chain logic that smart contracts can understand and execute. loteraa handles data ingestion, sensor registration, secure transmission, oracle integration, and programmable event triggers.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
         
         <div className="max-w-6xl mx-auto space-y-2">
           {useCases.map((useCase, index) => (
