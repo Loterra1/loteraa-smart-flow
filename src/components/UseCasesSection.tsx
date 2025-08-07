@@ -1,7 +1,8 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import AIModelTrainingAnimation from "./animations/AIModelTrainingAnimation";
+import RealUsesImpactAnimation from "./animations/RealUsesImpactAnimation";
+import CoreInfrastructureAnimation from "./animations/CoreInfrastructureAnimation";
 
 export default function UseCasesSection() {
   const [visibleItems, setVisibleItems] = useState<boolean[]>([false]);
@@ -61,13 +62,9 @@ export default function UseCasesSection() {
           <Card className="bg-black border border-gray-800 mb-0">
             <CardContent className="p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                {/* Image on left */}
+                {/* Animation on left */}
                 <div className="relative h-64 lg:h-80">
-                  <img 
-                    src="/lovable-uploads/7ce35ffa-5559-4e31-9178-eafcb79785ec.png" 
-                    alt="Real uses and impact illustration" 
-                    className="w-full h-full object-contain"
-                  />
+                  <RealUsesImpactAnimation />
                 </div>
                 {/* Content on right */}
                 <div>
@@ -86,13 +83,9 @@ export default function UseCasesSection() {
           <Card className="bg-black border border-gray-800 border-t-0">
             <CardContent className="p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                {/* Image on left */}
+                {/* Animation on left */}
                 <div className="relative h-64 lg:h-80">
-                  <img 
-                    src="/lovable-uploads/f03533d0-e6cd-4d0f-8a48-615d93d8fbb3.png" 
-                    alt="Loteraa as a Core Infrastructure illustration" 
-                    className="w-full h-full object-contain"
-                  />
+                  <CoreInfrastructureAnimation />
                 </div>
                 {/* Content on right */}
                 <div>
