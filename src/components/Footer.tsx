@@ -48,7 +48,7 @@ export default function Footer() {
               <li><Link to="/use-cases" className="text-white/70 hover:text-white transition-colors">Use Cases</Link></li>
               <li><Link to="/researchers" className="text-white/70 hover:text-white transition-colors">For Researchers</Link></li>
               <li><Link to="/developer-docs" className="text-white/70 hover:text-white transition-colors">Documentation</Link></li>
-              <li><a href="https://drive.google.com/file/d/12NTk2uBtvDkTD77DTXd-2y5qzkOl0W23/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
+              <li><a href="https://drive.google.com/file/d/1j5Kbe407rizZvAL2HDAkJw5qS7iPigGE/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
             </ul>
           </div>
           
