@@ -49,6 +49,7 @@ export default function Footer() {
               <li><Link to="/researchers" className="text-white/70 hover:text-white transition-colors">For Researchers</Link></li>
               <li><Link to="/developer-docs" className="text-white/70 hover:text-white transition-colors">Documentation</Link></li>
               <li><a href="https://drive.google.com/file/d/1j5Kbe407rizZvAL2HDAkJw5qS7iPigGE/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
+              <li><a href="https://disruptors99s-organization.gitbook.io/loteraa-whitepaper/" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">GitBook</a></li>
             </ul>
           </div>
           
