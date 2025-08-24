@@ -33,7 +33,7 @@ export default function Footer() {
               <li><Link to="/use-cases" className="text-white/70 hover:text-white transition-colors">Use Cases</Link></li>
               <li><Link to="/researchers" className="text-white/70 hover:text-white transition-colors">For Researchers</Link></li>
               <li><Link to="/developer-docs" className="text-white/70 hover:text-white transition-colors">Documentation</Link></li>
-              <li><a href="https://disruptors99s-organization.gitbook.io/loteraa-whitepaper?q=loterra" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
+              <li><a href="https://disruptors99s-organization.gitbook.io/loteraa-whitepaper" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
             </ul>
           </div>
           
