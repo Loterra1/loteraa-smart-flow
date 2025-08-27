@@ -20,3 +20,6 @@ Official links:
  Twitter – https://x.com/loteraa1
 Telegram – https://t.me/loteraa1
  Whitepaper - https://docs.google.com/document/d/1PvwyMlGE2GD4Gb1P4mXARhNpeZSN3X5jI7rDtc7nDvM/edit?usp=drivesdk,                              gitbook: https://disruptors99s-organization.gitbook.io/loteraa-whitepaper/
+
+
+ loteraa is building the future of machine to machine payment automation economy 
