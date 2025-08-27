@@ -108,12 +108,21 @@ export default function StartBuildingSection() {
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white uppercase mb-8 leading-tight">
             Connect the physical and digital worlds through our revolutionary IoT-blockchain infrastructure.
           </h2>
-          <Button asChild size="lg" className="bg-white hover:bg-white/90 text-black px-8 py-6 text-lg">
+          <Button asChild size="lg" className="bg-white hover:bg-white/90 text-black px-8 py-6 text-lg mb-12">
             <Link to="/signup">
               Sign Up
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
+          
+          {/* Verification Badge */}
+          <div className="flex justify-center">
+            <img 
+              src="/lovable-uploads/5e494033-4285-4a73-8bf8-279baf9fc6f2.png" 
+              alt="Verified by Assure DeFi - Integrity, Trust, Credibility" 
+              className="w-48 h-48 md:w-56 md:h-56"
+            />
+          </div>
         </div>
       </div>
     </section>
