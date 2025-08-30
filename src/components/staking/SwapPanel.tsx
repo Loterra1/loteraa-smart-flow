@@ -11,6 +11,9 @@ import {
 } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import WalletModal from './WalletModal';
+import Modal from '@/utils/Modal';
+import { X, Wallet, ExternalLink, Copy, Check } from 'lucide-react';
+import { ethers } from 'ethers';
 
 const tokens = [
    { symbol: 'LOT', name: 'Loteraa Token', balance: '1000.00', price: 2.47 },
@@ -32,6 +35,11 @@ const SwapPanel = ({ walletConnected, setWalletConnected }: SwapPanelProps) => {
    const [toAmount, setToAmount] = useState('');
    const [isSwapping, setIsSwapping] = useState(false);
    const [openModal, setOpenModal] = useState(false);
+   const [address, setAddress] = useState('');
+   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(
+      null
+   );
+   const [copiedAddress, setCopiedAddress] = useState(false);
 
    const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
@@ -103,13 +111,33 @@ const SwapPanel = ({ walletConnected, setWalletConnected }: SwapPanelProps) => {
       setToAmount(tempAmount);
    };
 
+   const copyAddress = async () => {
+      if (address) {
+         await navigator.clipboard.writeText(address);
+         setCopiedAddress(true);
+         setTimeout(() => setCopiedAddress(false), 2000);
+      }
+   };
+
    const handleConnectWallet = () => {
-      toast({
-         title: 'Connect Wallet',
-         description: 'Wallet connection feature will be implemented soon',
-      });
-      // For UI demonstration only
+      setOpenModal(true);
+   };
+
+   const handleWalletConnect = (
+      walletAddress: string,
+      walletProvider?: ethers.BrowserProvider
+   ) => {
+      setAddress(walletAddress);
+      setProvider(walletProvider);
       setWalletConnected(true);
+
+      toast({
+         title: 'Wallet Connected',
+         description: `Connected to ${walletAddress.slice(
+            0,
+            6
+         )}...${walletAddress.slice(-4)}`,
+      });
    };
 
    const handleSwap = async () => {
@@ -144,6 +172,21 @@ const SwapPanel = ({ walletConnected, setWalletConnected }: SwapPanelProps) => {
       } finally {
          setIsSwapping(false);
       }
+   };
+
+   const handleCloseModal = () => {
+      setOpenModal(false);
+   };
+
+   const disconnectWallet = () => {
+      setAddress('');
+      setProvider(null);
+      setWalletConnected(false);
+
+      toast({
+         title: 'Wallet Disconnected',
+         description: 'Your wallet has been disconnected',
+      });
    };
 
    const currentFromToken = tokens.find((t) => t.symbol === fromToken);
@@ -271,11 +314,12 @@ const SwapPanel = ({ walletConnected, setWalletConnected }: SwapPanelProps) => {
                </div>
             </div>
 
-            {/* {!walletConnected ? (
+            {!walletConnected ? (
                <Button
                   className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
                   onClick={handleConnectWallet}
                >
+                  <Wallet className="w-5 h-5 mr-2" />
                   Connect Wallet
                </Button>
             ) : (
@@ -288,9 +332,51 @@ const SwapPanel = ({ walletConnected, setWalletConnected }: SwapPanelProps) => {
                >
                   {isSwapping ? 'Swapping...' : 'Swap'}
                </Button>
-            )} */}
+            )}
          </div>
-         <WalletModal />
+
+         {/* Connected Wallet Display */}
+         {address && (
+            <div className="mt-4 bg-white rounded-lg shadow-md p-4 border">
+               <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-semibold text-gray-800">
+                     Connected Wallet
+                  </h3>
+                  <button
+                     onClick={disconnectWallet}
+                     className="text-red-500 hover:text-red-700 text-xs"
+                  >
+                     Disconnect
+                  </button>
+               </div>
+
+               <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-600">Address:</span>
+                  <span className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">
+                     {address.slice(0, 8)}...{address.slice(-6)}
+                  </span>
+                  <button
+                     onClick={copyAddress}
+                     className="p-1 hover:bg-gray-200 rounded"
+                     title="Copy address"
+                  >
+                     {copiedAddress ? (
+                        <Check className="w-3 h-3 text-green-500" />
+                     ) : (
+                        <Copy className="w-3 h-3 text-gray-500" />
+                     )}
+                  </button>
+               </div>
+            </div>
+         )}
+
+         {/* Modal */}
+         <Modal open={openModal} onClose={handleCloseModal}>
+            <WalletModal
+               onClose={handleCloseModal}
+               onConnect={handleWalletConnect}
+            />
+         </Modal>
       </div>
    );
 };
