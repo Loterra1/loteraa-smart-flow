@@ -13,6 +13,7 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { X, Wallet, ExternalLink, Copy, Check } from 'lucide-react';
+
 import { ethers } from 'ethers';
 
 interface StakeEntry {
@@ -97,6 +98,26 @@ const NETWORKS = {
    ],
 };
 
+declare global {
+   interface Window {
+      ethereum?: {
+         removeListener(
+            arg0: string,
+            handleAccountsChanged: (accounts: string[]) => void
+         ): unknown;
+         on(
+            arg0: string,
+            handleAccountsChanged: (accounts: string[]) => void
+         ): unknown;
+         isMetaMask?: boolean;
+         isCoinbaseWallet?: boolean;
+      };
+      phantom?: {
+         solana?: boolean;
+      };
+   }
+}
+
 const StakingPanel = ({
    walletConnected,
    setWalletConnected,
@@ -135,17 +156,17 @@ const StakingPanel = ({
    // Check wallet availability
    const getWalletAvailability = () => {
       const availability: Record<string, boolean> = {};
+      // Now your code can use proper typing:
       WALLETS.forEach((wallet) => {
          switch (wallet.id) {
             case 'metamask':
-               availability[wallet.id] = !!(window as any).ethereum?.isMetaMask;
+               availability[wallet.id] = !!window.ethereum?.isMetaMask;
                break;
             case 'phantom':
-               availability[wallet.id] = !!(window as any).phantom?.solana;
+               availability[wallet.id] = !!window.phantom?.solana;
                break;
             case 'coinbase':
-               availability[wallet.id] = !!(window as any).ethereum
-                  ?.isCoinbaseWallet;
+               availability[wallet.id] = !!window.ethereum?.isCoinbaseWallet;
                break;
             default:
                availability[wallet.id] = false;
@@ -165,113 +186,98 @@ const StakingPanel = ({
    };
 
    const connectToWallet = async (walletId: string, networkId: string) => {
-      setIsConnecting(true);
-      try {
-         let walletProvider: ethers.BrowserProvider | null = null;
-         let userAddress: string;
-
-         switch (walletId) {
-            case 'metamask':
-               if (!(window as any).ethereum?.isMetaMask) {
-                  throw new Error('MetaMask is not installed');
-               }
-
-               // Switch to selected network first
-               try {
-                  await (window as any).ethereum.request({
-                     method: 'wallet_switchEthereumChain',
-                     params: [
-                        { chainId: `0x${parseInt(networkId).toString(16)}` },
-                     ],
-                  });
-               } catch (switchError: any) {
-                  if (switchError.code === 4902) {
-                     console.log('Network not found in wallet');
-                  }
-               }
-
-               const accounts = await (window as any).ethereum.request({
-                  method: 'eth_requestAccounts',
-               });
-
-               if (accounts.length === 0) throw new Error('No accounts found');
-
-               walletProvider = new ethers.BrowserProvider(
-                  (window as any).ethereum
-               );
-               const signer = await walletProvider.getSigner();
-               userAddress = await signer.getAddress();
-               break;
-
-            case 'phantom':
-               if (!(window as any).phantom?.solana) {
-                  throw new Error('Phantom wallet is not installed');
-               }
-
-               const response = await (window as any).phantom.solana.connect();
-               userAddress = response.publicKey.toString();
-               break;
-
-            case 'coinbase':
-               if (!(window as any).ethereum?.isCoinbaseWallet) {
-                  throw new Error('Coinbase Wallet is not installed');
-               }
-
-               const cbAccounts = await (window as any).ethereum.request({
-                  method: 'eth_requestAccounts',
-               });
-
-               if (cbAccounts.length === 0)
-                  throw new Error('No accounts found');
-
-               walletProvider = new ethers.BrowserProvider(
-                  (window as any).ethereum
-               );
-               const cbSigner = await walletProvider.getSigner();
-               userAddress = await cbSigner.getAddress();
-               break;
-
-            default:
-               throw new Error('Wallet not supported yet');
-         }
-
-         setProvider(walletProvider);
-         setAddress(userAddress);
-         setWalletConnected(true);
-         setWalletBalance(1000); // Set mock balance
-         setShowWalletModal(false);
-
-         toast({
-            title: 'Wallet Connected',
-            description: `Successfully connected to ${
-               WALLETS.find((w) => w.id === walletId)?.name
-            }`,
-         });
-      } catch (error: any) {
-         console.error('Wallet connection error:', error);
-
-         if (error.code === 4001) {
-            toast({
-               title: 'Connection Rejected',
-               description: 'User rejected the connection request',
-               variant: 'destructive',
-            });
-         } else if (error.message.includes('not installed')) {
-            toast({
-               title: 'Wallet Not Found',
-               description: error.message,
-               variant: 'destructive',
-            });
-         } else {
-            toast({
-               title: 'Connection Failed',
-               description: error.message,
-               variant: 'destructive',
-            });
-         }
-      } finally {
-         setIsConnecting(false);
-      }
+      // setIsConnecting(true);
+      // try {
+      //    let walletProvider: ethers.BrowserProvider | null = null;
+      //    let userAddress: string;
+      //    switch (walletId) {
+      //       case 'metamask':
+      //          if (!(window as any).ethereum?.isMetaMask) {
+      //             throw new Error('MetaMask is not installed');
+      //          }
+      //          // Switch to selected network first
+      //          try {
+      //             await (window as any).ethereum.request({
+      //                method: 'wallet_switchEthereumChain',
+      //                params: [
+      //                   { chainId: `0x${parseInt(networkId).toString(16)}` },
+      //                ],
+      //             });
+      //          } catch (switchError: any) {
+      //             if (switchError.code === 4902) {
+      //                console.log('Network not found in wallet');
+      //             }
+      //          }
+      //          const accounts = await (window as any).ethereum.request({
+      //             method: 'eth_requestAccounts',
+      //          });
+      //          if (accounts.length === 0) throw new Error('No accounts found');
+      //          walletProvider = new ethers.BrowserProvider(
+      //             (window as any).ethereum
+      //          );
+      //          const signer = await walletProvider.getSigner();
+      //          userAddress = await signer.getAddress();
+      //          break;
+      //       case 'phantom':
+      //          if (!(window as any).phantom?.solana) {
+      //             throw new Error('Phantom wallet is not installed');
+      //          }
+      //          const response = await (window as any).phantom.solana.connect();
+      //          userAddress = response.publicKey.toString();
+      //          break;
+      //       case 'coinbase':
+      //          if (!(window as any).ethereum?.isCoinbaseWallet) {
+      //             throw new Error('Coinbase Wallet is not installed');
+      //          }
+      //          const cbAccounts = await (window as any).ethereum.request({
+      //             method: 'eth_requestAccounts',
+      //          });
+      //          if (cbAccounts.length === 0)
+      //             throw new Error('No accounts found');
+      //          walletProvider = new ethers.BrowserProvider(
+      //             (window as any).ethereum
+      //          );
+      //          const cbSigner = await walletProvider.getSigner();
+      //          userAddress = await cbSigner.getAddress();
+      //          break;
+      //       default:
+      //          throw new Error('Wallet not supported yet');
+      //    }
+      //    setProvider(walletProvider);
+      //    setAddress(userAddress);
+      //    setWalletConnected(true);
+      //    setWalletBalance(1000); // Set mock balance
+      //    setShowWalletModal(false);
+      //    toast({
+      //       title: 'Wallet Connected',
+      //       description: `Successfully connected to ${
+      //          WALLETS.find((w) => w.id === walletId)?.name
+      //       }`,
+      //    });
+      // } catch (error: any) {
+      //    console.error('Wallet connection error:', error);
+      //    if (error.code === 4001) {
+      //       toast({
+      //          title: 'Connection Rejected',
+      //          description: 'User rejected the connection request',
+      //          variant: 'destructive',
+      //       });
+      //    } else if (error.message.includes('not installed')) {
+      //       toast({
+      //          title: 'Wallet Not Found',
+      //          description: error.message,
+      //          variant: 'destructive',
+      //       });
+      //    } else {
+      //       toast({
+      //          title: 'Connection Failed',
+      //          description: error.message,
+      //          variant: 'destructive',
+      //       });
+      //    }
+      // } finally {
+      //    setIsConnecting(false);
+      // }
    };
 
    const connectManually = () => {
@@ -346,9 +352,9 @@ const StakingPanel = ({
    };
 
    // Initialize wallet availability
-   useEffect(() => {
-      setWalletAvailability(getWalletAvailability());
-   }, []);
+   // useEffect(() => {
+   //    return setWalletAvailability();
+   // }, []);
 
    // Calculate total staked amount
    useEffect(() => {
@@ -362,6 +368,10 @@ const StakingPanel = ({
       }, 0);
       setTotalRewards(rewards);
    }, [userStakes]);
+
+   useEffect(() => {
+      setWalletAvailability(getWalletAvailability());
+   }, []);
 
    const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setAmount(e.target.value);
@@ -441,7 +451,7 @@ const StakingPanel = ({
 
    // Listen for account changes
    useEffect(() => {
-      if ((window as any).ethereum) {
+      if (window.ethereum) {
          const handleAccountsChanged = (accounts: string[]) => {
             if (accounts.length === 0) {
                setAddress('');
@@ -453,16 +463,28 @@ const StakingPanel = ({
             }
          };
 
-         (window as any).ethereum.on('accountsChanged', handleAccountsChanged);
+         window.ethereum.on('accountsChanged', handleAccountsChanged);
 
          return () => {
-            (window as any).ethereum.removeListener(
+            window.ethereum.removeListener(
                'accountsChanged',
                handleAccountsChanged
             );
          };
       }
    }, [setWalletConnected]);
+
+   useEffect(() => {
+      if (showWalletModal) {
+         if (typeof window != 'undefined' && window.document) {
+            document.body.style.overflow = 'hidden';
+         }
+      } else document.body.style.overflow = 'unset';
+
+      return () => {
+         document.body.style.overflow = 'unset';
+      };
+   }, [showWalletModal]);
 
    return (
       <>
@@ -874,7 +896,7 @@ const StakingPanel = ({
                                  onChange={(e) =>
                                     setSelectedNetwork(e.target.value)
                                  }
-                                 className="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                 className="w-full p-3 text-[black] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                               >
                                  {[
                                     ...NETWORKS.ethereum,

@@ -1,0 +1,24 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "ebukaWalletIntegration",
+    "main",
+    "mediaScreenRefactor",
+    "mobileWalletConnect",
+    "smartContract"
+  ],
+  "parent": {
+    "ebukaWalletIntegration": "main",
+    "main": null,
+    "mediaScreenRefactor": "main",
+    "mobileWalletConnect": "main",
+    "smartContract": "main"
+  },
+  "order": [
+    "main",
+    "ebukaWalletIntegration",
+    "mediaScreenRefactor",
+    "mobileWalletConnect",
+    "smartContract"
+  ]
+}
