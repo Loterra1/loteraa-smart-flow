@@ -18,31 +18,32 @@ export const useSupabaseNotifications = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      fetchNotifications();
-      
-      // Set up real-time subscription
-      const channel = supabase
-        .channel('notifications-changes')
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'notifications',
-            filter: `user_id=eq.${user.id}`
-          },
-          () => {
-            fetchNotifications();
-          }
-        )
-        .subscribe();
+    if (!user) return;
 
-      return () => {
-        supabase.removeChannel(channel);
-      };
-    }
-  }, [user]);
+    fetchNotifications();
+    
+    // Create a unique channel name to avoid conflicts
+    const channelName = `notifications-${user.id}-${Date.now()}`;
+    const channel = supabase
+      .channel(channelName)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${user.id}`
+        },
+        () => {
+          fetchNotifications();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user?.id]); // Only depend on user.id to prevent unnecessary re-subscriptions
 
   const fetchNotifications = async () => {
     try {
