@@ -41,6 +41,7 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
             <ul className="mt-4 space-y-4">
               <li><Link to="/about" className="text-white/70 hover:text-white transition-colors">About</Link></li>
+              <li><Link to="/media-kit" className="text-white/70 hover:text-white transition-colors">Media Kit</Link></li>
             </ul>
           </div>
           
