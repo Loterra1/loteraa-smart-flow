@@ -38,6 +38,7 @@ export default function DatasetFileUpload({ onUploadSuccess, onCancel }: Dataset
   });
   const [autoAnalyze, setAutoAnalyze] = useState(true);
   const [showPreview, setShowPreview] = useState(false);
+  const [showCodePreview, setShowCodePreview] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { uploadDataset, analyzeFile, uploading } = useSupabaseDatasets();
@@ -77,6 +78,18 @@ export default function DatasetFileUpload({ onUploadSuccess, onCancel }: Dataset
       setShowPreview(true);
     } catch (error) {
       console.error('Preview failed:', error);
+    }
+  };
+
+  const handleCodePreview = async () => {
+    if (!selectedFile) return;
+    
+    try {
+      const analysis = await analyzeFile(selectedFile);
+      setFileAnalysis(analysis);
+      setShowCodePreview(true);
+    } catch (error) {
+      console.error('Code preview failed:', error);
     }
   };
 
@@ -318,6 +331,25 @@ export default function DatasetFileUpload({ onUploadSuccess, onCancel }: Dataset
                     )}
                   </div>
                 )}
+
+                {fileAnalysis.sampleData.length > 0 && showCodePreview && (
+                  <div className="mt-4">
+                    <p className="text-sm font-medium mb-3">Dataset Code Preview (First 5 rows):</p>
+                    <ScrollArea className="w-full border rounded-md">
+                      <div className="max-h-80 p-4">
+                        <pre className="text-xs font-mono text-muted-foreground overflow-x-auto">
+                          <code>{JSON.stringify(fileAnalysis.sampleData.slice(0, 5), null, 2)}</code>
+                        </pre>
+                      </div>
+                    </ScrollArea>
+                    
+                    {fileAnalysis.rowCount > 5 && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Showing 5 of {fileAnalysis.rowCount} total rows in JSON format
+                      </p>
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}
@@ -331,10 +363,16 @@ export default function DatasetFileUpload({ onUploadSuccess, onCancel }: Dataset
             )}
             
             {selectedFile && (
-              <Button variant="outline" onClick={handlePreview}>
-                <Eye className="h-4 w-4 mr-2" />
-                {showPreview ? 'Refresh Preview' : 'View Data Preview'}
-              </Button>
+              <>
+                <Button variant="outline" onClick={handlePreview}>
+                  <Eye className="h-4 w-4 mr-2" />
+                  {showPreview ? 'Refresh Preview' : 'View Data Preview'}
+                </Button>
+                <Button variant="outline" onClick={handleCodePreview}>
+                  <FileText className="h-4 w-4 mr-2" />
+                  {showCodePreview ? 'Refresh Code' : 'Preview Dataset Code'}
+                </Button>
+              </>
             )}
 
             <Button 
