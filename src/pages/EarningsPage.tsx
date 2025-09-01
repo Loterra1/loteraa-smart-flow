@@ -1,9 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import DashboardNavbar from '@/components/DashboardNavbar';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Coins, TrendingUp, DollarSign, Database } from "lucide-react";
+import { format, startOfMonth, subMonths } from 'date-fns';
 import {
   LineChart,
   Line,
@@ -43,32 +46,92 @@ interface DevicePerformanceData {
 }
 
 export default function EarningsPage() {
-  const [isNewAccount, setIsNewAccount] = useState(true);
+  const { user } = useAuth();
+  const [earnings, setEarnings] = useState([]);
+  const [totalEarnings, setTotalEarnings] = useState(0);
+  const [thisMonth, setThisMonth] = useState(0);
+  const [monthlyTrend, setMonthlyTrend] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      const parsedData = JSON.parse(userData);
-      if (parsedData.earnings && parsedData.earnings.length > 0) {
-        setIsNewAccount(false);
-      } else {
-        setIsNewAccount(true);
-      }
+    if (user) {
+      fetchEarnings();
     }
-  }, []);
+  }, [user]);
 
-  // Show earnings page content for all users (new and existing)
+  const fetchEarnings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('earnings')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching earnings:', error);
+        return;
+      }
+
+      setEarnings(data || []);
+      
+      const total = data?.reduce((sum, earning) => sum + Number(earning.amount), 0) || 0;
+      setTotalEarnings(total);
+
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const monthlyEarnings = data?.filter(earning => {
+        const earningDate = new Date(earning.created_at);
+        return earningDate.getMonth() === currentMonth && earningDate.getFullYear() === currentYear;
+      }).reduce((sum, earning) => sum + Number(earning.amount), 0) || 0;
+      
+      setThisMonth(monthlyEarnings);
+
+      // Generate monthly trend data for the last 6 months
+      const trendData = generateMonthlyTrend(data || []);
+      setMonthlyTrend(trendData);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const generateMonthlyTrend = (earningsData) => {
+    const months = [];
+    const now = new Date();
+    
+    // Generate last 6 months
+    for (let i = 5; i >= 0; i--) {
+      const monthDate = subMonths(startOfMonth(now), i);
+      months.push({
+        month: format(monthDate, 'MMM yyyy'),
+        monthKey: format(monthDate, 'yyyy-MM'),
+        earnings: 0
+      });
+    }
+
+    // Aggregate earnings by month
+    earningsData.forEach(earning => {
+      const earningDate = new Date(earning.created_at);
+      const monthKey = format(earningDate, 'yyyy-MM');
+      const monthData = months.find(m => m.monthKey === monthKey);
+      if (monthData) {
+        monthData.earnings += Number(earning.amount);
+      }
+    });
+
+    return months.map(({ month, earnings }) => ({
+      month,
+      earnings: parseFloat(earnings.toFixed(2))
+    }));
+  };
+
   const earningsOverview = [
-    { title: "Total Earnings", value: "0", unit: "$LOT", change: "+0%", icon: DollarSign },
-    { title: "This Month", value: "0", unit: "$LOT", change: "+0%", icon: TrendingUp },
-    { title: "Data Points", value: "0", unit: "points", change: "+0%", icon: Database },
+    { title: "Total Earnings", value: totalEarnings.toString(), unit: "$LOT", change: "+0%", icon: DollarSign },
+    { title: "This Month", value: thisMonth.toString(), unit: "$LOT", change: "+0%", icon: TrendingUp },
+    { title: "Data Points", value: earnings.length.toString(), unit: "points", change: "+0%", icon: Database },
     { title: "Avg. Daily", value: "0", unit: "$LOT", change: "+0%", icon: Coins },
   ];
-
-  const earningsData: EarningsData[] = [];
-  const deviceData: DeviceData[] = [];
-  const datasetData: DatasetData[] = [];
-  const performanceData: DevicePerformanceData[] = [];
 
   return (
     <div className="min-h-screen bg-black">
@@ -107,10 +170,48 @@ export default function EarningsPage() {
           <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
             <CardHeader>
               <CardTitle className="text-white">Monthly Earnings Trend</CardTitle>
+              <p className="text-sm text-white/70">Your LOT token earnings over the last 6 months</p>
             </CardHeader>
             <CardContent>
-              <div className="h-[300px] flex items-center justify-center">
-                <p className="text-white/50">No earnings data available yet</p>
+              <div className="h-[300px]">
+                {monthlyTrend.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={monthlyTrend}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <XAxis 
+                        dataKey="month" 
+                        stroke="#9CA3AF"
+                        fontSize={12}
+                      />
+                      <YAxis 
+                        stroke="#9CA3AF"
+                        fontSize={12}
+                        tickFormatter={(value) => `${value} LOT`}
+                      />
+                      <Tooltip 
+                        contentStyle={{
+                          backgroundColor: '#1F2937',
+                          border: '1px solid #374151',
+                          borderRadius: '8px',
+                          color: '#F9FAFB'
+                        }}
+                        formatter={(value) => [`${value} LOT`, 'Earnings']}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="earnings" 
+                        stroke="#06B6D4" 
+                        strokeWidth={3}
+                        dot={{ fill: '#06B6D4', strokeWidth: 2, r: 6 }}
+                        activeDot={{ r: 8, stroke: '#06B6D4', strokeWidth: 2 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex items-center justify-center">
+                    <p className="text-white/50">No earnings data available yet</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -135,9 +236,24 @@ export default function EarningsPage() {
               <CardTitle className="text-white">Dataset Earnings</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-center py-8">
-                <p className="text-white/50">No dataset earnings yet</p>
-                <p className="text-sm text-white/40 mt-2">Submit datasets to start earning</p>
+              <div className="space-y-3">
+                {earnings.length > 0 ? earnings.slice(0, 5).map((earning) => (
+                  <div key={earning.id} className="flex justify-between items-center py-2 border-b border-loteraa-gray/20">
+                    <div>
+                      <p className="text-sm text-white">{earning.type.replace('_', ' ')}</p>
+                      <p className="text-xs text-white/50">{new Date(earning.created_at).toLocaleDateString()}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-green-500">+{earning.amount} LOT</p>
+                      <p className="text-xs text-white/50">{earning.status}</p>
+                    </div>
+                  </div>
+                )) : (
+                  <div className="text-center py-8">
+                    <p className="text-white/50">No dataset earnings yet</p>
+                    <p className="text-sm text-white/40 mt-2">Submit datasets to start earning</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

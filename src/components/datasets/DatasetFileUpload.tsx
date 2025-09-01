@@ -6,9 +6,11 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Upload, FileText, Database, CheckCircle, AlertCircle } from 'lucide-react';
+import { Upload, FileText, Database, CheckCircle, AlertCircle, Eye } from 'lucide-react';
 import { useSupabaseDatasets, DatasetFormData } from '@/hooks/useSupabaseDatasets';
 import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface DatasetFileUploadProps {
   onUploadSuccess?: (dataset: any) => void;
@@ -36,6 +38,7 @@ export default function DatasetFileUpload({ onUploadSuccess, onCancel }: Dataset
   });
   const [autoAnalyze, setAutoAnalyze] = useState(true);
   const [showPreview, setShowPreview] = useState(false);
+  const [showCodePreview, setShowCodePreview] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { uploadDataset, analyzeFile, uploading } = useSupabaseDatasets();
@@ -75,6 +78,18 @@ export default function DatasetFileUpload({ onUploadSuccess, onCancel }: Dataset
       setShowPreview(true);
     } catch (error) {
       console.error('Preview failed:', error);
+    }
+  };
+
+  const handleCodePreview = async () => {
+    if (!selectedFile) return;
+    
+    try {
+      const analysis = await analyzeFile(selectedFile);
+      setFileAnalysis(analysis);
+      setShowCodePreview(true);
+    } catch (error) {
+      console.error('Code preview failed:', error);
     }
   };
 
@@ -271,10 +286,68 @@ export default function DatasetFileUpload({ onUploadSuccess, onCancel }: Dataset
 
                 {fileAnalysis.sampleData.length > 0 && showPreview && (
                   <div className="mt-4">
-                    <p className="text-sm font-medium mb-2">Sample Data:</p>
-                    <div className="bg-gray-50 p-3 rounded text-xs font-mono overflow-x-auto">
-                      <pre>{JSON.stringify(fileAnalysis.sampleData, null, 2)}</pre>
-                    </div>
+                    <p className="text-sm font-medium mb-3">Data Preview (First 5 rows):</p>
+                    <ScrollArea className="w-full border rounded-md">
+                      <div className="max-h-80">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              {fileAnalysis.columns.map((column, index) => (
+                                <TableHead key={index} className="whitespace-nowrap font-medium">
+                                  <div>
+                                    <div>{column}</div>
+                                    <div className="text-xs text-muted-foreground font-normal">
+                                      {fileAnalysis.dataTypes[column] || 'unknown'}
+                                    </div>
+                                  </div>
+                                </TableHead>
+                              ))}
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {fileAnalysis.sampleData.slice(0, 5).map((row, rowIndex) => (
+                              <TableRow key={rowIndex}>
+                                {fileAnalysis.columns.map((column, colIndex) => (
+                                  <TableCell key={colIndex} className="whitespace-nowrap">
+                                    <div className="max-w-32 truncate" title={String(row[column] || '')}>
+                                      {row[column] !== null && row[column] !== undefined 
+                                        ? String(row[column]) 
+                                        : <span className="text-muted-foreground">null</span>
+                                      }
+                                    </div>
+                                  </TableCell>
+                                ))}
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </ScrollArea>
+                    
+                    {fileAnalysis.rowCount > 5 && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Showing 5 of {fileAnalysis.rowCount} total rows
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {fileAnalysis.sampleData.length > 0 && showCodePreview && (
+                  <div className="mt-4">
+                    <p className="text-sm font-medium mb-3">Dataset Code Preview (First 5 rows):</p>
+                    <ScrollArea className="w-full border rounded-md">
+                      <div className="max-h-80 p-4">
+                        <pre className="text-xs font-mono text-muted-foreground overflow-x-auto">
+                          <code>{JSON.stringify(fileAnalysis.sampleData.slice(0, 5), null, 2)}</code>
+                        </pre>
+                      </div>
+                    </ScrollArea>
+                    
+                    {fileAnalysis.rowCount > 5 && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Showing 5 of {fileAnalysis.rowCount} total rows in JSON format
+                      </p>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -289,11 +362,17 @@ export default function DatasetFileUpload({ onUploadSuccess, onCancel }: Dataset
               </Button>
             )}
             
-            {selectedFile && !showPreview && (
-              <Button variant="outline" onClick={handlePreview}>
-                <FileText className="h-4 w-4 mr-2" />
-                View Data Preview
-              </Button>
+            {selectedFile && (
+              <>
+                <Button variant="outline" onClick={handlePreview}>
+                  <Eye className="h-4 w-4 mr-2" />
+                  {showPreview ? 'Refresh Preview' : 'View Data Preview'}
+                </Button>
+                <Button variant="outline" onClick={handleCodePreview}>
+                  <FileText className="h-4 w-4 mr-2" />
+                  {showCodePreview ? 'Refresh Code' : 'Preview Dataset Code'}
+                </Button>
+              </>
             )}
 
             <Button 

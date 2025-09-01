@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,27 +8,36 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, Download, Eye, Filter, Database } from "lucide-react";
 import DashboardNavbar from '@/components/DashboardNavbar';
 import DatasetDetailsModal from '@/components/datasets/DatasetDetailsModal';
-import { useDatasets } from '@/hooks/useDatasets';
+import { useSupabaseDatasets } from '@/hooks/useSupabaseDatasets';
 import { useNavigate } from 'react-router-dom';
 
 export default function DataListingPage() {
-  const { datasets } = useDatasets();
+  const { fetchAllVerifiedDatasets } = useSupabaseDatasets();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedDataset, setSelectedDataset] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [verifiedDatasets, setVerifiedDatasets] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Filter datasets to only show verified ones
-  const verifiedDatasets = datasets.filter(dataset => dataset.status === 'Verified');
+  useEffect(() => {
+    loadVerifiedDatasets();
+  }, []);
+
+  const loadVerifiedDatasets = async () => {
+    setLoading(true);
+    const datasets = await fetchAllVerifiedDatasets();
+    setVerifiedDatasets(datasets);
+    setLoading(false);
+  };
 
   // Filter datasets based on search and category
   const filteredDatasets = verifiedDatasets.filter(dataset => {
     const matchesSearch = dataset.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         dataset.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         dataset.source.toLowerCase().includes(searchTerm.toLowerCase());
+                         dataset.description?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesCategory = selectedCategory === 'all' || dataset.type === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || dataset.file_type === selectedCategory;
     
     return matchesSearch && matchesCategory;
   });
@@ -57,7 +66,18 @@ export default function DataListingPage() {
     navigate('/dataset-entry');
   };
 
-  const categories = ['all', ...Array.from(new Set(verifiedDatasets.map(d => d.type)))];
+  const categories = ['all', ...Array.from(new Set(verifiedDatasets.map(d => d.file_type)))];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black">
+        <DashboardNavbar />
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center text-white">Loading datasets...</div>
+        </div>
+      </div>
+    );
+  }
 
   if (verifiedDatasets.length === 0) {
     return (
@@ -150,9 +170,9 @@ export default function DataListingPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline" className="text-white/70 border-loteraa-gray/50">
-                    {dataset.type}
+                    {dataset.file_type}
                   </Badge>
-                  <span className="text-white/50 text-xs">{dataset.size}</span>
+                  <span className="text-white/50 text-xs">{Math.round(dataset.file_size / 1024)} KB</span>
                 </div>
               </CardHeader>
               <CardContent className="pt-0">
@@ -165,12 +185,12 @@ export default function DataListingPage() {
                   
                   <div className="space-y-1">
                     <div className="flex justify-between text-xs">
-                      <span className="text-white/50">Source:</span>
-                      <span className="text-white/70">{dataset.source}</span>
+                      <span className="text-white/50">Added:</span>
+                      <span className="text-white/70">{new Date(dataset.created_at).toLocaleDateString()}</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-white/50">Added:</span>
-                      <span className="text-white/70">{dataset.dateAdded}</span>
+                      <span className="text-white/50">Downloads:</span>
+                      <span className="text-white/70">{dataset.download_count || 0}</span>
                     </div>
                     {dataset.region && (
                       <div className="flex justify-between text-xs">

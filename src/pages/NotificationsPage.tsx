@@ -4,51 +4,38 @@ import DashboardNavbar from '@/components/DashboardNavbar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Award, FileCheck, ScrollText, Zap, Tv, Trash2, BellOff } from "lucide-react";
-import { useNotifications, Notification } from '@/hooks/useNotifications';
-import NotificationsList from '@/components/notifications/NotificationsList';
-import { NotificationType } from '@/components/notifications/NotificationItem';
+import { useSupabaseNotifications } from '@/hooks/useSupabaseNotifications';
+import SupabaseNotificationsList from '@/components/notifications/SupabaseNotificationsList';
 
 export default function NotificationsPage() {
   const { 
     notifications, 
     markAllAsRead, 
-    clearAll,
     filterByType,
-    getUnreadCount 
-  } = useNotifications();
+    getUnreadCount,
+    loading
+  } = useSupabaseNotifications();
   
-  const [activeTab, setActiveTab] = useState<NotificationType | 'all'>('all');
-  const [isNewAccount, setIsNewAccount] = useState(true);
-
-  useEffect(() => {
-    // Check if user has any notifications
-    if (notifications && notifications.length > 0) {
-      setIsNewAccount(false);
-    } else {
-      setIsNewAccount(true);
-    }
-  }, [notifications]);
+  const [activeTab, setActiveTab] = useState<string>('all');
 
   const handleTabChange = (value: string) => {
-    setActiveTab(value as NotificationType | 'all');
-  };
-
-  const getTabLabel = (type: NotificationType | 'all') => {
-    const typeToLabel = {
-      'all': 'All',
-      'reward': 'Rewards',
-      'dataset': 'Datasets',
-      'contract': 'Smart Contracts',
-      'automation': 'Automation',
-      'device': 'Devices'
-    };
-    
-    return typeToLabel[type] || 'Unknown';
+    setActiveTab(value);
   };
 
   const unreadCount = getUnreadCount();
 
-  if (isNewAccount) {
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black">
+        <DashboardNavbar />
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center text-white">Loading notifications...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (notifications.length === 0) {
     return (
       <div className="min-h-screen bg-black">
         <DashboardNavbar />
@@ -86,16 +73,6 @@ export default function NotificationsPage() {
             </p>
           </div>
           
-          {notifications.length > 0 && (
-            <Button 
-              variant="outline" 
-              className="bg-transparent border-loteraa-gray/30 text-white hover:bg-loteraa-gray/30 flex items-center gap-2"
-              onClick={clearAll}
-            >
-              <Trash2 className="h-4 w-4 text-white" />
-              Clear All
-            </Button>
-          )}
         </div>
         
         <div className="bg-loteraa-gray/20 border border-loteraa-gray/30 rounded-lg overflow-hidden">
@@ -132,7 +109,7 @@ export default function NotificationsPage() {
             </TabsList>
             
             <TabsContent value="all" className="p-4 md:p-6">
-              <NotificationsList 
+              <SupabaseNotificationsList 
                 notifications={notifications}
                 activeTab="all"
                 onMarkAllAsRead={markAllAsRead}
@@ -140,7 +117,7 @@ export default function NotificationsPage() {
             </TabsContent>
             
             <TabsContent value="reward" className="p-4 md:p-6">
-              <NotificationsList 
+              <SupabaseNotificationsList 
                 notifications={filterByType('reward')}
                 activeTab="reward"
                 onMarkAllAsRead={markAllAsRead}
@@ -148,7 +125,7 @@ export default function NotificationsPage() {
             </TabsContent>
             
             <TabsContent value="dataset" className="p-4 md:p-6">
-              <NotificationsList 
+              <SupabaseNotificationsList 
                 notifications={filterByType('dataset')}
                 activeTab="dataset"
                 onMarkAllAsRead={markAllAsRead}
@@ -156,7 +133,7 @@ export default function NotificationsPage() {
             </TabsContent>
             
             <TabsContent value="contract" className="p-4 md:p-6">
-              <NotificationsList 
+              <SupabaseNotificationsList 
                 notifications={filterByType('contract')}
                 activeTab="contract"
                 onMarkAllAsRead={markAllAsRead}
@@ -164,7 +141,7 @@ export default function NotificationsPage() {
             </TabsContent>
             
             <TabsContent value="automation" className="p-4 md:p-6">
-              <NotificationsList 
+              <SupabaseNotificationsList 
                 notifications={filterByType('automation')}
                 activeTab="automation"
                 onMarkAllAsRead={markAllAsRead}
@@ -172,7 +149,7 @@ export default function NotificationsPage() {
             </TabsContent>
             
             <TabsContent value="device" className="p-4 md:p-6">
-              <NotificationsList 
+              <SupabaseNotificationsList 
                 notifications={filterByType('device')}
                 activeTab="device"
                 onMarkAllAsRead={markAllAsRead}

@@ -245,18 +245,94 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
   await new Promise(resolve => setTimeout(resolve, 30000));
 
   try {
-    // Update dataset status to verified
+    // Get dataset information including file structure
+    const { data: dataset, error: fetchError } = await supabase
+      .from('datasets')
+      .select('file_structure, name')
+      .eq('id', datasetId)
+      .single();
+
+    if (fetchError) {
+      console.error('Failed to fetch dataset:', fetchError);
+      throw fetchError;
+    }
+
+    const fileStructure = dataset.file_structure;
+    
+    // Check if dataset is blank/empty
+    const isBlankDataset = !fileStructure || 
+                          fileStructure.rowCount === 0 || 
+                          !fileStructure.columns || 
+                          fileStructure.columns.length === 0 ||
+                          !fileStructure.sampleData || 
+                          fileStructure.sampleData.length === 0;
+
+    if (isBlankDataset) {
+      // Reject blank dataset
+      const { error: updateError } = await supabase
+        .from('datasets')
+        .update({
+          status: 'rejected',
+          verification_details: {
+            verified_by: 'automated_system',
+            verification_date: new Date().toISOString(),
+            rejection_reason: 'Dataset is blank or contains no data',
+            data_integrity_check: false,
+            format_validation: false
+          }
+        })
+        .eq('id', datasetId);
+
+      if (updateError) {
+        console.error('Failed to update dataset to rejected:', updateError);
+        return;
+      }
+
+      // Create rejection notification
+      await supabase
+        .from('notifications')
+        .insert({
+          user_id: userId,
+          type: 'dataset',
+          title: 'Dataset Rejected',
+          message: `Your dataset "${dataset.name}" was rejected because it contains no data. Please upload a dataset with actual content.`,
+          data: {
+            dataset_id: datasetId,
+            status: 'rejected',
+            reason: 'blank_dataset'
+          }
+        });
+
+      // Log rejection activity
+      await supabase
+        .from('user_activities')
+        .insert({
+          user_id: userId,
+          activity_type: 'dataset_rejected',
+          activity_data: {
+            dataset_id: datasetId,
+            reason: 'blank_dataset'
+          }
+        });
+
+      console.log(`Dataset ${datasetId} rejected - blank/empty dataset`);
+      return;
+    }
+
+    // Dataset has data - approve it
     const { error: updateError } = await supabase
       .from('datasets')
       .update({
         status: 'verified',
         verified_at: new Date().toISOString(),
-        reward_amount: 10.00, // Base reward amount
+        reward_amount: 250.00, // Base reward amount
         verification_details: {
           verified_by: 'automated_system',
           verification_date: new Date().toISOString(),
           data_integrity_check: true,
-          format_validation: true
+          format_validation: true,
+          row_count: fileStructure.rowCount,
+          column_count: fileStructure.columns.length
         }
       })
       .eq('id', datasetId);
@@ -267,14 +343,15 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
     }
 
     // Create earnings record
+    const transactionHash = `0x${Math.random().toString(16).substr(2, 64)}`;
     const { error: earningsError } = await supabase
       .from('earnings')
       .insert({
         user_id: userId,
         dataset_id: datasetId,
-        amount: 10.00,
+        amount: 250.00,
         type: 'dataset_verification_reward',
-        transaction_hash: `0x${Math.random().toString(16).substr(2, 64)}`,
+        transaction_hash: transactionHash,
         status: 'completed'
       });
 
@@ -286,8 +363,8 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
     const { error: profileError } = await supabase
       .from('profiles')
       .update({
-        lot_token_balance: supabase.raw('lot_token_balance + 10'),
-        total_earnings: supabase.raw('total_earnings + 10'),
+        lot_token_balance: supabase.raw('lot_token_balance + 250'),
+        total_earnings: supabase.raw('total_earnings + 250'),
         total_datasets_uploaded: supabase.raw('total_datasets_uploaded + 1')
       })
       .eq('user_id', userId);
@@ -303,11 +380,13 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
         user_id: userId,
         type: 'reward',
         title: 'Dataset Verified & Reward Earned',
-        message: 'Your dataset has been verified! You earned 10 LOT tokens.',
+        message: `Your dataset "${dataset.name}" has been verified! You earned 250 LOT tokens.`,
         data: {
           dataset_id: datasetId,
-          reward_amount: 10.00,
-          status: 'verified'
+          reward_amount: 250.00,
+          status: 'verified',
+          transaction_hash: transactionHash,
+          explorer_link: `https://explorer.loteraa.com/tx/${transactionHash}`
         }
       });
 
@@ -319,7 +398,7 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
         activity_type: 'dataset_verified',
         activity_data: {
           dataset_id: datasetId,
-          reward_amount: 10.00
+          reward_amount: 250.00
         }
       });
 
