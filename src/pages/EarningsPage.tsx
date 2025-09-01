@@ -6,6 +6,7 @@ import DashboardNavbar from '@/components/DashboardNavbar';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Coins, TrendingUp, DollarSign, Database } from "lucide-react";
+import { format, startOfMonth, subMonths } from 'date-fns';
 import {
   LineChart,
   Line,
@@ -49,6 +50,7 @@ export default function EarningsPage() {
   const [earnings, setEarnings] = useState([]);
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [thisMonth, setThisMonth] = useState(0);
+  const [monthlyTrend, setMonthlyTrend] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -83,11 +85,45 @@ export default function EarningsPage() {
       }).reduce((sum, earning) => sum + Number(earning.amount), 0) || 0;
       
       setThisMonth(monthlyEarnings);
+
+      // Generate monthly trend data for the last 6 months
+      const trendData = generateMonthlyTrend(data || []);
+      setMonthlyTrend(trendData);
     } catch (error) {
       console.error('Error:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const generateMonthlyTrend = (earningsData) => {
+    const months = [];
+    const now = new Date();
+    
+    // Generate last 6 months
+    for (let i = 5; i >= 0; i--) {
+      const monthDate = subMonths(startOfMonth(now), i);
+      months.push({
+        month: format(monthDate, 'MMM yyyy'),
+        monthKey: format(monthDate, 'yyyy-MM'),
+        earnings: 0
+      });
+    }
+
+    // Aggregate earnings by month
+    earningsData.forEach(earning => {
+      const earningDate = new Date(earning.created_at);
+      const monthKey = format(earningDate, 'yyyy-MM');
+      const monthData = months.find(m => m.monthKey === monthKey);
+      if (monthData) {
+        monthData.earnings += Number(earning.amount);
+      }
+    });
+
+    return months.map(({ month, earnings }) => ({
+      month,
+      earnings: parseFloat(earnings.toFixed(2))
+    }));
   };
 
   const earningsOverview = [
@@ -134,10 +170,48 @@ export default function EarningsPage() {
           <Card className="bg-loteraa-gray/20 border-loteraa-gray/30">
             <CardHeader>
               <CardTitle className="text-white">Monthly Earnings Trend</CardTitle>
+              <p className="text-sm text-white/70">Your LOT token earnings over the last 6 months</p>
             </CardHeader>
             <CardContent>
-              <div className="h-[300px] flex items-center justify-center">
-                <p className="text-white/50">No earnings data available yet</p>
+              <div className="h-[300px]">
+                {monthlyTrend.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={monthlyTrend}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                      <XAxis 
+                        dataKey="month" 
+                        stroke="#9CA3AF"
+                        fontSize={12}
+                      />
+                      <YAxis 
+                        stroke="#9CA3AF"
+                        fontSize={12}
+                        tickFormatter={(value) => `${value} LOT`}
+                      />
+                      <Tooltip 
+                        contentStyle={{
+                          backgroundColor: '#1F2937',
+                          border: '1px solid #374151',
+                          borderRadius: '8px',
+                          color: '#F9FAFB'
+                        }}
+                        formatter={(value) => [`${value} LOT`, 'Earnings']}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="earnings" 
+                        stroke="#06B6D4" 
+                        strokeWidth={3}
+                        dot={{ fill: '#06B6D4', strokeWidth: 2, r: 6 }}
+                        activeDot={{ r: 8, stroke: '#06B6D4', strokeWidth: 2 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex items-center justify-center">
+                    <p className="text-white/50">No earnings data available yet</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
