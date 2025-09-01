@@ -35,17 +35,17 @@ export default function WalletTab() {
   const fetchBalance = async () => {
     try {
       const { data, error } = await supabase
-        .from('profiles')
-        .select('lot_token_balance')
-        .eq('user_id', user?.id)
-        .single();
+        .from('earnings')
+        .select('amount')
+        .eq('user_id', user?.id);
 
       if (error) {
-        console.error('Error fetching balance:', error);
+        console.error('Error fetching earnings:', error);
         return;
       }
 
-      setLotBalance(Number(data?.lot_token_balance) || 0);
+      const totalEarnings = data?.reduce((total, earning) => total + Number(earning.amount), 0) || 0;
+      setLotBalance(totalEarnings);
     } catch (error) {
       console.error('Error:', error);
     }
