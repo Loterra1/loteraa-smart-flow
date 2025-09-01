@@ -15,8 +15,11 @@ import { Label } from "@/components/ui/label";
 import { ExternalLink, Wallet, ArrowRight } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function WalletTab() {
+  const { user } = useAuth();
   const [lotBalance, setLotBalance] = useState(0);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState('');
@@ -24,18 +27,29 @@ export default function WalletTab() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
-    // For new accounts, start with 0 balance
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      const parsedData = JSON.parse(userData);
-      if (parsedData.isNewAccount !== false) {
-        setLotBalance(0);
-      } else {
-        // For existing accounts, you might load balance from API
-        setLotBalance(0);
-      }
+    if (user) {
+      fetchBalance();
     }
-  }, []);
+  }, [user]);
+
+  const fetchBalance = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('lot_token_balance')
+        .eq('user_id', user?.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching balance:', error);
+        return;
+      }
+
+      setLotBalance(Number(data?.lot_token_balance) || 0);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const handleWithdraw = () => {
     if (lotBalance === 0) {

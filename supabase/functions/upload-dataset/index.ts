@@ -325,7 +325,7 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
       .update({
         status: 'verified',
         verified_at: new Date().toISOString(),
-        reward_amount: 10.00, // Base reward amount
+        reward_amount: 250.00, // Base reward amount
         verification_details: {
           verified_by: 'automated_system',
           verification_date: new Date().toISOString(),
@@ -343,14 +343,15 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
     }
 
     // Create earnings record
+    const transactionHash = `0x${Math.random().toString(16).substr(2, 64)}`;
     const { error: earningsError } = await supabase
       .from('earnings')
       .insert({
         user_id: userId,
         dataset_id: datasetId,
-        amount: 10.00,
+        amount: 250.00,
         type: 'dataset_verification_reward',
-        transaction_hash: `0x${Math.random().toString(16).substr(2, 64)}`,
+        transaction_hash: transactionHash,
         status: 'completed'
       });
 
@@ -362,8 +363,8 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
     const { error: profileError } = await supabase
       .from('profiles')
       .update({
-        lot_token_balance: supabase.raw('lot_token_balance + 10'),
-        total_earnings: supabase.raw('total_earnings + 10'),
+        lot_token_balance: supabase.raw('lot_token_balance + 250'),
+        total_earnings: supabase.raw('total_earnings + 250'),
         total_datasets_uploaded: supabase.raw('total_datasets_uploaded + 1')
       })
       .eq('user_id', userId);
@@ -379,11 +380,13 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
         user_id: userId,
         type: 'reward',
         title: 'Dataset Verified & Reward Earned',
-        message: `Your dataset "${dataset.name}" has been verified! You earned 10 LOT tokens.`,
+        message: `Your dataset "${dataset.name}" has been verified! You earned 250 LOT tokens.`,
         data: {
           dataset_id: datasetId,
-          reward_amount: 10.00,
-          status: 'verified'
+          reward_amount: 250.00,
+          status: 'verified',
+          transaction_hash: transactionHash,
+          explorer_link: `https://explorer.loteraa.com/tx/${transactionHash}`
         }
       });
 
@@ -395,7 +398,7 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
         activity_type: 'dataset_verified',
         activity_data: {
           dataset_id: datasetId,
-          reward_amount: 10.00
+          reward_amount: 250.00
         }
       });
 
