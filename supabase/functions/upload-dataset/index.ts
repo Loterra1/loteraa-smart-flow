@@ -245,7 +245,81 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
   await new Promise(resolve => setTimeout(resolve, 30000));
 
   try {
-    // Update dataset status to verified
+    // Get dataset information including file structure
+    const { data: dataset, error: fetchError } = await supabase
+      .from('datasets')
+      .select('file_structure, name')
+      .eq('id', datasetId)
+      .single();
+
+    if (fetchError) {
+      console.error('Failed to fetch dataset:', fetchError);
+      throw fetchError;
+    }
+
+    const fileStructure = dataset.file_structure;
+    
+    // Check if dataset is blank/empty
+    const isBlankDataset = !fileStructure || 
+                          fileStructure.rowCount === 0 || 
+                          !fileStructure.columns || 
+                          fileStructure.columns.length === 0 ||
+                          !fileStructure.sampleData || 
+                          fileStructure.sampleData.length === 0;
+
+    if (isBlankDataset) {
+      // Reject blank dataset
+      const { error: updateError } = await supabase
+        .from('datasets')
+        .update({
+          status: 'rejected',
+          verification_details: {
+            verified_by: 'automated_system',
+            verification_date: new Date().toISOString(),
+            rejection_reason: 'Dataset is blank or contains no data',
+            data_integrity_check: false,
+            format_validation: false
+          }
+        })
+        .eq('id', datasetId);
+
+      if (updateError) {
+        console.error('Failed to update dataset to rejected:', updateError);
+        return;
+      }
+
+      // Create rejection notification
+      await supabase
+        .from('notifications')
+        .insert({
+          user_id: userId,
+          type: 'dataset',
+          title: 'Dataset Rejected',
+          message: `Your dataset "${dataset.name}" was rejected because it contains no data. Please upload a dataset with actual content.`,
+          data: {
+            dataset_id: datasetId,
+            status: 'rejected',
+            reason: 'blank_dataset'
+          }
+        });
+
+      // Log rejection activity
+      await supabase
+        .from('user_activities')
+        .insert({
+          user_id: userId,
+          activity_type: 'dataset_rejected',
+          activity_data: {
+            dataset_id: datasetId,
+            reason: 'blank_dataset'
+          }
+        });
+
+      console.log(`Dataset ${datasetId} rejected - blank/empty dataset`);
+      return;
+    }
+
+    // Dataset has data - approve it
     const { error: updateError } = await supabase
       .from('datasets')
       .update({
@@ -256,7 +330,9 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
           verified_by: 'automated_system',
           verification_date: new Date().toISOString(),
           data_integrity_check: true,
-          format_validation: true
+          format_validation: true,
+          row_count: fileStructure.rowCount,
+          column_count: fileStructure.columns.length
         }
       })
       .eq('id', datasetId);
@@ -303,7 +379,7 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
         user_id: userId,
         type: 'reward',
         title: 'Dataset Verified & Reward Earned',
-        message: 'Your dataset has been verified! You earned 10 LOT tokens.',
+        message: `Your dataset "${dataset.name}" has been verified! You earned 10 LOT tokens.`,
         data: {
           dataset_id: datasetId,
           reward_amount: 10.00,
