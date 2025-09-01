@@ -1,19 +1,49 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Database } from "lucide-react";
+import { PlusCircle, Database, Eye } from "lucide-react";
 import DashboardNavbar from '@/components/DashboardNavbar';
 import DatasetsList from '@/components/datasets/DatasetsList';
 import DatasetFileUpload from '@/components/datasets/DatasetFileUpload';
 import DatasetGuidelines from '@/components/datasets/DatasetGuidelines';
-import { useSupabaseDatasets } from '@/hooks/useSupabaseDatasets';
+import DatasetDetailsModal from '@/components/datasets/DatasetDetailsModal';
+import { useSupabaseDatasets, DatasetFile } from '@/hooks/useSupabaseDatasets';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function DatasetEntryPage() {
-  const { datasets, loading } = useSupabaseDatasets();
+  const { datasets, loading, refreshDatasets } = useSupabaseDatasets();
   const { user } = useAuth();
   const [isAddingDataset, setIsAddingDataset] = useState(false);
   const [isNewAccount, setIsNewAccount] = useState(true);
+  const [selectedDataset, setSelectedDataset] = useState<DatasetFile | null>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+
+  // Set up real-time updates for datasets
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const channel = supabase
+      .channel('dataset-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'datasets',
+          filter: `user_id=eq.${user.id}`
+        },
+        (payload) => {
+          console.log('Dataset changed:', payload);
+          refreshDatasets();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user?.id, refreshDatasets]);
 
   useEffect(() => {
     // Check if user has datasets
@@ -23,6 +53,16 @@ export default function DatasetEntryPage() {
       setIsNewAccount(true);
     }
   }, [datasets]);
+
+  const handleDatasetClick = (dataset: DatasetFile) => {
+    setSelectedDataset(dataset);
+    setShowDetailsModal(true);
+  };
+
+  const handleUploadSuccess = () => {
+    setIsAddingDataset(false);
+    // Datasets will be refreshed automatically via real-time updates
+  };
 
   if (isNewAccount) {
     return (
@@ -62,7 +102,7 @@ export default function DatasetEntryPage() {
           
           {isAddingDataset && (
             <DatasetFileUpload 
-              onUploadSuccess={() => setIsAddingDataset(false)}
+              onUploadSuccess={handleUploadSuccess}
               onCancel={() => setIsAddingDataset(false)}
             />
           )}
@@ -95,7 +135,7 @@ export default function DatasetEntryPage() {
         
         {isAddingDataset && (
           <DatasetFileUpload 
-            onUploadSuccess={() => setIsAddingDataset(false)}
+            onUploadSuccess={handleUploadSuccess}
             onCancel={() => setIsAddingDataset(false)}
           />
         )}
@@ -107,16 +147,34 @@ export default function DatasetEntryPage() {
           ) : (
             <div className="space-y-4">
               {datasets.map((dataset) => (
-                <div key={dataset.id} className="bg-loteraa-gray/10 rounded-lg p-4 border border-loteraa-gray/20">
+                <div 
+                  key={dataset.id} 
+                  className="bg-loteraa-gray/10 rounded-lg p-4 border border-loteraa-gray/20 hover:bg-loteraa-gray/20 transition-colors cursor-pointer group"
+                  onClick={() => handleDatasetClick(dataset)}
+                >
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-medium text-white">{dataset.name}</h3>
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      dataset.status === 'verified' ? 'bg-green-500/20 text-green-400' :
-                      dataset.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-red-500/20 text-red-400'
-                    }`}>
-                      {dataset.status}
-                    </span>
+                    <h3 className="font-medium text-white group-hover:text-loteraa-teal transition-colors">{dataset.name}</h3>
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        dataset.status === 'verified' ? 'bg-green-500/20 text-green-400' :
+                        dataset.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-red-500/20 text-red-400'
+                      }`}>
+                        {dataset.status}
+                      </span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="opacity-0 group-hover:opacity-100 transition-opacity text-white hover:text-loteraa-teal h-6 px-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDatasetClick(dataset);
+                        }}
+                      >
+                        <Eye className="h-3 w-3 mr-1" />
+                        View
+                      </Button>
+                    </div>
                   </div>
                   <p className="text-white/70 text-sm mb-2">{dataset.description}</p>
                   <div className="flex justify-between text-xs text-white/50">
@@ -137,6 +195,14 @@ export default function DatasetEntryPage() {
         <div className="mt-6 sm:mt-8">
           <DatasetGuidelines />
         </div>
+
+        {showDetailsModal && selectedDataset && (
+          <DatasetDetailsModal
+            dataset={selectedDataset}
+            isOpen={showDetailsModal}
+            onClose={() => setShowDetailsModal(false)}
+          />
+        )}
       </div>
     </div>
   );
