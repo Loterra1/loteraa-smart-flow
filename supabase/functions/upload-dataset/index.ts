@@ -241,8 +241,8 @@ function getFileExtension(filename: string): string {
 }
 
 async function verifyDataset(supabase: any, datasetId: string, userId: string) {
-  // Wait 30 seconds to simulate verification process
-  await new Promise(resolve => setTimeout(resolve, 30000));
+  // Wait 5 seconds to simulate verification process  
+  await new Promise(resolve => setTimeout(resolve, 5000));
 
   console.log(`Starting verification for dataset ${datasetId}`);
 
