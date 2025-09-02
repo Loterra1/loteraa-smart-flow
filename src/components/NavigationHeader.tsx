@@ -70,46 +70,28 @@ export default function NavigationHeader() {
                   </Link>
                </nav>
 
-               {/* Desktop Auth Section */}
-               <div className="hidden lg:flex items-center space-x-4">
-                  {user ? (
-                     <div className="flex items-center space-x-3">
-                        <div className="flex items-center space-x-2 text-white/80">
-                           <User className="h-4 w-4" />
-                           <span className="text-sm font-medium">
-                              {user.email}
-                           </span>
-                        </div>
-                        <Button
-                           onClick={handleLogout}
-                           variant="outline"
-                           size="sm"
-                           className="bg-transparent border-white/20 text-white hover:bg-white/10"
-                        >
-                           <LogOut className="h-4 w-4 mr-2" />
-                           Logout
-                        </Button>
-                     </div>
-                  ) : (
-                     <div className="flex items-center space-x-2">
-                        <Button
-                           asChild
-                           variant="outline"
-                           size="sm"
-                           className="bg-transparent border-white/20 text-white hover:bg-white/10"
-                        >
-                           <Link to="/login">Login</Link>
-                        </Button>
-                        <Button
-                           asChild
-                           size="sm"
-                           className="bg-black hover:bg-black/90 text-white"
-                        >
-                           <Link to="/signup">Sign Up</Link>
-                        </Button>
-                     </div>
-                  )}
-               </div>
+                {/* Desktop Auth Section */}
+                <div className="hidden lg:flex items-center space-x-4">
+                   {user && (
+                      <div className="flex items-center space-x-3">
+                         <div className="flex items-center space-x-2 text-white/80">
+                            <User className="h-4 w-4" />
+                            <span className="text-sm font-medium">
+                               {user.email}
+                            </span>
+                         </div>
+                         <Button
+                            onClick={handleLogout}
+                            variant="outline"
+                            size="sm"
+                            className="bg-transparent border-white/20 text-white hover:bg-white/10"
+                         >
+                            <LogOut className="h-4 w-4 mr-2" />
+                            Logout
+                         </Button>
+                      </div>
+                   )}
+                </div>
 
                {/* Mobile Menu Button */}
                <div className="lg:hidden flex items-center">
@@ -177,50 +159,24 @@ export default function NavigationHeader() {
                      Ambassador
                   </Link>
 
-                  {/* Mobile Auth Section */}
-                  <div className="pt-4 border-t border-gray-200/20 mt-4">
-                     {user ? (
-                        <div className="space-y-3">
-                           <div className="flex items-center px-4 py-2 text-white/80 bg-white/5 rounded-lg">
-                              <User className="h-4 w-4 mr-2" />
-                              <span className="text-sm">{user.email}</span>
-                           </div>
-                           <Button
-                              onClick={handleLogout}
-                              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg"
-                           >
-                              <LogOut className="h-4 w-4 mr-2" />
-                              Logout
-                           </Button>
-                        </div>
-                     ) : (
-                        <div className="space-y-3">
-                           <Button
-                              asChild
-                              variant="outline"
-                              className="w-full bg-transparent border-white/20 text-white hover:bg-white/10 py-3 rounded-lg"
-                           >
-                              <Link
-                                 to="/login"
-                                 onClick={() => setIsOpen(false)}
-                              >
-                                 Login
-                              </Link>
-                           </Button>
-                           <Button
-                              asChild
-                              className="w-full bg-black hover:bg-black/90 text-white py-3 rounded-lg"
-                           >
-                              <Link
-                                 to="/signup"
-                                 onClick={() => setIsOpen(false)}
-                              >
-                                 Sign Up
-                              </Link>
-                           </Button>
-                        </div>
-                     )}
-                  </div>
+                   {/* Mobile Auth Section */}
+                   <div className="pt-4 border-t border-gray-200/20 mt-4">
+                      {user && (
+                         <div className="space-y-3">
+                            <div className="flex items-center px-4 py-2 text-white/80 bg-white/5 rounded-lg">
+                               <User className="h-4 w-4 mr-2" />
+                               <span className="text-sm">{user.email}</span>
+                            </div>
+                            <Button
+                               onClick={handleLogout}
+                               className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg"
+                            >
+                               <LogOut className="h-4 w-4 mr-2" />
+                               Logout
+                            </Button>
+                         </div>
+                      )}
+                   </div>
                </div>
             </div>
          </div>
