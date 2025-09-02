@@ -26,7 +26,7 @@ export default function DashboardStats() {
         return;
       }
 
-      if (profile?.total_earnings) {
+      if (profile && profile.total_earnings !== null && profile.total_earnings !== undefined) {
         setTotalEarnings(Number(profile.total_earnings));
       } else {
         // If no profile data, calculate from earnings table
