@@ -37,6 +37,28 @@ Deno.serve(async (req) => {
       );
     }
 
+    // Check daily upload limit (3 uploads per day)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const { count: uploadCount } = await supabase
+      .from('datasets')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .gte('created_at', today.toISOString())
+      .lt('created_at', tomorrow.toISOString());
+
+    if (uploadCount >= 3) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Daily upload limit reached. You can upload up to 3 datasets per day. Please try again tomorrow.' 
+        }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Analyze file structure
     const fileAnalysis = await analyzeFile(file);
     
@@ -241,8 +263,8 @@ function getFileExtension(filename: string): string {
 }
 
 async function verifyDataset(supabase: any, datasetId: string, userId: string) {
-  // Wait 5 seconds to simulate verification process  
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  // Wait 10 seconds to simulate verification process  
+  await new Promise(resolve => setTimeout(resolve, 10000));
 
   console.log(`Starting verification for dataset ${datasetId}`);
 
