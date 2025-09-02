@@ -18,6 +18,7 @@ interface AuthContextType {
    loading: boolean;
    walletAddress: string | null;
    setWalletAddress: (address: string | null) => void;
+   setUser: (user: User | null) => void;
    signOut: () => Promise<void>;
    updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
    changePassword: (newPassword: string) => Promise<{ error }>;
@@ -149,6 +150,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       loading,
       walletAddress,
       setWalletAddress,
+      setUser,
       signOut,
       updateProfile,
       changePassword,
