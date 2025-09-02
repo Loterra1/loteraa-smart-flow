@@ -2,9 +2,52 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronUp } from "lucide-react";
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function DashboardStats() {
   const [isNewAccount, setIsNewAccount] = useState(true);
+  const [totalEarnings, setTotalEarnings] = useState<number>(0);
+  const { user } = useAuth();
+
+  const fetchTotalEarnings = async () => {
+    if (!user) return;
+
+    try {
+      // First try to get from profiles table
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('total_earnings')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        console.error('Error fetching profile:', profileError);
+        return;
+      }
+
+      if (profile?.total_earnings) {
+        setTotalEarnings(Number(profile.total_earnings));
+      } else {
+        // If no profile data, calculate from earnings table
+        const { data: earnings, error: earningsError } = await supabase
+          .from('earnings')
+          .select('amount')
+          .eq('user_id', user.id)
+          .eq('status', 'completed');
+
+        if (earningsError) {
+          console.error('Error fetching earnings:', earningsError);
+          return;
+        }
+
+        const total = earnings?.reduce((sum, earning) => sum + Number(earning.amount), 0) || 0;
+        setTotalEarnings(total);
+      }
+    } catch (error) {
+      console.error('Error fetching total earnings:', error);
+    }
+  };
 
   useEffect(() => {
     const userData = localStorage.getItem('userData');
@@ -12,7 +55,9 @@ export default function DashboardStats() {
       const parsedData = JSON.parse(userData);
       setIsNewAccount(parsedData.isNewAccount !== false);
     }
-  }, []);
+    
+    fetchTotalEarnings();
+  }, [user]);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
@@ -27,13 +72,13 @@ export default function DashboardStats() {
       />
       <StatCard 
         title="Total Earnings" 
-        value="0" 
+        value={totalEarnings.toFixed(2)} 
         unit="$LOT"
         trend={<ChevronUp className="h-4 w-4 text-gray-500" />}
-        trendValue="Begin earning"
+        trendValue={totalEarnings > 0 ? `$${totalEarnings.toFixed(2)} earned` : "Begin earning"}
         iconBg="bg-loteraa-teal/20"
         iconColor="text-loteraa-teal"
-        isNew={isNewAccount}
+        isNew={isNewAccount && totalEarnings === 0}
       />
     </div>
   );
