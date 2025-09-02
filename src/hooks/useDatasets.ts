@@ -108,35 +108,8 @@ export const useDatasets = () => {
       description: "Your dataset has been submitted for verification.",
     });
 
-    // Simulate verification process (in a real app, this would be handled by smart contract)
-    setTimeout(() => {
-      const verifiedDataset: Dataset = {
-        ...newDataset,
-        status: 'Verified',
-        size: '1.8 GB',
-        verificationDetails: {
-          timeOfVerification: new Date().toLocaleString(),
-          dataHashMatch: true,
-          timestampMatch: true,
-          regionMatch: true,
-          paymentStatus: 'Paid',
-          paymentAmount: 1950,
-          walletAddress: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
-          txHash: '0x29a5b41b62c30b9de8c5d3fea17aca5ed888bdebc941a4ea6370e9d3c5cb6e4',
-        }
-      };
-
-      setDatasets(prev => 
-        prev.map(d => d.id === newDataset.id ? verifiedDataset : d)
-      );
-      setVerifiedDataset(verifiedDataset);
-      setShowVerificationSummary(true);
-
-      toast({
-        title: "Dataset verified",
-        description: "Your dataset has been successfully verified by the smart contract.",
-      });
-    }, 3000);
+    // Note: Actual verification is handled by Supabase edge function
+    // Real-time updates will show the verification results
   };
 
   const closeVerificationSummary = () => {
