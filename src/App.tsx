@@ -34,24 +34,7 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <>
-    {/* Force black background at the root level */}
-    <div 
-      className="fixed inset-0 w-full h-full"
-      style={{ 
-        backgroundColor: '#000000 !important',
-        background: '#000000 !important',
-        zIndex: -9999
-      }}
-    />
-    <div 
-      className="min-h-screen relative"
-      style={{ 
-        backgroundColor: '#000000 !important',
-        background: '#000000 !important',
-        color: '#ffffff'
-      }}
-    >
+  <div className="min-h-screen bg-background text-foreground">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <TooltipProvider>
@@ -90,8 +73,7 @@ const App = () => (
           </TooltipProvider>
         </AuthProvider>
       </QueryClientProvider>
-    </div>
-  </>
+  </div>
 );
 
 export default App;
