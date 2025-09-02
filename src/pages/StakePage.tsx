@@ -52,11 +52,11 @@ const StakePage = () => {
                 </TabsList>
 
                 <TabsContent value="stake" className="p-6">
-                  <StakingPanel walletConnected={walletConnected} setWalletConnected={setWalletConnected} />
+                  <StakingPanel />
                 </TabsContent>
 
                 <TabsContent value="swap" className="p-6">
-                  <SwapPanel walletConnected={walletConnected} setWalletConnected={setWalletConnected} />
+                  <SwapPanel />
                 </TabsContent>
 
                 <TabsContent value="bridge" className="p-6">
