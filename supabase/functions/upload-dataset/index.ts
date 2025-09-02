@@ -331,20 +331,6 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
     // Dataset has meaningful data - start approval process
     console.log(`Dataset ${datasetId} passed validation, starting approval process`);
 
-    // Get current profile data for atomic updates
-    const { data: currentProfile, error: profileFetchError } = await supabase
-      .from('profiles')
-      .select('lot_token_balance, total_earnings, total_datasets_uploaded')
-      .eq('user_id', userId)
-      .single();
-
-    if (profileFetchError) {
-      console.error('Failed to fetch current profile:', profileFetchError);
-      throw profileFetchError;
-    }
-
-    console.log('Current profile state:', currentProfile);
-
     // 1) Mark dataset as verified
     const { error: verifyUpdateError } = await supabase
       .from('datasets')
@@ -395,22 +381,31 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
 
     console.log('Earnings record created');
 
-    // 3) Update user profile with calculated values
-    const newTokenBalance = (currentProfile.lot_token_balance || 0) + 250;
-    const newTotalEarnings = (currentProfile.total_earnings || 0) + 250;
-    const newDatasetsCount = (currentProfile.total_datasets_uploaded || 0) + 1;
+    // 3) Create or update user profile directly
+    const { data: existingProfile } = await supabase
+      .from('profiles')
+      .select('lot_token_balance, total_earnings, total_datasets_uploaded')
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    const newBalance = (existingProfile?.lot_token_balance || 0) + 250.0;
+    const newEarnings = (existingProfile?.total_earnings || 0) + 250.0;
+    const newDatasets = (existingProfile?.total_datasets_uploaded || 0) + 1;
 
     const { error: profileError } = await supabase
       .from('profiles')
-      .update({
-        lot_token_balance: newTokenBalance,
-        total_earnings: newTotalEarnings,
-        total_datasets_uploaded: newDatasetsCount,
-      })
-      .eq('user_id', userId);
+      .upsert({
+        user_id: userId,
+        lot_token_balance: newBalance,
+        total_earnings: newEarnings,
+        total_datasets_uploaded: newDatasets,
+      }, {
+        onConflict: 'user_id',
+        ignoreDuplicates: false
+      });
 
     if (profileError) {
-      console.error('Failed to update profile:', profileError);
+      console.error('Failed to upsert profile:', profileError);
       
       // Clean up earnings and revert dataset
       await supabase
@@ -427,7 +422,7 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
       throw profileError;
     }
 
-    console.log(`Profile updated - new balance: ${newTokenBalance}, new earnings: ${newTotalEarnings}`);
+    console.log(`Profile updated - balance: ${newBalance}, earnings: ${newEarnings}, datasets: ${newDatasets}`);
 
     // 4) Send success notifications
     await supabase
@@ -454,7 +449,7 @@ async function verifyDataset(supabase: any, datasetId: string, userId: string) {
         activity_data: { 
           dataset_id: datasetId, 
           reward_amount: 250.0,
-          new_balance: newTokenBalance
+          new_balance: newBalance
         },
       });
 
