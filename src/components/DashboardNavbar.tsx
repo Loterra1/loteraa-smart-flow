@@ -32,7 +32,6 @@ export default function DashboardNavbar() {
    const closeMenus = () => {
       setIsOpen(false);
       setIsProfileOpen(false);
-      setUser(null);
    };
 
    return (
