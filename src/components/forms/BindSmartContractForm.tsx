@@ -41,7 +41,7 @@ const bindContractFormSchema = z.object({
   contractSelection: z.enum(["myContract", "pasteAddress"]),
   contractAddress: z.string().optional(),
   myContract: z.string().optional(),
-  network: z.enum(["polygon", "loterra"]).optional(),
+  network: z.enum(["ethereum", "base", "loteraa"]).optional(),
   functionName: z.string().optional(),
   paramMappings: z.record(z.object({
     type: z.enum(["static", "iotData"]),
@@ -301,8 +301,9 @@ export default function BindSmartContractForm({ open, onOpenChange }: BindSmartC
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="bg-loteraa-gray border-loteraa-gray/40">
-                              <SelectItem value="polygon" className="text-white hover:bg-loteraa-gray/50">Polygon</SelectItem>
-                              <SelectItem value="loterra" className="text-white hover:bg-loteraa-gray/50">Loterra</SelectItem>
+                              <SelectItem value="ethereum" className="text-white hover:bg-loteraa-gray/50">Ethereum</SelectItem>
+                              <SelectItem value="base" className="text-white hover:bg-loteraa-gray/50">Base</SelectItem>
+                              <SelectItem value="loteraa" className="text-white hover:bg-loteraa-gray/50">Loteraa</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
