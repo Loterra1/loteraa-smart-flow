@@ -59,6 +59,21 @@ const AutomationPage: React.FC = () => {
     localStorage.setItem('userData', JSON.stringify(userData));
   };
 
+  const handleAutomationDeleted = (automationId: string) => {
+    const updatedAutomations = automations.filter(automation => automation.id !== automationId);
+    setAutomations(updatedAutomations);
+    
+    // Update localStorage
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    userData.automations = updatedAutomations;
+    localStorage.setItem('userData', JSON.stringify(userData));
+
+    // If no automations left, show new account view
+    if (updatedAutomations.length === 0) {
+      setIsNewAccount(true);
+    }
+  };
+
   const filteredAutomations = automations.filter((automation) => {
     // Search filter
     const matchesSearch =
@@ -186,7 +201,10 @@ const AutomationPage: React.FC = () => {
         </Card>
 
         <div className="mt-6">
-          <AutomationTable automations={filteredAutomations} />
+          <AutomationTable 
+            automations={filteredAutomations} 
+            onAutomationDeleted={handleAutomationDeleted}
+          />
         </div>
 
         <CreateAutomationForm

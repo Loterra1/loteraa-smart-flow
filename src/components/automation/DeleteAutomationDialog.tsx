@@ -19,17 +19,19 @@ interface DeleteAutomationDialogProps {
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onDeleteConfirm: (automationId: string) => void;
 }
 
 export default function DeleteAutomationDialog({ 
   automation, 
   open, 
-  onOpenChange 
+  onOpenChange,
+  onDeleteConfirm
 }: DeleteAutomationDialogProps) {
 
   const handleDelete = () => {
-    // Simulate API call to delete automation
-    console.log("Deleting automation:", automation.id);
+    // Call the delete callback to actually remove the automation
+    onDeleteConfirm(automation.id);
     
     // Show success message
     toast.success("Automation deleted", {

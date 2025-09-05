@@ -32,9 +32,10 @@ interface AutomationType {
 
 interface AutomationTableProps {
   automations: AutomationType[];
+  onAutomationDeleted: (automationId: string) => void;
 }
 
-const AutomationTable: React.FC<AutomationTableProps> = ({ automations }) => {
+const AutomationTable: React.FC<AutomationTableProps> = ({ automations, onAutomationDeleted }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [automationToDelete, setAutomationToDelete] = useState<AutomationType | null>(null);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
@@ -196,6 +197,7 @@ const AutomationTable: React.FC<AutomationTableProps> = ({ automations }) => {
           automation={automationToDelete}
           open={deleteDialogOpen}
           onOpenChange={setDeleteDialogOpen}
+          onDeleteConfirm={onAutomationDeleted}
         />
       )}
     </>
