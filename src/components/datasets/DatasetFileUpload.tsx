@@ -4,397 +4,537 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+   Select,
+   SelectContent,
+   SelectItem,
+   SelectTrigger,
+   SelectValue,
+} from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Upload, FileText, Database, CheckCircle, AlertCircle, Eye } from 'lucide-react';
-import { useSupabaseDatasets, DatasetFormData } from '@/hooks/useSupabaseDatasets';
+import {
+   Upload,
+   FileText,
+   Database,
+   CheckCircle,
+   AlertCircle,
+   Eye,
+} from 'lucide-react';
+import {
+   useSupabaseDatasets,
+   DatasetFormData,
+} from '@/hooks/useSupabaseDatasets';
 import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+   Table,
+   TableBody,
+   TableCell,
+   TableHead,
+   TableHeader,
+   TableRow,
+} from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface DatasetFileUploadProps {
-  onUploadSuccess?: (dataset: any) => void;
-  onCancel?: () => void;
+   onUploadSuccess?: (dataset) => void;
+   onCancel?: () => void;
 }
 
 interface FileAnalysis {
-  columns: string[];
-  rowCount: number;
-  dataTypes: Record<string, string>;
-  sampleData: any[];
-  fileSize: number;
+   columns: string[];
+   rowCount: number;
+   dataTypes: Record<string, string>;
+   sampleData: any[];
+   fileSize: number;
 }
 
-export default function DatasetFileUpload({ onUploadSuccess, onCancel }: DatasetFileUploadProps) {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [fileAnalysis, setFileAnalysis] = useState<FileAnalysis | null>(null);
-  const [formData, setFormData] = useState<DatasetFormData>({
-    name: '',
-    description: '',
-    region: '',
-    accessType: 'open',
-    accessPrice: 0,
-    tags: []
-  });
-  const [autoAnalyze, setAutoAnalyze] = useState(true);
-  const [showPreview, setShowPreview] = useState(false);
-  const [showCodePreview, setShowCodePreview] = useState(false);
+export default function DatasetFileUpload({
+   onUploadSuccess,
+   onCancel,
+}: DatasetFileUploadProps) {
+   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+   const [fileAnalysis, setFileAnalysis] = useState<FileAnalysis | null>(null);
+   const [formData, setFormData] = useState<DatasetFormData>({
+      name: '',
+      description: '',
+      region: '',
+      accessType: 'open',
+      accessPrice: 0,
+      tags: [],
+   });
+   const [autoAnalyze, setAutoAnalyze] = useState(true);
+   const [showPreview, setShowPreview] = useState(false);
+   const [showCodePreview, setShowCodePreview] = useState(false);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const { uploadDataset, analyzeFile, uploading } = useSupabaseDatasets();
+   const fileInputRef = useRef<HTMLInputElement>(null);
+   const { uploadDataset, analyzeFile, uploading, refreshDatasets } =
+      useSupabaseDatasets();
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+   const handleFileSelect = async (
+      event: React.ChangeEvent<HTMLInputElement>
+   ) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
 
-    setSelectedFile(file);
-    setFormData(prev => ({ ...prev, name: file.name.replace(/\.[^/.]+$/, '') }));
+      setSelectedFile(file);
+      setFormData((prev) => ({
+         ...prev,
+         name: file.name.replace(/\.[^/.]+$/, ''),
+      }));
 
-    if (autoAnalyze) {
-      try {
-        const analysis = await analyzeFile(file);
-        setFileAnalysis(analysis);
-      } catch (error) {
-        console.error('File analysis failed:', error);
+      if (autoAnalyze) {
+         try {
+            const analysis = await analyzeFile(file);
+            setFileAnalysis(analysis);
+         } catch (error) {
+            console.error('File analysis failed:', error);
+         }
       }
-    }
-  };
+   };
 
-  const handleUpload = async () => {
-    if (!selectedFile) return;
+   const handleUpload = async () => {
+      if (!selectedFile) return;
+      try {
+         const result = await uploadDataset(selectedFile, formData);
+         if (result && onUploadSuccess) {
+            onUploadSuccess(result);
+            await refreshDatasets(); // Wait for refresh to complete
+         }
+      } catch (error) {
+         console.error('Upload failed:', error);
+      }
+   };
 
-    const result = await uploadDataset(selectedFile, formData);
-    if (result && onUploadSuccess) {
-      onUploadSuccess(result);
-    }
-  };
+   const handlePreview = async () => {
+      if (!selectedFile) return;
 
-  const handlePreview = async () => {
-    if (!selectedFile) return;
-    
-    try {
-      const analysis = await analyzeFile(selectedFile);
-      setFileAnalysis(analysis);
-      setShowPreview(true);
-    } catch (error) {
-      console.error('Preview failed:', error);
-    }
-  };
+      try {
+         const analysis = await analyzeFile(selectedFile);
+         setFileAnalysis(analysis);
+         setShowPreview(true);
+      } catch (error) {
+         console.error('Preview failed:', error);
+      }
+   };
 
-  const handleCodePreview = async () => {
-    if (!selectedFile) return;
-    
-    try {
-      const analysis = await analyzeFile(selectedFile);
-      setFileAnalysis(analysis);
-      setShowCodePreview(true);
-    } catch (error) {
-      console.error('Code preview failed:', error);
-    }
-  };
+   const handleCodePreview = async () => {
+      if (!selectedFile) return;
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
+      try {
+         const analysis = await analyzeFile(selectedFile);
+         setFileAnalysis(analysis);
+         setShowCodePreview(true);
+      } catch (error) {
+         console.error('Code preview failed:', error);
+      }
+   };
 
-  const supportedFormats = ['CSV', 'JSON', 'XML', 'TXT', 'XLSX'];
+   const formatFileSize = (bytes: number) => {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+   };
 
-  return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Upload className="h-5 w-5" />
-            Upload Dataset
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* File Upload Section */}
-          <div className="space-y-4">
-            <Label>Select File</Label>
-            <div 
-              className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-loteraa-purple transition-colors"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <input
-                ref={fileInputRef}
-                type="file"
-                className="hidden"
-                accept=".csv,.json,.xml,.txt,.xlsx"
-                onChange={handleFileSelect}
-              />
-              <Upload className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-              <p className="text-lg font-medium mb-2">
-                {selectedFile ? selectedFile.name : 'Drop your file here or click to browse'}
-              </p>
-              <p className="text-gray-500 mb-4">
-                {selectedFile 
-                  ? `${formatFileSize(selectedFile.size)} • ${selectedFile.type}`
-                  : 'Supported formats: CSV, JSON, XML, TXT, XLSX'
-                }
-              </p>
-              {selectedFile && (
-                <Badge variant="outline" className="text-green-600 border-green-600">
-                  <CheckCircle className="h-4 w-4 mr-1" />
-                  File selected
-                </Badge>
-              )}
-            </div>
-            
-            {/* Supported formats */}
-            <div className="flex flex-wrap gap-2">
-              {supportedFormats.map((format) => (
-                <Badge key={format} variant="secondary">
-                  {format}
-                </Badge>
-              ))}
-            </div>
-          </div>
+   const supportedFormats = ['CSV', 'JSON', 'XML', 'TXT', 'XLSX'];
 
-          {/* Dataset Information */}
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="name">Dataset Name</Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Enter dataset name"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Describe your dataset"
-                rows={3}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="region">Region (Optional)</Label>
-                <Input
-                  id="region"
-                  value={formData.region}
-                  onChange={(e) => setFormData(prev => ({ ...prev, region: e.target.value }))}
-                  placeholder="e.g., North America, Europe"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="accessType">Access Type</Label>
-                <Select
-                  value={formData.accessType}
-                  onValueChange={(value: 'open' | 'paid' | 'restricted') => 
-                    setFormData(prev => ({ ...prev, accessType: value }))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="open">Open Access</SelectItem>
-                    <SelectItem value="paid">Paid Access</SelectItem>
-                    <SelectItem value="restricted">Restricted Use</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {formData.accessType === 'paid' && (
-              <div>
-                <Label htmlFor="accessPrice">Access Price (LOT tokens)</Label>
-                <Input
-                  id="accessPrice"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={formData.accessPrice}
-                  onChange={(e) => setFormData(prev => ({ ...prev, accessPrice: Number(e.target.value) }))}
-                  placeholder="0.00"
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Options */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="autoAnalyze"
-                checked={autoAnalyze}
-                onCheckedChange={(checked) => setAutoAnalyze(!!checked)}
-              />
-              <Label htmlFor="autoAnalyze">Auto-analyze & extract structure from file</Label>
-            </div>
-          </div>
-
-          {/* File Analysis Preview */}
-          {fileAnalysis && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Database className="h-5 w-5" />
-                  File Analysis
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                  <div>
-                    <p className="text-sm text-gray-500">Columns</p>
-                    <p className="font-medium">{fileAnalysis.columns.length}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Rows</p>
-                    <p className="font-medium">{fileAnalysis.rowCount}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Size</p>
-                    <p className="font-medium">{formatFileSize(fileAnalysis.fileSize)}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Format</p>
-                    <p className="font-medium">{selectedFile?.name.split('.').pop()?.toUpperCase()}</p>
-                  </div>
-                </div>
-
-                {fileAnalysis.columns.length > 0 && (
-                  <div>
-                    <p className="text-sm font-medium mb-2">Columns:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {fileAnalysis.columns.slice(0, 10).map((column, index) => (
-                        <Badge key={index} variant="outline">
-                          {column} ({fileAnalysis.dataTypes[column] || 'unknown'})
+   return (
+      <div className="space-y-6">
+         <Card>
+            <CardHeader>
+               <CardTitle className="flex items-center gap-2">
+                  <Upload className="h-5 w-5" />
+                  Upload Dataset
+               </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+               {/* File Upload Section */}
+               <div className="space-y-4">
+                  <Label>Select File</Label>
+                  <div
+                     className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-loteraa-purple transition-colors"
+                     onClick={() => fileInputRef.current?.click()}
+                  >
+                     <input
+                        ref={fileInputRef}
+                        type="file"
+                        className="hidden"
+                        accept=".csv,.json,.xml,.txt,.xlsx"
+                        onChange={handleFileSelect}
+                     />
+                     <Upload className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+                     <p className="text-lg font-medium mb-2">
+                        {selectedFile
+                           ? selectedFile.name
+                           : 'Drop your file here or click to browse'}
+                     </p>
+                     <p className="text-gray-500 mb-4">
+                        {selectedFile
+                           ? `${formatFileSize(selectedFile.size)} • ${
+                                selectedFile.type
+                             }`
+                           : 'Supported formats: CSV, JSON, XML, TXT, XLSX'}
+                     </p>
+                     {selectedFile && (
+                        <Badge
+                           variant="outline"
+                           className="text-green-600 border-green-600"
+                        >
+                           <CheckCircle className="h-4 w-4 mr-1" />
+                           File selected
                         </Badge>
-                      ))}
-                      {fileAnalysis.columns.length > 10 && (
-                        <Badge variant="secondary">
-                          +{fileAnalysis.columns.length - 10} more
+                     )}
+                  </div>
+
+                  {/* Supported formats */}
+                  <div className="flex flex-wrap gap-2">
+                     {supportedFormats.map((format) => (
+                        <Badge key={format} variant="secondary">
+                           {format}
                         </Badge>
-                      )}
-                    </div>
+                     ))}
                   </div>
-                )}
+               </div>
 
-                {fileAnalysis.sampleData.length > 0 && showPreview && (
-                  <div className="mt-4">
-                    <p className="text-sm font-medium mb-3">Data Preview (First 5 rows):</p>
-                    <ScrollArea className="w-full border rounded-md">
-                      <div className="max-h-80">
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              {fileAnalysis.columns.map((column, index) => (
-                                <TableHead key={index} className="whitespace-nowrap font-medium">
-                                  <div>
-                                    <div>{column}</div>
-                                    <div className="text-xs text-muted-foreground font-normal">
-                                      {fileAnalysis.dataTypes[column] || 'unknown'}
+               {/* Dataset Information */}
+               <div className="space-y-4">
+                  <div>
+                     <Label htmlFor="name">Dataset Name</Label>
+                     <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) =>
+                           setFormData((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                           }))
+                        }
+                        placeholder="Enter dataset name"
+                     />
+                  </div>
+
+                  <div>
+                     <Label htmlFor="description">Description</Label>
+                     <Textarea
+                        id="description"
+                        value={formData.description}
+                        onChange={(e) =>
+                           setFormData((prev) => ({
+                              ...prev,
+                              description: e.target.value,
+                           }))
+                        }
+                        placeholder="Describe your dataset"
+                        rows={3}
+                     />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <div>
+                        <Label htmlFor="region">Region (Optional)</Label>
+                        <Input
+                           id="region"
+                           value={formData.region}
+                           onChange={(e) =>
+                              setFormData((prev) => ({
+                                 ...prev,
+                                 region: e.target.value,
+                              }))
+                           }
+                           placeholder="e.g., North America, Europe"
+                        />
+                     </div>
+
+                     <div>
+                        <Label htmlFor="accessType">Access Type</Label>
+                        <Select
+                           value={formData.accessType}
+                           onValueChange={(
+                              value: 'open' | 'paid' | 'restricted'
+                           ) =>
+                              setFormData((prev) => ({
+                                 ...prev,
+                                 accessType: value,
+                              }))
+                           }
+                        >
+                           <SelectTrigger>
+                              <SelectValue />
+                           </SelectTrigger>
+                           <SelectContent>
+                              <SelectItem value="open">Open Access</SelectItem>
+                              <SelectItem value="paid">Paid Access</SelectItem>
+                              <SelectItem value="restricted">
+                                 Restricted Use
+                              </SelectItem>
+                           </SelectContent>
+                        </Select>
+                     </div>
+                  </div>
+
+                  {formData.accessType === 'paid' && (
+                     <div>
+                        <Label htmlFor="accessPrice">
+                           Access Price (LOT tokens)
+                        </Label>
+                        <Input
+                           id="accessPrice"
+                           type="number"
+                           min="0"
+                           step="0.01"
+                           value={formData.accessPrice}
+                           onChange={(e) =>
+                              setFormData((prev) => ({
+                                 ...prev,
+                                 accessPrice: Number(e.target.value),
+                              }))
+                           }
+                           placeholder="0.00"
+                        />
+                     </div>
+                  )}
+               </div>
+
+               {/* Options */}
+               <div className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                     <Checkbox
+                        id="autoAnalyze"
+                        checked={autoAnalyze}
+                        onCheckedChange={(checked) => setAutoAnalyze(!!checked)}
+                     />
+                     <Label htmlFor="autoAnalyze">
+                        Auto-analyze & extract structure from file
+                     </Label>
+                  </div>
+               </div>
+
+               {/* File Analysis Preview */}
+               {fileAnalysis && (
+                  <Card>
+                     <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                           <Database className="h-5 w-5" />
+                           File Analysis
+                        </CardTitle>
+                     </CardHeader>
+                     <CardContent>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                           <div>
+                              <p className="text-sm text-gray-500">Columns</p>
+                              <p className="font-medium">
+                                 {fileAnalysis.columns.length}
+                              </p>
+                           </div>
+                           <div>
+                              <p className="text-sm text-gray-500">Rows</p>
+                              <p className="font-medium">
+                                 {fileAnalysis.rowCount}
+                              </p>
+                           </div>
+                           <div>
+                              <p className="text-sm text-gray-500">Size</p>
+                              <p className="font-medium">
+                                 {formatFileSize(fileAnalysis.fileSize)}
+                              </p>
+                           </div>
+                           <div>
+                              <p className="text-sm text-gray-500">Format</p>
+                              <p className="font-medium">
+                                 {selectedFile?.name
+                                    .split('.')
+                                    .pop()
+                                    ?.toUpperCase()}
+                              </p>
+                           </div>
+                        </div>
+
+                        {fileAnalysis.columns.length > 0 && (
+                           <div>
+                              <p className="text-sm font-medium mb-2">
+                                 Columns:
+                              </p>
+                              <div className="flex flex-wrap gap-1">
+                                 {fileAnalysis.columns
+                                    .slice(0, 10)
+                                    .map((column, index) => (
+                                       <Badge key={index} variant="outline">
+                                          {column} (
+                                          {fileAnalysis.dataTypes[column] ||
+                                             'unknown'}
+                                          )
+                                       </Badge>
+                                    ))}
+                                 {fileAnalysis.columns.length > 10 && (
+                                    <Badge variant="secondary">
+                                       +{fileAnalysis.columns.length - 10} more
+                                    </Badge>
+                                 )}
+                              </div>
+                           </div>
+                        )}
+
+                        {fileAnalysis.sampleData.length > 0 && showPreview && (
+                           <div className="mt-4">
+                              <p className="text-sm font-medium mb-3">
+                                 Data Preview (First 5 rows):
+                              </p>
+                              <ScrollArea className="w-full border rounded-md">
+                                 <div className="max-h-80">
+                                    <Table>
+                                       <TableHeader>
+                                          <TableRow>
+                                             {fileAnalysis.columns.map(
+                                                (column, index) => (
+                                                   <TableHead
+                                                      key={index}
+                                                      className="whitespace-nowrap font-medium"
+                                                   >
+                                                      <div>
+                                                         <div>{column}</div>
+                                                         <div className="text-xs text-muted-foreground font-normal">
+                                                            {fileAnalysis
+                                                               .dataTypes[
+                                                               column
+                                                            ] || 'unknown'}
+                                                         </div>
+                                                      </div>
+                                                   </TableHead>
+                                                )
+                                             )}
+                                          </TableRow>
+                                       </TableHeader>
+                                       <TableBody>
+                                          {fileAnalysis.sampleData
+                                             .slice(0, 5)
+                                             .map((row, rowIndex) => (
+                                                <TableRow key={rowIndex}>
+                                                   {fileAnalysis.columns.map(
+                                                      (column, colIndex) => (
+                                                         <TableCell
+                                                            key={colIndex}
+                                                            className="whitespace-nowrap"
+                                                         >
+                                                            <div
+                                                               className="max-w-32 truncate"
+                                                               title={String(
+                                                                  row[column] ||
+                                                                     ''
+                                                               )}
+                                                            >
+                                                               {row[column] !==
+                                                                  null &&
+                                                               row[column] !==
+                                                                  undefined ? (
+                                                                  String(
+                                                                     row[column]
+                                                                  )
+                                                               ) : (
+                                                                  <span className="text-muted-foreground">
+                                                                     null
+                                                                  </span>
+                                                               )}
+                                                            </div>
+                                                         </TableCell>
+                                                      )
+                                                   )}
+                                                </TableRow>
+                                             ))}
+                                       </TableBody>
+                                    </Table>
+                                 </div>
+                              </ScrollArea>
+
+                              {fileAnalysis.rowCount > 5 && (
+                                 <p className="text-xs text-muted-foreground mt-2">
+                                    Showing 5 of {fileAnalysis.rowCount} total
+                                    rows
+                                 </p>
+                              )}
+                           </div>
+                        )}
+
+                        {fileAnalysis.sampleData.length > 0 &&
+                           showCodePreview && (
+                              <div className="mt-4">
+                                 <p className="text-sm font-medium mb-3">
+                                    Dataset Code Preview (First 5 rows):
+                                 </p>
+                                 <ScrollArea className="w-full border rounded-md">
+                                    <div className="max-h-80 p-4">
+                                       <pre className="text-xs font-mono text-muted-foreground overflow-x-auto">
+                                          <code>
+                                             {JSON.stringify(
+                                                fileAnalysis.sampleData.slice(
+                                                   0,
+                                                   5
+                                                ),
+                                                null,
+                                                2
+                                             )}
+                                          </code>
+                                       </pre>
                                     </div>
-                                  </div>
-                                </TableHead>
-                              ))}
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {fileAnalysis.sampleData.slice(0, 5).map((row, rowIndex) => (
-                              <TableRow key={rowIndex}>
-                                {fileAnalysis.columns.map((column, colIndex) => (
-                                  <TableCell key={colIndex} className="whitespace-nowrap">
-                                    <div className="max-w-32 truncate" title={String(row[column] || '')}>
-                                      {row[column] !== null && row[column] !== undefined 
-                                        ? String(row[column]) 
-                                        : <span className="text-muted-foreground">null</span>
-                                      }
-                                    </div>
-                                  </TableCell>
-                                ))}
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </div>
-                    </ScrollArea>
-                    
-                    {fileAnalysis.rowCount > 5 && (
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Showing 5 of {fileAnalysis.rowCount} total rows
-                      </p>
-                    )}
-                  </div>
-                )}
+                                 </ScrollArea>
 
-                {fileAnalysis.sampleData.length > 0 && showCodePreview && (
-                  <div className="mt-4">
-                    <p className="text-sm font-medium mb-3">Dataset Code Preview (First 5 rows):</p>
-                    <ScrollArea className="w-full border rounded-md">
-                      <div className="max-h-80 p-4">
-                        <pre className="text-xs font-mono text-muted-foreground overflow-x-auto">
-                          <code>{JSON.stringify(fileAnalysis.sampleData.slice(0, 5), null, 2)}</code>
-                        </pre>
-                      </div>
-                    </ScrollArea>
-                    
-                    {fileAnalysis.rowCount > 5 && (
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Showing 5 of {fileAnalysis.rowCount} total rows in JSON format
-                      </p>
-                    )}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
+                                 {fileAnalysis.rowCount > 5 && (
+                                    <p className="text-xs text-muted-foreground mt-2">
+                                       Showing 5 of {fileAnalysis.rowCount}{' '}
+                                       total rows in JSON format
+                                    </p>
+                                 )}
+                              </div>
+                           )}
+                     </CardContent>
+                  </Card>
+               )}
 
-          {/* Action Buttons */}
-          <div className="flex gap-3">
-            {onCancel && (
-              <Button variant="outline" onClick={onCancel}>
-                Cancel
-              </Button>
-            )}
-            
-            {selectedFile && (
-              <>
-                <Button variant="outline" onClick={handlePreview}>
-                  <Eye className="h-4 w-4 mr-2" />
-                  {showPreview ? 'Refresh Preview' : 'View Data Preview'}
-                </Button>
-                <Button variant="outline" onClick={handleCodePreview}>
-                  <FileText className="h-4 w-4 mr-2" />
-                  {showCodePreview ? 'Refresh Code' : 'Preview Dataset Code'}
-                </Button>
-              </>
-            )}
+               {/* Action Buttons */}
+               <div className="flex gap-3">
+                  {onCancel && (
+                     <Button variant="outline" onClick={onCancel}>
+                        Cancel
+                     </Button>
+                  )}
 
-            <Button 
-              onClick={handleUpload} 
-              disabled={!selectedFile || uploading}
-              className="bg-loteraa-purple hover:bg-loteraa-purple/90"
-            >
-              {uploading ? (
-                <>
-                  <AlertCircle className="h-4 w-4 mr-2 animate-spin" />
-                  Uploading...
-                </>
-              ) : (
-                <>
-                  <Upload className="h-4 w-4 mr-2" />
-                  Publish Dataset
-                </>
-              )}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+                  {selectedFile && (
+                     <>
+                        <Button variant="outline" onClick={handlePreview}>
+                           <Eye className="h-4 w-4 mr-2" />
+                           {showPreview
+                              ? 'Refresh Preview'
+                              : 'View Data Preview'}
+                        </Button>
+                        <Button variant="outline" onClick={handleCodePreview}>
+                           <FileText className="h-4 w-4 mr-2" />
+                           {showCodePreview
+                              ? 'Refresh Code'
+                              : 'Preview Dataset Code'}
+                        </Button>
+                     </>
+                  )}
+
+                  <Button
+                     onClick={handleUpload}
+                     disabled={!selectedFile || uploading}
+                     className="bg-loteraa-purple hover:bg-loteraa-purple/90"
+                  >
+                     {uploading ? (
+                        <>
+                           <AlertCircle className="h-4 w-4 mr-2 animate-spin" />
+                           Uploading...
+                        </>
+                     ) : (
+                        <>
+                           <Upload className="h-4 w-4 mr-2" />
+                           Publish Dataset
+                        </>
+                     )}
+                  </Button>
+               </div>
+            </CardContent>
+         </Card>
+      </div>
+   );
 }

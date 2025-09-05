@@ -13,19 +13,52 @@ import {
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import EnhancedWalletModal from '../staking/WalletModal';
+import { useLoteraaDePINContext } from '@/contexts/LoteraaDePINContext';
 
 export default function ProfileHeader() {
    const { user, profile, walletAddress, setWalletAddress } = useAuth();
+   const { connectWallet, account } = useLoteraaDePINContext();
+
    const [userRole, setUserRole] = useState('Researcher');
    const [avatarUrl, setAvatarUrl] = useState('');
    const [showWalletModal, setShowWalletModal] = useState(false);
    const [copiedAddress, setCopiedAddress] = useState(false);
 
-   const walletConnected = !!walletAddress;
+   // const walletConnected = !!walletAddress;
    const fileInputRef = useRef<HTMLInputElement>(null);
 
-   const connectWallet = () => {
+   const connectWallets = () => {
       setShowWalletModal(true);
+   };
+
+   const handleConnectWallet = async () => {
+      try {
+         const result = await connectWallet();
+         if (result.success && result.address) {
+            toast({
+               title: 'Wallet Connected',
+               description: `Connected to ${result.address.slice(
+                  0,
+                  8
+               )}...${result.address.slice(-6)}`,
+            });
+            setWalletAddress(result.address);
+            setShowWalletModal(false);
+         } else {
+            toast({
+               title: 'Connection Failed',
+               description: result.error || 'Failed to connect wallet',
+               variant: 'destructive',
+            });
+         }
+      } catch (error) {
+         console.error('Wallet connection error:', error);
+         toast({
+            title: 'Connection Error',
+            description: 'An error occurred while connecting wallet',
+            variant: 'destructive',
+         });
+      }
    };
 
    const disconnectWallet = () => {
@@ -37,8 +70,8 @@ export default function ProfileHeader() {
    };
 
    const copyAddress = async () => {
-      if (walletAddress) {
-         await navigator.clipboard.writeText(walletAddress);
+      if (account) {
+         await navigator.clipboard.writeText(account);
          setCopiedAddress(true);
          setTimeout(() => setCopiedAddress(false), 2000);
          toast({
@@ -127,11 +160,11 @@ export default function ProfileHeader() {
             </div>
 
             {/* Wallet Section */}
-            {!walletConnected ? (
+            {!account ? (
                <Button
                   variant="outline"
                   className="w-full mt-6 bg-black  hover:bg-black/90 text-white"
-                  onClick={connectWallet}
+                  onClick={connectWallets}
                >
                   <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
                </Button>
@@ -152,8 +185,8 @@ export default function ProfileHeader() {
                      </div>
                      <div className="flex items-center gap-2">
                         <span className="font-mono text-sm bg-black text-white px-2 py-1 rounded">
-                           {walletAddress.slice(0, 8)}...
-                           {walletAddress.slice(-6)}
+                           {account.slice(0, 8)}...
+                           {account.slice(-6)}
                         </span>
                         <button
                            onClick={copyAddress}
@@ -177,7 +210,10 @@ export default function ProfileHeader() {
             open={showWalletModal}
             onClose={() => setShowWalletModal(false)}
          >
-            <EnhancedWalletModal onClose={() => setShowWalletModal(false)} />
+            <EnhancedWalletModal
+               onConnect={handleConnectWallet}
+               onClose={() => setShowWalletModal(false)}
+            />
          </Modal>
       </div>
    );
