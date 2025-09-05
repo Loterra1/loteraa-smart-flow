@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Upload, FileText, Eye } from "lucide-react";
 
 import {
   Dialog,
@@ -66,6 +66,8 @@ export default function BindSmartContractForm({ open, onOpenChange }: BindSmartC
   const [selectedFunction, setSelectedFunction] = useState<string | null>(null);
   const [functionParams, setFunctionParams] = useState<{ name: string; type: string }[]>([]);
   const [paramMappings, setParamMappings] = useState<Record<string, { type: string; value: string; transform?: string }>>({});
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [contractInfoDialog, setContractInfoDialog] = useState<string | null>(null);
   
   const mockContracts = [
     { name: "MyPaymentContract.sol", address: "0x123...456" },
@@ -182,6 +184,24 @@ export default function BindSmartContractForm({ open, onOpenChange }: BindSmartC
     }, 1000);
   };
 
+  const handleUploadContract = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.name.endsWith('.sol')) {
+      toast.success(`Contract ${file.name} uploaded successfully!`);
+      // In production, process the uploaded contract file
+      setShowUploadDialog(false);
+    } else {
+      toast.error("Please upload a valid .sol file");
+    }
+  };
+
+  const viewContractInfo = (contractAddress: string) => {
+    const contract = mockContracts.find(c => c.address === contractAddress);
+    if (contract) {
+      setContractInfoDialog(contractAddress);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
@@ -232,7 +252,23 @@ export default function BindSmartContractForm({ open, onOpenChange }: BindSmartC
                           <SelectContent className="bg-loteraa-gray border-loteraa-gray/40">
                             {mockContracts.map((contract) => (
                               <SelectItem key={contract.address} value={contract.address} className="text-white hover:bg-loteraa-gray/50">
-                                {contract.name}
+                                <div className="flex items-center justify-between w-full">
+                                  <span>{contract.name}</span>
+                                  {contract.name === "DataStorageContract.sol" && (
+                                    <Button
+                                      type="button"
+                                      size="sm"
+                                      variant="ghost"
+                                      className="p-1 h-6 w-6 ml-2"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowUploadDialog(true);
+                                      }}
+                                    >
+                                      <Upload className="h-3 w-3" />
+                                    </Button>
+                                  )}
+                                </div>
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -248,7 +284,9 @@ export default function BindSmartContractForm({ open, onOpenChange }: BindSmartC
                     type="button"
                     variant="outline"
                     className="w-full bg-transparent text-loteraa-teal border-loteraa-teal/30 hover:bg-loteraa-teal/20"
+                    onClick={() => viewContractInfo(form.watch("myContract")!)}
                   >
+                    <Eye className="mr-2 h-4 w-4" />
                     View Contract Info
                   </Button>
                 )}
@@ -609,8 +647,100 @@ export default function BindSmartContractForm({ open, onOpenChange }: BindSmartC
                 </div>
               </div>
             </div>
-          </form>
+            </form>
         </Form>
+
+        {/* Upload Contract Dialog */}
+        <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+          <DialogContent className="sm:max-w-md bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+            <DialogHeader>
+              <DialogTitle className="text-white">Upload Smart Contract</DialogTitle>
+              <DialogDescription className="text-white/70">
+                Upload a .sol file to add to DataStorageContract.sol
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="border-2 border-dashed border-loteraa-gray/40 rounded-lg p-8 text-center">
+                <Upload className="h-12 w-12 text-loteraa-gray mx-auto mb-4" />
+                <label className="cursor-pointer">
+                  <span className="text-white">Click to upload or drag and drop</span>
+                  <p className="text-sm text-white/60 mt-1">.sol files only</p>
+                  <input
+                    type="file"
+                    accept=".sol"
+                    className="hidden"
+                    onChange={handleUploadContract}
+                  />
+                </label>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Contract Info Dialog */}
+        <Dialog open={!!contractInfoDialog} onOpenChange={() => setContractInfoDialog(null)}>
+          <DialogContent className="sm:max-w-lg bg-loteraa-gray/20 border-loteraa-gray/30 text-white">
+            <DialogHeader>
+              <DialogTitle className="text-white">Contract Information</DialogTitle>
+            </DialogHeader>
+            {contractInfoDialog && (() => {
+              const contract = mockContracts.find(c => c.address === contractInfoDialog);
+              return contract ? (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm text-white/70">Contract Name</label>
+                      <p className="text-white font-mono">{contract.name}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm text-white/70">Address</label>
+                      <p className="text-white font-mono break-all">{contract.address}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm text-white/70">Network</label>
+                      <p className="text-white">Ethereum</p>
+                    </div>
+                    <div>
+                      <label className="text-sm text-white/70">Status</label>
+                      <p className="text-green-400">Active</p>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm text-white/70">Available Functions</label>
+                    <div className="mt-2 space-y-2">
+                      {mockFunctions.map((func) => (
+                        <div key={func.signature} className="p-2 bg-loteraa-gray/30 rounded border border-loteraa-gray/40">
+                          <p className="text-white font-mono text-sm">{func.signature}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="flex space-x-2 pt-4">
+                    <Button
+                      variant="outline"
+                      className="flex-1 bg-transparent text-white border-loteraa-gray/40 hover:bg-loteraa-gray/20"
+                      onClick={() => {
+                        navigator.clipboard.writeText(contract.address);
+                        toast.success("Address copied to clipboard");
+                      }}
+                    >
+                      Copy Address
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex-1 bg-transparent text-loteraa-teal border-loteraa-teal/30 hover:bg-loteraa-teal/20"
+                      onClick={() => setContractInfoDialog(null)}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </div>
+              ) : null;
+            })()}
+          </DialogContent>
+        </Dialog>
       </DialogContent>
     </Dialog>
   );
