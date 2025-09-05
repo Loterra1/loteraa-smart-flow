@@ -67,6 +67,8 @@ const CreateSmartContractDialog = ({
   const [description, setDescription] = useState('');
   const [linkedDevices, setLinkedDevices] = useState<IoTDevice[]>([]);
   const [linkedRules, setLinkedRules] = useState<AutomationRule[]>([]);
+  const [customRuleLogic, setCustomRuleLogic] = useState<string>('');
+  const [ruleInputMode, setRuleInputMode] = useState<'select' | 'custom'>('select');
   const [tokenPrice, setTokenPrice] = useState('0.10');
   const [tokenFrequency, setTokenFrequency] = useState('Motion detected');
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -183,10 +185,10 @@ const CreateSmartContractDialog = ({
 
   const configureTokenSettings = () => {
     // Open token configuration modal (simplified for this implementation)
-    toast({
-      title: "Token Settings Updated",
-      description: `Payment set to $${tokenPrice} TERAA per ${tokenFrequency}.`,
-    });
+      toast({
+        title: "Token Settings Updated",
+        description: `Payment set to $${tokenPrice} $LOT per ${tokenFrequency}.`,
+      });
   };
 
   const renderStepIndicator = () => {
@@ -452,26 +454,70 @@ const CreateSmartContractDialog = ({
 
         <div className="mb-4">
           <Label className="text-white mb-2 block">Link with Automation Rule(s)</Label>
-          <div className="flex items-center justify-between p-3 rounded-md bg-loteraa-gray/20 border border-loteraa-gray/30 mb-2">
-            <span className="text-white">Select automation rules</span>
-            <Button variant="ghost" className="h-8 text-loteraa-purple" onClick={handleRuleSelect}>
-              <PlusCircle className="h-4 w-4 mr-1" />
-              Select rule logic
+          
+          {/* Toggle between select and custom modes */}
+          <div className="flex gap-2 mb-3">
+            <Button 
+              variant={ruleInputMode === 'select' ? 'default' : 'outline'}
+              size="sm"
+              className={ruleInputMode === 'select' ? 'bg-loteraa-purple' : 'bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20'}
+              onClick={() => setRuleInputMode('select')}
+            >
+              Select Rule Logic
+            </Button>
+            <Button 
+              variant={ruleInputMode === 'custom' ? 'default' : 'outline'}
+              size="sm"
+              className={ruleInputMode === 'custom' ? 'bg-loteraa-purple' : 'bg-transparent border-loteraa-purple/70 text-white hover:bg-loteraa-purple/20'}
+              onClick={() => setRuleInputMode('custom')}
+            >
+              Write Custom Logic
             </Button>
           </div>
-          {linkedRules.length > 0 && (
-            <div className="space-y-2">
-              {linkedRules.map((rule) => (
-                <div key={rule.id} className="p-2 bg-loteraa-purple/10 border border-loteraa-purple/30 rounded-md flex justify-between">
-                  <span className="text-white">{rule.name}</span>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="h-6 w-6 p-0"
-                    onClick={() => removeRule(rule.id)}
-                  >×</Button>
+
+          {ruleInputMode === 'select' ? (
+            <>
+              <div className="flex items-center justify-between p-3 rounded-md bg-loteraa-gray/20 border border-loteraa-gray/30 mb-2">
+                <span className="text-white">Select automation rules</span>
+                <Button variant="ghost" className="h-8 text-loteraa-purple" onClick={handleRuleSelect}>
+                  <PlusCircle className="h-4 w-4 mr-1" />
+                  Select rule logic
+                </Button>
+              </div>
+              {linkedRules.length > 0 && (
+                <div className="space-y-2">
+                  {linkedRules.map((rule) => (
+                    <div key={rule.id} className="p-2 bg-loteraa-purple/10 border border-loteraa-purple/30 rounded-md flex justify-between">
+                      <span className="text-white">{rule.name}</span>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-6 w-6 p-0"
+                        onClick={() => removeRule(rule.id)}
+                      >×</Button>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
+            </>
+          ) : (
+            <div className="space-y-3">
+              <Label className="text-white text-sm">Custom Rule Logic</Label>
+              <Textarea 
+                className="bg-loteraa-gray/20 border-loteraa-gray/30 text-white min-h-[120px] font-mono text-sm"
+                placeholder="Write your custom automation rule logic here...
+
+Example:
+if (temperature > 25 && humidity < 40) {
+  trigger_payment(0.1, 'LOT');
+  send_notification('High temperature detected');
+}"
+                value={customRuleLogic}
+                onChange={(e) => setCustomRuleLogic(e.target.value)}
+              />
+              <div className="text-xs text-white/60">
+                Define custom conditions and actions for your automation rule using JavaScript-like syntax
+              </div>
             </div>
           )}
         </div>
@@ -492,7 +538,7 @@ const CreateSmartContractDialog = ({
           <div className="p-4 bg-loteraa-purple/10 border border-loteraa-purple/30 rounded-md">
             <div className="flex items-center mb-2">
               <Label className="text-white mr-2">Token: </Label>
-              <span className="font-medium text-white">TERAA</span>
+              <span className="font-medium text-white">$LOT</span>
             </div>
             <div className="flex flex-wrap items-center mb-2">
               <Label className="text-white mr-2">Price: </Label>
@@ -503,7 +549,7 @@ const CreateSmartContractDialog = ({
                   value={tokenPrice}
                   onChange={(e) => setTokenPrice(e.target.value)}
                 />
-                <span className="text-white">TERAA</span>
+                <span className="text-white">LOT</span>
               </div>
             </div>
             <div className="flex flex-wrap items-center">
@@ -519,7 +565,7 @@ const CreateSmartContractDialog = ({
             </div>
           </div>
           <div className="text-xs text-white/60 mt-1">
-            Example: ${tokenPrice} TERAA every time {tokenFrequency}
+            Example: ${tokenPrice} LOT every time {tokenFrequency}
           </div>
         </div>
       </>
@@ -558,7 +604,7 @@ const CreateSmartContractDialog = ({
             </div>
             <div className="flex justify-between items-center">
               <span className="text-white/70">Payment Trigger:</span>
-              <span className="text-white font-medium">${tokenPrice} TERAA per {tokenFrequency}</span>
+              <span className="text-white font-medium">${tokenPrice} LOT per {tokenFrequency}</span>
             </div>
           </div>
         </div>
