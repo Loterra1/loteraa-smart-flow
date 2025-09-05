@@ -14,6 +14,8 @@ import EnhancedWalletModal from './WalletModal';
 import Modal from '@/utils/Modal';
 import { useAuth } from '@/contexts/AuthContext';
 
+import { useLoteraaDePINContext } from '@/contexts/LoteraaDePINContext';
+
 const tokens = [
    { symbol: 'LOT', name: 'Loteraa Token', balance: '1000.00', price: 2.47 },
    { symbol: 'POL', name: 'Polygon', balance: '5.25', price: 0.75 },
@@ -24,6 +26,7 @@ const tokens = [
 
 const SwapPanel = () => {
    const { walletAddress, setWalletAddress } = useAuth();
+   const { connectWallet, account } = useLoteraaDePINContext();
 
    const [fromToken, setFromToken] = useState('LOT');
    const [toToken, setToToken] = useState('USDC');
@@ -99,8 +102,8 @@ const SwapPanel = () => {
    };
 
    const copyAddress = async () => {
-      if (walletAddress) {
-         await navigator.clipboard.writeText(walletAddress);
+      if (account) {
+         await navigator.clipboard.writeText(account);
          setCopiedAddress(true);
          setTimeout(() => setCopiedAddress(false), 2000);
       }
@@ -183,7 +186,7 @@ const SwapPanel = () => {
                      className="flex-1"
                   />
                </div>
-               {walletAddress && (
+               {account && (
                   <div className="mt-2 text-right">
                      <span className="text-sm text-white/70">
                         Balance: {currentFromToken?.balance} {fromToken}
@@ -231,7 +234,7 @@ const SwapPanel = () => {
                      className="flex-1 bg-loteraa-gray/10"
                   />
                </div>
-               {walletAddress && (
+               {account && (
                   <div className="mt-2 text-right">
                      <span className="text-sm text-white/70">
                         Balance: {currentToToken?.balance} {toToken}
@@ -241,7 +244,7 @@ const SwapPanel = () => {
             </div>
 
             {/* Action Button */}
-            {!walletAddress ? (
+            {!account ? (
                <Button
                   className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
                   onClick={() => setOpenModal(true)}
@@ -252,9 +255,9 @@ const SwapPanel = () => {
             ) : (
                <Button
                   className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
-                  // disabled={
-                  //    !fromAmount || parseFloat(fromAmount) <= 0 || isSwapping
-                  // }
+                  disabled={
+                     !fromAmount || parseFloat(fromAmount) <= 0 || isSwapping
+                  }
                   onClick={handleSwap}
                >
                   {isSwapping ? 'Swapping...' : 'Swap'}
@@ -263,7 +266,7 @@ const SwapPanel = () => {
          </div>
 
          {/* Connected Wallet Display */}
-         {walletAddress && (
+         {account && (
             <div className="mt-4 bg-black text-white rounded-lg shadow-md p-4 border">
                <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-semibold text-gray-800">
@@ -280,7 +283,7 @@ const SwapPanel = () => {
                <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-600">Address:</span>
                   <span className="font-mono text-xs  px-2 py-1 rounded">
-                     {walletAddress.slice(0, 8)}...{walletAddress.slice(-6)}
+                     {account.slice(0, 8)}...{account.slice(-6)}
                   </span>
                   <button
                      onClick={copyAddress}
@@ -299,7 +302,10 @@ const SwapPanel = () => {
 
          {/* Modal */}
          <Modal open={openModal} onClose={() => setOpenModal(false)}>
-            <EnhancedWalletModal onClose={() => setOpenModal(false)} />
+            <EnhancedWalletModal
+               onConnect={connectWallet}
+               onClose={() => setOpenModal(false)}
+            />
          </Modal>
       </div>
    );

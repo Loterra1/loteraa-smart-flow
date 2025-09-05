@@ -6,6 +6,8 @@ import { MetaMaskInpageProvider } from '@metamask/providers';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { useAuth } from '@/contexts/AuthContext';
 
+import { useLoteraaDePIN } from '@/contexts/LoteraaDePIN';
+
 declare global {
    interface Window {
       ethereum?: MetaMaskInpageProvider;
@@ -68,8 +70,15 @@ const detectWalletStatus = (wallet) => {
    }
 };
 
-export default function EnhancedWalletModal({ onClose }) {
+export default function EnhancedWalletModal({
+   onClose,
+   onConnect,
+}: {
+   onClose: () => void;
+   onConnect: () => void;
+}) {
    const { setWalletAddress } = useAuth();
+   const { account } = useLoteraaDePIN();
 
    const [walletStatuses, setWalletStatuses] = useState({});
    const [selectedWallet, setSelectedWallet] = useState(null);
@@ -77,7 +86,7 @@ export default function EnhancedWalletModal({ onClose }) {
    const [connectionMethod, setConnectionMethod] = useState('wallet');
    const [manualAddress, setManualAddress] = useState('');
 
-   const [accounts, setAccounts] = useState<string[]>([]);
+   // const [accounts, setAccounts] = useState<string[]>([]);
 
    const openWallet = async () => {
       if (!window.ethereum || !window.ethereum.isMetaMask) {
@@ -86,16 +95,12 @@ export default function EnhancedWalletModal({ onClose }) {
       }
 
       try {
-         // request accounts directly from MetaMask
-         const accounts = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-         });
+         await onConnect();
 
-         console.log('Accounts:', accounts);
-         setWalletAddress(accounts[0]);
+         console.log('Accounts:', account);
+         setWalletAddress(account[0]);
 
          onClose();
-         setAccounts(accounts as string[]);
       } catch (err) {
          if (err.code === 4001) {
             console.error('User rejected connection request');
@@ -105,14 +110,14 @@ export default function EnhancedWalletModal({ onClose }) {
       }
    };
 
-   useEffect(() => {
-      // optional: listen for account changes
-      if (window.ethereum) {
-         window.ethereum.on('accountsChanged', (accs: string[]) => {
-            setAccounts(accs);
-         });
-      }
-   }, []);
+   // useEffect(() => {
+   //    // optional: listen for account changes
+   //    if (window.ethereum) {
+   //       window.ethereum.on('accountsChanged', (accs: string[]) => {
+   //          setAccounts(accs);
+   //       });
+   //    }
+   // }, []);
 
    const WalletButton = ({ wallet }) => {
       const status = walletStatuses[wallet.id] || {};
