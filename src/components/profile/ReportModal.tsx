@@ -8,7 +8,7 @@ import { Upload, X, Image, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
-interface ReportModalProps {
+export interface ReportModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit?: (data: ReportFormData) => void;
@@ -21,6 +21,17 @@ export interface ReportFormData {
   userId?: string;
 }
 
+export interface ReportBackendPayload {
+  reportType: string;
+  description: string;
+  screenshots: {
+    filename: string;
+    data: string;
+    size: number;
+  }[];
+  userId?: string;
+}
+
 const REPORT_TYPES = [
   'Bug Report',
   'Feature Request',
@@ -28,6 +39,22 @@ const REPORT_TYPES = [
   'Performance Issue',
   'Other'
 ];
+
+// Utility function to convert file to base64
+const convertFileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+      } else {
+        reject(new Error('Failed to convert file to base64'));
+      }
+    };
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
+};
 
 export default function ReportModal({ isOpen, onClose, onSubmit }: ReportModalProps) {
   const [reportType, setReportType] = useState('');
@@ -107,28 +134,47 @@ export default function ReportModal({ isOpen, onClose, onSubmit }: ReportModalPr
     setIsSubmitting(true);
 
     try {
-      const formData: ReportFormData = {
+      // Convert screenshots to base64
+      const base64Screenshots = await Promise.all(
+        screenshots.map(async (file) => {
+          try {
+            const base64Data = await convertFileToBase64(file);
+            return {
+              filename: file.name,
+              data: base64Data,
+              size: file.size
+            };
+          } catch (error) {
+            console.error(`Failed to convert ${file.name} to base64:`, error);
+            throw new Error(`Failed to process image: ${file.name}`);
+          }
+        })
+      );
+
+      const backendPayload: ReportBackendPayload = {
         reportType,
         description: reportDescription.trim(),
-        screenshots,
+        screenshots: base64Screenshots,
         userId: user?.id,
       };
 
       if (onSubmit) {
+        // For custom onSubmit handlers, pass the original format
+        const formData: ReportFormData = {
+          reportType,
+          description: reportDescription.trim(),
+          screenshots,
+          userId: user?.id,
+        };
         await onSubmit(formData);
       } else {
         // TODO: Replace with actual backend endpoint
-        // const backendFormData = new FormData();
-        // backendFormData.append('reportType', reportType);
-        // backendFormData.append('description', reportDescription.trim());
-        // backendFormData.append('userId', user?.id || '');
-        // screenshots.forEach((file, index) => {
-        //   backendFormData.append(`screenshots`, file);
-        // });
-        
         // const response = await fetch('YOUR_BACKEND_ENDPOINT', {
         //   method: 'POST',
-        //   body: backendFormData,
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(backendPayload),
         // });
         
         // if (!response.ok) {
@@ -136,6 +182,7 @@ export default function ReportModal({ isOpen, onClose, onSubmit }: ReportModalPr
         // }
         
         // Simulate API call for now
+        console.log('Report payload with base64 screenshots:', backendPayload);
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
 
@@ -150,7 +197,7 @@ export default function ReportModal({ isOpen, onClose, onSubmit }: ReportModalPr
       console.error('Error submitting report:', error);
       toast({
         title: "Failed to submit report",
-        description: "Please try again later or contact support.",
+        description: error instanceof Error ? error.message : "Please try again later or contact support.",
         variant: "destructive",
       });
     } finally {
