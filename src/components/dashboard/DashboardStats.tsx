@@ -17,7 +17,7 @@ export default function DashboardStats() {
       // First try to get from profiles table
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('total_earnings')
+        .select('lot_token_balance')
         .eq('user_id', user.id)
         .maybeSingle();
 
@@ -26,8 +26,8 @@ export default function DashboardStats() {
         return;
       }
 
-      if (profile && profile.total_earnings !== null && profile.total_earnings !== undefined) {
-        setTotalEarnings(Number(profile.total_earnings));
+      if (profile && profile.lot_token_balance !== null && profile.lot_token_balance !== undefined) {
+        setTotalEarnings(Number(profile.lot_token_balance));
       } else {
         // If no profile data, calculate from earnings table
         const { data: earnings, error: earningsError } = await supabase
@@ -56,7 +56,32 @@ export default function DashboardStats() {
       setIsNewAccount(parsedData.isNewAccount !== false);
     }
     
-    fetchTotalEarnings();
+    if (user) {
+      fetchTotalEarnings();
+      
+      // Set up real-time subscription for profile updates
+      const channel = supabase
+        .channel('dashboard-profile-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'profiles',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            if (payload.new.lot_token_balance !== undefined) {
+              setTotalEarnings(Number(payload.new.lot_token_balance));
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
   }, [user]);
 
   return (
