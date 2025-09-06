@@ -29,23 +29,47 @@ export default function WalletTab() {
   useEffect(() => {
     if (user) {
       fetchBalance();
+      
+      // Set up real-time subscription for profile updates
+      const channel = supabase
+        .channel('profile-changes')
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'profiles',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            if (payload.new.lot_token_balance !== undefined) {
+              setLotBalance(Number(payload.new.lot_token_balance));
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
   }, [user]);
 
   const fetchBalance = async () => {
     try {
       const { data, error } = await supabase
-        .from('earnings')
-        .select('amount')
-        .eq('user_id', user?.id);
+        .from('profiles')
+        .select('lot_token_balance')
+        .eq('user_id', user?.id)
+        .single();
 
       if (error) {
-        console.error('Error fetching earnings:', error);
+        console.error('Error fetching profile:', error);
         return;
       }
 
-      const totalEarnings = data?.reduce((total, earning) => total + Number(earning.amount), 0) || 0;
-      setLotBalance(totalEarnings);
+      const balance = data?.lot_token_balance || 0;
+      setLotBalance(Number(balance));
     } catch (error) {
       console.error('Error:', error);
     }
