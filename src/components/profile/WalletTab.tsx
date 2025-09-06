@@ -152,13 +152,14 @@ export default function WalletTab() {
         </CardHeader>
         
         <CardContent className="py-6">
-          <div className="flex items-baseline">
+          <div className=" flex items-baseline">
             <span className="text-3xl font-bold text-white">{lotBalance.toLocaleString()}</span>
             <span className="ml-2 text-loteraa-purple">LOT</span>
           </div>
         </CardContent>
         
-        <CardFooter className="flex flex-col sm:flex-row gap-3 bg-loteraa-black/20 px-4 py-3">
+        <CardFooter className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-loteraa-black/20 px-4 py-3">
+          <CardContent className='flex gap-3 items-center' >
           <Button 
             className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto"
             onClick={handleWithdraw}
@@ -172,6 +173,11 @@ export default function WalletTab() {
           >
             <ExternalLink className="mr-2 h-4 w-4" />
             View on Explorer
+          </Button>
+            
+          </CardContent>
+          <Button className="bg-loteraa-purple hover:bg-loteraa-purple/90 w-full sm:w-auto" >
+            Report
           </Button>
         </CardFooter>
       </Card>
