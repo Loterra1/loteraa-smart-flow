@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileHeader from './ProfileHeader';
 import WalletTab from './WalletTab';
 import SettingsTab from './SettingsTab';
+import TransactionTab from './TransactionTab';
 
 export default function ProfileContent() {
   const [activeTab, setActiveTab] = useState("wallet");
@@ -14,13 +15,18 @@ export default function ProfileContent() {
       <ProfileHeader />
       
       <Tabs defaultValue="wallet" value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-loteraa-gray/30">
+        <TabsList className="grid w-full grid-cols-3 bg-loteraa-gray/30">
           <TabsTrigger value="wallet">Wallet</TabsTrigger>
+          <TabsTrigger value="transactions">Transactions</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         
         <TabsContent value="wallet">
           <WalletTab />
+        </TabsContent>
+        
+        <TabsContent value="transactions">
+          <TransactionTab />
         </TabsContent>
         
         <TabsContent value="settings">
