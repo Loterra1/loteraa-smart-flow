@@ -28,10 +28,10 @@ interface StakeEntry {
 }
 
 const stakingOptions = [
-   { value: '4weeks', label: '4 Weeks', apy: '12.5%' },
-   { value: '8weeks', label: '8 Weeks', apy: '16.8%' },
-   { value: '12weeks', label: '12 Weeks', apy: '21.3%' },
-   { value: '4months', label: '4 Months', apy: '27.5%' },
+   { value: '4weeks', label: '4 Weeks', apy: '3%' },
+   { value: '8weeks', label: '8 Weeks', apy: '5%' },
+   { value: '12weeks', label: '12 Weeks', apy: '7%' },
+   { value: '4months', label: '4 Months', apy: '9%' },
 ];
 
 const StakingPanel = () => {
