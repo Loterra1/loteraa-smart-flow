@@ -88,9 +88,9 @@ export default function TransactionTab() {
                   <div className="text-sm text-muted-foreground">
                      Total Earnings
                   </div>
-                  <div className="text-2xl font-bold text-green-400">
-                     ${stats.totalEarnings.toFixed(2)}
-                  </div>
+                   <div className="text-2xl font-bold text-green-400">
+                      LOT{stats.totalEarnings.toFixed(2)}
+                   </div>
                </CardContent>
             </Card>
             <Card className="bg-background/5 border-muted/20">
@@ -98,9 +98,9 @@ export default function TransactionTab() {
                   <div className="text-sm text-muted-foreground">
                      Total Withdrawals
                   </div>
-                  <div className="text-2xl font-bold text-red-400">
-                     ${stats.totalWithdrawals.toFixed(2)}
-                  </div>
+                   <div className="text-2xl font-bold text-red-400">
+                      LOT{stats.totalWithdrawals.toFixed(2)}
+                   </div>
                </CardContent>
             </Card>
             <Card className="bg-background/5 border-muted/20">
