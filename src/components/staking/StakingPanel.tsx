@@ -110,7 +110,7 @@ const StakingPanel = () => {
       }
 
       const stakeAmount = parseFloat(amount);
-      if (stakeAmount > walletBalance) {
+      if (stakeAmount > lotBalance) {
          toast({
             title: 'Insufficient balance',
             description: "You don't have enough LOT tokens",
