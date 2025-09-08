@@ -233,7 +233,7 @@ const BridgePanel = ({ walletConnected, setWalletConnected }: BridgePanelProps) 
               className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
               onClick={handleConnectWallet}
             >
-              <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
+              <Wallet className="mr-2 h-4 w-4" /> Create Wallet
             </Button>
           ) : (
             <Button 

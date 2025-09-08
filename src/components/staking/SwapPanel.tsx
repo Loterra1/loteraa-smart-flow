@@ -247,7 +247,7 @@ const SwapPanel = () => {
                   onClick={() => setOpenModal(true)}
                >
                   <Wallet className="w-5 h-5 mr-2" />
-                  Connect Wallet
+                 Create Wallet
                </Button>
             ) : (
                <Button

@@ -133,7 +133,7 @@ export default function ProfileHeader() {
                   className="w-full mt-6 bg-black  hover:bg-black/90 text-white"
                   onClick={connectWallet}
                >
-                  <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
+                  <Wallet className="mr-2 h-4 w-4" /> Create wallet
                </Button>
             ) : (
                <div className="mt-6 space-y-4">

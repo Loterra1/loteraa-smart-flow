@@ -238,7 +238,7 @@ const StakingPanel = () => {
                      <div className="bg-black text-white p-4 rounded-lg">
                         <div className="flex items-center justify-between mb-2">
                            <span className="text-sm font-medium">
-                              Connected Wallet
+                            Create Wallet
                            </span>
                            <button
                               onClick={disconnectWallet}
