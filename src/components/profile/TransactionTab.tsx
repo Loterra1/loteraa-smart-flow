@@ -89,7 +89,7 @@ export default function TransactionTab() {
                      Total Earnings
                   </div>
                    <div className="text-2xl font-bold text-green-400">
-                    $lot''{stats.totalEarnings.toFixed(2)}
+                    $lot{''}{stats.totalEarnings.toFixed(2)}
                    </div>
                </CardContent>
             </Card>
