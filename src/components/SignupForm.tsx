@@ -16,11 +16,12 @@ import { useToast } from '@/hooks/use-toast';
 import { Mail, KeyRound, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useEffect } from 'react';
 
 export default function SignupForm() {
    const { toast } = useToast();
    const navigate = useNavigate();
-   const { setUser } = useAuth();
+   const { user, loading } = useAuth();
    const [isLoading, setIsLoading] = useState(false);
    const [isLoginMode, setIsLoginMode] = useState(false);
    const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -29,6 +30,13 @@ export default function SignupForm() {
       email: '',
       password: '',
    });
+
+   // Redirect authenticated users to dashboard
+   useEffect(() => {
+      if (!loading && user) {
+         navigate('/dashboard');
+      }
+   }, [user, loading, navigate]);
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({
@@ -45,12 +53,12 @@ export default function SignupForm() {
          const { data, error } = await supabase.auth.signUp({
             email: formData.email,
             password: formData.password,
-            options: {
-               emailRedirectTo: `${window.location.origin}/`,
-               data: {
-                  name: formData.name,
-               },
-            },
+             options: {
+                emailRedirectTo: `${window.location.origin}/dashboard`,
+                data: {
+                   display_name: formData.name,
+                },
+             },
          });
 
          if (error) {
@@ -62,20 +70,19 @@ export default function SignupForm() {
             return;
          }
 
-         if (data.user && !data.session) {
-            setUser(data.user);
-            toast({
-               title: 'Check your email!',
-               description:
-                  "We've sent you a confirmation link to complete your signup.",
-            });
-         } else if (data.session) {
-            toast({
-               title: 'Account created successfully!',
-               description: 'Welcome to Loteraa platform.',
-            });
-            navigate('/dashboard');
-         }
+          if (data.user && !data.session) {
+             toast({
+                title: 'Check your email!',
+                description:
+                   "We've sent you a confirmation link to complete your signup.",
+             });
+          } else if (data.session) {
+             toast({
+                title: 'Account created successfully!',
+                description: 'Welcome to Loteraa platform.',
+             });
+             navigate('/dashboard');
+          }
 
          setFormData({
             name: '',
@@ -112,15 +119,13 @@ export default function SignupForm() {
             return;
          }
 
-         if (data.session) {
-            setUser(data.user);
-
-            toast({
-               title: 'Login successful!',
-               description: 'Welcome back to Loteraa platform.',
-            });
-            navigate('/dashboard');
-         }
+          if (data.session) {
+             toast({
+                title: 'Login successful!',
+                description: 'Welcome back to Loteraa platform.',
+             });
+             navigate('/dashboard');
+          }
       } catch (error) {
          toast({
             title: 'Login failed',

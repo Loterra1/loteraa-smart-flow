@@ -77,13 +77,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
    useEffect(() => {
       const {
          data: { subscription },
-      } = supabase.auth.onAuthStateChange(async (event, session) => {
+      } = supabase.auth.onAuthStateChange((event, session) => {
          console.log('Auth state changed:', event, session);
          setSession(session);
          setUser(session?.user ?? null);
 
          if (session?.user) {
-            await fetchProfile(session.user.id);
+            // Defer profile fetching to avoid async issues in auth callback
+            setTimeout(() => {
+               fetchProfile(session.user.id);
+            }, 0);
          } else {
             setProfile(null);
             setLotBalance(0);
@@ -92,12 +95,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
          setLoading(false);
       });
 
-      supabase.auth.getSession().then(async ({ data: { session } }) => {
+      supabase.auth.getSession().then(({ data: { session } }) => {
          setSession(session);
          setUser(session?.user ?? null);
 
          if (session?.user) {
-            await fetchProfile(session.user.id);
+            fetchProfile(session.user.id);
          }
 
          setLoading(false);
