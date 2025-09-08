@@ -72,7 +72,7 @@ export default function ProfileHeader() {
       }
    };
 
-   const displayName = profile?.name || user?.email?.split('@')[0] || 'User';
+   const displayName = profile?.display_name || user?.email?.split('@')[0] || 'User';
    const initials = displayName
       .split(' ')
       .map((n) => n[0])

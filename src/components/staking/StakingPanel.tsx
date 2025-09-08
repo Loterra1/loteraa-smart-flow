@@ -16,7 +16,7 @@ import { Copy, Check, Wallet } from 'lucide-react';
 import EnhancedWalletModal from './WalletModal';
 import Modal from '@/utils/Modal';
 import { ethers } from 'ethers';
-import { useAuth } from '@/contexts/AuthContext'; // 🔥 Import global auth context
+import { useAuth } from '@/contexts/AuthContext';
 
 interface StakeEntry {
    id: string;
@@ -35,12 +35,11 @@ const stakingOptions = [
 ];
 
 const StakingPanel = () => {
-   const { walletAddress, setWalletAddress } = useAuth();
+   const { walletAddress, setWalletAddress, lotBalance } = useAuth();
    const [amount, setAmount] = useState('');
    const [stakingPeriod, setStakingPeriod] = useState('4weeks');
    const [isStaking, setIsStaking] = useState(false);
    const [sliderValue, setSliderValue] = useState([50]);
-   const [walletBalance, setWalletBalance] = useState(0);
    const [userStakes, setUserStakes] = useState<StakeEntry[]>([]);
    const [totalStaked, setTotalStaked] = useState(0);
    const [totalRewards, setTotalRewards] = useState(0);
@@ -53,8 +52,7 @@ const StakingPanel = () => {
    );
 
    const disconnectWallet = () => {
-      setWalletAddress(''); // 🔥 Clear wallet globally
-      setWalletBalance(0);
+      setWalletAddress(null);
       setUserStakes([]);
       toast({
          title: 'Wallet Disconnected',
@@ -94,7 +92,7 @@ const StakingPanel = () => {
    const handleSliderChange = (value: number[]) => {
       setSliderValue(value);
       if (walletConnected) {
-         const calculatedAmount = ((walletBalance * value[0]) / 100).toFixed(2);
+         const calculatedAmount = ((lotBalance * value[0]) / 100).toFixed(2);
          setAmount(calculatedAmount);
       }
    };
@@ -110,7 +108,7 @@ const StakingPanel = () => {
       }
 
       const stakeAmount = parseFloat(amount);
-      if (stakeAmount > walletBalance) {
+      if (stakeAmount > lotBalance) {
          toast({
             title: 'Insufficient balance',
             description: "You don't have enough LOT tokens",
@@ -123,8 +121,6 @@ const StakingPanel = () => {
 
       try {
          await new Promise((resolve) => setTimeout(resolve, 2000));
-
-         setWalletBalance((prev) => prev - stakeAmount);
 
          const newStake: StakeEntry = {
             id: Date.now().toString(),
@@ -169,7 +165,7 @@ const StakingPanel = () => {
                         <Label htmlFor="stake-amount">Stake Amount</Label>
                         {walletConnected && (
                            <span className="text-sm text-gray-600">
-                              Balance: {walletBalance.toFixed(2)} LOT
+                              Balance: {lotBalance.toFixed(2)} LOT
                            </span>
                         )}
                      </div>
@@ -227,12 +223,12 @@ const StakingPanel = () => {
                </div>
 
                {!walletConnected ? (
-                  <Button
-                     className="w-full mt-6 bg-black hover:bg-black/90 text-white"
-                     onClick={() => setShowWalletModal(true)}
-                  >
-                     <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
-                  </Button>
+                      <Button
+                         className="w-full mt-6 bg-black hover:bg-black/90 text-white"
+                         onClick={() => setShowWalletModal(true)}
+                      >
+                         <Wallet className="mr-2 h-4 w-4" /> Create Wallet
+                      </Button>
                ) : (
                   <div className="mt-6 space-y-4">
                      <div className="bg-black text-white p-4 rounded-lg">
@@ -326,7 +322,7 @@ const StakingPanel = () => {
                         <div className="flex justify-between items-center">
                            <span>Available Balance</span>
                            <span className="font-medium">
-                              {walletBalance.toFixed(2)} LOT
+                              {lotBalance.toFixed(2)} LOT
                            </span>
                         </div>
                      </CardContent>

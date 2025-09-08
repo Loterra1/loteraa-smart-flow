@@ -5,8 +5,13 @@ import { useToast } from '@/hooks/use-toast';
 
 interface UserProfile {
    id: string;
-   name: string | null;
+   display_name: string | null;
    email: string | null;
+   avatar_url: string | null;
+   lot_token_balance: number;
+   total_earnings: number;
+   total_datasets_uploaded: number;
+   user_id: string;
    created_at: string;
    updated_at: string;
 }
@@ -18,6 +23,8 @@ interface AuthContextType {
    loading: boolean;
    walletAddress: string | null;
    setWalletAddress: (address: string | null) => void;
+   lotBalance: number;
+   setLotBalance: (balance: number) => void;
    setUser: (user: User | null) => void;
    signOut: () => Promise<void>;
    updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
@@ -42,11 +49,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
    const [profile, setProfile] = useState<UserProfile | null>(null);
    const [loading, setLoading] = useState(true);
    const [walletAddress, setWalletAddress] = useState<string | null>(null);
+   const [lotBalance, setLotBalance] = useState<number>(0);
    const { toast } = useToast();
 
    const fetchProfile = async (userId: string) => {
       try {
-         console.log('Profile fetch skipped - no profiles table available');
+         const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('user_id', userId)
+            .single();
+
+         if (error) {
+            console.error('Error fetching profile:', error);
+            return;
+         }
+
+         if (data) {
+            setProfile(data);
+            setLotBalance(data.lot_token_balance || 0);
+         }
       } catch (error) {
          console.error('Error fetching profile:', error);
       }
@@ -64,6 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             await fetchProfile(session.user.id);
          } else {
             setProfile(null);
+            setLotBalance(0);
          }
 
          setLoading(false);
@@ -83,10 +106,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return () => subscription.unsubscribe();
    }, []);
 
+   // Set up real-time subscription for profile updates
+   useEffect(() => {
+      if (!user?.id) return;
+
+      const channel = supabase
+         .channel('profile-changes')
+         .on(
+            'postgres_changes',
+            {
+               event: 'UPDATE',
+               schema: 'public',
+               table: 'profiles',
+               filter: `user_id=eq.${user.id}`,
+            },
+            (payload) => {
+               const updatedProfile = payload.new as UserProfile;
+               setProfile(updatedProfile);
+               setLotBalance(updatedProfile.lot_token_balance || 0);
+            }
+         )
+         .subscribe();
+
+      return () => {
+         supabase.removeChannel(channel);
+      };
+   }, [user?.id]);
+
    const signOut = async () => {
       await supabase.auth.signOut();
       setProfile(null);
-      setWalletAddress(null); // clear wallet when signing out
+      setWalletAddress(null);
+      setLotBalance(0);
    };
 
    const updateProfile = async (updates: Partial<UserProfile>) => {
@@ -150,6 +201,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       loading,
       walletAddress,
       setWalletAddress,
+      lotBalance,
+      setLotBalance,
       setUser,
       signOut,
       updateProfile,

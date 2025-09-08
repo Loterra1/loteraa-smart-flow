@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -15,13 +15,11 @@ import { Label } from "@/components/ui/label";
 import { ExternalLink, Wallet, ArrowRight } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import ReportModal from './ReportModal';
 
 export default function WalletTab() {
-  const { user } = useAuth();
-  const [lotBalance, setLotBalance] = useState(0);
+  const { user, lotBalance } = useAuth();
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [withdrawAddress, setWithdrawAddress] = useState('');
@@ -29,55 +27,6 @@ export default function WalletTab() {
   
   // Report modal state
   const [isReportOpen, setIsReportOpen] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      fetchBalance();
-      
-      // Set up real-time subscription for profile updates
-      const channel = supabase
-        .channel('profile-changes')
-        .on(
-          'postgres_changes',
-          {
-            event: 'UPDATE',
-            schema: 'public',
-            table: 'profiles',
-            filter: `user_id=eq.${user.id}`
-          },
-          (payload) => {
-            if (payload.new.lot_token_balance !== undefined) {
-              setLotBalance(Number(payload.new.lot_token_balance));
-            }
-          }
-        )
-        .subscribe();
-
-      return () => {
-        supabase.removeChannel(channel);
-      };
-    }
-  }, [user]);
-
-  const fetchBalance = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('lot_token_balance')
-        .eq('user_id', user?.id)
-        .single();
-
-      if (error) {
-        console.error('Error fetching profile:', error);
-        return;
-      }
-
-      const balance = data?.lot_token_balance || 0;
-      setLotBalance(Number(balance));
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
 
   const handleWithdraw = () => {
     if (lotBalance === 0) {

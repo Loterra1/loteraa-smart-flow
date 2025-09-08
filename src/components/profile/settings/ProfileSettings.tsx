@@ -16,15 +16,15 @@ export default function ProfileSettings() {
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
 
-  useEffect(() => {
-    if (profile) {
-      setDisplayName(profile.name || '');
-      setEmail(profile.email || '');
-    } else if (user) {
-      setDisplayName(user.user_metadata?.name || '');
-      setEmail(user.email || '');
-    }
-  }, [profile, user]);
+   useEffect(() => {
+     if (profile) {
+       setDisplayName(profile.display_name || '');
+       setEmail(profile.email || '');
+     } else if (user) {
+       setDisplayName(user.user_metadata?.name || '');
+       setEmail(user.email || '');
+     }
+   }, [profile, user]);
   
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -39,7 +39,7 @@ export default function ProfileSettings() {
     setIsUpdatingProfile(true);
     try {
       await updateProfile({
-        name: displayName,
+        display_name: displayName,
         email: email,
       });
     } finally {
