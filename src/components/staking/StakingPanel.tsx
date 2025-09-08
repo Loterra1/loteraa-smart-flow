@@ -18,7 +18,6 @@ import Modal from '@/utils/Modal';
 import { ethers } from 'ethers';
 import { useAuth } from '@/contexts/AuthContext'; // 🔥 Import global auth context
 
-
 interface StakeEntry {
    id: string;
    amount: number;
@@ -36,7 +35,7 @@ const stakingOptions = [
 ];
 
 const StakingPanel = () => {
-   const { walletAddress, setWalletAddress } = useAuth();
+   const { walletAddress, setWalletAddress, lotBalance } = useAuth();
    const [amount, setAmount] = useState('');
    const [stakingPeriod, setStakingPeriod] = useState('4weeks');
    const [isStaking, setIsStaking] = useState(false);
@@ -170,7 +169,7 @@ const StakingPanel = () => {
                         <Label htmlFor="stake-amount">Stake Amount</Label>
                         {walletConnected && (
                            <span className="text-sm text-gray-600">
-                              Balance: {walletBalance.toFixed(2)} LOT
+                              Balance: {lotBalance.toFixed(2)} LOT
                            </span>
                         )}
                      </div>
