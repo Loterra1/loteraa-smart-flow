@@ -89,7 +89,7 @@ export default function TransactionTab() {
                      Total Earnings
                   </div>
                    <div className="text-2xl font-bold text-green-400">
-                    $lot{''}{stats.totalEarnings.toFixed(2)}
+                    $lot{stats.totalEarnings.toFixed(2)}
                    </div>
                </CardContent>
             </Card>
@@ -99,7 +99,7 @@ export default function TransactionTab() {
                      Total Withdrawals
                   </div>
                    <div className="text-2xl font-bold text-red-400">
-                      $lot '' {stats.totalWithdrawals.toFixed(2)}
+                      $lot{stats.totalWithdrawals.toFixed(2)}
                    </div>
                </CardContent>
             </Card>
@@ -209,7 +209,7 @@ export default function TransactionTab() {
                                     transaction.type === 'deposit'
                                        ? '+'
                                        : '-'}
-                                   $lot''{transaction.amount.toFixed(2)}
+                                   $lot{transaction.amount.toFixed(2)}
                                  </span>
                               </TableCell>
                               <TableCell>
@@ -286,7 +286,7 @@ export default function TransactionTab() {
                               Amount
                            </div>
                            <div className="font-medium">
-                              $lot''{selectedTransaction.amount.toFixed(2)}
+                              $lot{selectedTransaction.amount.toFixed(2)}
                            </div>
                         </div>
                         <div>
