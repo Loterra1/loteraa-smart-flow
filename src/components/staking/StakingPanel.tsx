@@ -13,10 +13,24 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { Copy, Check, Wallet } from 'lucide-react';
-import EnhancedWalletModal from './WalletModal';
-import Modal from '@/utils/Modal';
+import {
+   PieChart,
+   Pie,
+   Cell,
+   ResponsiveContainer,
+   Tooltip,
+   Legend,
+} from 'recharts';
+
 import { ethers } from 'ethers';
 import { useAuth } from '@/contexts/AuthContext';
+import EnhancedWalletModal from './WalletModal';
+import Modal from '@/utils/Modal';
+
+// Mock toast function
+const mockToast = ({ title, description, variant }) => {
+   console.log(`${title}: ${description}`);
+};
 
 interface StakeEntry {
    id: string;
@@ -34,13 +48,33 @@ const stakingOptions = [
    { value: '4months', label: '4 Months', apy: '9%' },
 ];
 
+const COLORS = ['#8b5cf6', '#10b981', '#3b82f6'];
+
 const StakingPanel = () => {
    const { walletAddress, setWalletAddress, lotBalance } = useAuth();
    const [amount, setAmount] = useState('');
    const [stakingPeriod, setStakingPeriod] = useState('4weeks');
    const [isStaking, setIsStaking] = useState(false);
    const [sliderValue, setSliderValue] = useState([50]);
-   const [userStakes, setUserStakes] = useState<StakeEntry[]>([]);
+   const [userStakes, setUserStakes] = useState<StakeEntry[]>([
+      // Sample data for demonstration
+      // {
+      //    id: '1',
+      //    amount: 500,
+      //    period: '4 Weeks',
+      //    apy: '3%',
+      //    unlockDate: '2025-10-15',
+      //    daysRemaining: 20,
+      // },
+      // {
+      //    id: '2',
+      //    amount: 300,
+      //    period: '8 Weeks',
+      //    apy: '5%',
+      //    unlockDate: '2025-11-20',
+      //    daysRemaining: 55,
+      // },
+   ]);
    const [totalStaked, setTotalStaked] = useState(0);
    const [totalRewards, setTotalRewards] = useState(0);
    const [showWalletModal, setShowWalletModal] = useState(false);
@@ -52,7 +86,7 @@ const StakingPanel = () => {
    );
 
    const disconnectWallet = () => {
-      setWalletAddress(null);
+      // setWalletAddress('');
       setUserStakes([]);
       toast({
          title: 'Wallet Disconnected',
@@ -153,6 +187,42 @@ const StakingPanel = () => {
       }
    };
 
+   // Prepare chart data
+   const chartData = [
+      {
+         name: 'Total Staked',
+         value: totalStaked,
+         color: COLORS[0],
+      },
+      {
+         name: 'Rewards Earned',
+         value: totalRewards,
+         color: COLORS[1],
+      },
+      {
+         name: 'Available Balance',
+         value: lotBalance,
+         color: COLORS[2],
+      },
+   ];
+
+   const CustomTooltip = ({ active, payload }) => {
+      if (active && payload && payload.length) {
+         return (
+            <div className="bg-white p-3 border rounded-lg shadow-lg">
+               <p className="font-medium">{payload[0].name}</p>
+               <p
+                  className="text-lg font-bold"
+                  style={{ color: payload[0].payload.color }}
+               >
+                  {payload[0].value.toFixed(2)} LOT
+               </p>
+            </div>
+         );
+      }
+      return null;
+   };
+
    return (
       <>
          <div className="grid md:grid-cols-2 gap-8">
@@ -223,18 +293,18 @@ const StakingPanel = () => {
                </div>
 
                {!walletConnected ? (
-                      <Button
-                         className="w-full mt-6 bg-black hover:bg-black/90 text-white"
-                         onClick={() => setShowWalletModal(true)}
-                      >
-                         <Wallet className="mr-2 h-4 w-4" /> Create Wallet
-                      </Button>
+                  <Button
+                     className="w-full mt-6 bg-black hover:bg-black/90 text-white"
+                     onClick={() => setShowWalletModal(true)}
+                  >
+                     <Wallet className="mr-2 h-4 w-4" /> Create Wallet
+                  </Button>
                ) : (
                   <div className="mt-6 space-y-4">
                      <div className="bg-black text-white p-4 rounded-lg">
                         <div className="flex items-center justify-between mb-2">
                            <span className="text-sm font-medium">
-                            Create Wallet
+                              Wallet Connected
                            </span>
                            <button
                               onClick={disconnectWallet}
@@ -244,29 +314,29 @@ const StakingPanel = () => {
                            </button>
                         </div>
                         <div className="flex items-center gap-2">
-                           <span className="font-mono text-sm bg-black text-white px-2 py-1 rounded">
+                           <span className="font-mono text-sm bg-gray-800 text-white px-2 py-1 rounded">
                               {walletAddress.slice(0, 8)}...
                               {walletAddress.slice(-6)}
                            </span>
                            <button
                               onClick={copyAddress}
-                              className="p-1 hover:bg-gray-200 rounded"
+                              className="p-1 hover:bg-gray-700 rounded"
                               title="Copy address"
                            >
                               {copiedAddress ? (
                                  <Check className="w-4 h-4 text-green-500" />
                               ) : (
-                                 <Copy className="w-4 h-4 text-gray-500" />
+                                 <Copy className="w-4 h-4 text-gray-300" />
                               )}
                            </button>
                         </div>
                      </div>
 
                      <Button
-                        className="w-full bg-loteraa-purple hover:bg-loteraa-purple/90"
-                        // disabled={
-                        //    !amount || parseFloat(amount) <= 0 || isStaking
-                        // }
+                        className="w-full bg-purple-600 hover:bg-purple-700"
+                        disabled={
+                           !amount || parseFloat(amount) <= 0 || isStaking
+                        }
                         onClick={handleStake}
                      >
                         {isStaking ? 'Staking...' : 'Stake LOT'}
@@ -275,9 +345,11 @@ const StakingPanel = () => {
                )}
             </div>
 
-            {/* User Stakes */}
+            {/* Chart Section - Updated */}
             <div>
-               <h3 className="text-xl font-semibold mb-4">Your Staking</h3>
+               <h3 className="text-xl font-semibold mb-4">
+                  Your Staking Portfolio
+               </h3>
                {!walletConnected ? (
                   <Card>
                      <CardContent className="p-6 flex flex-col items-center justify-center text-center h-60">
@@ -306,24 +378,96 @@ const StakingPanel = () => {
                   </Card>
                ) : (
                   <Card>
-                     <CardContent className="p-6 space-y-4">
-                        <div className="flex justify-between items-center">
-                           <span>Total Staked</span>
-                           <span className="font-medium">
-                              {totalStaked.toFixed(2)} LOT
-                           </span>
+                     <CardContent className="p-6">
+                        {/* Chart */}
+                        <div className="h-[12.5rem] mb-6">
+                           <ResponsiveContainer width="100%" height="100%">
+                              <PieChart>
+                                 <Pie
+                                    data={chartData}
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius={60}
+                                    outerRadius={100}
+                                    paddingAngle={5}
+                                    dataKey="value"
+                                 >
+                                    {chartData.map((entry, index) => (
+                                       <Cell
+                                          key={`cell-${index}`}
+                                          fill={entry.color}
+                                       />
+                                    ))}
+                                 </Pie>
+                                 <Tooltip
+                                    content={
+                                       <CustomTooltip
+                                          active={undefined}
+                                          payload={undefined}
+                                       />
+                                    }
+                                 />
+                              </PieChart>
+                           </ResponsiveContainer>
                         </div>
-                        <div className="flex justify-between items-center">
-                           <span>Rewards Earned</span>
-                           <span className="font-medium text-green-600">
-                              +{totalRewards.toFixed(2)} LOT
-                           </span>
+
+                        {/* Legend with Values */}
+                        <div className="space-y-3">
+                           <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-2">
+                                 <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{ backgroundColor: COLORS[0] }}
+                                 ></div>
+                                 <span className="text-sm">Total Staked</span>
+                              </div>
+                              <span className="font-medium">
+                                 {totalStaked.toFixed(2)} LOT
+                              </span>
+                           </div>
+                           <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-2">
+                                 <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{ backgroundColor: COLORS[1] }}
+                                 ></div>
+                                 <span className="text-sm">Rewards Earned</span>
+                              </div>
+                              <span className="font-medium text-green-600">
+                                 +{totalRewards.toFixed(2)} LOT
+                              </span>
+                           </div>
+                           <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-2">
+                                 <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{ backgroundColor: COLORS[2] }}
+                                 ></div>
+                                 <span className="text-sm">
+                                    Available Balance
+                                 </span>
+                              </div>
+                              <span className="font-medium">
+                                 {lotBalance.toFixed(2)} LOT
+                              </span>
+                           </div>
                         </div>
-                        <div className="flex justify-between items-center">
-                           <span>Available Balance</span>
-                           <span className="font-medium">
-                              {lotBalance.toFixed(2)} LOT
-                           </span>
+
+                        {/* Total Portfolio Value */}
+                        <div className="mt-4 pt-4 border-t">
+                           <div className="flex justify-between items-center">
+                              <span className="font-semibold">
+                                 Total Portfolio Value
+                              </span>
+                              <span className="font-bold text-lg">
+                                 {(
+                                    totalStaked +
+                                    totalRewards +
+                                    lotBalance
+                                 ).toFixed(2)}{' '}
+                                 LOT
+                              </span>
+                           </div>
                         </div>
                      </CardContent>
                   </Card>
