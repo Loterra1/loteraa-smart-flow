@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ExternalLink, X, Wallet, Download, CheckCircle } from 'lucide-react';
 import { ethers } from 'ethers';
+import api, { ApiResponse } from '@/utils/api';
 
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import detectEthereumProvider from '@metamask/detect-provider';
@@ -69,7 +70,7 @@ const detectWalletStatus = (wallet) => {
 };
 
 export default function EnhancedWalletModal({ onClose }) {
-   const { setWalletAddress } = useAuth();
+   const { setWalletAddress, user } = useAuth();
 
    const [walletStatuses, setWalletStatuses] = useState({});
    const [selectedWallet, setSelectedWallet] = useState(null);
@@ -80,16 +81,25 @@ export default function EnhancedWalletModal({ onClose }) {
    const [accounts, setAccounts] = useState<string[]>([]);
 
    const openWallet = async () => {
-      if (!window.ethereum || !window.ethereum.isMetaMask) {
-         console.log('MetaMask not detected');
-         return;
-      }
+      // if (!window.ethereum || !window.ethereum.isMetaMask) {
+      //    console.log('MetaMask not detected');
+      //    return;
+      // }
 
       try {
          // request accounts directly from MetaMask
-         const accounts = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-         });
+         // const accounts = await window.ethereum.request({
+         //    method: 'eth_requestAccounts',
+         // });
+         const response = await api.post(
+            `/onchain/create-wallet?userId=${user.id}`
+         );
+         console.log('response', response);
+
+         if (response.data.success) {
+            setWalletAddress(response.data.address);
+            console.log(response.data.address);
+         }
 
          console.log('Accounts:', accounts);
          setWalletAddress(accounts[0]);
@@ -113,6 +123,28 @@ export default function EnhancedWalletModal({ onClose }) {
          });
       }
    }, []);
+
+   useEffect(() => {
+      const getUserWallet = async () => {
+         try {
+            if (!user?.id) return;
+
+            const response = await api.get(
+               `/onchain/retrieve-wallet?userId=${user.id}`
+            );
+
+            if (response.data.success) {
+               const address = response.data.data.address;
+               setWalletAddress(address); // updates global AuthContext state
+               console.log('Wallet from backend:', address);
+            }
+         } catch (error) {
+            console.error('Error fetching wallet:', error);
+         }
+      };
+
+      getUserWallet();
+   }, [user?.id, setWalletAddress]);
 
    const WalletButton = ({ wallet }) => {
       const status = walletStatuses[wallet.id] || {};

@@ -3,8 +3,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Bell, Menu, X, User, LogOut } from 'lucide-react';
 import { useNotifications } from '@/hooks/useNotifications';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function DashboardNavbar() {
+   const { signOut, setUser } = useAuth();
    const [isOpen, setIsOpen] = useState(false);
    const [isProfileOpen, setIsProfileOpen] = useState(false);
    const location = useLocation();
@@ -30,6 +32,16 @@ export default function DashboardNavbar() {
    const closeMenus = () => {
       setIsOpen(false);
       setIsProfileOpen(false);
+   };
+
+   const handleLogout = async () => {
+      try {
+         await signOut();
+         setUser(null);
+         setIsOpen(false);
+      } catch (error) {
+         console.error('Logout error:', error);
+      }
    };
 
    return (
@@ -97,7 +109,7 @@ export default function DashboardNavbar() {
                            <Link
                               to="/"
                               className="flex items-center px-4 py-2 text-sm text-white hover:bg-loteraa-purple/20"
-                              onClick={closeMenus}
+                              onClick={handleLogout}
                            >
                               <LogOut className="h-4 w-4 mr-2" /> Sign Out
                            </Link>
@@ -158,7 +170,7 @@ export default function DashboardNavbar() {
                      <Link
                         to="/"
                         className="flex items-center px-3 py-2 rounded-md text-base font-medium text-white hover:bg-loteraa-purple/20"
-                        onClick={() => setIsOpen(false)}
+                        onClick={handleLogout}
                      >
                         <LogOut className="h-5 w-5 mr-2" />
                         Sign Out

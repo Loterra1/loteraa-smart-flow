@@ -306,12 +306,12 @@ const StakingPanel = () => {
                            <span className="text-sm font-medium">
                               Wallet Connected
                            </span>
-                           <button
+                           {/* <button
                               onClick={disconnectWallet}
                               className="text-red-500 hover:text-red-700 text-sm"
                            >
                               Disconnect
-                           </button>
+                           </button> */}
                         </div>
                         <div className="flex items-center gap-2">
                            <span className="font-mono text-sm bg-gray-800 text-white px-2 py-1 rounded">

@@ -247,7 +247,7 @@ const SwapPanel = () => {
                   onClick={() => setOpenModal(true)}
                >
                   <Wallet className="w-5 h-5 mr-2" />
-                 Create Wallet
+                  Create Wallet
                </Button>
             ) : (
                <Button
@@ -269,12 +269,12 @@ const SwapPanel = () => {
                   <h3 className="text-sm font-semibold text-gray-800">
                      Wallet Connected
                   </h3>
-                  <button
+                  {/* <button
                      onClick={disconnectWallet}
                      className="text-red-500 hover:text-red-700 text-xs"
                   >
                      Disconnect
-                  </button>
+                  </button> */}
                </div>
 
                <div className="flex items-center gap-2">
