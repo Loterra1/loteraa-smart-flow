@@ -1,72 +1,77 @@
 import { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import NavigationHeader from "@/components/NavigationHeader";
-import Footer from "@/components/Footer";
-import { 
-  Building2, 
-  TrendingUp, 
-  DollarSign, 
-  Shield, 
-  BarChart3, 
-  ArrowRight,
-  Globe,
-  Coins,
-  CheckCircle,
-  Activity,
-  Users,
-  Zap,
-  Factory,
-  Smartphone,
-  MapPin,
-  Network,
-  Cpu,
-  Radio
-} from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import NavigationHeader from '@/components/NavigationHeader';
+import Footer from '@/components/Footer';
+import {
+   Building2,
+   TrendingUp,
+   DollarSign,
+   Shield,
+   BarChart3,
+   ArrowRight,
+   Globe,
+   Coins,
+   CheckCircle,
+   Activity,
+   Users,
+   Zap,
+   Factory,
+   Smartphone,
+   MapPin,
+   Network,
+   Cpu,
+   Radio,
+} from 'lucide-react';
 
 export default function BusinessPage() {
-  const [formData, setFormData] = useState({
-    companyName: '',
-    industry: '',
-    useCase: '',
-    contactEmail: '',
-    dataNeeds: ''
-  });
+   const [formData, setFormData] = useState({
+      companyName: '',
+      industry: '',
+      useCase: '',
+      contactEmail: '',
+      dataNeeds: '',
+   });
 
-  const [animatedPoints, setAnimatedPoints] = useState<Array<{ id: number; x: number; y: number; delay: number; type: string }>>([]);
+   const [animatedPoints, setAnimatedPoints] = useState<
+      Array<{ id: number; x: number; y: number; delay: number; type: string }>
+   >([]);
 
-  useEffect(() => {
-    const points = Array.from({ length: 40 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 8,
-      type: ['sensor', 'device', 'network', 'data'][Math.floor(Math.random() * 4)]
-    }));
-    setAnimatedPoints(points);
-  }, []);
+   useEffect(() => {
+      const points = Array.from({ length: 40 }, (_, i) => ({
+         id: i,
+         x: Math.random() * 100,
+         y: Math.random() * 100,
+         delay: Math.random() * 8,
+         type: ['sensor', 'device', 'network', 'data'][
+            Math.floor(Math.random() * 4)
+         ],
+      }));
+      setAnimatedPoints(points);
+   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
+   const handleInputChange = (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+   ) => {
+      const { name, value } = e.target;
+      setFormData((prevData) => ({
+         ...prevData,
+         [name]: value,
+      }));
+   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Here you would typically handle the form submission, e.g., sending the data to a server
-  };
+   const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      // Here you would typically handle the form submission, e.g., sending the data to a server
+   };
 
-  return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
-      <style>
-        {`
+   return (
+      <div className="min-h-screen bg-black relative overflow-hidden">
+         <style>
+            {`
           @keyframes businessOrbit {
             0% { transform: rotate(0deg) translateX(80px) rotate(0deg); opacity: 0.4; }
             50% { opacity: 1; }
@@ -106,185 +111,239 @@ export default function BusinessPage() {
             animation: hologramGlow 4s ease-in-out infinite;
           }
         `}
-      </style>
+         </style>
 
+         <NavigationHeader />
 
-      <NavigationHeader />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <Badge className="mb-6 bg-loteraa-purple/20 text-loteraa-purple border-loteraa-purple/30 px-6 py-2 text-lg">
-              For Enterprises & Innovators
-            </Badge>
-            
-            <h1 className="text-5xl md:text-7xl font-bold mb-8">
-              <span className="text-loteraa-purple">Unlock New</span> <br />
-              <span className="text-loteraa-purple">Business Models</span>
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Leverage our IoT-blockchain infrastructure to automate processes, create new revenue streams, 
-              and gain a competitive edge in the digital economy.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg">
-                Book a Demo <Building2 className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+         {/* Hero Section */}
+         <section className="pt-32 pb-20 relative">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+               <div className="text-center max-w-4xl mx-auto">
+                  <Badge className="mb-6 bg-loteraa-purple/20 text-loteraa-purple border-loteraa-purple/30 px-6 py-2 text-lg">
+                     For Enterprises & Innovators
+                  </Badge>
 
+                  <h1 className="text-5xl md:text-7xl font-bold mb-8">
+                     <span className="text-loteraa-purple">Unlock New</span>{' '}
+                     <br />
+                     <span className="text-loteraa-purple">
+                        Business Models
+                     </span>
+                  </h1>
 
-      {/* Business Benefits Section */}
-      <section className="py-20 relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-loteraa-purple">Key Benefits</span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Transform your business with blockchain-secured IoT solutions
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {['Automation', 'New Revenue', 'Data Security', 'Cost Savings'].map((benefit, index) => (
-              <Card key={index} className="bg-loteraa-gray/30 backdrop-blur-sm border-loteraa-gray/40 hover:border-loteraa-purple/50 transition-all duration-300 group">
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 bg-loteraa-purple/20 rounded-lg">
-                      {benefit === 'Automation' && <Activity className="h-6 w-6 text-loteraa-purple" />}
-                      {benefit === 'New Revenue' && <TrendingUp className="h-6 w-6 text-loteraa-purple" />}
-                      {benefit === 'Data Security' && <Shield className="h-6 w-6 text-loteraa-purple" />}
-                      {benefit === 'Cost Savings' && <DollarSign className="h-6 w-6 text-loteraa-purple" />}
-                    </div>
-                    <Badge variant="outline" className="text-loteraa-teal border-loteraa-teal/40 bg-loteraa-teal/10">
-                      <ArrowRight className="h-3 w-3 mr-1" />
-                      Learn More
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-white text-xl group-hover:text-loteraa-purple transition-colors">
-                    {benefit}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white/70 leading-relaxed">
-                    {benefit === 'Automation' && 'Automate your supply chain and manufacturing processes with real-time IoT data.'}
-                    {benefit === 'New Revenue' && 'Create new revenue streams by tokenizing your IoT data and enabling machine-to-machine transactions.'}
-                    {benefit === 'Data Security' && 'Secure your IoT data with blockchain encryption and ensure data integrity.'}
-                    {benefit === 'Cost Savings' && 'Reduce operational costs by optimizing resource utilization and predictive maintenance.'}
+                  <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
+                     Leverage our IoT-blockchain infrastructure to automate
+                     processes, create new revenue streams, and gain a
+                     competitive edge in the digital economy.
                   </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Contact Form Section */}
-      <section className="py-20 relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-loteraa-purple/20 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-loteraa-purple/30">
-            <div className="text-center mb-12">
-              <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="text-loteraa-purple">Get in Touch</span>
-              </h3>
-              <p className="text-white/70 text-xl">
-                Let us help you transform your business with IoT-blockchain solutions
-              </p>
+                  <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                     <Button
+                        size="lg"
+                        className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-6 text-lg"
+                     >
+                        Book a Demo <Building2 className="ml-2 h-5 w-5" />
+                     </Button>
+                  </div>
+               </div>
             </div>
-            
-            <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="companyName" className="block text-white text-sm font-bold mb-2">
-                  Company Name
-                </label>
-                <Input
-                  type="text"
-                  id="companyName"
-                  name="companyName"
-                  placeholder="Your Company Name"
-                  className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
-                  value={formData.companyName}
-                  onChange={handleInputChange}
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="industry" className="block text-white text-sm font-bold mb-2">
-                  Industry
-                </label>
-                <Input
-                  type="text"
-                  id="industry"
-                  name="industry"
-                  placeholder="Your Industry"
-                  className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
-                  value={formData.industry}
-                  onChange={handleInputChange}
-                />
-              </div>
-              
-              <div className="md:col-span-2">
-                <label htmlFor="useCase" className="block text-white text-sm font-bold mb-2">
-                  Use Case
-                </label>
-                <Textarea
-                  id="useCase"
-                  name="useCase"
-                  placeholder="Describe your use case"
-                  className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
-                  rows={4}
-                  value={formData.useCase}
-                  onChange={handleInputChange}
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="contactEmail" className="block text-white text-sm font-bold mb-2">
-                  Contact Email
-                </label>
-                <Input
-                  type="email"
-                  id="contactEmail"
-                  name="contactEmail"
-                  placeholder="Your Contact Email"
-                  className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
-                  value={formData.contactEmail}
-                  onChange={handleInputChange}
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="dataNeeds" className="block text-white text-sm font-bold mb-2">
-                  Data Needs
-                </label>
-                <Input
-                  type="text"
-                  id="dataNeeds"
-                  name="dataNeeds"
-                  placeholder="Your Data Needs"
-                  className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
-                  value={formData.dataNeeds}
-                  onChange={handleInputChange}
-                />
-              </div>
+         </section>
 
-              <div className="md:col-span-2 text-center">
-                <Button type="submit" size="lg" className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-4 text-lg">
-                  Submit Request <Radio className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
+         {/* Business Benefits Section */}
+         <section className="py-20 relative">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+               <div className="text-center mb-16">
+                  <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                     <span className="text-loteraa-purple">Key Benefits</span>
+                  </h2>
+                  <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                     Transform your business with blockchain-secured IoT
+                     solutions
+                  </p>
+               </div>
 
-      <Footer />
-    </div>
-  );
+               <div className="grid md:grid-cols-2 gap-8">
+                  {[
+                     'Automation',
+                     'New Revenue',
+                     'Data Security',
+                     'Cost Savings',
+                  ].map((benefit, index) => (
+                     <Card
+                        key={index}
+                        className="bg-loteraa-gray/30 backdrop-blur-sm border-loteraa-gray/40 hover:border-loteraa-purple/50 transition-all duration-300 group"
+                     >
+                        <CardHeader>
+                           <div className="flex items-center justify-between mb-4">
+                              <div className="p-3 bg-loteraa-purple/20 rounded-lg">
+                                 {benefit === 'Automation' && (
+                                    <Activity className="h-6 w-6 text-loteraa-purple" />
+                                 )}
+                                 {benefit === 'New Revenue' && (
+                                    <TrendingUp className="h-6 w-6 text-loteraa-purple" />
+                                 )}
+                                 {benefit === 'Data Security' && (
+                                    <Shield className="h-6 w-6 text-loteraa-purple" />
+                                 )}
+                                 {benefit === 'Cost Savings' && (
+                                    <DollarSign className="h-6 w-6 text-loteraa-purple" />
+                                 )}
+                              </div>
+                              <Badge
+                                 variant="outline"
+                                 className="text-loteraa-teal border-loteraa-teal/40 bg-loteraa-teal/10"
+                              >
+                                 <ArrowRight className="h-3 w-3 mr-1" />
+                                 Learn More
+                              </Badge>
+                           </div>
+                           <CardTitle className="text-white text-xl group-hover:text-loteraa-purple transition-colors">
+                              {benefit}
+                           </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                           <p className="text-white/70 leading-relaxed">
+                              {benefit === 'Automation' &&
+                                 'Automate your supply chain and manufacturing processes with real-time IoT data.'}
+                              {benefit === 'New Revenue' &&
+                                 'Create new revenue streams by tokenizing your IoT data and enabling machine-to-machine transactions.'}
+                              {benefit === 'Data Security' &&
+                                 'Secure your IoT data with blockchain encryption and ensure data integrity.'}
+                              {benefit === 'Cost Savings' &&
+                                 'Reduce operational costs by optimizing resource utilization and predictive maintenance.'}
+                           </p>
+                        </CardContent>
+                     </Card>
+                  ))}
+               </div>
+            </div>
+         </section>
+
+         {/* Contact Form Section */}
+         <section className="py-20 relative">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+               <div className="bg-loteraa-purple/20 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-loteraa-purple/30">
+                  <div className="text-center mb-12">
+                     <h3 className="text-3xl md:text-4xl font-bold mb-6">
+                        <span className="text-loteraa-purple">
+                           Get in Touch
+                        </span>
+                     </h3>
+                     <p className="text-white/70 text-xl">
+                        Let us help you transform your business with
+                        IoT-blockchain solutions
+                     </p>
+                  </div>
+
+                  <form
+                     onSubmit={handleSubmit}
+                     className="grid md:grid-cols-2 gap-6"
+                  >
+                     <div>
+                        <label
+                           htmlFor="companyName"
+                           className="block text-white text-sm font-bold mb-2"
+                        >
+                           Company Name
+                        </label>
+                        <Input
+                           type="text"
+                           id="companyName"
+                           name="companyName"
+                           placeholder="Your Company Name"
+                           className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
+                           value={formData.companyName}
+                           onChange={handleInputChange}
+                        />
+                     </div>
+
+                     <div>
+                        <label
+                           htmlFor="industry"
+                           className="block text-white text-sm font-bold mb-2"
+                        >
+                           Industry
+                        </label>
+                        <Input
+                           type="text"
+                           id="industry"
+                           name="industry"
+                           placeholder="Your Industry"
+                           className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
+                           value={formData.industry}
+                           onChange={handleInputChange}
+                        />
+                     </div>
+
+                     <div className="md:col-span-2">
+                        <label
+                           htmlFor="useCase"
+                           className="block text-white text-sm font-bold mb-2"
+                        >
+                           Use Case
+                        </label>
+                        <Textarea
+                           id="useCase"
+                           name="useCase"
+                           placeholder="Describe your use case"
+                           className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
+                           rows={4}
+                           value={formData.useCase}
+                           onChange={handleInputChange}
+                        />
+                     </div>
+
+                     <div>
+                        <label
+                           htmlFor="contactEmail"
+                           className="block text-white text-sm font-bold mb-2"
+                        >
+                           Contact Email
+                        </label>
+                        <Input
+                           type="email"
+                           id="contactEmail"
+                           name="contactEmail"
+                           placeholder="Your Contact Email"
+                           className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
+                           value={formData.contactEmail}
+                           onChange={handleInputChange}
+                        />
+                     </div>
+
+                     <div>
+                        <label
+                           htmlFor="dataNeeds"
+                           className="block text-white text-sm font-bold mb-2"
+                        >
+                           Data Needs
+                        </label>
+                        <Input
+                           type="text"
+                           id="dataNeeds"
+                           name="dataNeeds"
+                           placeholder="Your Data Needs"
+                           className="shadow appearance-none border rounded w-full py-3 px-4 text-loteraa-black leading-tight focus:outline-none focus:shadow-outline"
+                           value={formData.dataNeeds}
+                           onChange={handleInputChange}
+                        />
+                     </div>
+
+                     <div className="md:col-span-2 text-center">
+                        <Button
+                           type="submit"
+                           size="lg"
+                           className="bg-loteraa-purple hover:bg-loteraa-purple/90 text-white px-8 py-4 text-lg"
+                        >
+                           Submit Request <Radio className="ml-2 h-5 w-5" />
+                        </Button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </section>
+
+         <Footer />
+      </div>
+   );
 }

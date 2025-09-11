@@ -94,14 +94,12 @@ export default function EnhancedWalletModal({ onClose }) {
          const response = await api.post(
             `/onchain/create-wallet?userId=${user.id}`
          );
-         console.log('response', response);
 
          if (response.data.success) {
             setWalletAddress(response.data.address);
             console.log(response.data.address);
          }
 
-         console.log('Accounts:', accounts);
          setWalletAddress(accounts[0]);
 
          onClose();
@@ -136,7 +134,6 @@ export default function EnhancedWalletModal({ onClose }) {
             if (response.data.success) {
                const address = response.data.data.address;
                setWalletAddress(address); // updates global AuthContext state
-               console.log('Wallet from backend:', address);
             }
          } catch (error) {
             console.error('Error fetching wallet:', error);
