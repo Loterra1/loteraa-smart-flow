@@ -1,5 +1,3 @@
-import api from '@/utils/api';
-
 import NavigationHeader from '@/components/NavigationHeader';
 import HeroSection from '@/components/HeroSection';
 import CorePrinciples from '@/components/CorePrinciples';

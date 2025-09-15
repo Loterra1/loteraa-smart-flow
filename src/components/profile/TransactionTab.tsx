@@ -66,15 +66,18 @@ export default function TransactionTab() {
          </Badge>
       );
    };
-
    if (loading) {
       return (
-         <div className="p-6">
-            <div className="animate-pulse space-y-4">
-               {[...Array(5)].map((_, i) => (
-                  <div key={i} className="h-16 bg-muted/10 rounded-lg" />
-               ))}
+         <div className="flex flex-col items-center justify-center py-16">
+            <div className="relative flex items-center justify-center">
+               {/* Outer Ring */}
+               <div className="w-16 h-16 border-4 border-loteraa-purple/30 border-t-loteraa-purple rounded-full animate-spin"></div>
+               {/* Inner Glow Dot */}
+               <div className="absolute w-6 h-6 bg-loteraa-purple rounded-full animate-ping"></div>
             </div>
+            <p className="mt-4 text-muted-foreground animate-pulse">
+               Loading transactions...
+            </p>
          </div>
       );
    }
@@ -88,9 +91,10 @@ export default function TransactionTab() {
                   <div className="text-sm text-muted-foreground">
                      Total Earnings
                   </div>
-                   <div className="text-2xl font-bold text-green-400">
-                    $lot{''}{stats.totalEarnings.toFixed(2)}
-                   </div>
+                  <div className="text-2xl font-bold text-green-400">
+                     {stats.totalEarnings.toFixed(2)}
+                     {''}$lot
+                  </div>
                </CardContent>
             </Card>
             <Card className="bg-background/5 border-muted/20">
@@ -98,9 +102,9 @@ export default function TransactionTab() {
                   <div className="text-sm text-muted-foreground">
                      Total Withdrawals
                   </div>
-                   <div className="text-2xl font-bold text-red-400">
-                      $lot  {stats.totalWithdrawals.toFixed(2)}
-                   </div>
+                  <div className="text-2xl font-bold text-red-400">
+                     {stats.totalWithdrawals.toFixed(2)} $lot
+                  </div>
                </CardContent>
             </Card>
             <Card className="bg-background/5 border-muted/20">
@@ -209,7 +213,7 @@ export default function TransactionTab() {
                                     transaction.type === 'deposit'
                                        ? '+'
                                        : '-'}
-                                   $lot{transaction.amount.toFixed(2)}
+                                    {transaction.amount.toFixed(2)} $lot
                                  </span>
                               </TableCell>
                               <TableCell>

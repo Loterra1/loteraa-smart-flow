@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ExternalLink, X, Wallet, Download, CheckCircle } from 'lucide-react';
 import { ethers } from 'ethers';
 import api, { ApiResponse } from '@/utils/api';
+import { useToast } from '@/hooks/use-toast';
 
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import detectEthereumProvider from '@metamask/detect-provider';
@@ -71,6 +72,7 @@ const detectWalletStatus = (wallet) => {
 
 export default function EnhancedWalletModal({ onClose }) {
    const { setWalletAddress, user } = useAuth();
+   const { toast } = useToast();
 
    const [walletStatuses, setWalletStatuses] = useState({});
    const [selectedWallet, setSelectedWallet] = useState(null);
@@ -109,6 +111,11 @@ export default function EnhancedWalletModal({ onClose }) {
             console.error('User rejected connection request');
          } else {
             console.error('MetaMask error:', err);
+            toast({
+               title: 'Error connecting to wallet',
+               description: err.response?.data?.message || err.message,
+               variant: 'destructive',
+            });
          }
       }
    };
@@ -177,7 +184,7 @@ export default function EnhancedWalletModal({ onClose }) {
                         Installed
                      </span>
                      <button
-                        onClick={openWallet}
+                        onClick={() => openWallet()}
                         // disabled={isConnecting}
                         className="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 disabled:opacity-50 flex items-center gap-1"
                      >

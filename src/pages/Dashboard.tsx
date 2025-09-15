@@ -38,21 +38,28 @@ export default function Dashboard() {
    };
 
    useEffect(() => {
-      const getUserWallet = async () => {
+      const getUserWallet = async (retries = 3) => {
          try {
             if (!user?.id) return;
 
             const response = await api.get(
-               `/onchain/retrieve-wallet?userId=${user.id}`
+               `/onchain/retrieve-wallet?userId=${user.id}`,
+               { timeout: 15000 }
             );
 
             if (response.data.success) {
                const address = response.data.data.address;
-               setWalletAddress(address); // updates global AuthContext state
-               console.log('Wallet from backend:', address);
+               setWalletAddress(address);
             }
          } catch (error) {
-            console.error('Error fetching wallet:', error);
+            if (error.code === 'ECONNABORTED' && retries > 0) {
+               console.log(
+                  `Request timed out, retrying... (${retries} attempts left)`
+               );
+               setTimeout(() => getUserWallet(retries - 1), 2000);
+            } else {
+               console.error('Error fetching wallet:', error);
+            }
          }
       };
 

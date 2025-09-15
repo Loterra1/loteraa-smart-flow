@@ -72,7 +72,8 @@ export default function ProfileHeader() {
       }
    };
 
-   const displayName = profile?.display_name || user?.email?.split('@')[0] || 'User';
+   const displayName =
+      profile?.display_name || user?.email?.split('@')[0] || 'User';
    const initials = displayName
       .split(' ')
       .map((n) => n[0])
@@ -142,13 +143,13 @@ export default function ProfileHeader() {
                         <span className="text-sm font-medium">
                            Connected Wallet
                         </span>
-                        <Button
+                        {/* <Button
                            onClick={disconnectWallet}
                            variant="secondary"
                            className="text-red-500 hover:text-red-700 text-sm "
                         >
                            Disconnect
-                        </Button>
+                        </Button> */}
                      </div>
                      <div className="flex items-center gap-2">
                         <span className="font-mono text-sm bg-black text-white px-2 py-1 rounded">

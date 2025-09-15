@@ -23,7 +23,7 @@ const tokens = [
 ];
 
 const SwapPanel = () => {
-   const { walletAddress, setWalletAddress } = useAuth();
+   const { walletAddress, setWalletAddress, lotBalance } = useAuth();
 
    const [fromToken, setFromToken] = useState('LOT');
    const [toToken, setToToken] = useState('USDC');
@@ -186,7 +186,7 @@ const SwapPanel = () => {
                {walletAddress && (
                   <div className="mt-2 text-right">
                      <span className="text-sm text-white/70">
-                        Balance: {currentFromToken?.balance} {fromToken}
+                        Balance: {lotBalance.toFixed(2)} {fromToken}
                      </span>
                   </div>
                )}
