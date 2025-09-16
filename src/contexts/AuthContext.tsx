@@ -1,7 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+   createContext,
+   useContext,
+   useEffect,
+   useState,
+   useCallback,
+} from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import api from '@/utils/api';
 
 interface UserProfile {
    id: string;
@@ -29,6 +36,7 @@ interface AuthContextType {
    signOut: () => Promise<void>;
    updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
    changePassword: (newPassword: string) => Promise<{ error }>;
+   refreshBalance: () => Promise<void>; // Added this for manual refresh
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -52,6 +60,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
    const [lotBalance, setLotBalance] = useState<number>(0);
    const { toast } = useToast();
 
+   // Memoize the fetchUserBalance function to prevent unnecessary re-renders
+   const fetchUserBalance = useCallback(async () => {
+      if (!user?.id) {
+         console.log('No user ID available for balance fetch');
+         return;
+      }
+
+      try {
+         console.log('Fetching balance for user:', user.id);
+         const response = await api.get(`/onchain/balance?userId=${user.id}`);
+
+         if (response.data && typeof response.data.formatted === 'number') {
+            setLotBalance(response.data.formatted);
+            console.log('Balance updated:', response.data.formatted);
+         } else {
+            console.warn('Invalid balance response format:', response.data);
+         }
+      } catch (error) {
+         console.error('Error getting balance:', error);
+         // Optionally show toast for balance fetch errors
+         // toast({
+         //    title: 'Error fetching balance',
+         //    description: 'Could not retrieve your LOT token balance.',
+         //    variant: 'destructive',
+         // });
+      }
+   }, [user?.id]); // Only depend on user.id
+
    const fetchProfile = async (userId: string) => {
       try {
          const { data, error } = await supabase
@@ -67,7 +103,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
          if (data) {
             setProfile(data);
-            setLotBalance(data.lot_token_balance || 0);
+            // Don't set balance from profile since we're getting it from backend
+            // setLotBalance(data.lot_token_balance || 0);
          }
       } catch (error) {
          console.error('Error fetching profile:', error);
@@ -78,6 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       const {
          data: { subscription },
       } = supabase.auth.onAuthStateChange((event, session) => {
+         console.log('Auth state changed:', event);
          setSession(session);
          setUser(session?.user ?? null);
 
@@ -125,7 +163,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             (payload) => {
                const updatedProfile = payload.new as UserProfile;
                setProfile(updatedProfile);
-               setLotBalance(updatedProfile.lot_token_balance || 0);
+               // Don't set balance from profile since we're getting it from backend
+               // setLotBalance(updatedProfile.lot_token_balance || 0);
             }
          )
          .subscribe();
@@ -134,6 +173,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
          supabase.removeChannel(channel);
       };
    }, [user?.id]);
+
+   // Fetch balance when user changes or when explicitly called
+   useEffect(() => {
+      if (user?.id) {
+         fetchUserBalance();
+      }
+   }, [user?.id, fetchUserBalance]);
 
    const signOut = async () => {
       await supabase.auth.signOut();
@@ -209,6 +255,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       signOut,
       updateProfile,
       changePassword,
+      refreshBalance: fetchUserBalance, // Expose this for manual balance refresh
    };
 
    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
