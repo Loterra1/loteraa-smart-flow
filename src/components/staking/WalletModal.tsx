@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { useAuth } from '@/contexts/AuthContext';
+import Modal from '@/utils/Modal';
 
 declare global {
    interface Window {

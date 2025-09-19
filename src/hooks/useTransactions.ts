@@ -1,207 +1,324 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import api from '@/utils/api';
 
 export interface Transaction {
-  id: string;
-  type: 'earning' | 'withdrawal' | 'deposit' | 'payment';
-  amount: number;
-  status: 'completed' | 'pending' | 'failed';
-  created_at: string;
-  transaction_hash?: string;
-  metadata?: any;
-  source: 'earnings' | 'downloads' | 'activities';
+   id: string;
+   type: 'earning' | 'withdrawal' | 'deposit' | 'payment';
+   amount: number;
+   status: 'completed' | 'pending' | 'failed';
+   created_at: string;
+   transaction_hash?: string;
+   metadata?: Record<string, unknown>;
+   source: 'earnings' | 'downloads' | 'activities';
+   description?: string;
 }
 
 export interface TransactionStats {
-  totalEarnings: number;
-  totalWithdrawals: number;
-  totalTransactions: number;
-  pendingTransactions: number;
+   totalEarnings: number;
+   totalWithdrawals: number;
+   totalTransactions: number;
+   pendingTransactions: number;
+   availableBalance: number;
 }
 
-export const useTransactions = () => {
-  const { user } = useAuth();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<TransactionStats>({
-    totalEarnings: 0,
-    totalWithdrawals: 0,
-    totalTransactions: 0,
-    pendingTransactions: 0
-  });
+interface TransactionFilters {
+   type?: 'earning' | 'withdrawal' | 'deposit' | 'payment';
+   status?: 'completed' | 'pending' | 'failed';
+   source?: 'earnings' | 'downloads' | 'activities';
+   dateFrom?: string;
+   dateTo?: string;
+   limit?: number;
+   offset?: number;
+}
 
-  useEffect(() => {
-    if (!user) return;
+export const useTransactions = (filters?: TransactionFilters) => {
+   const { user } = useAuth();
+   const [transactions, setTransactions] = useState<Transaction[]>([]);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState<string | null>(null);
+   const [stats, setStats] = useState<TransactionStats>({
+      totalEarnings: 0,
+      totalWithdrawals: 0,
+      totalTransactions: 0,
+      pendingTransactions: 0,
+      availableBalance: 0,
+   });
 
-    fetchTransactions();
+   // Memoize fetchTransactions to prevent infinite re-renders
+   const fetchTransactions = useCallback(async () => {
+      if (!user?.id) {
+         setLoading(false);
+         return;
+      }
 
-    // Set up real-time subscriptions
-    const earningsChannel = supabase
-      .channel(`transactions-earnings-${user.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'earnings',
-          filter: `user_id=eq.${user.id}`
-        },
-        () => fetchTransactions()
-      )
-      .subscribe();
+      try {
+         setLoading(true);
+         setError(null);
 
-    const downloadsChannel = supabase
-      .channel(`transactions-downloads-${user.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'downloads',
-          filter: `user_id=eq.${user.id}`
-        },
-        () => fetchTransactions()
-      )
-      .subscribe();
+         // Build query parameters
+         const paramsObj: Record<string, string> = {
+            userId: user.id,
+         };
+         if (filters) {
+            if (filters.type) paramsObj.type = filters.type;
+            if (filters.status) paramsObj.status = filters.status;
+            if (filters.source) paramsObj.source = filters.source;
+            if (filters.dateFrom) paramsObj.dateFrom = filters.dateFrom;
+            if (filters.dateTo) paramsObj.dateTo = filters.dateTo;
+            if (typeof filters.limit === 'number')
+               paramsObj.limit = filters.limit.toString();
+            if (typeof filters.offset === 'number')
+               paramsObj.offset = filters.offset.toString();
+         }
+         const params = new URLSearchParams(paramsObj);
 
-    const activitiesChannel = supabase
-      .channel(`transactions-activities-${user.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'user_activities',
-          filter: `user_id=eq.${user.id}`
-        },
-        () => fetchTransactions()
-      )
-      .subscribe();
+         // Fetch transactions from backend
+         const response = await api.get(`/transactions?${params.toString()}`);
 
-    return () => {
-      supabase.removeChannel(earningsChannel);
-      supabase.removeChannel(downloadsChannel);
-      supabase.removeChannel(activitiesChannel);
-    };
-  }, [user?.id]);
+         if (response.data && response.data.success) {
+            const { transactions: fetchedTransactions, stats: fetchedStats } =
+               response.data.data;
 
-  const fetchTransactions = async () => {
-    if (!user) return;
+            // Transform transactions to match our interface
+            const transformedTransactions: Transaction[] =
+               fetchedTransactions.map((tx) => ({
+                  id: tx.id,
+                  type: tx.type,
+                  amount: Number(tx.amount),
+                  status: tx.status,
+                  created_at: tx.created_at,
+                  transaction_hash: tx.transaction_hash,
+                  metadata: tx.metadata || {},
+                  source: tx.source || 'activities',
+                  description:
+                     tx.description ||
+                     getDefaultDescription(tx.type, tx.amount),
+               }));
 
-    try {
-      setLoading(true);
+            setTransactions(transformedTransactions);
 
-      // Fetch earnings (deposits/earnings)
-      const { data: earnings, error: earningsError } = await supabase
-        .from('earnings')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+            // Update stats if provided by backend
+            if (fetchedStats) {
+               setStats({
+                  totalEarnings: Number(fetchedStats.totalEarnings || 0),
+                  totalWithdrawals: Number(fetchedStats.totalWithdrawals || 0),
+                  totalTransactions: Number(
+                     fetchedStats.totalTransactions || 0
+                  ),
+                  pendingTransactions: Number(
+                     fetchedStats.pendingTransactions || 0
+                  ),
+                  availableBalance: Number(fetchedStats.availableBalance || 0),
+               });
+            } else {
+               // Calculate stats locally if not provided by backend
+               calculateStatsLocally(transformedTransactions);
+            }
+         } else {
+            throw new Error(
+               response.data?.message || 'Failed to fetch transactions'
+            );
+         }
+      } catch (err) {
+         console.error('Error fetching transactions:', err);
+         setError(
+            err.response?.data?.message ||
+               err.message ||
+               'Failed to fetch transactions'
+         );
+         setTransactions([]);
+      } finally {
+         setLoading(false);
+      }
+   }, [user?.id, filters]);
 
-      if (earningsError) throw earningsError;
-
-      // Fetch downloads (payments)
-      const { data: downloads, error: downloadsError } = await supabase
-        .from('downloads')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
-      if (downloadsError) throw downloadsError;
-
-      // Fetch user activities (withdrawals and other transactions)
-      const { data: activities, error: activitiesError } = await supabase
-        .from('user_activities')
-        .select('*')
-        .eq('user_id', user.id)
-        .in('activity_type', ['withdrawal', 'deposit', 'transaction'])
-        .order('created_at', { ascending: false });
-
-      if (activitiesError) throw activitiesError;
-
-      // Transform and combine all transactions
-      const allTransactions: Transaction[] = [];
-
-      // Add earnings
-      earnings?.forEach(earning => {
-        allTransactions.push({
-          id: earning.id,
-          type: 'earning',
-          amount: Number(earning.amount),
-          status: earning.status as any,
-          created_at: earning.created_at,
-          transaction_hash: earning.transaction_hash || undefined,
-          metadata: { type: earning.type, dataset_id: earning.dataset_id },
-          source: 'earnings'
-        });
-      });
-
-      // Add downloads as payments
-      downloads?.forEach(download => {
-        if (download.payment_amount && Number(download.payment_amount) > 0) {
-          allTransactions.push({
-            id: download.id,
-            type: 'payment',
-            amount: Number(download.payment_amount),
-            status: download.payment_status === 'completed' ? 'completed' : 'pending',
-            created_at: download.created_at,
-            metadata: { 
-              dataset_id: download.dataset_id,
-              download_url: download.download_url 
-            },
-            source: 'downloads'
-          });
-        }
-      });
-
-      // Add user activities
-      activities?.forEach(activity => {
-        const activityData = (activity.activity_data as any) || {};
-        allTransactions.push({
-          id: activity.id,
-          type: activity.activity_type === 'withdrawal' ? 'withdrawal' : 'deposit',
-          amount: Number(activityData.amount || 0),
-          status: activityData.status || 'completed',
-          created_at: activity.created_at,
-          transaction_hash: activityData.transaction_hash,
-          metadata: activityData,
-          source: 'activities'
-        });
-      });
-
-      // Sort by date (newest first)
-      allTransactions.sort((a, b) => 
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-
-      setTransactions(allTransactions);
-
-      // Calculate stats
+   // Helper function to calculate stats locally
+   const calculateStatsLocally = (txs: Transaction[]) => {
       const newStats: TransactionStats = {
-        totalEarnings: allTransactions
-          .filter(t => t.type === 'earning' || t.type === 'deposit')
-          .reduce((sum, t) => sum + t.amount, 0),
-        totalWithdrawals: allTransactions
-          .filter(t => t.type === 'withdrawal')
-          .reduce((sum, t) => sum + t.amount, 0),
-        totalTransactions: allTransactions.length,
-        pendingTransactions: allTransactions
-          .filter(t => t.status === 'pending').length
+         totalEarnings: txs
+            .filter(
+               (t) =>
+                  (t.type === 'earning' || t.type === 'deposit') &&
+                  t.status === 'completed'
+            )
+            .reduce((sum, t) => sum + t.amount, 0),
+         totalWithdrawals: txs
+            .filter((t) => t.type === 'withdrawal' && t.status === 'completed')
+            .reduce((sum, t) => sum + t.amount, 0),
+         totalTransactions: txs.length,
+         pendingTransactions: txs.filter((t) => t.status === 'pending').length,
+         availableBalance: 0, // This should come from backend
       };
 
-      setStats(newStats);
-    } catch (error) {
-      console.error('Error fetching transactions:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      // Calculate available balance (earnings - withdrawals)
+      newStats.availableBalance =
+         newStats.totalEarnings - newStats.totalWithdrawals;
 
-  return {
-    transactions,
-    loading,
-    stats,
-    refetch: fetchTransactions
-  };
+      setStats(newStats);
+   };
+
+   // Helper function to generate default descriptions
+   const getDefaultDescription = (type: string, amount: number): string => {
+      switch (type) {
+         case 'earning':
+            return `Earned ${amount} LOT tokens`;
+         case 'withdrawal':
+            return `Withdrew ${amount} LOT tokens`;
+         case 'deposit':
+            return `Deposited ${amount} LOT tokens`;
+         case 'payment':
+            return `Payment of ${amount} LOT tokens`;
+         default:
+            return `Transaction of ${amount} LOT tokens`;
+      }
+   };
+
+   // Fetch transactions on mount and when dependencies change
+   useEffect(() => {
+      if (user?.id) {
+         fetchTransactions();
+      }
+   }, [fetchTransactions]);
+
+   // Create a new transaction (for when user makes a transaction)
+   const createTransaction = useCallback(
+      async (transactionData: {
+         type: 'earning' | 'withdrawal' | 'deposit' | 'payment';
+         amount: number;
+         metadata?: Record<string, unknown>;
+         description?: string;
+      }) => {
+         if (!user?.id) {
+            throw new Error('User not authenticated');
+         }
+
+         try {
+            const response = await api.post('/transactions', {
+               userId: user.id,
+               ...transactionData,
+            });
+
+            if (response.data && response.data.success) {
+               // Refetch transactions to get the latest data
+               await fetchTransactions();
+               return response.data.data;
+            } else {
+               throw new Error(
+                  response.data?.message || 'Failed to create transaction'
+               );
+            }
+         } catch (err) {
+            console.error('Error creating transaction:', err);
+            throw new Error(
+               err.response?.data?.message ||
+                  err.message ||
+                  'Failed to create transaction'
+            );
+         }
+      },
+      [user?.id, fetchTransactions]
+   );
+
+   // Update transaction status (for pending transactions)
+   const updateTransactionStatus = useCallback(
+      async (
+         transactionId: string,
+         status: 'completed' | 'failed',
+         transactionHash?: string
+      ) => {
+         try {
+            const response = await api.patch(`/transactions/${transactionId}`, {
+               status,
+               transaction_hash: transactionHash,
+            });
+
+            if (response.data && response.data.success) {
+               // Update local state
+               setTransactions((prev) =>
+                  prev.map((tx) =>
+                     tx.id === transactionId
+                        ? {
+                             ...tx,
+                             status,
+                             transaction_hash:
+                                transactionHash || tx.transaction_hash,
+                          }
+                        : tx
+                  )
+               );
+
+               // Recalculate stats
+               const updatedTransactions = transactions.map((tx) =>
+                  tx.id === transactionId
+                     ? {
+                          ...tx,
+                          status,
+                          transaction_hash:
+                             transactionHash || tx.transaction_hash,
+                       }
+                     : tx
+               );
+               calculateStatsLocally(updatedTransactions);
+
+               return response.data.data;
+            } else {
+               throw new Error(
+                  response.data?.message || 'Failed to update transaction'
+               );
+            }
+         } catch (err) {
+            console.error('Error updating transaction:', err);
+            throw new Error(
+               err.response?.data?.message ||
+                  err.message ||
+                  'Failed to update transaction'
+            );
+         }
+      },
+      [transactions]
+   );
+
+   // Get transactions by type
+   const getTransactionsByType = useCallback(
+      (type: Transaction['type']) => {
+         return transactions.filter((tx) => tx.type === type);
+      },
+      [transactions]
+   );
+
+   // Get pending transactions
+   const getPendingTransactions = useCallback(() => {
+      return transactions.filter((tx) => tx.status === 'pending');
+   }, [transactions]);
+
+   // Setup polling for real-time updates (optional)
+   useEffect(() => {
+      if (!user?.id) return;
+
+      // Poll for updates every 30 seconds if there are pending transactions
+      const pendingCount = transactions.filter(
+         (tx) => tx.status === 'pending'
+      ).length;
+
+      if (pendingCount > 0) {
+         const interval = setInterval(() => {
+            fetchTransactions();
+         }, 30000); // Poll every 30 seconds
+
+         return () => clearInterval(interval);
+      }
+   }, [transactions, fetchTransactions, user?.id]);
+
+   return {
+      transactions,
+      loading,
+      error,
+      stats,
+      refetch: fetchTransactions,
+      createTransaction,
+      updateTransactionStatus,
+      getTransactionsByType,
+      getPendingTransactions,
+   };
 };

@@ -38,7 +38,7 @@ export default function Dashboard() {
    };
 
    useEffect(() => {
-      const getUserWallet = async (retries = 3) => {
+      const getUserWallet = async (retries = 5) => {
          try {
             if (!user?.id) return;
 

@@ -8,15 +8,10 @@ type Props = {
 };
 
 export default function Modal({ open, onClose, children }: Props) {
-   const handleOverlayClick = () => {
+   const handleClick = () => {
       if (onClose) {
          onClose();
       }
-   };
-
-   const handleContentClick = (e: React.MouseEvent) => {
-      // Prevent clicks inside the modal content from closing the modal
-      e.stopPropagation();
    };
 
    useEffect(() => {
@@ -24,47 +19,25 @@ export default function Modal({ open, onClose, children }: Props) {
          if (typeof window != 'undefined' && window.document) {
             document.body.style.overflow = 'hidden';
          }
-      } else {
-         document.body.style.overflow = 'unset';
-      }
+      } else document.body.style.overflow = 'unset';
 
-      // Cleanup function
       return () => {
          document.body.style.overflow = 'unset';
       };
    }, [open]);
 
-   // Handle ESC key to close modal
-   useEffect(() => {
-      const handleEscKey = (e: KeyboardEvent) => {
-         if (e.key === 'Escape' && onClose) {
-            onClose();
-         }
-      };
-
-      if (open) {
-         document.addEventListener('keydown', handleEscKey);
-         return () => document.removeEventListener('keydown', handleEscKey);
-      }
-   }, [open, onClose]);
-
-   if (!open) return null;
-
    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
-         {/* Overlay */}
+      <div
+         className={clsx(
+            'w-screen h-screen fixed left-0 top-0 z-10',
+            open ? 'block' : 'hidden'
+         )}
+      >
          <div
-            onClick={handleOverlayClick}
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-         />
-
-         {/* Modal Content */}
-         <div
-            onClick={handleContentClick}
-            className="relative z-10 max-h-[90vh] overflow-y-auto"
-         >
-            {children}
-         </div>
+            onClick={handleClick}
+            className="w-full h-full fixed left-0 top-0 bg-black/40"
+         ></div>
+         {children}
       </div>
    );
 }

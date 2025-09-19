@@ -26,7 +26,8 @@ import ReportModal from './ReportModal';
 import api from '@/utils/api';
 
 export default function WalletTab() {
-   const { user, lotBalance } = useAuth();
+   const { user, lotBalance, ethBalance, refreshEthBalance, refreshBalance } =
+      useAuth();
    const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
    const [withdrawAmount, setWithdrawAmount] = useState('');
    const [withdrawAddress, setWithdrawAddress] = useState('');
@@ -89,31 +90,84 @@ export default function WalletTab() {
       try {
          console.log(`Withdrawing ${amount} LOT to ${withdrawAddress}`);
 
-         const response = await api.post('/onchain/send-tokens', {
-            userId: user.id,
-            amount: amount,
-            address: withdrawAddress,
-         });
+         // Set a custom timeout for withdrawal requests (e.g., 60 seconds)
+         const response = await api.post(
+            '/onchain/send-tokens',
+            {
+               userId: user.id,
+               amount: amount,
+               address: withdrawAddress,
+            },
+            {
+               timeout: 60000, // 60 seconds timeout
+            }
+         );
 
-         console.log('Withdrawal response:', response.data);
-         // Reset form after successful API call
+         // Success case
          setWithdrawAmount('');
          setWithdrawAddress('');
          setIsWithdrawOpen(false);
 
+         // Refresh balances after successful withdrawal
+         await refreshBalance();
+         await refreshEthBalance();
+
          toast({
-            title: 'Withdrawal initiated',
-            description: `${amount} LOT tokens are being sent to your wallet`,
+            title: 'Withdrawal successful',
+            description: `${amount} LOT tokens have been sent to your wallet`,
          });
       } catch (error) {
          console.error('Withdrawal error:', error);
-         toast({
-            title: 'Withdrawal failed',
-            description:
-               error.response?.data?.message ||
-               'There was an error processing your withdrawal.',
-            variant: 'destructive',
-         });
+
+         // Handle different types of errors
+         if (
+            error.code === 'ECONNABORTED' ||
+            error.message?.includes('timeout')
+         ) {
+            // Timeout error - transaction might still be processing
+            toast({
+               title: 'Transaction timeout',
+               description:
+                  'The transaction is taking longer than expected. Please check your balance in a few minutes.',
+               variant: 'destructive',
+            });
+
+            // Refresh balance after a delay to check if transaction went through
+            setTimeout(async () => {
+               await refreshBalance();
+               await refreshEthBalance();
+
+               // Show a follow-up message
+               toast({
+                  title: 'Balance updated',
+                  description:
+                     'Your balance has been refreshed. Check if the withdrawal was processed.',
+               });
+            }, 10000); // Check after 10 seconds
+         } else if (error.response?.status >= 500) {
+            // Server error
+            toast({
+               title: 'Server error',
+               description:
+                  'There was a server error. Please try again or check your balance shortly.',
+               variant: 'destructive',
+            });
+
+            // Refresh balance to check current state
+            setTimeout(async () => {
+               await refreshBalance();
+               await refreshEthBalance();
+            }, 5000);
+         } else {
+            // Other errors (400, 401, etc.)
+            toast({
+               title: 'Withdrawal failed',
+               description:
+                  error.response?.data?.message ||
+                  'There was an error processing your withdrawal.',
+               variant: 'destructive',
+            });
+         }
       } finally {
          setIsProcessing(false);
       }
@@ -129,12 +183,19 @@ export default function WalletTab() {
                </CardTitle>
             </CardHeader>
 
-            <CardContent className="py-6">
+            <CardContent className="py-6 flex flex-col sm:flex-row gap-8 sm:gap-20 items-start sm:items-center justify-between w-[200px] ">
                <div className="flex items-baseline">
                   <span className="text-3xl font-bold text-white">
                      {lotBalance.toLocaleString()}
                   </span>
                   <span className="ml-2 text-loteraa-purple">LOT</span>
+               </div>
+
+               <div className="flex items-baseline">
+                  <span className="text-3xl font-bold text-white">
+                     {ethBalance.toString().slice(0, 8)}
+                  </span>
+                  <span className="ml-2 text-loteraa-purple">ETH</span>
                </div>
             </CardContent>
 

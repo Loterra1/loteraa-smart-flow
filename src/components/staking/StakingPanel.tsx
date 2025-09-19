@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Copy, Check, Wallet } from 'lucide-react';
+import { Copy, Check, Wallet, RefreshCw } from 'lucide-react';
 import {
    PieChart,
    Pie,
@@ -22,15 +22,10 @@ import {
    Legend,
 } from 'recharts';
 
-import { ethers } from 'ethers';
 import { useAuth } from '@/contexts/AuthContext';
 import EnhancedWalletModal from './WalletModal';
 import Modal from '@/utils/Modal';
-
-// Mock toast function
-const mockToast = ({ title, description, variant }) => {
-   console.log(`${title}: ${description}`);
-};
+import api from '@/utils/api';
 
 interface StakeEntry {
    id: string;
@@ -39,60 +34,201 @@ interface StakeEntry {
    apy: string;
    unlockDate: string;
    daysRemaining: number;
+   status: 'active' | 'completed' | 'pending';
+   rewardsEarned: number;
+   startDate: string;
+   transactionHash?: string;
+}
+
+interface StakingStats {
+   totalStaked: number;
+   totalRewards: number;
+   activeStakes: number;
+   completedStakes: number;
+   pendingRewards: number;
 }
 
 const stakingOptions = [
-   { value: '4weeks', label: '4 Weeks', apy: '3%' },
-   { value: '8weeks', label: '8 Weeks', apy: '5%' },
-   { value: '12weeks', label: '12 Weeks', apy: '7%' },
-   { value: '4months', label: '4 Months', apy: '9%' },
+   { value: '4weeks', label: '4 Weeks', apy: '3%', days: 28 },
+   { value: '8weeks', label: '8 Weeks', apy: '5%', days: 56 },
+   { value: '12weeks', label: '12 Weeks', apy: '7%', days: 84 },
+   { value: '4months', label: '4 Months', apy: '9%', days: 120 },
 ];
 
 const COLORS = ['#8b5cf6', '#10b981', '#3b82f6'];
 
 const StakingPanel = () => {
-   const { walletAddress, setWalletAddress, lotBalance } = useAuth();
+   const { walletAddress, user, lotBalance, refreshBalance } = useAuth();
    const [amount, setAmount] = useState('');
    const [stakingPeriod, setStakingPeriod] = useState('4weeks');
    const [isStaking, setIsStaking] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
    const [sliderValue, setSliderValue] = useState([50]);
-   const [userStakes, setUserStakes] = useState<StakeEntry[]>([
-      // Sample data for demonstration
-      // {
-      //    id: '1',
-      //    amount: 500,
-      //    period: '4 Weeks',
-      //    apy: '3%',
-      //    unlockDate: '2025-10-15',
-      //    daysRemaining: 20,
-      // },
-      // {
-      //    id: '2',
-      //    amount: 300,
-      //    period: '8 Weeks',
-      //    apy: '5%',
-      //    unlockDate: '2025-11-20',
-      //    daysRemaining: 55,
-      // },
-   ]);
-   const [totalStaked, setTotalStaked] = useState(0);
-   const [totalRewards, setTotalRewards] = useState(0);
+   const [userStakes, setUserStakes] = useState<StakeEntry[]>([]);
+   const [stakingStats, setStakingStats] = useState<StakingStats>({
+      totalStaked: 0,
+      totalRewards: 0,
+      activeStakes: 0,
+      completedStakes: 0,
+      pendingRewards: 0,
+   });
    const [showWalletModal, setShowWalletModal] = useState(false);
    const [copiedAddress, setCopiedAddress] = useState(false);
+   const [lastRefresh, setLastRefresh] = useState(Date.now());
 
    const walletConnected = !!walletAddress;
    const selectedOption = stakingOptions.find(
       (option) => option.value === stakingPeriod
    );
 
-   const disconnectWallet = () => {
-      // setWalletAddress('');
-      setUserStakes([]);
-      toast({
-         title: 'Wallet Disconnected',
-         description: 'Successfully disconnected from wallet',
-      });
-   };
+   // Fetch user staking data from backend
+   const fetchStakingData = useCallback(async () => {
+      if (!user?.id) return;
+
+      try {
+         setIsLoading(true);
+         const response = await api.get(
+            `/staking/user-stakes?userId=${user.id}`
+         );
+
+         if (response.data && response.data.success) {
+            const { stakes, stats } = response.data.data;
+
+            // Transform stakes data
+            const transformedStakes: StakeEntry[] = stakes.map((stake) => ({
+               id: stake.id,
+               amount: Number(stake.amount),
+               period: stake.period_label || stake.period,
+               apy: stake.apy || '0%',
+               unlockDate: new Date(stake.unlock_date).toLocaleDateString(),
+               daysRemaining: Math.max(
+                  0,
+                  Math.ceil(
+                     (new Date(stake.unlock_date).getTime() - Date.now()) /
+                        (1000 * 60 * 60 * 24)
+                  )
+               ),
+               status: stake.status,
+               rewardsEarned: Number(stake.rewards_earned || 0),
+               startDate: new Date(stake.created_at).toLocaleDateString(),
+               transactionHash: stake.transaction_hash,
+            }));
+
+            setUserStakes(transformedStakes);
+            setStakingStats({
+               totalStaked: Number(stats.totalStaked || 0),
+               totalRewards: Number(stats.totalRewards || 0),
+               activeStakes: Number(stats.activeStakes || 0),
+               completedStakes: Number(stats.completedStakes || 0),
+               pendingRewards: Number(stats.pendingRewards || 0),
+            });
+         }
+      } catch (error) {
+         console.error('Error fetching staking data:', error);
+         toast({
+            title: 'Error loading data',
+            description: 'Failed to load your staking information',
+            variant: 'destructive',
+         });
+      } finally {
+         setIsLoading(false);
+         setLastRefresh(Date.now());
+      }
+   }, [user?.id]);
+
+   // Claim rewards for completed stakes
+   const claimRewards = useCallback(
+      async (stakeId: string) => {
+         if (!user?.id) return;
+
+         try {
+            const response = await api.post(`/staking/claim-rewards`, {
+               userId: user.id,
+               stakeId: stakeId,
+            });
+
+            if (response.data && response.data.success) {
+               toast({
+                  title: 'Rewards claimed!',
+                  description: `Successfully claimed ${response.data.data.rewardsAmount} LOT tokens`,
+               });
+
+               // Refresh data
+               await fetchStakingData();
+               await refreshBalance();
+            }
+         } catch (error) {
+            console.error('Error claiming rewards:', error);
+            toast({
+               title: 'Failed to claim rewards',
+               description:
+                  error.response?.data?.message ||
+                  'An error occurred while claiming rewards',
+               variant: 'destructive',
+            });
+         }
+      },
+      [user?.id, fetchStakingData, refreshBalance]
+   );
+
+   // Unstake tokens (for completed stakes)
+   const unstakeTokens = useCallback(
+      async (stakeId: string) => {
+         if (!user?.id) return;
+
+         try {
+            const response = await api.post(`/staking/unstake`, {
+               userId: user.id,
+               stakeId: stakeId,
+            });
+
+            if (response.data && response.data.success) {
+               toast({
+                  title: 'Unstaked successfully!',
+                  description: `Successfully unstaked ${response.data.data.amount} LOT tokens`,
+               });
+
+               // Refresh data
+               await fetchStakingData();
+               await refreshBalance();
+            }
+         } catch (error) {
+            console.error('Error unstaking:', error);
+            toast({
+               title: 'Failed to unstake',
+               description:
+                  error.response?.data?.message ||
+                  'An error occurred while unstaking',
+               variant: 'destructive',
+            });
+         }
+      },
+      [user?.id, fetchStakingData, refreshBalance]
+   );
+
+   // Load staking data on mount and when user changes
+   useEffect(() => {
+      if (user?.id && walletConnected) {
+         fetchStakingData();
+      }
+   }, [user?.id, walletConnected, fetchStakingData]);
+
+   // Auto-refresh every 30 seconds for active stakes
+   useEffect(() => {
+      if (!user?.id || !walletConnected || userStakes.length === 0) return;
+
+      const activeStakesExist = userStakes.some(
+         (stake) => stake.status === 'active'
+      );
+
+      if (activeStakesExist) {
+         const interval = setInterval(() => {
+            fetchStakingData();
+         }, 30000); // 30 seconds
+
+         return () => clearInterval(interval);
+      }
+   }, [user?.id, walletConnected, userStakes, fetchStakingData]);
 
    const copyAddress = async () => {
       if (walletAddress) {
@@ -107,25 +243,17 @@ const StakingPanel = () => {
       }
    };
 
-   // Calculate totals
-   useEffect(() => {
-      const total = userStakes.reduce((sum, stake) => sum + stake.amount, 0);
-      setTotalStaked(total);
-
-      const rewards = userStakes.reduce((sum, stake) => {
-         const apyNumber = parseFloat(stake.apy.replace('%', ''));
-         return sum + (stake.amount * apyNumber) / 100 / 12;
-      }, 0);
-      setTotalRewards(rewards);
-   }, [userStakes]);
-
    const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setAmount(e.target.value);
+      const value = e.target.value;
+      // Allow only numbers and decimal points
+      if (value === '' || /^\d*\.?\d*$/.test(value)) {
+         setAmount(value);
+      }
    };
 
    const handleSliderChange = (value: number[]) => {
       setSliderValue(value);
-      if (walletConnected) {
+      if (walletConnected && lotBalance > 0) {
          const calculatedAmount = ((lotBalance * value[0]) / 100).toFixed(2);
          setAmount(calculatedAmount);
       }
@@ -154,32 +282,33 @@ const StakingPanel = () => {
       setIsStaking(true);
 
       try {
-         await new Promise((resolve) => setTimeout(resolve, 2000));
-
-         const newStake: StakeEntry = {
-            id: Date.now().toString(),
+         const response = await api.post('/onchain/stake-token', {
+            userId: user.id,
             amount: stakeAmount,
-            period: selectedOption?.label || '',
-            apy: selectedOption?.apy || '',
-            unlockDate: new Date(
-               Date.now() + 4 * 7 * 24 * 60 * 60 * 1000
-            ).toLocaleDateString(),
-            daysRemaining: 28,
-         };
-
-         setUserStakes((prev) => [...prev, newStake]);
-
-         toast({
-            title: 'Staked successfully',
-            description: `You have staked ${amount} LOT for ${selectedOption?.label}`,
+            poolId: 1,
          });
 
-         setAmount('');
-         setSliderValue([0]);
+         if (response.data && response.data.success) {
+            toast({
+               title: 'Staked successfully!',
+               description: `You have staked ${amount} LOT for ${selectedOption?.label} at ${selectedOption?.apy} APY`,
+            });
+
+            // Reset form
+            setAmount('');
+            setSliderValue([0]);
+
+            // Refresh data
+            await fetchStakingData();
+            await refreshBalance();
+         }
       } catch (error) {
+         console.error('Error staking tokens:', error);
          toast({
             title: 'Staking failed',
-            description: 'There was an error processing your staking request',
+            description:
+               error.response?.data?.message ||
+               'There was an error processing your staking request',
             variant: 'destructive',
          });
       } finally {
@@ -191,12 +320,12 @@ const StakingPanel = () => {
    const chartData = [
       {
          name: 'Total Staked',
-         value: totalStaked,
+         value: stakingStats.totalStaked,
          color: COLORS[0],
       },
       {
          name: 'Rewards Earned',
-         value: totalRewards,
+         value: stakingStats.totalRewards,
          color: COLORS[1],
       },
       {
@@ -204,7 +333,7 @@ const StakingPanel = () => {
          value: lotBalance,
          color: COLORS[2],
       },
-   ];
+   ].filter((item) => item.value > 0);
 
    const CustomTooltip = ({ active, payload }) => {
       if (active && payload && payload.length) {
@@ -228,7 +357,25 @@ const StakingPanel = () => {
          <div className="grid md:grid-cols-2 gap-8">
             {/* Staking Section */}
             <div className="space-y-6">
-               <h3 className="text-xl font-semibold mb-4">Stake LOT</h3>
+               <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold">Stake LOT</h3>
+                  {walletConnected && (
+                     <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={fetchStakingData}
+                        disabled={isLoading}
+                     >
+                        <RefreshCw
+                           className={`h-4 w-4 mr-2 ${
+                              isLoading ? 'animate-spin' : ''
+                           }`}
+                        />
+                        Refresh
+                     </Button>
+                  )}
+               </div>
+
                <div className="space-y-4">
                   <div>
                      <div className="flex justify-between items-center mb-1">
@@ -245,10 +392,11 @@ const StakingPanel = () => {
                         value={amount}
                         onChange={handleAmountChange}
                         className="pr-20"
+                        disabled={!walletConnected}
                      />
                   </div>
 
-                  {walletConnected && (
+                  {walletConnected && lotBalance > 0 && (
                      <div className="space-y-2">
                         <Slider
                            value={sliderValue}
@@ -274,6 +422,7 @@ const StakingPanel = () => {
                      <Select
                         value={stakingPeriod}
                         onValueChange={setStakingPeriod}
+                        disabled={!walletConnected}
                      >
                         <SelectTrigger id="period">
                            <SelectValue placeholder="Select staking period" />
@@ -306,12 +455,6 @@ const StakingPanel = () => {
                            <span className="text-sm font-medium">
                               Wallet Connected
                            </span>
-                           {/* <button
-                              onClick={disconnectWallet}
-                              className="text-red-500 hover:text-red-700 text-sm"
-                           >
-                              Disconnect
-                           </button> */}
                         </div>
                         <div className="flex items-center gap-2">
                            <span className="font-mono text-sm bg-gray-800 text-white px-2 py-1 rounded">
@@ -335,7 +478,10 @@ const StakingPanel = () => {
                      <Button
                         className="w-full bg-purple-600 hover:bg-purple-700"
                         disabled={
-                           !amount || parseFloat(amount) <= 0 || isStaking
+                           !amount ||
+                           parseFloat(amount) <= 0 ||
+                           isStaking ||
+                           lotBalance <= 0
                         }
                         onClick={handleStake}
                      >
@@ -345,7 +491,7 @@ const StakingPanel = () => {
                )}
             </div>
 
-            {/* Chart Section - Updated */}
+            {/* Chart and Portfolio Section */}
             <div>
                <h3 className="text-xl font-semibold mb-4">
                   Your Staking Portfolio
@@ -359,6 +505,16 @@ const StakingPanel = () => {
                         </h4>
                         <p className="text-gray-600">
                            Connect your wallet to view your staking details
+                        </p>
+                     </CardContent>
+                  </Card>
+               ) : isLoading ? (
+                  <Card>
+                     <CardContent className="p-6 flex flex-col items-center justify-center text-center h-60">
+                        <RefreshCw className="h-8 w-8 text-gray-400 mb-4 animate-spin" />
+                        <h4 className="text-lg font-medium mb-2">Loading...</h4>
+                        <p className="text-gray-600">
+                           Fetching your staking information
                         </p>
                      </CardContent>
                   </Card>
@@ -380,38 +536,40 @@ const StakingPanel = () => {
                   <Card>
                      <CardContent className="p-6">
                         {/* Chart */}
-                        <div className="h-[12.5rem] mb-6">
-                           <ResponsiveContainer width="100%" height="100%">
-                              <PieChart>
-                                 <Pie
-                                    data={chartData}
-                                    cx="50%"
-                                    cy="50%"
-                                    innerRadius={60}
-                                    outerRadius={100}
-                                    paddingAngle={5}
-                                    dataKey="value"
-                                 >
-                                    {chartData.map((entry, index) => (
-                                       <Cell
-                                          key={`cell-${index}`}
-                                          fill={entry.color}
-                                       />
-                                    ))}
-                                 </Pie>
-                                 <Tooltip
-                                    content={
-                                       <CustomTooltip
-                                          active={undefined}
-                                          payload={undefined}
-                                       />
-                                    }
-                                 />
-                              </PieChart>
-                           </ResponsiveContainer>
-                        </div>
+                        {chartData.length > 0 && (
+                           <div className="h-[12.5rem] mb-6">
+                              <ResponsiveContainer width="100%" height="100%">
+                                 <PieChart>
+                                    <Pie
+                                       data={chartData}
+                                       cx="50%"
+                                       cy="50%"
+                                       innerRadius={60}
+                                       outerRadius={100}
+                                       paddingAngle={5}
+                                       dataKey="value"
+                                    >
+                                       {chartData.map((entry, index) => (
+                                          <Cell
+                                             key={`cell-${index}`}
+                                             fill={entry.color}
+                                          />
+                                       ))}
+                                    </Pie>
+                                    <Tooltip
+                                       content={
+                                          <CustomTooltip
+                                             active={undefined}
+                                             payload={undefined}
+                                          />
+                                       }
+                                    />
+                                 </PieChart>
+                              </ResponsiveContainer>
+                           </div>
+                        )}
 
-                        {/* Legend with Values */}
+                        {/* Stats */}
                         <div className="space-y-3">
                            <div className="flex justify-between items-center">
                               <div className="flex items-center gap-2">
@@ -422,7 +580,7 @@ const StakingPanel = () => {
                                  <span className="text-sm">Total Staked</span>
                               </div>
                               <span className="font-medium">
-                                 {totalStaked.toFixed(2)} LOT
+                                 {stakingStats.totalStaked.toFixed(2)} LOT
                               </span>
                            </div>
                            <div className="flex justify-between items-center">
@@ -431,10 +589,10 @@ const StakingPanel = () => {
                                     className="w-3 h-3 rounded-full"
                                     style={{ backgroundColor: COLORS[1] }}
                                  ></div>
-                                 <span className="text-sm">Rewards Earned</span>
+                                 <span className="text-sm">Total Rewards</span>
                               </div>
                               <span className="font-medium text-green-600">
-                                 +{totalRewards.toFixed(2)} LOT
+                                 +{stakingStats.totalRewards.toFixed(2)} LOT
                               </span>
                            </div>
                            <div className="flex justify-between items-center">
@@ -461,12 +619,32 @@ const StakingPanel = () => {
                               </span>
                               <span className="font-bold text-lg">
                                  {(
-                                    totalStaked +
-                                    totalRewards +
+                                    stakingStats.totalStaked +
+                                    stakingStats.totalRewards +
                                     lotBalance
                                  ).toFixed(2)}{' '}
                                  LOT
                               </span>
+                           </div>
+                        </div>
+
+                        {/* Quick Stats */}
+                        <div className="mt-4 pt-4 border-t grid grid-cols-2 gap-4 text-center">
+                           <div>
+                              <div className="text-2xl font-bold text-purple-600">
+                                 {stakingStats.activeStakes}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                 Active Stakes
+                              </div>
+                           </div>
+                           <div>
+                              <div className="text-2xl font-bold text-green-600">
+                                 {stakingStats.pendingRewards.toFixed(2)}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                 Pending Rewards
+                              </div>
                            </div>
                         </div>
                      </CardContent>
@@ -474,6 +652,79 @@ const StakingPanel = () => {
                )}
             </div>
          </div>
+
+         {/* Active Stakes List */}
+         {walletConnected && userStakes.length > 0 && (
+            <div className="mt-8">
+               <h3 className="text-xl font-semibold mb-4">Your Stakes</h3>
+               <div className="grid gap-4">
+                  {userStakes.map((stake) => (
+                     <Card key={stake.id}>
+                        <CardContent className="p-4">
+                           <div className="flex justify-between items-start">
+                              <div>
+                                 <div className="font-medium">
+                                    {stake.amount} LOT
+                                 </div>
+                                 <div className="text-sm text-gray-600">
+                                    {stake.period} • {stake.apy} APY
+                                 </div>
+                                 <div className="text-xs text-gray-500">
+                                    Started: {stake.startDate}
+                                 </div>
+                              </div>
+                              <div className="text-right">
+                                 <div
+                                    className={`text-sm font-medium ${
+                                       stake.status === 'active'
+                                          ? 'text-blue-600'
+                                          : stake.status === 'completed'
+                                          ? 'text-green-600'
+                                          : 'text-yellow-600'
+                                    }`}
+                                 >
+                                    {stake.status.charAt(0).toUpperCase() +
+                                       stake.status.slice(1)}
+                                 </div>
+                                 <div className="text-xs text-gray-500">
+                                    {stake.status === 'active'
+                                       ? `${stake.daysRemaining} days left`
+                                       : `Unlocked: ${stake.unlockDate}`}
+                                 </div>
+                                 {stake.rewardsEarned > 0 && (
+                                    <div className="text-sm text-green-600 mt-1">
+                                       +{stake.rewardsEarned.toFixed(2)} LOT
+                                       earned
+                                    </div>
+                                 )}
+                              </div>
+                           </div>
+
+                           {stake.status === 'completed' &&
+                              stake.rewardsEarned > 0 && (
+                                 <div className="mt-3 flex gap-2">
+                                    <Button
+                                       size="sm"
+                                       variant="outline"
+                                       onClick={() => claimRewards(stake.id)}
+                                    >
+                                       Claim Rewards
+                                    </Button>
+                                    <Button
+                                       size="sm"
+                                       variant="outline"
+                                       onClick={() => unstakeTokens(stake.id)}
+                                    >
+                                       Unstake
+                                    </Button>
+                                 </div>
+                              )}
+                        </CardContent>
+                     </Card>
+                  ))}
+               </div>
+            </div>
+         )}
 
          {/* Wallet Modal */}
          <Modal

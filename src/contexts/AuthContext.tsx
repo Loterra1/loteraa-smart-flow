@@ -32,6 +32,9 @@ interface AuthContextType {
    setWalletAddress: (address: string | null) => void;
    lotBalance: number;
    setLotBalance: (balance: number) => void;
+   ethBalance: number;
+   setEthBalance: (balance: number) => void;
+   refreshEthBalance: () => Promise<void>;
    setUser: (user: User | null) => void;
    signOut: () => Promise<void>;
    updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
@@ -58,6 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
    const [loading, setLoading] = useState(true);
    const [walletAddress, setWalletAddress] = useState<string | null>(null);
    const [lotBalance, setLotBalance] = useState<number>(0);
+   const [ethBalance, setEthBalance] = useState<number>(0);
    const { toast } = useToast();
 
    // Memoize the fetchUserBalance function to prevent unnecessary re-renders
@@ -68,25 +72,60 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       try {
-         console.log('Fetching balance for user:', user.id);
          const response = await api.get(`/onchain/balance?userId=${user.id}`);
 
-         if (response.data && typeof response.data.formatted === 'number') {
-            setLotBalance(response.data.formatted);
-            console.log('Balance updated:', response.data.formatted);
+         if (response.data?.data?.formatted !== undefined) {
+            const formatted = response.data.data.formatted;
+
+            // Handle both string and number formats
+            const balance =
+               typeof formatted === 'string'
+                  ? parseFloat(formatted)
+                  : formatted;
+
+            // Check if it's a valid number
+            if (!isNaN(balance)) {
+               setLotBalance(balance);
+            } else {
+               console.warn('Invalid balance - not a number:', formatted);
+            }
          } else {
-            console.warn('Invalid balance response format:', response.data);
+            console.warn('No formatted balance in response:', response.data);
          }
       } catch (error) {
          console.error('Error getting balance:', error);
-         // Optionally show toast for balance fetch errors
-         // toast({
-         //    title: 'Error fetching balance',
-         //    description: 'Could not retrieve your LOT token balance.',
-         //    variant: 'destructive',
-         // });
       }
-   }, [user?.id]); // Only depend on user.id
+   }, [user?.id]);
+
+   const fetchEthBalance = useCallback(async () => {
+      if (!user?.id) {
+         console.log('No wallet address available for ETH balance fetch');
+         return;
+      }
+
+      try {
+         const response = await api.get(
+            `/onchain/eth-balance?userId=${user?.id}`
+         );
+
+         const formatted = response.data?.data?.formatted;
+
+         // Convert to number regardless of input type
+         const balance = Number(formatted);
+
+         if (!isNaN(balance)) {
+            setEthBalance(balance);
+         } else {
+            console.warn('Invalid ETH balance format:', formatted);
+         }
+      } catch (error) {
+         console.error('Error getting ETH balance:', error);
+      }
+   }, [user?.id]);
+
+   const refreshEthBalance = useCallback(async () => {
+      await fetchEthBalance();
+   }, [fetchEthBalance]);
 
    const fetchProfile = async (userId: string) => {
       try {
@@ -112,6 +151,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
    };
 
    useEffect(() => {
+      const getUserWallet = async (retries = 5) => {
+         try {
+            if (!user?.id) return;
+
+            const response = await api.get(
+               `/onchain/retrieve-wallet?userId=${user.id}`,
+               { timeout: 15000 }
+            );
+
+            if (response.data.success) {
+               const address = response.data.data.address;
+               setWalletAddress(address);
+            }
+         } catch (error) {
+            if (error.code === 'ECONNABORTED' && retries > 0) {
+               console.log(
+                  `Request timed out, retrying... (${retries} attempts left)`
+               );
+               setTimeout(() => getUserWallet(retries - 1), 2000);
+            } else {
+               console.error('Error fetching wallet:', error);
+            }
+         }
+      };
+
+      getUserWallet();
+   }, [user?.id, setWalletAddress]);
+
+   useEffect(() => {
       const {
          data: { subscription },
       } = supabase.auth.onAuthStateChange((event, session) => {
@@ -127,6 +195,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
          } else {
             setProfile(null);
             setLotBalance(0);
+            setEthBalance(0);
          }
 
          setLoading(false);
@@ -178,14 +247,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
    useEffect(() => {
       if (user?.id) {
          fetchUserBalance();
+         fetchEthBalance();
       }
-   }, [user?.id, fetchUserBalance]);
+   }, [user?.id, fetchUserBalance, fetchEthBalance]);
 
    const signOut = async () => {
       await supabase.auth.signOut();
       setProfile(null);
       setWalletAddress(null);
       setLotBalance(0);
+      setEthBalance(0);
    };
 
    const updateProfile = async (updates: Partial<UserProfile>) => {
@@ -251,6 +322,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setWalletAddress,
       lotBalance,
       setLotBalance,
+      setEthBalance,
+      ethBalance,
+      refreshEthBalance,
       setUser,
       signOut,
       updateProfile,
