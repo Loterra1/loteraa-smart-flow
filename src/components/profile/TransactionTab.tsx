@@ -47,7 +47,7 @@ export default function TransactionTab() {
          case 'payment':
             return <Download className="h-4 w-4 text-blue-400" />;
          default:
-            return <Coins className="h-4 w-4 text-gray-400" />;
+            return <ArrowUpRight className="h-4 w-4 text-red-400" />;
       }
    };
 
@@ -81,6 +81,8 @@ export default function TransactionTab() {
          </div>
       );
    }
+
+   console.log('Transactions:', transactions);
 
    return (
       <div className="p-6 space-y-6">
@@ -196,7 +198,7 @@ export default function TransactionTab() {
                                  <div className="flex items-center gap-2">
                                     {getTransactionIcon(transaction.type)}
                                     <span className="capitalize">
-                                       {transaction.type}
+                                       {transaction.type} Withdraw
                                     </span>
                                  </div>
                               </TableCell>
@@ -220,10 +222,10 @@ export default function TransactionTab() {
                                  {getStatusBadge(transaction.status)}
                               </TableCell>
                               <TableCell>
-                                 {format(
-                                    new Date(transaction.created_at),
+                                 {/* {format(
+                                    new Date(transaction.createdAt),
                                     'MMM dd, yyyy'
-                                 )}
+                                 )} */}
                               </TableCell>
                               <TableCell>
                                  <div className="flex gap-2">
@@ -305,7 +307,7 @@ export default function TransactionTab() {
                            </div>
                            <div>
                               {format(
-                                 new Date(selectedTransaction.created_at),
+                                 new Date(selectedTransaction.createdAt),
                                  'MMM dd, yyyy HH:mm'
                               )}
                            </div>

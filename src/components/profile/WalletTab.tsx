@@ -117,27 +117,42 @@ export default function WalletTab() {
             description: `${amount} LOT tokens have been sent to your wallet`,
          });
       } catch (error) {
-         console.error('Withdrawal error:', error);
+         console.error('Withdrawal error:', error.response?.data?.message);
+         const errorMessage =
+            error.response?.data?.message ||
+            'There was an error processing your withdrawal.';
 
-         // Handle different types of errors
-         if (
+         // Check for specific error messages from the backend
+         if (errorMessage.includes('Insufficient ETH for gas')) {
+            toast({
+               title: 'Insufficient Gas Fee',
+               description: 'The transaction failed due to insufficient gas.',
+               variant: 'destructive',
+            });
+         } else if (errorMessage.includes('Insufficient balance')) {
+            toast({
+               title: 'Insufficient Balance',
+               description:
+                  "You don't have enough tokens to complete this transaction.",
+               variant: 'destructive',
+            });
+         } else if (
             error.code === 'ECONNABORTED' ||
             error.message?.includes('timeout')
          ) {
-            // Timeout error - transaction might still be processing
+            // Handle timeout error
             toast({
-               title: 'Transaction timeout',
+               title: 'Transaction Timeout',
                description:
                   'The transaction is taking longer than expected. Please check your balance in a few minutes.',
                variant: 'destructive',
             });
 
-            // Refresh balance after a delay to check if transaction went through
+            // Refresh balance after a delay to check if the transaction went through
             setTimeout(async () => {
                await refreshBalance();
                await refreshEthBalance();
 
-               // Show a follow-up message
                toast({
                   title: 'Balance updated',
                   description:
@@ -147,24 +162,16 @@ export default function WalletTab() {
          } else if (error.response?.status >= 500) {
             // Server error
             toast({
-               title: 'Server error',
+               title: 'Server Error',
                description:
                   'There was a server error. Please try again or check your balance shortly.',
                variant: 'destructive',
             });
-
-            // Refresh balance to check current state
-            setTimeout(async () => {
-               await refreshBalance();
-               await refreshEthBalance();
-            }, 5000);
          } else {
-            // Other errors (400, 401, etc.)
+            // Handle all other generic errors
             toast({
-               title: 'Withdrawal failed',
-               description:
-                  error.response?.data?.message ||
-                  'There was an error processing your withdrawal.',
+               title: 'Withdrawal Failed',
+               description: errorMessage,
                variant: 'destructive',
             });
          }

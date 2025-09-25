@@ -7,7 +7,7 @@ export interface Transaction {
    type: 'earning' | 'withdrawal' | 'deposit' | 'payment';
    amount: number;
    status: 'completed' | 'pending' | 'failed';
-   created_at: string;
+   createdAt: string;
    transaction_hash?: string;
    metadata?: Record<string, unknown>;
    source: 'earnings' | 'downloads' | 'activities';
@@ -74,7 +74,16 @@ export const useTransactions = (filters?: TransactionFilters) => {
          const params = new URLSearchParams(paramsObj);
 
          // Fetch transactions from backend
-         const response = await api.get(`/transactions?${params.toString()}`);
+
+         const url = `/onchain/transactions?userId=${user.id}&limit=50`;
+         console.log('Request URL:', url);
+         const limit = '50';
+         const response = await api.get(
+            `/onchain/transactions?userId=${
+               user.id
+            }&page=1&limit=${limit.toString()}`
+         );
+         console.log('Fetched transactions response:', response);
 
          if (response.data && response.data.success) {
             const { transactions: fetchedTransactions, stats: fetchedStats } =
