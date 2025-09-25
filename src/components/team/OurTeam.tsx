@@ -29,7 +29,7 @@ function OurTeam() {
       {
          id: 3,
          name: 'Sai prasath',
-         role: 'Head of Design',
+         role: 'Co-founder & Marketing Strategist',
          image: './sai3.jpeg',
          linkedin:
             'https://www.linkedin.com/in/sai-prasath-v-879215377?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
