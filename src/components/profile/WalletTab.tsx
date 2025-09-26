@@ -26,8 +26,14 @@ import ReportModal from './ReportModal';
 import api from '@/utils/api';
 
 export default function WalletTab() {
-   const { user, lotBalance, ethBalance, refreshEthBalance, refreshBalance } =
-      useAuth();
+   const {
+      user,
+      lotBalance,
+      ethBalance,
+      refreshEthBalance,
+      refreshBalance,
+      rewardBalance,
+   } = useAuth();
    const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
    const [withdrawAmount, setWithdrawAmount] = useState('');
    const [withdrawAddress, setWithdrawAddress] = useState('');
@@ -192,17 +198,23 @@ export default function WalletTab() {
 
             <CardContent className="py-6 flex flex-col sm:flex-row gap-8 sm:gap-20 items-start sm:items-center justify-between w-[200px] ">
                <div className="flex items-baseline">
-                  <span className="text-3xl font-bold text-white">
+                  <span className="text-1xl font-bold text-white">
                      {lotBalance.toLocaleString()}
                   </span>
                   <span className="ml-2 text-loteraa-purple">LOT</span>
                </div>
 
                <div className="flex items-baseline">
-                  <span className="text-3xl font-bold text-white">
+                  <span className="text-1xl font-bold text-white">
                      {ethBalance.toString().slice(0, 8)}
                   </span>
                   <span className="ml-2 text-loteraa-purple">ETH</span>
+               </div>
+               <div className="flex items-baseline">
+                  <span className="text-1xl font-bold text-white">
+                     {rewardBalance.toString().slice(0, 8)}
+                  </span>
+                  <span className="ml-2 text-loteraa-purple">Rewards</span>
                </div>
             </CardContent>
 

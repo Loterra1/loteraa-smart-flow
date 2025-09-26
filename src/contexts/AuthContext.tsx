@@ -31,6 +31,7 @@ interface AuthContextType {
    walletAddress: string | null;
    setWalletAddress: (address: string | null) => void;
    lotBalance: number;
+   rewardBalance: number;
    setLotBalance: (balance: number) => void;
    ethBalance: number;
    setEthBalance: (balance: number) => void;
@@ -39,7 +40,9 @@ interface AuthContextType {
    signOut: () => Promise<void>;
    updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
    changePassword: (newPassword: string) => Promise<{ error }>;
-   refreshBalance: () => Promise<void>; // Added this for manual refresh
+   refreshBalance: () => Promise<void>;
+   refreshReward: () => Promise<void>;
+   // Added this for manual refresh
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -62,6 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
    const [walletAddress, setWalletAddress] = useState<string | null>(null);
    const [lotBalance, setLotBalance] = useState<number>(0);
    const [ethBalance, setEthBalance] = useState<number>(0);
+   const [rewardBalance, setRewardBalance] = useState<number>(0);
    const { toast } = useToast();
 
    // Memoize the fetchUserBalance function to prevent unnecessary re-renders
@@ -150,6 +154,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
    };
 
+   const refreshRewardToken = async (retries = 5) => {
+      try {
+         if (!user?.id) {
+            console.warn('Cannot refresh reward token: User ID is missing.');
+            return;
+         }
+
+         const response = await api.get(
+            `/onchain/retrieve-wallet?userId=${user.id}`,
+            { timeout: 15000 }
+         );
+
+         console.log('API response for reward refresh:', response);
+
+         if (response.data.success) {
+            const reward = response.data.data.reward_balance;
+
+            // Update only the reward balance state
+            setRewardBalance(reward);
+
+            console.log('Reward token balance refreshed successfully.');
+         }
+      } catch (error) {
+         if (error.code === 'ECONNABORTED' && retries > 0) {
+            console.log(
+               `Request timed out, retrying... (${retries} attempts left)`
+            );
+            // Recursive call with a delay
+            setTimeout(() => refreshRewardToken(retries - 1), 2000);
+         } else {
+            console.error('Error refreshing reward token:', error);
+         }
+      }
+   };
+
    useEffect(() => {
       const getUserWallet = async (retries = 5) => {
          try {
@@ -160,8 +199,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
                { timeout: 15000 }
             );
 
+            console.log('retrieve wallte data', response);
             if (response.data.success) {
                const address = response.data.data.address;
+               const reward = response.data.data.reward_balance;
+               setRewardBalance(reward);
+
                setWalletAddress(address);
             }
          } catch (error) {
@@ -320,6 +363,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       loading,
       walletAddress,
       setWalletAddress,
+      rewardBalance,
       lotBalance,
       setLotBalance,
       setEthBalance,
@@ -329,6 +373,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       signOut,
       updateProfile,
       changePassword,
+      refreshReward: refreshRewardToken,
       refreshBalance: fetchUserBalance, // Expose this for manual balance refresh
    };
 

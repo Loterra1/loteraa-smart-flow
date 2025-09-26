@@ -66,7 +66,7 @@ export default function DatasetFileUpload({
    onUploadSuccess,
    onCancel,
 }: DatasetFileUploadProps) {
-   const { user } = useAuth();
+   const { user, refreshReward } = useAuth();
    const [selectedFile, setSelectedFile] = useState<File | null>(null);
    const [fileAnalysis, setFileAnalysis] = useState<FileAnalysis | null>(null);
    const [formData, setFormData] = useState<DatasetFormData>({
@@ -82,11 +82,12 @@ export default function DatasetFileUpload({
    const [showPreview, setShowPreview] = useState(false);
    const [showCodePreview, setShowCodePreview] = useState(false);
    const [allSchemas, setAllSchemas] = useState([]);
-   const [schemaPropertiesText, setSchemaPropertiesText] = useState(''); // New state for schema properties text
+   const [schemaPropertiesText, setSchemaPropertiesText] = useState('');
+   const [uploading, setUploading] = useState(false);
 
    const fileInputRef = useRef<HTMLInputElement>(null);
 
-   const { uploadDataset, analyzeFile, uploading } = useSupabaseDatasets();
+   const { uploadDataset, analyzeFile } = useSupabaseDatasets();
 
    const handleGetSchemas = async () => {
       try {
@@ -183,6 +184,7 @@ export default function DatasetFileUpload({
          });
          return;
       }
+      setUploading(true);
 
       try {
          const uploadFormData = new FormData();
@@ -205,11 +207,11 @@ export default function DatasetFileUpload({
          if (response.data.success) {
             await uploadDataset(selectedFile, formData);
             onUploadSuccess(response.data);
+            refreshReward();
             toast({
                title: 'Success',
                description: 'Dataset uploaded successfully!',
             });
-
          } else {
             console.error('Backend upload failed:', response.data.message);
             toast({
@@ -226,6 +228,8 @@ export default function DatasetFileUpload({
             description: 'Failed to upload dataset. Please try again.',
             variant: 'destructive',
          });
+      } finally {
+         setUploading(false);
       }
    };
 

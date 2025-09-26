@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 export default function DashboardStats() {
    const [isNewAccount, setIsNewAccount] = useState(true);
    // const [totalEarnings, setTotalEarnings] = useState<number>(0);
-   const { user, lotBalance } = useAuth();
+   const { user, lotBalance, rewardBalance } = useAuth();
 
    // const fetchTotalEarnings = async () => {
    //   if (!user) return;
@@ -96,17 +96,17 @@ export default function DashboardStats() {
          />
          <StatCard
             title="Total Earnings"
-            value={lotBalance.toFixed(2)}
+            value={rewardBalance.toFixed(2)}
             unit="$LOT"
             trend={<ChevronUp className="h-4 w-4 text-gray-500" />}
             trendValue={
-               lotBalance > 0
-                  ? `$${lotBalance.toFixed(2)} earned`
+               rewardBalance > 0
+                  ? `$${rewardBalance.toFixed(2)} earned`
                   : 'Begin earning'
             }
             iconBg="bg-loteraa-teal/20"
             iconColor="text-loteraa-teal"
-            isNew={isNewAccount && lotBalance === 0}
+            isNew={isNewAccount && rewardBalance === 0}
          />
       </div>
    );

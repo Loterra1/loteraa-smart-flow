@@ -21,7 +21,7 @@ export default function DashboardNavbar() {
       { path: '/smart-contracts', label: 'Smart Contracts' },
       { path: '/dataset-entry', label: 'Dataset Entry' },
       { path: '/data-listing', label: 'Data Listing' },
-      { path: '/earnings', label: 'Earnings' },
+      // { path: '/earnings', label: 'Earnings' },
       { path: '/notifications', label: 'Notifications' },
    ];
 
